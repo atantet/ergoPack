@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <vector>
+#include <stdexcept>
 #include <gsl/gsl_spmatrix.h>
 #include <arpack++/arsnsym.h>
 #include <ergoPack/transferOperator.hpp>
@@ -98,9 +99,9 @@ public:
 /** \brief Get spectrum of a nonsymmetric matrix using ARPACK++. */
 int getSpectrumAR(gsl_spmatrix2AR<double> *gsl2AR, int nev, configAR cfgAR,
 		  double *EigValReal, double *EigValImag, double *EigVec);
-int writeSpectrumAR(FILE *fEigVal, FILE *fEigVec,
-		    const double *EigValReal, const double *EigValImag,
-		    const double *EigVec, const int nev, const size_t N);
+void writeSpectrumAR(FILE *fEigVal, FILE *fEigVec,
+		     const double *EigValReal, const double *EigValImag,
+		     const double *EigVec, const int nev, const size_t N);
 
 
 /*
@@ -127,8 +128,8 @@ transferSpectrum::transferSpectrum(const int nev_, transferOperator *transferOp_
   
   /** Allocate for both real and imaginary part
    *  but only for one member of the pair */
-  EigVecForward = new double [(nev+2) * transferOp->N];
-  EigVecBackward = new double [(nev+2) * transferOp->N];
+  EigVecForward = new double [(nev+2) * transferOp->getN()];
+  EigVecBackward = new double [(nev+2) * transferOp->getN()];
 }
 
 
@@ -165,11 +166,10 @@ transferSpectrum::getSpectrum(configAR cfgAR)
   int nconv = 0;
   
   /** Check if constructor has been called */
-  if (!nev) {
-    fprintf(stderr, "Constructor with argument a positive number of eigenvalues \
-to search and a transferOperator should be called before to get spectrum.\n");
-    return EXIT_FAILURE;
-  }
+  if (!nev)
+    {
+      throw std::exception();
+    }
 
   /** Get transpose of forward transition matrix in CCS 
    *  Transposing is trivial since the transition matrix is in CRS format.
@@ -225,52 +225,42 @@ transferSpectrum::writeSpectrum(const char *EigValForwardFile, const char *EigVe
   FILE *streamEigVal, *streamEigVec;
   
   /** Open files for forward */
-  if (!(streamEigVal = fopen(EigValForwardFile, "w"))){
-    fprintf(stderr, "Can't open %s for writing forward eigenvalues",
-	    EigValForwardFile);
-    perror("");
-    return EXIT_FAILURE;
-  }
-  if (!(streamEigVec = fopen(EigVecForwardFile, "w"))){
-    fprintf(stderr, "Can't open %s for writing forward eigenvectors",
-	    EigVecForwardFile);
-    perror("");
-    return EXIT_FAILURE;
-  }
+  if (!(streamEigVal = fopen(EigValForwardFile, "w")))
+    {
+      throw std::ios::failure("transferSpectrum::writeSpectrum, \
+opening stream for writing forward eigenvalues");
+    }
+  if (!(streamEigVec = fopen(EigVecForwardFile, "w")))
+    {
+      throw std::ios::failure("transferSpectrum::writeSpectrum, \
+opening stream for writing forward eigenvectors");
+    }
 
   /** Write forward */
-  if (writeSpectrumAR(streamEigVal, streamEigVec,
-		      EigValForwardReal, EigValForwardImag, EigVecForward,
-		      nev, transferOp->N)) {
-    fprintf(stderr, "Error writing spectrum.\n");
-    return EXIT_FAILURE;
-  }
+  writeSpectrumAR(streamEigVal, streamEigVec,
+		  EigValForwardReal, EigValForwardImag, EigVecForward,
+		  nev, transferOp->getN());
 
   /** Close */
   fclose(streamEigVal);
   fclose(streamEigVec);
 
   /** Open files for backward */
-  if (!(streamEigVal = fopen(EigValBackwardFile, "w"))){
-    fprintf(stderr, "Can't open %s for writing backward eigenvalues",
-	    EigValBackwardFile);
-    perror("");
-    return EXIT_FAILURE;
-  }
-  if (!(streamEigVec = fopen(EigVecBackwardFile, "w"))){
-    fprintf(stderr, "Can't open %s for writing backward eigenvectors",
-	    EigVecBackwardFile);
-    perror("");
-    return EXIT_FAILURE;
-  }
+  if (!(streamEigVal = fopen(EigValBackwardFile, "w")))
+    {
+      throw std::ios::failure("transferSpectrum::writeSpectrum, \
+opening stream for writing backward eigenvalues");
+    }
+  if (!(streamEigVec = fopen(EigVecBackwardFile, "w")))
+    {
+      throw std::ios::failure("transferSpectrum::writeSpectrum, \
+opening stream for writing backward eigenvectors");
+    }
 
   /** Write backward */
-  if (writeSpectrumAR(streamEigVal, streamEigVec,
-		      EigValBackwardReal, EigValBackwardImag, EigVecBackward,
-		      nev, transferOp->N)) {
-    fprintf(stderr, "Error writing spectrum.\n");
-    return EXIT_FAILURE;
-  }
+  writeSpectrumAR(streamEigVal, streamEigVec,
+		  EigValBackwardReal, EigValBackwardImag, EigVecBackward,
+		  nev, transferOp->getN());
 
   /** Close */
   fclose(streamEigVal);
@@ -389,9 +379,8 @@ getSpectrumAR(gsl_spmatrix2AR<double> *gsl2AR, int nev, configAR cfgAR,
  * \param[in] EigVec     Array of eigenvectors.
  * \param[in] nev        Number of eigenvalues and eigenvectors.
  * \param[in] N          Length of the eigenvectors.
- * \return               Exit status.
  */
-int
+void
 writeSpectrumAR(FILE *fEigVal, FILE *fEigVec,
 		const double *EigValReal, const double *EigValImag,
 		const double *EigVec, const int nev, const size_t N)
@@ -427,16 +416,16 @@ writeSpectrumAR(FILE *fEigVal, FILE *fEigVec,
   }
 
   /** Check for printing errors */
-  if (ferror(fEigVal)) {
-    fprintf(stderr, "Error printing eigenvalues.\n");
-    return EXIT_FAILURE;
+  if (ferror(fEigVal))
+    {
+      throw std::ios::failure("writeSpectrumAR, printing eigenvalues");
   }
-  if (ferror(fEigVec)) {
-    fprintf(stderr, "Error printing eigenvectors.\n");
-    return EXIT_FAILURE;
+  if (ferror(fEigVec))
+    {
+      throw std::ios::failure("writeSpectrumAR, printing eigenvectors");
   }
 
-  return 0;
+  return;
 }
 	
 #endif

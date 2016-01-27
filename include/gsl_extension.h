@@ -23,6 +23,10 @@ int gsl_vector_sqrt(gsl_vector *v);
 void gsl_vector_normalize(gsl_vector *v);
 /** \brief Get sum of vector elements. */
 double gsl_vector_get_sum(const gsl_vector *v);
+/** \brief Get product of vector elements. */
+double gsl_vector_get_prod(const gsl_vector *v);
+/** \brief Get product of vector elements. */
+double gsl_vector_uint_get_prod(const gsl_vector_uint *v);
 /** \brief Get the mean over the elements of a vector. */
 double gsl_vector_get_mean(const gsl_vector *v);
 /** \brief Get the variance over the elements of a vector. */
@@ -91,6 +95,40 @@ gsl_vector_get_sum(const gsl_vector *v)
     sum += v->data[j * v->stride];
   
   return sum;
+}
+
+
+/**
+ * Get product of vector elements.
+ * \param[input] v Vector from which to multiply the elements.
+ * \return         Product of vector elements.
+ */
+double
+gsl_vector_get_prod(const gsl_vector *v)
+{
+  double prod = 1.;
+
+  for (size_t j = 0; j < v->size; j++)
+    prod *= v->data[j * v->stride];
+  
+  return prod;
+}
+
+
+/**
+ * Get product of vector elements.
+ * \param[input] v Vector from which to multiply the elements.
+ * \return         Product of vector elements.
+ */
+double
+gsl_vector_uint_get_prod(const gsl_vector_uint *v)
+{
+  double prod = 1.;
+
+  for (size_t j = 0; j < v->size; j++)
+    prod *= v->data[j * v->stride];
+  
+  return prod;
 }
 
 

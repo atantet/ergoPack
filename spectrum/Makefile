@@ -11,7 +11,7 @@ LDFLAGSGDB=$(LDFLAGSSTD) -gdb
 LDFLAGS=$(LDFLAGSSTD)
 #LDFLAGS=$(LDFLAGSGDB)
 
-EXE=spectrumCZ
+EXE=spectrum
 
 all:$(EXE).out
 

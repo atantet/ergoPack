@@ -51,16 +51,15 @@ size_t nt0, nt;
 double printStep;
 size_t printStepNum;
 int dimObs;
+size_t embedMax;
 gsl_vector_uint *components;
 gsl_vector_uint *embedding;
-size_t embedMax;
-char obsName[256];
 gsl_vector_uint *nx;
 gsl_vector *nSTDLow, *nSTDHigh;
 size_t nLags;
 gsl_vector *tauRng;
 // File names
-char srcPostfix[256], srcFileName[256];
+char obsName[256], srcPostfix[256], srcFileName[256];
 char gridPostfix[256], gridCFG[256], gridFileName[256];
 
 
@@ -75,7 +74,6 @@ int main(int argc, char * argv[])
   }
 
   // Observable declarations
-  char postfix[256];
   FILE *srcStream;
   gsl_vector *traj;
   gsl_matrix *states;
@@ -91,12 +89,13 @@ int main(int argc, char * argv[])
     
   // Transfer operator declarations
   char forwardTransitionFileName[256], backwardTransitionFileName[256],
-    initDistFileName[256], finalDistFileName[256];
+    initDistFileName[256], finalDistFileName[256], postfix[256];
+
   size_t tauNum;
   double tau;
   transferOperator *transferOp;
 
-  
+
   // Get membership vector
   // Open time series file
   if ((srcStream = fopen(srcFileName, "r")) == NULL)
@@ -158,7 +157,8 @@ int main(int argc, char * argv[])
   for (size_t lag = 0; lag < nLags; lag++)
     {
       tau = gsl_vector_get(tauRng, lag);
-      tauNum = (size_t) (tau * printStep);
+      tauNum = (size_t) (tau / printStep);
+      std::cout << "tauNum = " << tauNum << std::endl;
 
       // Update file names
       sprintf(postfix, "%s_tau%03d", gridPostfix, (int) (tau * 1000));
@@ -176,7 +176,7 @@ int main(int argc, char * argv[])
 
       // Get transition matrices as CSR
       std::cout << "Building transfer operator..." << std::endl;
-      transferOp = new transferOperator(gridMemMatrix, grid->N);
+      transferOp = new transferOperator(gridMemMatrix, grid->getN());
     
       // Write transition matrix as CSR
       std::cout << "Writing transfer operator..." << std::endl;
