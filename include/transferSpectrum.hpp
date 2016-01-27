@@ -6,7 +6,7 @@
 #include <vector>
 #include <gsl/gsl_spmatrix.h>
 #include <arpack++/arsnsym.h>
-#include <ATSuite/transferOperator.hpp>
+#include <ergoPack/transferOperator.hpp>
 
 /** \file transferSpectrum.hpp
  *  \brief Get spectrum of transferOperator using ARPACK++.

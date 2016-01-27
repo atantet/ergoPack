@@ -4,7 +4,7 @@
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_blas.h>
-#include <ATSuite/ODESolvers.hpp>
+#include <ergoPack/ODESolvers.hpp>
 
 
 /** \file SDESolvers.hpp

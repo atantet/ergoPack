@@ -7,6 +7,7 @@
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_spmatrix.h>
+#include <ergoPack/gsl_extension.h>
 #if defined (WITH_OMP) && WITH_OMP == 1
 #include <omp.h>
 #endif
@@ -41,31 +42,36 @@
 class Grid {
   /** \brief Allocate memory. */
   void allocate(gsl_vector_uint *nx_);
+  
   /** \brief Get uniform rectangular. */
   void getRectGrid(gsl_vector_uint *nx_,
 		   const gsl_vector *xmin,
 		   const gsl_vector *xmax);
 
 public:
-  /** Number of dimensions */
-  size_t dim;
-  /** Number of grid boxes */
-  size_t N;
-  /** Number of grid boxes per dimension */
-  gsl_vector_uint *nx;
-  /** Grid box bounds for each dimension */
-  std::vector<gsl_vector *> *gridBounds;
+  const size_t dim;                      //!< Number of dimensions
+  size_t N;                              //!< Number of grid boxes
+  gsl_vector_uint *nx;                   //!< Number of grid boxes per dimension
+  std::vector<gsl_vector *> *gridBounds; //!< Grid box bounds for each dimension
 
-  /** \brief Default constructor. */
-  Grid(){}
   /** \brief Constructor allocating an empty grid. */
-  Grid(gsl_vector_uint *nx_){ allocate(nx_); }
+  Grid(gsl_vector_uint *nx_) : dim(nx_->size) { allocate(nx_); }
+  
   /** \brief Construct a uniform rectangular grid with different dimensions. */
   Grid(gsl_vector_uint *nx_, const gsl_vector *xmin, const gsl_vector *xmax);
+  
   /** \brief Construct a uniform rectangular grid with same dimensions. */
   Grid(size_t dim_, size_t inx, double xmin, double xmax);
+  
+  /** \brief Construct a uniform rectangular adapted to time series. */
+  Grid(gsl_vector_uint *nx_, const gsl_vector *nSTDLow, const gsl_vector *nSTDHigh,
+       const gsl_matrix *states);
+  
   /** \brief Destructor. */
   ~Grid();
+
+  /** \brief Get state space dimension. */
+  size_t getDim() { return dim; }
   
   /** \brief Print the grid to file. */
   int printGrid(const char *path, const char *dataFormat, bool verbose);
@@ -177,10 +183,6 @@ gsl_spmatrix *getTransitionCountTriplet(const gsl_matrix_uint *gridMem, size_t N
 /** \brief Remove weak nodes from a transition matrix. */
 int filterStochasticMatrix(gsl_spmatrix *M, gsl_vector *rowCut, gsl_vector *colCut,
 			   double tol, int norm);
-/** \brief Normalize vector by the sum of its elements. */
-void gsl_vector_normalize(gsl_vector *v);
-/** \brief Get sum of vector elements. */
-double gsl_vector_get_sum(gsl_vector *v);
 
 
 /*
@@ -266,14 +268,57 @@ transferOperator::~transferOperator()
 
 /**
  * Construct a uniform rectangular grid with specific bounds for each dimension.
- * \param[in] nx_        GSL vector giving the number of boxes for each dimension.
- * \param[in] xmin       GSL vector giving the minimum box limit for each dimension.
- * \param[in] xmax       GSL vector giving the maximum box limit for each dimension.
+ * \param[in] nx_        Vector giving the number of boxes for each dimension.
+ * \param[in] xmin       Vector giving the minimum box limit for each dimension.
+ * \param[in] xmax       Vector giving the maximum box limit for each dimension.
  */
 Grid::Grid(gsl_vector_uint *nx_, const gsl_vector *xmin, const gsl_vector *xmax)
+  : dim(nx_->size)
 {
   // Allocate and build uniform rectangular grid
   getRectGrid(nx_, xmin, xmax);
+}
+
+/**
+ * Construct a uniform rectangular grid adapted to the time series.
+ * \param[in] nx_        Vector giving the number of boxes for each dimension.
+ * \param[in] nSTDLow    Vector giving the number of standard deviations
+ *                       to span away from the mean state from below.
+ * \param[in] nSTDHigh   Vector giving the number of standard deviations
+ *                       to span away from the mean state from above.
+ * \param[in]state       Time series.
+ */
+Grid::Grid(gsl_vector_uint *nx_, const gsl_vector *nSTDLow, const gsl_vector *nSTDHigh,
+	   const gsl_matrix *states) : dim(nx_->size)
+{
+  gsl_vector *xmin, *xmax, *statesMean, *statesSTD;
+  
+  // Get mean and standard deviation of time series
+  statesMean = gsl_matrix_get_mean(states, 0);
+  statesSTD = gsl_matrix_get_std(states, 0);
+  
+  // Create grid
+  // Define grid limits
+  xmin = gsl_vector_alloc(dim);
+  xmax = gsl_vector_alloc(dim);
+  for (size_t d = 0; d < dim; d++)
+    {
+      gsl_vector_set(xmin, d, gsl_vector_get(statesMean, 0)
+		     - gsl_vector_get(nSTDLow, d)
+		     * gsl_vector_get(statesSTD, d));
+      gsl_vector_set(xmax, d, gsl_vector_get(statesMean, d)
+		     + gsl_vector_get(nSTDHigh, d)
+		     * gsl_vector_get(statesSTD, d));
+    }
+    
+  // Allocate and build uniform rectangular grid
+  getRectGrid(nx_, xmin, xmax);
+
+  // Free
+  gsl_vector_free(xmin);
+  gsl_vector_free(xmax);
+  gsl_vector_free(statesMean);
+  gsl_vector_free(statesSTD);
 }
 
 /**
@@ -284,6 +329,7 @@ Grid::Grid(gsl_vector_uint *nx_, const gsl_vector *xmin, const gsl_vector *xmax)
  * \param[in] dxmax       Maximum box limit, identically for each dimension.
  */
 Grid::Grid(size_t dim_, size_t inx, double dxmin, double dxmax)
+  : dim(dim_)
 {
   // Convert to uniform vectors to call getRectGrid.
   gsl_vector_uint *nx_ = gsl_vector_uint_alloc(dim_);
@@ -705,13 +751,11 @@ transferOperator::scanFinalDist(const char *path)
 
 /**
  * Allocate memory for the grid.
- * \param[in] GSL vector of unsigned integers giving the number of boxes per dimension.
+ * \param[in] Vector of unsigned integers giving the number of boxes per dimension.
  */
 void
 Grid::allocate(gsl_vector_uint *nx_)
 {
-  dim = nx_->size;
-  
   nx = gsl_vector_uint_alloc(dim);
   gsl_vector_uint_memcpy(nx, nx_);
   
@@ -727,9 +771,9 @@ Grid::allocate(gsl_vector_uint *nx_)
 
 /**
  * Get a uniform rectangular grid with specific bounds for each dimension.
- * \param[in] nx         GSL vector giving the number of boxes for each dimension.
- * \param[in] xmin       GSL vector giving the minimum box limit for each dimension.
- * \param[in] xmax       GSL vector giving the maximum box limit for each dimension.
+ * \param[in] nx         Vector giving the number of boxes for each dimension.
+ * \param[in] xmin       Vector giving the minimum box limit for each dimension.
+ * \param[in] xmax       Vector giving the maximum box limit for each dimension.
  */
 void
 Grid::getRectGrid(gsl_vector_uint *nx_, const gsl_vector *xmin, const gsl_vector *xmax)
@@ -930,7 +974,7 @@ getGridMemMatrix(const gsl_matrix *states, const Grid *grid, const size_t tauSte
 
 /**
  * Concatenate a list of membership vectors into one membership matrix.
- * \param[in] memList    STD vector of membership GSL vectors each of them associated
+ * \param[in] memList    STD vector of membership Vectors each of them associated
  * with a single long trajectory.
  * \param[in] tauStep    Lag used to calculate the transitions.
  * \return               GSL grid membership matrix.
@@ -967,7 +1011,7 @@ memVectorList2memMatrix(const std::vector<gsl_vector_uint *> *memList, size_t ta
 
 /**
  * Get membership to a grid box of a single realization.
- * \param[in] state          GSL vector of a single state.
+ * \param[in] state          Vector of a single state.
  * \param[in] grid           Pointer to Grid object.
  * \return                   Box index to which the state belongs.
  */
@@ -1140,38 +1184,6 @@ filterStochasticMatrix(gsl_spmatrix *M,
   gsl_vector_uint_free(colOut);
 
   return 0;
-}
-
-
-/**
- * Normalize vector by the sum of its elements.
- * \param[input] v Vector to normalize.
- */
-void
-gsl_vector_normalize(gsl_vector *v)
-{
-  double sum = gsl_vector_get_sum(v);
-
-  for (size_t j = 0; j < v->size; j++)
-    v->data[j * v->stride] /= sum;
-  
-  return;
-}
-
-/**
- * Get sum of vector elements.
- * \param[input] v Vector from which to sum the elements.
- * \return         Sum of vector elements.
- */
-double
-gsl_vector_get_sum(gsl_vector *v)
-{
-  double sum = 0;
-
-  for (size_t j = 0; j < v->size; j++)
-    sum += v->data[j * v->stride];
-  
-  return sum;
 }
 
 

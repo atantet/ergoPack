@@ -9,8 +9,8 @@
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
 #include <libconfig.h++>
-#include <ATSuite/SDESolvers.hpp>
-#include <ATSuite/ODESolvers.hpp>
+#include <ergoPack/SDESolvers.hpp>
+#include <ergoPack/ODESolvers.hpp>
 
 using namespace libconfig;
 
@@ -35,7 +35,7 @@ char caseName[256], file_format[256];
 Config cfg;
 int dim;
 gsl_matrix *A, *Q;
-gsl_vector *X0;
+gsl_vector *initState;
 double LCut, dt, spinup;
 double printStep;
 size_t printStepNum;
@@ -56,6 +56,7 @@ int main(int argc, char * argv[])
     return(EXIT_FAILURE);
   }
 
+  // Some parameters
   L = LCut + spinup;
   printStepNum = (size_t) (printStep / dt);
 
@@ -93,7 +94,7 @@ int main(int argc, char * argv[])
 
   // Define model
   std::cout << "Defining model..." << std::endl;
-  modelStochastic *mod = new modelStochastic(field, stocField, scheme, X0);
+  modelStochastic *mod = new modelStochastic(field, stocField, scheme, initState);
   
   // Numerical integration
   printf("Integrating simulation...\n");
@@ -109,7 +110,7 @@ int main(int argc, char * argv[])
 
   // Free
   gsl_matrix_free(X);
-  gsl_vector_free(X0);
+  gsl_vector_free(initState);
   gsl_matrix_free(A);
   gsl_matrix_free(Q);
 
@@ -176,13 +177,13 @@ readConfig(const char *cfgFileName)
     std::cout << "\n" << "---simulation---" << std::endl;
 
     // Initial state
-    const Setting &X0Setting = cfg.lookup("simulation.X0");
-    X0 = gsl_vector_alloc(dim);
-    std::cout << "X0 = [";
+    const Setting &initStateSetting = cfg.lookup("simulation.initState");
+    initState = gsl_vector_alloc(dim);
+    std::cout << "initState = [";
     for (size_t i =0; i < (size_t) dim; i++)
       {
-	gsl_vector_set(X0, i, X0Setting[i]);
-	std::cout << gsl_vector_get(X0, i) << " ";
+	gsl_vector_set(initState, i, initStateSetting[i]);
+	std::cout << gsl_vector_get(initState, i) << " ";
       }
     std::cout << "]" << std::endl;
 
