@@ -24,52 +24,42 @@ using namespace libconfig;
 
 // Declarations
 /** \brief User defined function to get parameters from a cfg file using libconfig. */
-int readConfig(const char *cfgFileNamePrefix);
+void readConfig(const char *cfgFileName);
 
-// Paths
-const char prefix[] = "";
-const char cfgDir[] = "../cfg/";
-const char simDir[] = "../results/simulations/";
-
-// Configuration
-char cfgFileName[256], caseName[256], file_format[256];
-Config cfg;
+char caseName[256], file_format[256], resDir[256];
 int dim;
 std::vector<gsl_vector *> *driftPolynomials;
 gsl_matrix *Q;
 gsl_vector *delaysDays;
 gsl_vector_uint *delays;
 size_t nDelays;
+char delayName[256];
 gsl_vector *initStateCst;
 double LCut, dt, spinup;
 double printStep;
 size_t printStepNum;
+double L;
+char postfix[256], dstFileName[256];
 
 
 // Main program
 int main(int argc, char * argv[])
 {
-  double L;
-  char postfix[256], dstFileName[256];
   FILE *dstStream;
   gsl_matrix *X;
 
-  // Read configuration file given as first command-line argument
-  if (readConfig(argv[1])) {
-    std::cerr << "Error reading config file " << argv[1] << ".cfg"
-	      << std::endl;
-    return(EXIT_FAILURE);
-  }
+  // Read configuration file
+  try
+    {
+      readConfig(argv[1]);
+    }
+  catch (...)
+    {
+      std::cerr << "Error reading configuration file" << std::endl;
+      return EXIT_FAILURE;
+    }
 
-  // Define some parameters
-  L = LCut + spinup;
-  printStepNum = (size_t) (printStep / dt);
-
-  // Define names and open destination file
-  sprintf(postfix, "_%s_L%d_spinup%d_dt%d_samp%d", caseName,
-	  (int) L, (int) spinup, (int) round(-gsl_sf_log(dt)/gsl_sf_log(10)),
-	  (int) printStepNum);
-  sprintf(dstFileName, "%s/sim%s.%s", simDir, postfix, file_format);
+  // Open destination file
   if (!(dstStream = fopen(dstFileName, "w")))
     {
       fprintf(stderr, "Can't open %s for writing simulation: ", dstFileName);
@@ -136,21 +126,27 @@ int main(int argc, char * argv[])
 
 
 // Definitions
-int
+void
 readConfig(const char *cfgFileName)
 {
+  Config cfg;
   size_t degree;
+  char cpyBuffer[256];
 
   // Read the file. If there is an error, report it and exit.
   std::cout << "Reading config file " << cfgFileName << std::endl;
   try {
     cfg.readFile(cfgFileName);
 
-
     std::cout.precision(6);
     std::cout << "Settings:" << std::endl;
 
     
+    /** Get paths */
+    std::cout << std::endl << "---general---" << std::endl;
+    strcpy(resDir, (const char *) cfg.lookup("general.resDir"));
+    std::cout << "Results directory: " << resDir << std::endl;
+        
     /** Get model settings */
     std::cout << std::endl << "---model---" << std::endl;
     
@@ -167,10 +163,13 @@ readConfig(const char *cfgFileName)
     nDelays = (size_t) delaysSetting.getLength();
     delaysDays = gsl_vector_alloc(nDelays);
     std::cout << "delays (days) = [";
+    sprintf(delayName, "");
     for (size_t d = 0; d < nDelays; d++)
       {
 	gsl_vector_set(delaysDays, d, delaysSetting[d]);
 	std::cout << gsl_vector_get(delaysDays, d) << " ";
+	strcpy(cpyBuffer, delayName);
+	sprintf(delayName, "%s_d%d", cpyBuffer, (int) gsl_vector_get(delaysDays, d));
       }
     std::cout << "]" << std::endl;
 
@@ -250,28 +249,36 @@ readConfig(const char *cfgFileName)
     strcpy(file_format, (const char *) cfg.lookup("simulation.file_format"));
     std::cout << "Output file format: " << file_format << std::endl;
 
+    std::cout << std::endl;
+    
+    // Define some parameters
+    L = LCut + spinup;
+    printStepNum = (size_t) (printStep / dt);
+    
+    // Define destination file name
+    sprintf(postfix, "_%s%s_L%d_spinup%d_dt%d_samp%d", caseName, delayName,
+	    (int) L, (int) spinup, (int) round(-gsl_sf_log(dt)/gsl_sf_log(10)),
+	    (int) printStepNum);
+    sprintf(dstFileName, "%s/simulation/sim%s.%s", resDir, postfix, file_format);
+
   }
   catch(const FileIOException &fioex) {
     std::cerr << "I/O error while reading configuration file." << std::endl;
-    return(EXIT_FAILURE);
+    throw fioex;
   }
   catch(const ParseException &pex) {
     std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
               << " - " << pex.getError() << std::endl;
-    return(EXIT_FAILURE);
+    throw pex;
   }
   catch(const SettingNotFoundException &nfex) {
     std::cerr << "Setting " << nfex.getPath() << " not found." << std::endl;
-    return(EXIT_FAILURE);
+    throw nfex;
   }
   catch(const SettingTypeException &stex) {
     std::cerr << "Setting type exception." << std::endl;
-    return(EXIT_FAILURE);
+    throw stex;
   }
 
-  std::cout << std::endl;
-
-  return 0;
+  return;
 }
-
-

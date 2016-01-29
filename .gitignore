@@ -27,9 +27,15 @@
 *.out
 *.app
 
+# Python
+*.pyc
+
 # Backups
 *~
 \#*\#
+
+# OSX
+.DS_Store
 
 # Ignore documentation folder
 html/

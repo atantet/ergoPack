@@ -36,16 +36,12 @@ using namespace libconfig;
 
 // Declarations
 /** \brief User defined function to get parameters from a cfg file using libconfig. */
-int readConfig(const char *cfgFileName);
-
-// Paths
-const char simDir[] = "../results/simulations/";
-const char resDir[] = "../results/";
+void readConfig(const char *cfgFileName);
 
 // Configuration 
-Config cfg;
-char caseName[256], file_format[256];
+char caseName[256], file_format[256], resDir[256];
 int dim;
+char delayName[256];
 double LCut, L, dt, spinup;
 size_t nt0, nt;
 double printStep;
@@ -67,15 +63,19 @@ char gridPostfix[256], gridCFG[256], gridFileName[256];
 int main(int argc, char * argv[])
 {
   // Read configuration file
-  if (readConfig(argv[1])) {
-    std::cerr << "Error reading config file " << argv[1] << ".cfg"
-	      << std::endl;
-    return(EXIT_FAILURE);
-  }
+  //try
+  //  {
+      readConfig(argv[1]);
+  //   }
+  // catch (...)
+  //   {
+  //     std::cerr << "Error reading configuration file" << std::endl;
+  //     return(EXIT_FAILURE);
+  //   }
 
   // Observable declarations
   FILE *srcStream;
-  gsl_vector *traj;
+  gsl_matrix *traj;
   gsl_matrix *states;
 
   // Grid declarations
@@ -107,8 +107,8 @@ int main(int argc, char * argv[])
 
   // Read one-dimensional time series
   std::cout << "Reading trajectory in " << srcFileName << std::endl;
-  traj = gsl_vector_alloc(nt0);
-  gsl_vector_fread(srcStream, traj);
+  traj = gsl_matrix_alloc(nt0, dim);
+  gsl_matrix_fread(srcStream, traj);
 
   // Close 
   fclose(srcStream);
@@ -119,8 +119,9 @@ int main(int argc, char * argv[])
   for (size_t d = 0; d < (size_t) dimObs; d++)
     {
       gsl_vector_const_view view 
-	= gsl_vector_const_subvector(traj, embedMax
-				     - gsl_vector_uint_get(embedding, d), nt);
+	= gsl_matrix_const_subcolumn(traj, gsl_vector_uint_get(components, d),
+				     embedMax - gsl_vector_uint_get(embedding, d),
+				     nt);
       gsl_matrix_set_col(states, d, &view.vector);
     }
 
@@ -132,7 +133,7 @@ int main(int argc, char * argv[])
   grid->printGrid(gridFileName, "%.12lf", true);
     
   // Open grid membership vector stream
-  sprintf(gridMemFileName, "%s/transfer/gridMem%s.txt",
+  sprintf(gridMemFileName, "%s/transfer/gridMem/gridMem%s.txt",
 	  resDir, gridPostfix);
   if ((gridMemStream = fopen(gridMemFileName, "w")) == NULL){
     fprintf(stderr, "Can't open %s for writing:", gridMemFileName);
@@ -149,7 +150,7 @@ int main(int argc, char * argv[])
     
   // Close stream and free
   fclose(gridMemStream);
-  gsl_vector_free(traj);
+  gsl_matrix_free(traj);
   gsl_matrix_free(states);
 
   
@@ -158,16 +159,15 @@ int main(int argc, char * argv[])
     {
       tau = gsl_vector_get(tauRng, lag);
       tauNum = (size_t) (tau / printStep);
-      std::cout << "tauNum = " << tauNum << std::endl;
 
       // Update file names
       sprintf(postfix, "%s_tau%03d", gridPostfix, (int) (tau * 1000));
       sprintf(forwardTransitionFileName,
-	      "%s/transfer/forwardTransition%s.coo", resDir, postfix);
+	      "%s/transfer/forwardTransition/forwardTransition%s.coo", resDir, postfix);
       sprintf(backwardTransitionFileName,
-	      "%s/transfer/backwardTransition%s.coo", resDir, postfix);
-      sprintf(initDistFileName, "%s/transfer/initDist%s.txt", resDir, postfix);
-      sprintf(finalDistFileName, "%s/transfer/finalDist%s.txt", resDir, postfix);
+	      "%s/transfer/backwardTransition/backwardTransition%s.coo", resDir, postfix);
+      sprintf(initDistFileName, "%s/transfer/initDist/initDist%s.txt", resDir, postfix);
+      sprintf(finalDistFileName, "%s/transfer/finalDist/finalDist%s.txt", resDir, postfix);
 
       // Get full membership matrix
       std::cout << "Getting full membership matrix from the list of membership vecotrs..."
@@ -204,9 +204,10 @@ int main(int argc, char * argv[])
 }
 
 // Definitions
-int
+void
 readConfig(const char *cfgFileName)
 {
+  Config cfg;
   char cpyBuffer[256];
   
   // Read the file. If there is an error, report it and exit.
@@ -217,6 +218,11 @@ readConfig(const char *cfgFileName)
     std::cout.precision(6);
     std::cout << "Settings:" << std::endl;
     
+    /** Get paths */
+    std::cout << std::endl << "---general---" << std::endl;
+    strcpy(resDir, (const char *) cfg.lookup("general.resDir"));
+    std::cout << "Results directory: " << resDir << std::endl;
+        
     /** Get model settings */
     std::cout << std::endl << "---model---" << std::endl;
 
@@ -228,6 +234,22 @@ readConfig(const char *cfgFileName)
     dim = cfg.lookup("model.dim");
     std::cout << "dim = " << dim << std::endl;
     
+    // Get delays in days and the number of delays
+    sprintf(delayName, "");
+    if (cfg.exists("model.delaysDays"))
+      {
+	const Setting &delaysSetting = cfg.lookup("model.delaysDays");
+	std::cout << "Delays (days): [";
+	for (int d = 0; d < delaysSetting.getLength(); d++)
+	  {
+	    double delay = delaysSetting[d];
+	    std::cout << delay << " ";
+	    strcpy(cpyBuffer, delayName);
+	    sprintf(delayName, "%s_d%.0f", cpyBuffer, delay);
+	  }
+	std::cout << "]" << std::endl;
+      }
+
     /** Get simulation settings */
     std::cout << "\n" << "---simulation---" << std::endl;
 
@@ -319,53 +341,51 @@ readConfig(const char *cfgFileName)
     std::cout << "]" << std::endl;
 
     std::cout << std::endl;
+    
+    // Finish configuration
+    // Define time series parameters
+    L = LCut + spinup;
+    printStepNum = (size_t) (printStep / dt);
+    nt0 = (size_t) (LCut * printStep);
+    embedMax = gsl_vector_uint_max(embedding);
+    nt = nt0 - embedMax;
+
+    // Define postfix and src file name
+    sprintf(srcPostfix, "_%s%s_L%d_spinup%d_dt%d_samp%d", caseName, delayName,
+	    (int) L, (int) spinup, (int) round(-gsl_sf_log(dt)/gsl_sf_log(10)),
+	    (int) printStepNum);
+    sprintf(srcFileName, "%s/simulation/sim%s.%s", resDir, srcPostfix, file_format);
+
+    // Define grid name
+    sprintf(gridCFG, "");
+    for (size_t d = 0; d < (size_t) dimObs; d++) {
+      strcpy(cpyBuffer, gridCFG);
+      sprintf(gridCFG, "%s_n%dl%dh%d", cpyBuffer,
+	      gsl_vector_uint_get(nx, d),
+	      (int) gsl_vector_get(nSTDLow, d),
+	      (int) gsl_vector_get(nSTDHigh, d));
+    }
+    sprintf(gridPostfix, "%s%s%s", srcPostfix, obsName, gridCFG);
+    sprintf(gridFileName, "%s/grid/grid%s.txt", resDir, gridPostfix);
   }
   catch(const SettingNotFoundException &nfex) {
     std::cerr << "Setting " << nfex.getPath() << " not found." << std::endl;
-    return(EXIT_FAILURE);
+    throw nfex;
   }
   catch(const FileIOException &fioex) {
     std::cerr << "I/O error while reading configuration file." << std::endl;
-    return(EXIT_FAILURE);
+    throw fioex;
   }
   catch(const ParseException &pex) {
     std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
               << " - " << pex.getError() << std::endl;
-    return(EXIT_FAILURE);
-    std::cout << "Settings:" << std::endl;
+    throw pex;
   }
-  catch(std::exception& e)
-    {
-      std::cout << e.what() << std::endl;
-    }
-
-
-  // Finish configuration
-  // Define time series parameters
-  L = LCut + spinup;
-  printStepNum = (size_t) (printStep / dt);
-  nt0 = (size_t) (LCut * printStep);
-  embedMax = gsl_vector_uint_max(embedding);
-  nt = nt0 - embedMax;
-
-  // Define postfix and src file name
-  sprintf(srcPostfix, "_%s_L%d_spinup%d_dt%d_samp%d", caseName,
-	  (int) L, (int) spinup, (int) round(-gsl_sf_log(dt)/gsl_sf_log(10)),
-	  (int) printStepNum);
-  sprintf(srcFileName, "%s/sim%s.%s", simDir, srcPostfix, file_format);
-
-  // Define grid name
-  sprintf(gridCFG, "");
-  for (size_t d = 0; d < (size_t) dimObs; d++) {
-    strcpy(cpyBuffer, gridCFG);
-    sprintf(gridCFG, "%s_n%dl%dh%d", cpyBuffer,
-	    gsl_vector_uint_get(nx, d),
-	    (int) gsl_vector_get(nSTDLow, d),
-	    (int) gsl_vector_get(nSTDHigh, d));
+  catch(const SettingTypeException &stex) {
+    std::cerr << "Setting type exception." << std::endl;
+    throw stex;
   }
-  sprintf(gridPostfix, "%s%s%s", srcPostfix, obsName, gridCFG);
-  sprintf(gridFileName, "%s/grid/grid%s.txt", resDir, gridPostfix);
 
 
-  return 0;
+  return;
 }

@@ -17,8 +17,8 @@ endif
 LDFLAGS=$(LDFLAGSSTD)
 #LDFLAGS=$(LDFLAGSGDB)
 
-#EXE=simOU
-EXE=simSDDE
+EXE=simOU
+#EXE=simSDDE
 
 all:$(EXE).out
 

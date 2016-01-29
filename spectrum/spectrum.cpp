@@ -32,12 +32,10 @@ using namespace libconfig;
 /** \brief User defined function to get parameters from a cfg file using libconfig. */
 void readConfig(const char *cfgFileName);
 
-// Paths
-const char resDir[] = "../results/";
-
 // Configuration 
-Config cfg;
+char resDir[256];
 char caseName[256];
+char delayName[256];
 double LCut, L, dt, spinup;
 double printStep;
 size_t printStepNum;
@@ -52,7 +50,7 @@ gsl_vector *tauRng;
 int nev;
 // File names
 char obsName[256], srcPostfix[256];
-char gridPostfix[256], gridCFG[256], gridFileName[256];
+char gridPostfix[256], gridCFG[256];
 
 
 // Main program
@@ -92,12 +90,12 @@ int main(int argc, char * argv[])
       // Get file names
       sprintf(postfix, "%s_tau%03d", gridPostfix, (int) (tau * 1000));
       sprintf(forwardTransitionFileName, \
-	      "%s/transfer/forwardTransition%s.coo", resDir, postfix);
+	      "%s/transfer/forwardTransition/forwardTransition%s.coo", resDir, postfix);
       sprintf(backwardTransitionFileName,
-	      "%s/transfer/backwardTransition%s.coo", resDir, postfix);
-      sprintf(initDistFileName, "%s/transfer/initDist%s.txt",
+	      "%s/transfer/backwardTransition/backwardTransition%s.coo", resDir, postfix);
+      sprintf(initDistFileName, "%s/transfer/initDist/initDist%s.txt",
 	      resDir, postfix);
-      sprintf(finalDistFileName, "%s/transfer/finalDist%s.txt",
+      sprintf(finalDistFileName, "%s/transfer/finalDist/finalDist%s.txt",
 	      resDir, postfix);
       sprintf(EigValForwardFileName, "%s/spectrum/eigval/eigval_nev%d%s.txt",
 	      resDir, nev, postfix);
@@ -130,7 +128,7 @@ int main(int argc, char * argv[])
       try
 	{
 	  // Solve eigen value problem with default configuration
-	  std::cout << "Solving eigen problem" << std::endl;
+	  std::cout << "Solving eigen problem..." << std::endl;
 	  transferSpec = new transferSpectrum(nev, transferOp);
 	  nconv = transferSpec->getSpectrum();
 	  std::cout << "Found " << nconv << "/" << (nev * 2) << " eigenvalues." << std::endl;
@@ -175,6 +173,7 @@ int main(int argc, char * argv[])
 void
 readConfig(const char *cfgFileName)
 {
+  Config cfg;
   char cpyBuffer[256];
   
   // Read the file. If there is an error, report it and exit.
@@ -184,7 +183,12 @@ readConfig(const char *cfgFileName)
     
     std::cout.precision(6);
     std::cout << "Settings:" << std::endl;
-    
+
+    /** Get paths */
+    std::cout << std::endl << "---general---" << std::endl;
+    strcpy(resDir, (const char *) cfg.lookup("general.resDir"));
+    std::cout << "Results directory: " << resDir << std::endl;
+        
     /** Get model settings */
     std::cout << std::endl << "---model---" << std::endl;
 
@@ -192,6 +196,22 @@ readConfig(const char *cfgFileName)
     strcpy(caseName, (const char *) cfg.lookup("model.caseName"));
     std::cout << "Case name: " << caseName << std::endl;
     
+    // Get delays in days and the number of delays
+    sprintf(delayName, "");
+    if (cfg.exists("model.delaysDays"))
+      {
+	const Setting &delaysSetting = cfg.lookup("model.delaysDays");
+	std::cout << "Delays (days): [";
+	for (int d = 0; d < delaysSetting.getLength(); d++)
+	  {
+	    double delay = delaysSetting[d];
+	    std::cout << delay << " ";
+	    strcpy(cpyBuffer, delayName);
+	    sprintf(delayName, "%s_d%.0f", cpyBuffer, delay);
+	  }
+	std::cout << "]" << std::endl;
+      }
+
     /** Get simulation settings */
     std::cout << "\n" << "---simulation---" << std::endl;
 
@@ -287,6 +307,28 @@ readConfig(const char *cfgFileName)
     
     std::cout << std::endl;
 
+    // Finish configuration
+    // Define time series parameters
+    L = LCut + spinup;
+    printStepNum = (size_t) (printStep / dt);
+
+    // Define postfix and src file name
+    sprintf(srcPostfix, "_%s%s_L%d_spinup%d_dt%d_samp%d", caseName, delayName,
+	    (int) L, (int) spinup, (int) round(-gsl_sf_log(dt)/gsl_sf_log(10)),
+	    (int) printStepNum);
+
+    // Define grid name
+    sprintf(gridCFG, "");
+    for (size_t d = 0; d < (size_t) dimObs; d++) {
+      strcpy(cpyBuffer, gridCFG);
+      sprintf(gridCFG, "%s_n%dl%dh%d", cpyBuffer,
+	      gsl_vector_uint_get(nx, d),
+	      (int) gsl_vector_get(nSTDLow, d),
+	      (int) gsl_vector_get(nSTDHigh, d));
+    }
+    sprintf(gridPostfix, "%s%s%s", srcPostfix, obsName, gridCFG);
+
+
   }
   catch(const SettingNotFoundException &nfex) {
     std::cerr << "Setting " << nfex.getPath() << " not found." << std::endl;
@@ -301,29 +343,10 @@ readConfig(const char *cfgFileName)
               << " - " << pex.getError() << std::endl;
     throw pex;
   }
-
-
-  // Finish configuration
-  // Define time series parameters
-  L = LCut + spinup;
-  printStepNum = (size_t) (printStep / dt);
-
-  // Define postfix and src file name
-  sprintf(srcPostfix, "_%s_L%d_spinup%d_dt%d_samp%d", caseName,
-	  (int) L, (int) spinup, (int) round(-gsl_sf_log(dt)/gsl_sf_log(10)),
-	  (int) printStepNum);
-
-  // Define grid name
-  sprintf(gridCFG, "");
-  for (size_t d = 0; d < (size_t) dimObs; d++) {
-    strcpy(cpyBuffer, gridCFG);
-    sprintf(gridCFG, "%s_n%dl%dh%d", cpyBuffer,
-	    gsl_vector_uint_get(nx, d),
-	    (int) gsl_vector_get(nSTDLow, d),
-	    (int) gsl_vector_get(nSTDHigh, d));
+  catch(const SettingTypeException &stex) {
+    std::cerr << "Setting type exception." << std::endl;
+    throw stex;
   }
-  sprintf(gridPostfix, "%s%s%s", srcPostfix, obsName, gridCFG);
-  sprintf(gridFileName, "%s/grid/grid%s.txt", resDir, gridPostfix);
 
 
   return;
