@@ -7,8 +7,8 @@ from matplotlib.collections import PolyCollection
 import ergoPlot
 
 #configFile = '../cfg/OU2d.cfg'
-#configFile = '../cfg/Battisti1989.cfg'
-configFile = '../cfg/Suarez1988.cfg'
+configFile = '../cfg/Battisti1989.cfg'
+#configFile = '../cfg/Suarez1988.cfg'
 ergoPlot.readConfig(configFile)
 tau = 0.05
 
@@ -111,15 +111,23 @@ powerSampleSTD = np.loadtxt('%s/power/%sSTD_chunk%d%s.txt' \
 freq = np.loadtxt('%s/power/freq_chunk%d%s.txt' \
                   % (ergoPlot.resDir, ergoPlot.chunkWidth,
                      ergoPlot.srcPostfix))
+
+# Convert to angular frequencies and normalize by covariance
 angFreq = freq * 2*np.pi
+cfg0 = ((f - (f * statDist).sum()) * statDist * (g - (g * statDist).sum())).sum()
+powerSample /= 2 * np.pi * cfg0
+powerSampleSTD /= 2 * np.pi * cfg0
+
+# Get error bars
 powerSampleDown = powerSample - powerSampleSTD / 2
 powerSampleUp = powerSample + powerSampleSTD / 2
 
 # Reconstruct correlation and power spectrum
 # Get normalized weights
-weights = ergoPlot.getSpectralWeights(f, g, eigVec, eigVecAdjoint, statDist, nComponents)
+weights = ergoPlot.getSpectralWeights(f, g, eigVec, eigVecAdjoint, statDist, nComponents,
+                                      skipMean=True)
 (corrRec, compCorrRec) = ergoPlot.spectralRecCorrelation(lags, f, g, eigValGen, weights,
-                                                         statDist, nComponents)
+                                                         statDist, nComponents, skipMean=True)
 (powerRec, compPowerRec) = ergoPlot.spectralRecPower(angFreq, f, g, eigValGen, weights,
                                                      statDist, nComponents)
 
@@ -134,6 +142,7 @@ plt.savefig('%s/spectrum/reconstruction/%sRec_lag%d_nev%d%s.%s'\
 # PLot spectrum, powerSampledogram and spectral reconstruction
 msizeWeight = np.log10(weights.real)
 msizeWeight = (msizeWeight - msizeWeight[~np.isnan(msizeWeight)].min()) * 10
+#msizeWeight = (msizeWeight - msizeWeight[~np.isnan(msizeWeight)].min()) * 3
 msizeWeight[np.isnan(msizeWeight)] = 0.
 ergoPlot.plotEigPowerRec(angFreq, eigValGen, msizeWeight, powerSample, powerSampleSTD,
                          powerRec, xlabel=realLabel, ylabel=imagLabel, zlabel=powerLabel,

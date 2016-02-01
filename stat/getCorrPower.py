@@ -25,7 +25,7 @@ X = X.reshape(np.prod(X.shape) / ergoStat.dim, ergoStat.dim)
 # Read datasets
 observable1 = X[:, ergoStat.component1]
 observable2 = X[:, ergoStat.component2]
-nt = X.shape[0]
+nt = observable1.shape[0]
 ntWindow = int(ergoStat.chunkWidth * sampFreq)
 time = np.arange(0, nt, ergoStat.printStep)
 
@@ -38,18 +38,10 @@ ccf = ergoStat.ccf(observable1, observable2, lagMax=ergoStat.lagMax,
 
 # Get perio averaged over seeds (should add weights based on length)
 print 'Calculating periodogram function...'
-nTapes = int(nt / ntWindow)
-freq = ergoStat.getFreqPow2(ntWindow, sampFreq=sampFreq)
-nfft = freq.shape[0]
-perio = np.zeros((nfft,))
-perioSTD = np.zeros((nfft,))
-                
 (freq, perio, perioSTD) \
     = ergoStat.getPerio(observable1, observable2,
-                        freq=freq, sampFreq=sampFreq,
-                        chunkWidth=ergoStat.chunkWidth)
-perio = perio
-perioSTD = np.sqrt(perioSTD**2)
+                        sampFreq=sampFreq, chunkWidth=ergoStat.chunkWidth,
+                        norm=False)
 
 
 # Save results

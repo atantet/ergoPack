@@ -20,7 +20,7 @@
 /** \brief Get the square root of the elements of a vector. */
 int gsl_vector_sqrt(gsl_vector *v);
 /** \brief Normalize vector by the sum of its elements. */
-void gsl_vector_normalize(gsl_vector *v);
+int gsl_vector_normalize(gsl_vector *v);
 /** \brief Get sum of vector elements. */
 double gsl_vector_get_sum(const gsl_vector *v);
 /** \brief Get product of vector elements. */
@@ -33,6 +33,11 @@ double gsl_vector_get_mean(const gsl_vector *v);
 double gsl_vector_get_var(const gsl_vector *v);
 /** \brief Get the standard deviation over the elements of a vector. */
 double gsl_vector_get_std(const gsl_vector *v);
+/** \brief Get index of maximum of vector among marked elements. */
+size_t gsl_vector_max_index_among(gsl_vector *v, gsl_vector_uint *marker);
+/** \brief Get vector of a given number equally-spaced numbers between two bounds. */
+int gsl_vector_linspace(gsl_vector *v, const double lower, const double upper,
+			const size_t n);
 
 /** \brief Get the sum of the elements of a matrix over each row. */
 gsl_vector *gsl_matrix_get_rowsum(const gsl_matrix *m);
@@ -70,15 +75,16 @@ gsl_vector_sqrt(gsl_vector *v)
  * Normalize vector by the sum of its elements.
  * \param[input] v Vector to normalize.
  */
-void
+int
 gsl_vector_normalize(gsl_vector *v)
 {
+  // Get sum of elements
   double sum = gsl_vector_get_sum(v);
 
-  for (size_t j = 0; j < v->size; j++)
-    v->data[j * v->stride] /= sum;
-  
-  return;
+  // Divide by sum of elements
+  gsl_vector_scale(v, 1. / sum);
+
+  return GSL_SUCCESS;
 }
 
 /**
@@ -183,6 +189,69 @@ gsl_vector_get_std(const gsl_vector *v)
 {
   return sqrt(gsl_vector_get_var(v));
 }
+
+
+/**
+ * Get index of maximum of vector among marked elements.
+ * \param[in] v      Vector for which to find the maximum.
+ * \param[in] marker Boolean vector marking the elements among which
+ *                   to look for the maximum.
+ * \return           Index of the maximum.
+ */
+size_t gsl_vector_max_index_among(const gsl_vector *v, const gsl_vector_uint *marker)
+{
+  size_t max_index;
+  double max;
+  size_t i;
+
+  if (v->size != marker->size)
+    GSL_ERROR("Vector and marker should have the same size.", GSL_EINVAL);
+
+  // Get value of first marked element
+  i = 0;
+  while (!gsl_vector_uint_get(marker, i))
+    i++;
+  max = gsl_vector_get(v, i);
+  max_index = i;
+
+  // Get maximum  
+  for (i = 0; i < v->size; i++)
+    {
+      if (gsl_vector_uint_get(marker, i)
+	  && (max < gsl_vector_get(v, i)))
+	{
+	  max = gsl_vector_get(v, i);
+	  max_index = i;
+	}
+    }
+  
+  return max_index;
+}
+
+/**
+ * Get vector of a given number equally-spaced numbers between two bounds.
+ * \param[out] v     Vector for which to set the elements.
+ * \param[in]  lower Lower bound.
+ * \param[in]  upper Upper bound.
+ */
+int
+gsl_vector_linspace(gsl_vector *v, const double lower, const double upper)
+{
+  size_t i;
+  double delta = (upper - lower) / (v->size - 1);
+  
+  for (i = 0; i < v->size; i++)
+    {
+      gsl_vector_set(v, i, lower + i * delta);
+    }
+  
+  return GSL_SUCCESS;
+}
+
+
+
+
+
 
 
 /** 

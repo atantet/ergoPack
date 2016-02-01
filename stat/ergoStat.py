@@ -104,7 +104,7 @@ def ccovf(ts1, ts2, lagMax=None):
         ccovf[2*lagMax-k] = (ts2[:-(lagMax-k)] * ts1[lagMax-k:]).mean()
     return ccovf
 
-def getPerio(ts1, ts2, freq=None, sampFreq=1., chunkWidth=None):
+def getPerio(ts1, ts2, freq=None, sampFreq=1., chunkWidth=None, norm=False, window=None):
     ''' Get the periodogram of ts using a taping window of length tape window'''
     nt = ts1.shape[0]
 
@@ -113,24 +113,27 @@ def getPerio(ts1, ts2, freq=None, sampFreq=1., chunkWidth=None):
         chunkWidthNum = nt
     else:
         chunkWidthNum = int(chunkWidth * sampFreq)
+    if window is None:
+        window = np.ones(chunkWidthNum)
         
     nTapes = int(nt / chunkWidthNum)
-    window = np.hamming(chunkWidthNum)
 
     # Get frequencies if not given
     if freq is None:
-        freq = getFreqPow2(chunkWidthNum, sampFreq=sampFreq)
-    nfft = freq.shape[0]
+        freq = getFreqPow2(chunkWidth, sampFreq=sampFreq)
+        nfft = freq.shape[0]
+
+    # Remove mean [and normalize]
+    ts1 -= ts1.mean(0)
+    ts2 -= ts2.mean(0)
 
     # Get periodogram averages over nTapes windows
     perio = np.zeros((nfft,))
     perioSTD = np.zeros((nfft,))
     for tape in np.arange(nTapes):
         ts1Tape = ts1[tape*chunkWidthNum:(tape+1)*chunkWidthNum]
-        ts1Tape -= ts1Tape.mean(0)
         ts1Windowed = ts1Tape * window
         ts2Tape = ts2[tape*chunkWidthNum:(tape+1)*chunkWidthNum]
-        ts2Tape -= ts2Tape.mean(0)
         ts2Windowed = ts2Tape * window
         # Fourier transform and shift zero frequency to center
         fts1 = np.fft.fft(ts1Windowed, nfft, 0)
@@ -138,15 +141,21 @@ def getPerio(ts1, ts2, freq=None, sampFreq=1., chunkWidth=None):
         fts2 = np.fft.fft(ts2Windowed, nfft, 0)
         fts2 = np.fft.fftshift(fts2)
         # Get periodogram
-        perio += np.abs(fts1 * fts2) / np.sum(np.abs(fts1 * fts2))
-        perioSTD += (np.abs(fts1 * fts2) / np.sum(np.abs(fts1 * fts2)))**2
+        pt = (fts1 * np.conjugate(fts2)).real / chunkWidthNum / sampFreq
+        perio +=  pt
+        perioSTD += pt**2
     perio /= nTapes
     perioSTD = np.sqrt(perioSTD / nTapes)
 
+    if norm:
+        perio /= np.cov(ts1, ts2)[0, 1]
+        perioSTD /= np.cov(ts1, ts2)[0, 1]
+
     return (freq, perio, perioSTD)
 
-def getFreqPow2(nt, sampFreq=1., center=True):
+def getFreqPow2(L, sampFreq=1., center=True):
     ''' Get frequency vector with maximum span given by the closest power of 2 (fft) of the lenght of the times series nt'''
+    nt = L * sampFreq
     # Get nearest larger power of 2
     if np.log2(nt) != int(np.log2(nt)):
         nfft = 2**(int(np.log2(nt)) + 1)

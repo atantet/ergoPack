@@ -179,20 +179,29 @@ def readSpectrum(nev, EigValFile, EigVecFile, EigValAdjointFile, EigVecAdjointFi
     return (eigVal, eigVec, eigValAdjoint, eigVecAdjoint)
 
 
-def getSpectralWeights(f, g, eigVec, eigVecAdjoint, statDist, nComponents):
+def getSpectralWeights(f, g, eigVec, eigVecAdjoint, statDist, nComponents, skipMean=False):
+    """Calculate the spectral weights as the product of \
+the scalar products of the observables on eigenvectors \
+and adjoint eigenvectors w.r.tw the stationary distribution."""
+    if skipMean:
+        fa = f.copy() - (f * statDist).sum()
+        ga = g.copy() - (g * statDist).sum()
+    else:
+        fa = f
+        ga = f
     weights = np.zeros((nComponents,), dtype=complex)
     for k in np.arange(nComponents):
-        weights[k] = (((f * statDist * np.conjugate(eigVecAdjoint[k])).sum() \
-                     * (eigVec[k] * statDist * np.conjugate(g)).sum()))
+        weights[k] = (((fa * statDist * np.conjugate(eigVecAdjoint[k])).sum() \
+                     * (eigVec[k] * statDist * np.conjugate(ga)).sum()))
 
     # Normalize by correlation
-    std_f = np.sqrt((f**2 * statDist).sum() - (f * statDist).sum()**2)
-    std_g = np.sqrt((g**2 * statDist).sum() - (statDist * g).sum()**2)
-    weights /= std_f * std_g
+    weights /= (fa * statDist * np.conjugate(ga)).sum()
 
     return weights
 
-def spectralRecCorrelation(lags, f, g, eigValGen, weights, statDist, nComponents):
+def spectralRecCorrelation(lags, f, g, eigValGen, weights, statDist, nComponents, skipMean=False):
+    """Calculate the reconstruction of the correlation function \
+from the spectrum of the generator"""
     components = np.zeros((nComponents, lags.shape[0]),
                                dtype=complex)
     for k in np.arange(nComponents):
@@ -200,20 +209,23 @@ def spectralRecCorrelation(lags, f, g, eigValGen, weights, statDist, nComponents
     reconstruction = components.sum(0).real
     
     # Remove mean
-    mean_f = (f * statDist).sum()
-    mean_g = (statDist * np.conjugate(g)).sum()
-    reconstruction -= mean_f * mean_g
-
+    if not skipMean:
+        mean_f = (f * statDist).sum()
+        mean_g = (statDist * np.conjugate(g)).sum()
+        reconstruction -= mean_f * mean_g / (f * statDist * np.conjugate(g)).sum()
+        
     return (reconstruction, components)
 
 def spectralRecPower(angFreq, f, g, eigValGen, weights, statDist, nComponents):
+    """Calculate the reconstruction of the power spectrum \
+from the spectrum of the generator"""
     components = np.zeros((nComponents, angFreq.shape[0]),
                                dtype=complex)
     for k in np.arange(nComponents): 
         if np.abs(eigValGen[k].real) > 1.e-6:
             components[k] = (-eigValGen[k].real) \
                             / ((angFreq + eigValGen[k].imag)**2 + eigValGen[k].real**2) \
-                            * weights[k] * (angFreq[1] - angFreq[0]) / np.pi
+                            * weights[k] / np.pi
         else:
             components[k] = 0.
     reconstruction = components.sum(0).real

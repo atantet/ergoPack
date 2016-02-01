@@ -127,7 +127,7 @@ int main(int argc, char * argv[])
 
 
   // Define grid
-  grid = new Grid(nx, nSTDLow, nSTDHigh, states);
+  grid = new RegularGrid(nx, nSTDLow, nSTDHigh, states);
     
   // Print grid
   grid->printGrid(gridFileName, "%.12lf", true);
