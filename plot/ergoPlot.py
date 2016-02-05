@@ -484,3 +484,18 @@ def plotEigPowerRec(angFreq, eigValGen, weights, powerSample, powerSampleSTD, po
     #ax.w_yaxis.set_pane_color((1.0, 1.0, 1.0, 0.))
     #ax.w_zaxis.set_pane_color((1.0, 1.0, 1.0, 0.))
     #ax.grid(False)
+
+def getEigenCondition(eigVec, eigVecAdjoint, density=None):
+    """ Return a vector containing the condition vector of each pair of eigenvectors."""
+    (nev, N) = eigVec.shape
+    
+    if density is None:
+        density = np.ones((N,), float) / N
+
+    condition = np.empty((nev,))
+    for k in np.arange(nev):
+        condition[k] = (np.sqrt(np.sum(eigVec[k] * density * np.conjugate(eigVec[k]))) \
+                        * np.sqrt(np.sum(eigVecAdjoint[k]* density * np.conjugate(eigVecAdjoint[k]))) \
+                        / np.sum(eigVec[k] * density * np.conjugate(eigVecAdjoint[k]))).real \
+
+    return condition

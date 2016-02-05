@@ -10,7 +10,8 @@ import ergoPlot
 configFile = '../cfg/Battisti1989.cfg'
 #configFile = '../cfg/Suarez1988.cfg'
 ergoPlot.readConfig(configFile)
-tau = 0.05
+etau = 0.05
+#tau = 0.2
 
 nevPlot = 0
 #plotAdjoint = False
@@ -45,6 +46,11 @@ print 'Readig spectrum...'
 (eigVal, eigVec, eigValAdjoint, eigVecAdjoint) \
     = ergoPlot.readSpectrum(ergoPlot.nev, EigValFile, EigVecFile,
                             EigValAdjointFile, EigVecAdjointFile, statDist)
+
+print 'Getting conditionning of eigenvectors...'
+eigenCondition = ergoPlot.getEigenCondition(eigVec, eigVecAdjoint, statDist)
+numpy.set_printoptions(precision=2)
+print "Eigen condition numbers:", eigenCondition
 
 # Get generator eigenvalues
 eigValGen = (np.log(np.abs(eigVal)) + np.angle(eigVal)*1j) / tau
@@ -81,7 +87,6 @@ for k in np.arange(nevPlot):
                       % (ergoPlot.plotDir, ergoPlot.nev, k+1, postfix, ergoPlot.figFormat)
             plt.savefig(dstFile, bbox_inches='tight', dpi=ergoPlot.dpi)
 
-            
 # Define observables
 corrName = 'C%d%d' % (ergoPlot.component1, ergoPlot.component2)
 powerName = 'S%d%d' % (ergoPlot.component1, ergoPlot.component2)
@@ -136,7 +141,7 @@ ergoPlot.plotRecCorrelation(lags, corrSample, corrRec, plotPositive=True,
                             ylabel=corrLabel)
 plt.savefig('%s/spectrum/reconstruction/%sRec_lag%d_nev%d%s.%s'\
             % (ergoPlot.plotDir, corrName, int(ergoPlot.lagMax),
-               ergoPlot.nev, ergoPlot.srcPostfix, ergoPlot.figFormat),
+               ergoPlot.nev, postfix, ergoPlot.figFormat),
             dpi=ergoPlot.dpi, bbox_inches=ergoPlot.bbox_inches)
 
 # PLot spectrum, powerSampledogram and spectral reconstruction
@@ -151,6 +156,6 @@ ergoPlot.plotEigPowerRec(angFreq, eigValGen, msizeWeight, powerSample, powerSamp
                          zlim=[ergoPlot.powerMin, ergoPlot.powerMax])
 plt.savefig('%s/spectrum/reconstruction/%sRec_chunk%d_nev%d%s.%s'\
             % (ergoPlot.plotDir, powerName, int(ergoPlot.chunkWidth),
-               ergoPlot.nev, ergoPlot.srcPostfix, ergoPlot.figFormat),
+               ergoPlot.nev, postfix, ergoPlot.figFormat),
             dpi=ergoPlot.dpi, bbox_inches=ergoPlot.bbox_inches)
 

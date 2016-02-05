@@ -51,22 +51,32 @@ int nev;
 // File names
 char obsName[256], srcPostfix[256];
 char gridPostfix[256], gridCFG[256];
+configAR config;
+char configFileName[256];
 
 
 // Main program
 int main(int argc, char * argv[])
 {
   // Read configuration file
-  try
+  if (argc < 2)
     {
-      readConfig(argv[1]);
+      std::cout << "Enter path to configuration file:" << std::endl;
+      std::cin >> configFileName;
+    }
+  else
+    {
+      strcpy(configFileName, argv[1]);
+    }
+  try
+   {
+     readConfig(configFileName);
     }
   catch (...)
     {
       std::cerr << "Error reading configuration file" << std::endl;
       return(EXIT_FAILURE);
     }
-
   
   // Declarations
   // Transfer
@@ -76,7 +86,6 @@ int main(int argc, char * argv[])
   transferOperator *transferOp;
 
   // Eigen problem
-  int nconv;
   char EigValForwardFileName[256], EigVecForwardFileName[256],
     EigValBackwardFileName[256], EigVecBackwardFileName[256];
   transferSpectrum *transferSpec;
@@ -128,10 +137,15 @@ int main(int argc, char * argv[])
       try
 	{
 	  // Solve eigen value problem with default configuration
-	  std::cout << "Solving eigen problem..." << std::endl;
-	  transferSpec = new transferSpectrum(nev, transferOp);
-	  nconv = transferSpec->getSpectrum();
-	  std::cout << "Found " << nconv << "/" << (nev * 2) << " eigenvalues." << std::endl;
+	  transferSpec = new transferSpectrum(nev, transferOp, config);
+	  std::cout << "Solving eigen problem for forward transition matrix..." << std::endl;
+	  transferSpec->getSpectrumForward();
+	  std::cout << "Found " << transferSpec->EigProbForward.ConvergedEigenvalues()
+		    << "/" << nev << " eigenvalues." << std::endl;
+	  std::cout << "Solving eigen problem for backward transition matrix..." << std::endl;
+	  transferSpec->getSpectrumBackward();
+	  std::cout << "Found " << transferSpec->EigProbBackward.ConvergedEigenvalues()
+		    << "/" << nev << " eigenvalues." << std::endl;
 	}
       catch (std::exception &ex)
 	{
@@ -143,8 +157,8 @@ int main(int argc, char * argv[])
       try
 	{
 	  std::cout << "Write spectrum..." << std::endl;
-	  nconv = transferSpec->writeSpectrum(EigValForwardFileName, EigVecForwardFileName,
-					      EigValBackwardFileName, EigVecBackwardFileName);
+	  transferSpec->writeSpectrum(EigValForwardFileName, EigVecForwardFileName,
+				      EigValBackwardFileName, EigVecBackwardFileName);
 	}
       catch (std::exception &ex)
 	{
@@ -302,9 +316,35 @@ readConfig(const char *cfgFileName)
 
     // Get spectrum setting 
     nev = cfg.lookup("spectrum.nev");
-    std::cout << std::endl << "---spectrum---" << std::endl
-	      << "nev: " << nev << std::endl;
-    
+    std::cout << std::endl << "---spectrum---" << std::endl;
+    // Get eigen problem configuration
+    config = defaultCfgAR;
+    if (cfg.exists("spectrum.which"))
+      {
+	strcpy(config.which, (const char *) cfg.lookup("spectrum.which"));
+      }
+    if (cfg.exists("spectrum.ncv"))
+      {
+	config.ncv = cfg.lookup("spectrum.ncv");
+      }
+    if (cfg.exists("spectrum.tol"))
+      {
+	config.tol = cfg.lookup("spectrum.tol");
+      }
+    if (cfg.exists("spectrum.maxit"))
+	{
+	  config.maxit = cfg.lookup("spectrum.maxit");
+	}
+    if (cfg.exists("spectrum.AutoShift"))
+	{
+	  config.AutoShift = (bool) cfg.lookup("spectrum.AutoShift");
+	}
+    std::cout << "nev: " << nev << std::endl;
+    std::cout << "which: " << config.which << std::endl;
+    std::cout << "ncv: " << config.ncv << std::endl;
+    std::cout << "tol: " << config.tol << std::endl;
+    std::cout << "maxit: " << config.maxit << std::endl;
+    std::cout << "AutoShift: " << config.AutoShift << std::endl;
     std::cout << std::endl;
 
     // Finish configuration

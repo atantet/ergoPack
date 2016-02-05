@@ -57,21 +57,31 @@ gsl_vector *tauRng;
 // File names
 char obsName[256], srcPostfix[256], srcFileName[256];
 char gridPostfix[256], gridCFG[256], gridFileName[256];
+char configFileName[256];
 
 
 // Main program
 int main(int argc, char * argv[])
 {
   // Read configuration file
-  //try
-  //  {
-      readConfig(argv[1]);
-  //   }
-  // catch (...)
-  //   {
-  //     std::cerr << "Error reading configuration file" << std::endl;
-  //     return(EXIT_FAILURE);
-  //   }
+  if (argc < 2)
+    {
+      std::cout << "Enter path to configuration file:" << std::endl;
+      std::cin >> configFileName;
+    }
+  else
+    {
+      strcpy(configFileName, argv[1]);
+    }
+  try
+   {
+     readConfig(configFileName);
+    }
+  catch (...)
+    {
+      std::cerr << "Error reading configuration file" << std::endl;
+      return(EXIT_FAILURE);
+    }
 
   // Observable declarations
   FILE *srcStream;
