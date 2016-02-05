@@ -4,7 +4,7 @@ Main page                    {#mainpage}
 Introduction                  {#introduction}
 ============
 
-ATSuite C++ is a collection of scientific routines in C++
+ergoPack is a collection of scientific routines in C++
 originally developed by Alexis Tantet for _research purpose_.
 These codes are open source in order to promote reproducibility.
 Visit Alexis' [home page][UU] for contact.
@@ -17,15 +17,15 @@ Installation               {#installation}
 Getting the code                {#getting-the-code}
 ----------------
 
-First the ATSuite_cpp repository should be cloned using [git].
+First the ergoPack repository should be cloned using [git].
 To do so:
 1. Change directory to where you want to clone the repository $GITDIR:
 
         cd $GITDIR
      
-2. Clone the ATSuite_cpp repository (git should be installed):
+2. Clone the ergoPack repository (git should be installed):
 
-        git clone https://github.com/atantet/ATSuite_cpp
+        git clone https://github.com/atantet/ergoPack
      
 Dependencies          {#dependencies}
 ------------
@@ -42,32 +42,32 @@ when WITH_OMP is set to 1 when compiling.
 Installing the code                {#installing-the-code}
 -------------------
 
-1. Create a directory ATSuite/ in your favorite include directory $INCLUDE:
+1. Create a directory ergoPack/ in your favorite include directory $INCLUDE:
 
-        mkdir $INCLUDE/ATSuite
+        mkdir $INCLUDE/ergoPack
      
-2. Copy the ATSuite_cpp/*.hpp source files to $INCLUDE/ATSuite/:
+2. Copy the ergoPack/*.hpp source files to $INCLUDE/ergoPack/:
 
-        cd $GITDIR/ATSuite_cpp
-        cp *.hpp $INCLUDE/ATSuite
+        cd $GITDIR/ergoPack
+        cp *.hpp $INCLUDE/ergoPack
      
 3. Include these files in your C++ codes. For example, in order to include the matrix manipulation functions in atmatrix.hpp,
 add in your C++ file:
 
-        #include <ATSuite/atmatrix.hpp>
+        #include <ergoPack/atmatrix.hpp>
     
 
 Updating the code              {#updating-the-code}
 -----------------
 
-1. Pull the ATSuite_cpp repository:
+1. Pull the ergoPack repository:
 
-        cd $GITDIR/ATSuite_cpp     
+        cd $GITDIR/ergoPack     
         git pull
      
 2. Copy the source files to your favorite include directory $INCLUDE:
 
-        cp *.hpp $INCLUDE/ATSuite
+        cp *.hpp $INCLUDE/ergoPack
 
 
 Compiling                   {#compiling}
@@ -104,7 +104,7 @@ _No warranty_ is given regarding their robustess.
 
 [UU]: http://www.uu.nl/staff/AJJTantet/ "Alexis' personal page"
 [git]: https://git-scm.com/ "git"
-[ATSuite_cpp_doc]: http://atantet.github.io/ATSuite_cpp/ "ATSuite C++ documentation"
+[ergoPack_doc]: http://atantet.github.io/ergoPack/ "ergoPack documentation"
 [GSL]: http://www.gnu.org/software/gsl/ "GSL - GNU Scientific Library"
 [Eigen]: http://eigen.tuxfamily.org/ "Eigen"
 [ARPACK++]: http://www.caam.rice.edu/software/ARPACK/arpack++.html "ARPACK++"
