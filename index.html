@@ -40,6 +40,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -95,15 +96,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="textblock"><h1><a class="anchor" id="introduction"></a>
 Introduction                  </h1>
-<p>ATSuite C++ is a collection of scientific routines in C++ originally developed by Alexis Tantet for <em>research purpose</em>. These codes are open source in order to promote reproducibility. Visit Alexis' <a href="http://www.uu.nl/staff/AJJTantet/" title="Alexis&apos; personal page">home page</a> for contact.</p>
+<p>ergoPack is a collection of scientific routines in C++ originally developed by Alexis Tantet for <em>research purpose</em>. These codes are open source in order to promote reproducibility. Visit Alexis' <a href="http://www.uu.nl/staff/AJJTantet/" title="Alexis&apos; personal page">home page</a> for contact.</p>
 <h1><a class="anchor" id="installation"></a>
 Installation               </h1>
 <h2><a class="anchor" id="getting-the-code"></a>
 Getting the code                </h2>
-<p>First the ATSuite_cpp repository should be cloned using <a href="https://git-scm.com/" title="git">git</a>. To do so:</p><ol type="1">
+<p>First the ergoPack repository should be cloned using <a href="https://git-scm.com/" title="git">git</a>. To do so:</p><ol type="1">
 <li>Change directory to where you want to clone the repository $GITDIR: <pre class="fragment"> cd $GITDIR
 </pre></li>
-<li>Clone the ATSuite_cpp repository (git should be installed): <pre class="fragment"> git clone https://github.com/atantet/ATSuite_cpp
+<li>Clone the ergoPack repository (git should be installed): <pre class="fragment"> git clone https://github.com/atantet/ergoPack
 </pre></li>
 </ol>
 <h2><a class="anchor" id="dependencies"></a>
@@ -119,21 +120,21 @@ Dependencies          </h2>
 <h2><a class="anchor" id="installing-the-code"></a>
 Installing the code                </h2>
 <ol type="1">
-<li>Create a directory ATSuite/ in your favorite include directory $INCLUDE: <pre class="fragment"> mkdir $INCLUDE/ATSuite
+<li>Create a directory ergoPack/ in your favorite include directory $INCLUDE: <pre class="fragment"> mkdir $INCLUDE/ergoPack
 </pre></li>
-<li>Copy the ATSuite_cpp/*.hpp source files to $INCLUDE/ATSuite/: <pre class="fragment"> cd $GITDIR/ATSuite_cpp
- cp *.hpp $INCLUDE/ATSuite
+<li>Copy the ergoPack/*.hpp source files to $INCLUDE/ergoPack/: <pre class="fragment"> cd $GITDIR/ergoPack
+ cp *.hpp $INCLUDE/ergoPack
 </pre></li>
-<li>Include these files in your C++ codes. For example, in order to include the matrix manipulation functions in atmatrix.hpp, add in your C++ file: <pre class="fragment">    #include &lt;ATSuite/atmatrix.hpp&gt;
+<li>Include these files in your C++ codes. For example, in order to include the matrix manipulation functions in atmatrix.hpp, add in your C++ file: <pre class="fragment">    #include &lt;ergoPack/atmatrix.hpp&gt;
 </pre></li>
 </ol>
 <h2><a class="anchor" id="updating-the-code"></a>
 Updating the code              </h2>
 <ol type="1">
-<li>Pull the ATSuite_cpp repository: <pre class="fragment"> cd $GITDIR/ATSuite_cpp     
+<li>Pull the ergoPack repository: <pre class="fragment"> cd $GITDIR/ergoPack     
  git pull
 </pre></li>
-<li>Copy the source files to your favorite include directory $INCLUDE: <pre class="fragment"> cp *.hpp $INCLUDE/ATSuite
+<li>Copy the source files to your favorite include directory $INCLUDE: <pre class="fragment"> cp *.hpp $INCLUDE/ergoPack
 </pre></li>
 </ol>
 <h1><a class="anchor" id="compiling"></a>
