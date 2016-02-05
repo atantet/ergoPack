@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['main',['main',['../spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'spectrum.cpp']]]
+  ['additivewiener',['additiveWiener',['../classadditive_wiener.html#a19f092e229d9109b9128e71422387b44',1,'additiveWiener::additiveWiener(const size_t dim_)'],['../classadditive_wiener.html#a02825999bf57147524a854115566c2a3',1,'additiveWiener::additiveWiener(const gsl_matrix *Q_, gsl_rng *rng_)']]]
 ];

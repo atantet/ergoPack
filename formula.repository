@@ -1,0 +1,11 @@
+\form#0:$ F(x) = A x $
+\form#1:$ F(x) = \sum_{k = 0}^{degree} coeff_k x^k $
+\form#2:$ F(x) = h + r x - x^3 $
+\form#3:$ F_1(x) = \sigma (x_2 - x_1) $
+\form#4:$ F_2(x) = x_1 (\rho - x_3) - x_2 $
+\form#5:$ F_3(x) = x_1 x_2 - \beta x_3 $
+\form#6:$ A $
+\form#7:$ \rho $
+\form#8:$ \sigma $
+\form#9:$ \beta $
+\form#10:$(M - \sigma)^{-1}$
