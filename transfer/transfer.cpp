@@ -39,28 +39,49 @@ using namespace libconfig;
 void readConfig(const char *cfgFileName);
 
 // Configuration 
-char caseName[256], file_format[256], resDir[256];
-int dim;
-char delayName[256];
-double LCut, L, dt, spinup;
-size_t nt0, nt;
-double printStep;
-size_t printStepNum;
-int dimObs;
-size_t embedMax;
-gsl_vector_uint *components;
-gsl_vector_uint *embedding;
-gsl_vector_uint *nx;
-gsl_vector *nSTDLow, *nSTDHigh;
-size_t nLags;
-gsl_vector *tauRng;
-// File names
-char obsName[256], srcPostfix[256], srcFileName[256];
-char gridPostfix[256], gridCFG[256], gridFileName[256];
-char configFileName[256];
+char resDir[256];               //!< Root directory in which results are written
+char caseName[256];             //!< Name of the case to simulate 
+char file_format[256];          //!< File format of output ("txt" or "bin")
+int dim;                        //!< Dimension of the phase space
+char delayName[256];            //!< Name associated with the number and values of the delays
+double LCut;                    //!< Length of the time series without spinup
+double spinup;                  //!< Length of initial spinup period to remove
+double L;                       //!< Total length of integration
+double dt;                      //!< Time step of integration
+double printStep;               //!< Time step of output
+size_t printStepNum;            //!< Time step of output in number of time steps of integration
+size_t nt0;                     //!< Number of time steps of the source time series
+size_t nt;                      //!< Number of time steps of the observable
+int dimObs;                     //!< Dimension of the observable
+size_t embedMax;                //!< Maximum lag for the embedding
+gsl_vector_uint *components;    //!< Components in the time series used by the observable
+gsl_vector_uint *embedding;     //!< Embedding lags for each component
+gsl_vector_uint *nx;            //!< Number of grid boxes per dimension
+gsl_vector *nSTDLow;            //!< Number of standard deviations below mean to span by the grid 
+gsl_vector *nSTDHigh;           //!< Number of standard deviations above mean to span by the grid 
+size_t nLags;                   //!< Number of transition lags for which to calculate the spectrum
+gsl_vector *tauRng;             //!< Lags for which to calculate the spectrum
+char srcPostfix[256];           //!< Postfix of simulation file.
+char srcFileName[256];          //!< Name of the source simulation file
+char obsName[256];              //!< Name associated with the observable
+char gridPostfix[256];          //!< Postfix associated with the grid
+char gridFileName[256];         //!< File name for the grid file
+configAR config;                //!< Configuration data for the eigen problem
+char configFileName[256];       //!< Name of the configuration file
 
 
-// Main program
+
+/** \brief Calculate transfer operators from time series.
+ *
+ *  After parsing the configuration file,
+ *  the time series is read and an observable is designed
+ *  selecting components with a given embedding lag.
+ *  A membership vector is then built from the observable,
+ *  attaching the box they belong to to every realization.
+ *  The membership vector is then converted to a membership
+ *  matrix for different lags and the transfer operators 
+ *  built. The results are then written to file.
+ */
 int main(int argc, char * argv[])
 {
   // Read configuration file
@@ -213,7 +234,11 @@ int main(int argc, char * argv[])
   return 0;
 }
 
-// Definitions
+
+/**
+ * Sparse configuration file using libconfig++
+ * to define all parameters of the case.
+ */
 void
 readConfig(const char *cfgFileName)
 {
@@ -367,15 +392,16 @@ readConfig(const char *cfgFileName)
     sprintf(srcFileName, "%s/simulation/sim%s.%s", resDir, srcPostfix, file_format);
 
     // Define grid name
-    sprintf(gridCFG, "");
+    sprintf(gridPostfix, "");
     for (size_t d = 0; d < (size_t) dimObs; d++) {
-      strcpy(cpyBuffer, gridCFG);
-      sprintf(gridCFG, "%s_n%dl%dh%d", cpyBuffer,
+      strcpy(cpyBuffer, gridPostfix);
+      sprintf(gridPostfix, "%s_n%dl%dh%d", cpyBuffer,
 	      gsl_vector_uint_get(nx, d),
 	      (int) gsl_vector_get(nSTDLow, d),
 	      (int) gsl_vector_get(nSTDHigh, d));
     }
-    sprintf(gridPostfix, "%s%s%s", srcPostfix, obsName, gridCFG);
+    strcpy(cpyBuffer, gridPostfix);
+    sprintf(gridPostfix, "%s%s%s", srcPostfix, obsName, cpyBuffer);
     sprintf(gridFileName, "%s/grid/grid%s.txt", resDir, gridPostfix);
   }
   catch(const SettingNotFoundException &nfex) {

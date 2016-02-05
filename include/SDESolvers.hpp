@@ -265,9 +265,9 @@ multiplicativeLinearWiener::evalField(gsl_vector *state, gsl_vector *field)
 /**
  * Integrate stochastically one step forward for a given vector field
  * and state using the Euler Maruyama scheme.
- * \param[in]     field Vector field to evaluate.
- * \param[in]     stocField stochastic vector field to evaluate.
- * \param[in/out] Current state to update by one time step.
+ * \param[in]     field        Vector field to evaluate.
+ * \param[in]     stocField    Stochastic vector field to evaluate.
+ * \param[in,out] currentState Current state to update by one time step.
  */
 void
 EulerMaruyama::stepForward(vectorField *field, vectorFieldStochastic *stocField,
@@ -308,7 +308,7 @@ modelStochastic::stepForward()
 /**
  * Integrate the stochastic model forward for a given period.
  * \param[in]  length   Duration of the integration.
- * \param[in]  Spinup   Initial integration period to remove.
+ * \param[in]  spinup   Initial integration period to remove.
  * \param[in]  sampling Time step at which to save states.
  * \return              Matrix to record the states.
  */

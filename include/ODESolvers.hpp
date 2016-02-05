@@ -407,8 +407,8 @@ Lorenz63::evalField(gsl_vector *state, gsl_vector *field)
 /**
  * Integrate one step forward for a given vector field and state
  * using the Euler scheme.
- * \param[in]     field Vector field to evaluate.
- * \param[in/out] Current state to update by one time step.
+ * \param[in]     field        Vector field to evaluate.
+ * \param[in,out] currentState Current state to update by one time step.
  */
 void
 Euler::stepForward(vectorField *field, gsl_vector *currentState)
@@ -431,8 +431,8 @@ Euler::stepForward(vectorField *field, gsl_vector *currentState)
 /**
  * Integrate one step forward for a given vector field and state
  * using the Runge-Kutta 4 scheme.
- * \param[in]     field Vector field to evaluate.
- * \param[in/out] Current state to update by one time step.
+ * \param[in]     field        Vector field to evaluate.
+ * \param[in,out] currentState Current state to update by one time step.
  */
 void
 RungeKutta4::stepForward(vectorField *field, gsl_vector *currentState)
@@ -510,7 +510,7 @@ model::stepForward()
 /**
  * Integrate the model forward for a given period.
  * \param[in]  length   Duration of the integration.
- * \param[in]  Spinup   Initial integration period to remove.
+ * \param[in]  spinup   Initial integration period to remove.
  * \param[in]  sampling Time step at which to save states.
  * \return              Matrix to record the states.
  */

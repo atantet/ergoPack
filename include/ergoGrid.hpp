@@ -216,12 +216,12 @@ void getDensityMLE(const gsl_vector_uint *gridMemVect, const Grid *grid,
 
 /**
  * Construct a uniform rectangular grid with same dimensions adapted to the time series.
- * \param[in] nx_        Number of boxes for each dimension.
+ * \param[in] inx        Number of boxes for each dimension.
  * \param[in] nSTDLow    Number of standard deviations
  *                       to span away from the mean state from below.
  * \param[in] nSTDHigh   Number of standard deviations
  *                       to span away from the mean state from above.
- * \param[in]state       Time series.
+ * \param[in] states     Time series.
  */
 RegularGrid::RegularGrid(const size_t inx, const double nSTDLow, const double nSTDHigh,
 			 const gsl_matrix *states)
@@ -297,7 +297,7 @@ RegularGrid::RegularGrid(const size_t dim_, const size_t inx,
  *                       to span away from the mean state from below.
  * \param[in] nSTDHigh   Vector giving the number of standard deviations
  *                       to span away from the mean state from above.
- * \param[in]state       Time series.
+ * \param[in] states     Time series.
  */
 RegularGrid::RegularGrid(const gsl_vector_uint *nx_,
 		   const gsl_vector *nSTDLow, const gsl_vector *nSTDHigh,
@@ -313,9 +313,10 @@ RegularGrid::RegularGrid(const gsl_vector_uint *nx_,
 
 /**
  * Construct a polar grid adapted to the time series (yet, only for 2D).
- * \param[in]     nx_    Vector giving the number of levels + 1 and number of sectors.  
- * \param[in]     rGrid  Rectangular grid used to calculate the density.
- * \param[in]     states Trajectory to which to adapt the grid.
+ * \param[in]     nLevels_  Number of levels for the grid
+ * \param[in]     nSectors_ Number of sectors for the grid
+ * \param[in]     support   Rectangular grid used to calculate the density.
+ * \param[in]     states    Trajectory to which to adapt the grid.
  */
 PolarGrid::PolarGrid(const size_t nLevels_, const size_t nSectors_,
 		     const Grid *support, const gsl_matrix *states)
@@ -497,7 +498,6 @@ RegularGrid::printGrid(const char *path, const char *dataFormat="%lf",
 /**
  * Get membership to a grid box of a single realization.
  * \param[in] state          Vector of a single state.
- * \param[in] grid           Pointer to Grid object.
  * \return                   Box index to which the state belongs.
  */
 size_t

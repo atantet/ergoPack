@@ -21,24 +21,40 @@ using namespace libconfig;
  *  Simulate an multi-dimensional Ornstein-Uhlenbeck process.
  */
 
-// Declarations
+
+/*
+ * Declarations
+ */
+
 /** \brief User defined function to get parameters from a cfg file using libconfig. */
 void readConfig(const char *cfgFileName);
 
 // Configuration
-char caseName[256], file_format[256], resDir[256];
-int dim;
-gsl_matrix *A;
-gsl_matrix *Q;
-gsl_vector *initState;
-double LCut, dt, spinup;
-double printStep;
-size_t printStepNum;
-double L;
-char postfix[256], dstFileName[256];
+char caseName[256];       //!< Name of the case to simulate 
+char file_format[256];    //!< File format of output ("txt" or "bin")
+char resDir[256];         //!< Root directory in which results are written
+int dim;                  //!< Dimension of the phase space
+gsl_matrix *A;            //!< Matrix of the linear drift
+gsl_matrix *Q;            //!< Diffusion matrix
+gsl_vector *initState;    //!< Initial state
+double LCut;              //!< Length of the time series without spinup
+double spinup;            //!< Length of initial spinup period to remove
+double L;                 //!< Total length of integration
+double dt;                //!< Time step of integration
+double printStep;         //!< Time step of output
+size_t printStepNum;      //!< Time step of output in number of time steps of integration
+char postfix[256];        //!< Postfix of destination files
+char dstFileName[256];    //!< Destination file name
 
 
-// Main program
+/** \brief Simulation of an Ornstein-Uhlenbeck process.
+ *
+ *  Simulation of an Ornstein-Uhlenbeck process.
+ *  After parsing the configuration file,
+ *  a linear vector field for the drift, a diffusion matrix
+ *  and an Euler-Maruyama stochastic numerical scheme are defined.
+ *  The model is then integrated forward and the results saved.
+ */
 int main(int argc, char * argv[])
 {
   FILE *dstStream;
@@ -109,7 +125,10 @@ int main(int argc, char * argv[])
 }
 
 
-// Definitions
+/**
+ * Sparse configuration file using libconfig++
+ * to define all parameters of the case.
+ */
 void
 readConfig(const char *cfgFileName)
 {

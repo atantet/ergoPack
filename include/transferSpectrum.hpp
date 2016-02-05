@@ -33,7 +33,8 @@ typedef struct {
   double tol;        //!< The relative accuracy to which eigenvalues are to be determined
   int maxit;         //!< The maximum number of iterations allowed
   double *resid;     //!< A starting vector for the Arnoldi process
-  bool AutoShift;
+  bool AutoShift;    /**< Use ARPACK++ generated exact shifts for the implicit restarting
+		      *   of the Arnoldi or one supplied by user */
 } configAR;
 /** Declare default structure looking for largest magnitude eigenvalues */
 configAR defaultCfgAR = {"LM", 0, 0., 0, NULL, true};
@@ -106,6 +107,7 @@ public:
   /** \brief Constructor allocating for nev_ eigenvalues and vectors. */
   transferSpectrum(const int nev_, const transferOperator *transferOp_,
 		   const configAR cfgAR);
+  
   /** \brief Destructor desallocating. */
   ~transferSpectrum();
 
@@ -156,6 +158,7 @@ void writeSpectrumAR(FILE *fEigVal, FILE *fEigVec,
  * for a given transferOperator.
  * \param[in] nev_        Number of eigenvalues and eigenvectors for which to allocate.
  * \param[in] transferOp_ Pointer to the transferOperator on which to solve the eigen problem.
+ * \param[in] cfgAR       Configuration data used by ARPACK++ for the eigen problem.
  */
 transferSpectrum::transferSpectrum(const int nev_, const transferOperator *transferOp_,
 				   const configAR cfgAR=defaultCfgAR)
@@ -444,7 +447,7 @@ gsl_spmatrix2ARShift::MultMv(double *v, double *w)
 /**
  *
  * Get spectrum of a nonsymmetric matrix using ARPACK++.
- * \param[in/out] EigProb    Eigen problem to use.
+ * \param[in,out] EigProb    Eigen problem to use.
  * \param[in]     nev        Number of eigenvalues and eigenvectors to find.
  * \param[in]     gsl2AR     Object interfacing the GSL sparse matrix to ARPACK++.
  * \param[in]     cfgAR      Configuration options passed as a configAR object.

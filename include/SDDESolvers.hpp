@@ -9,7 +9,7 @@
 #include <ergoPack/SDESolvers.hpp>
 
 
-/** \file SSDESolvers.hpp
+/** \file SDDESolvers.hpp
  *  \brief Solve stocahstic delay differential equations.
  *   
  *  Library to solve stochastic delay differential equations.
@@ -33,12 +33,12 @@
 class vectorFieldDelay {
   
 protected:
-  const size_t dim;              //!< Phase space dimension
-  const size_t nDelays;          //!< Number of delayed fields
-  const size_t delayMax;         //!< Maximum delay in time steps
-  gsl_vector_uint *delays;       //!< Delays
+  const size_t dim;                   //!< Phase space dimension
+  const size_t nDelays;               //!< Number of delayed fields
+  const size_t delayMax;              //!< Maximum delay in time steps
+  gsl_vector_uint *delays;            //!< Delays
   std::vector<vectorField *> *fields; //!< Vector of delayed vector fields
-  gsl_vector *work;              //!< Workspace used to evaluate the delayed field
+  gsl_vector *work;                   //!< Workspace used to evaluate the delayed field
 
 public:
   /** \brief Constructor setting the dimension and allocating. */
@@ -289,7 +289,7 @@ vectorFieldDelay::evalField(gsl_matrix *state, gsl_vector *field)
 
 /**
  * Update past states of historic by one time step.
- * \param[in/out] currentState Historic to update.
+ * \param[in,out] currentState Historic to update.
  */
 void numericalSchemeSDDE::updateHistoric(gsl_matrix *currentState)
 {
@@ -310,9 +310,9 @@ void numericalSchemeSDDE::updateHistoric(gsl_matrix *currentState)
 /**
  * Integrate SDDE  one step forward for a given vector field
  * and state using the Euler Maruyama scheme.
- * \param[in]     field        Delayed vector fields to evaluate.
+ * \param[in]     delayedField Delayed vector fields to evaluate.
  * \param[in]     stocField    stochastic vector field to evaluate.
- * \param[in/out] currentState Current state to update by one time step.
+ * \param[in,out] currentState Current state to update by one time step.
  */
 void
 EulerMaruyamaSDDE::stepForward(vectorFieldDelay *delayedField,
@@ -370,7 +370,7 @@ modelSDDE::stepForward()
 /**
  * Integrate the SDDE model forward for a given period.
  * \param[in]  length   Duration of the integration.
- * \param[in]  Spinup   Initial integration period to remove.
+ * \param[in]  spinup   Initial integration period to remove.
  * \param[in]  sampling Time step at which to save states.
  * \return              Matrix to record the states.
  */

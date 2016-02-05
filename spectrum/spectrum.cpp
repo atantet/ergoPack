@@ -20,42 +20,48 @@ using namespace libconfig;
  *  \brief Get spectrum of transfer operators.
  *   
  * Get spectrum of transfer operators.
- * The configuration file given as first command-line argument
- * is parsed using libconfig C++ library.
- * The transition matrices are then read from matrix files in coordinate format.
- * The Eigen problem is then defined and solved using ARPACK++.
- * Finally, the results are written to file.
  */
 
 
 // Declarations
-/** \brief User defined function to get parameters from a cfg file using libconfig. */
+/** \brief Sparse configuration file using libconfig++. */
 void readConfig(const char *cfgFileName);
 
 // Configuration 
-char resDir[256];
-char caseName[256];
-char delayName[256];
-double LCut, L, dt, spinup;
-double printStep;
-size_t printStepNum;
-int dimObs;
-gsl_vector_uint *components;
-gsl_vector_uint *embedding;
-size_t N;
-gsl_vector_uint *nx;
-gsl_vector *nSTDLow, *nSTDHigh;
-size_t nLags;
-gsl_vector *tauRng;
-int nev;
-// File names
-char obsName[256], srcPostfix[256];
-char gridPostfix[256], gridCFG[256];
-configAR config;
-char configFileName[256];
+char resDir[256];               //!< Root directory in which results are written
+char caseName[256];             //!< Name of the case to simulate 
+char delayName[256];            //!< Name associated with the number and values of the delays
+double LCut;                    //!< Length of the time series without spinup
+double spinup;                  //!< Length of initial spinup period to remove
+double L;                       //!< Total length of integration
+double dt;                      //!< Time step of integration
+double printStep;               //!< Time step of output
+size_t printStepNum;            //!< Time step of output in number of time steps of integration
+char srcPostfix[256];           //!< Postfix of simulation file.
+char dstFileName[256];          //!< Destination file name
+int dimObs;                     //!< Dimension of the observable
+gsl_vector_uint *components;    //!< Components in the time series used by the observable
+gsl_vector_uint *embedding;     //!< Embedding lags for each component
+size_t N;                       //!< Dimension of the grid
+gsl_vector_uint *nx;            //!< Number of grid boxes per dimension
+gsl_vector *nSTDLow;            //!< Number of standard deviations below mean to span by the grid 
+gsl_vector *nSTDHigh;           //!< Number of standard deviations above mean to span by the grid 
+size_t nLags;                   //!< Number of transition lags for which to calculate the spectrum
+gsl_vector *tauRng;             //!< Lags for which to calculate the spectrum
+int nev;                        //!< Number of eigenvectors to calculate
+char obsName[256];              //!< Name associated with the observable
+char gridPostfix[256];          //!< Postfix associated with the grid
+configAR config;                //!< Configuration data for the eigen problem
+char configFileName[256];       //!< Name of the configuration file
 
 
-// Main program
+/** \brief Calculate the spectrum of a transfer operator.
+ * 
+ * After parsing the configuration file,
+ * the transition matrices are then read from matrix files in coordinate format.
+ * The Eigen problem is then defined and solved using ARPACK++.
+ * Finally, the results are written to file.
+ */
 int main(int argc, char * argv[])
 {
   // Read configuration file
@@ -116,7 +122,7 @@ int main(int argc, char * argv[])
 	      resDir, nev, postfix);
 
       
-      /** Read transfer operator */
+      // Read transfer operator
       std::cout << "Reading transfer operator..." << std::endl;
       try
 	{
@@ -133,7 +139,7 @@ int main(int argc, char * argv[])
 	}
 
       
-      /** Get spectrum */
+      // Get spectrum
       try
 	{
 	  // Solve eigen value problem with default configuration
@@ -153,7 +159,7 @@ int main(int argc, char * argv[])
 	  return EXIT_FAILURE;
 	}
   
-      /** Write spectrum */
+      // Write spectrum 
       try
 	{
 	  std::cout << "Write spectrum..." << std::endl;
@@ -183,7 +189,10 @@ int main(int argc, char * argv[])
 }
 
 
-// Definitions
+/**
+ * Sparse configuration file using libconfig++
+ * to define all parameters of the case.
+ */
 void
 readConfig(const char *cfgFileName)
 {
@@ -358,15 +367,16 @@ readConfig(const char *cfgFileName)
 	    (int) printStepNum);
 
     // Define grid name
-    sprintf(gridCFG, "");
+    sprintf(gridPostfix, "");
     for (size_t d = 0; d < (size_t) dimObs; d++) {
-      strcpy(cpyBuffer, gridCFG);
-      sprintf(gridCFG, "%s_n%dl%dh%d", cpyBuffer,
+      strcpy(cpyBuffer, gridPostfix);
+      sprintf(gridPostfix, "%s_n%dl%dh%d", cpyBuffer,
 	      gsl_vector_uint_get(nx, d),
 	      (int) gsl_vector_get(nSTDLow, d),
 	      (int) gsl_vector_get(nSTDHigh, d));
     }
-    sprintf(gridPostfix, "%s%s%s", srcPostfix, obsName, gridCFG);
+    strcpy(cpyBuffer, gridPostfix);    
+    sprintf(gridPostfix, "%s%s%s", srcPostfix, obsName, cpyBuffer);
 
 
   }

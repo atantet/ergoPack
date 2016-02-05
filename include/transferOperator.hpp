@@ -653,11 +653,11 @@ getTransitionCountTriplet(const gsl_matrix_uint *gridMem, size_t N)
  * Set weak states to 0 from a stochastic matrix and its distributions
  * based on initial and final probability of each Markov state.
  * Attention: elements are not actually removed from sparse matrix.
- * \param[inout] T    Compressed transition matrix to filter.
- * \param[in] rowCut  The probability distribution associated with each row.
- * \param[in] colCut  The probability distribution associated with each column.
- * \param[in] tol     Probability under which Markov states are removed.
- * \param[in] norm    Choice of normalization,
+ * \param[in,out] M       Compressed transition matrix to filter.
+ * \param[in]     rowCut  The probability distribution associated with each row.
+ * \param[in]     colCut  The probability distribution associated with each column.
+ * \param[in]     tol     Probability under which Markov states are removed.
+ * \param[in]     norm    Choice of normalization,
  * - norm = 0: normalize over all elements,
  * - norm = 1: to right stochastic,
  * - norm = 2: to left stochastic,

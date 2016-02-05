@@ -57,7 +57,7 @@ gsl_vector *gsl_matrix_get_std(const gsl_matrix *m, const size_t axis);
 
 /** 
  * Get the square root of the elements of a vector.
- * \param[in/out] v Vector for which to calculate the square root.
+ * \param[in,out] v Vector for which to calculate the square root.
  * \return          Exit status.
  */
 int
@@ -73,7 +73,7 @@ gsl_vector_sqrt(gsl_vector *v)
 
 /**
  * Normalize vector by the sum of its elements.
- * \param[input] v Vector to normalize.
+ * \param[in] v Vector to normalize.
  */
 int
 gsl_vector_normalize(gsl_vector *v)
@@ -89,7 +89,7 @@ gsl_vector_normalize(gsl_vector *v)
 
 /**
  * Get sum of vector elements.
- * \param[input] v Vector from which to sum the elements.
+ * \param[in] v Vector from which to sum the elements.
  * \return         Sum of vector elements.
  */
 double
@@ -106,7 +106,7 @@ gsl_vector_get_sum(const gsl_vector *v)
 
 /**
  * Get product of vector elements.
- * \param[input] v Vector from which to multiply the elements.
+ * \param[in] v Vector from which to multiply the elements.
  * \return         Product of vector elements.
  */
 double
@@ -123,7 +123,7 @@ gsl_vector_get_prod(const gsl_vector *v)
 
 /**
  * Get product of vector elements.
- * \param[input] v Vector from which to multiply the elements.
+ * \param[in] v Vector from which to multiply the elements.
  * \return         Product of vector elements.
  */
 double
