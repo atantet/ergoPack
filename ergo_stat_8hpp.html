@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.12"/>
-<title>ergoPack: include/SDESolvers.hpp File Reference</title>
+<title>ergoPack: include/ergoStat.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -88,47 +88,87 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">SDESolvers.hpp File Reference</div>  </div>
+<div class="title">ergoStat.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Solve Stocahstic Differential Equations.  
+<p>Various statistical routines.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;gsl/gsl_vector.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_matrix.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_blas.h&gt;</code><br />
-<code>#include &lt;ergoPack/ODESolvers.hpp&gt;</code><br />
+<code>#include &lt;gsl/gsl_eigen.h&gt;</code><br />
 </div>
-<p><a href="_s_d_e_solvers_8hpp_source.html">Go to the source code of this file.</a></p>
+<p><a href="ergo_stat_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field_stochastic.html">vectorFieldStochastic</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract stochastic vector field class.  <a href="classvector_field_stochastic.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadditive_wiener.html">additiveWiener</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additive Wiener process.  <a href="classadditive_wiener.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmultiplicative_linear_wiener.html">multiplicativeLinearWiener</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear multiplicative Wiener process.  <a href="classmultiplicative_linear_wiener.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnumerical_scheme_stochastic.html">numericalSchemeStochastic</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract stochastic numerical scheme class.  <a href="classnumerical_scheme_stochastic.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_euler_maruyama.html">EulerMaruyama</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Euler-Maruyama stochastic numerical scheme. Euler-Maruyama stochastic numerical scheme.  <a href="class_euler_maruyama.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_stochastic.html">modelStochastic</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Numerical stochastic model class.  <a href="classmodel_stochastic.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a05a4eff778c943bec3f710b23b36f642"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ergo_stat_8hpp.html#a05a4eff778c943bec3f710b23b36f642">getEOF</a> (const gsl_matrix *data, gsl_vector *w, gsl_matrix *E, gsl_matrix *<a class="el" href="sim_o_u_8cpp.html#a507bede4b0c41eb052cfe335cf8d4dba">A</a>)</td></tr>
+<tr class="memdesc:a05a4eff778c943bec3f710b23b36f642"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt;  <a href="#a05a4eff778c943bec3f710b23b36f642">More...</a><br /></td></tr>
+<tr class="separator:a05a4eff778c943bec3f710b23b36f642"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Solve Stochastic Differential Equations. The library uses polymorphism to design a stochastic model <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a> from building blocks. These building blocks are the vector field bectorField, the stochastic vector field stochasticVectorField and the stochastic numerical scheme stochasticNumericalScheme. </p>
+<div class="textblock"><p>Various statistical routines used in ergoPack. </p>
 
-<p>Definition in file <a class="el" href="_s_d_e_solvers_8hpp_source.html">SDESolvers.hpp</a>.</p>
-</div></div><!-- contents -->
+<p>Definition in file <a class="el" href="ergo_stat_8hpp_source.html">ergoStat.hpp</a>.</p>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a05a4eff778c943bec3f710b23b36f642"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void getEOF </td>
+          <td>(</td>
+          <td class="paramtype">const gsl_matrix *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gsl_vector *&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gsl_matrix *&#160;</td>
+          <td class="paramname"><em>E</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gsl_matrix *&#160;</td>
+          <td class="paramname"><em>A</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>EOF analysis (or PCA) of a multivariate time series.</p>
+<p>Empirical Orthogonal Functions analysis (or Principal Component Analysis) of a multivariate time series. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>Multivariate time series on which to perform the analysis. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">w</td><td>Eigenvalues of the covariance matrix giving the explained variance. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">E</td><td>Matrix with an Empirical Orthogonal Function for each column. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">A</td><td>Matrix with a principal component for each column. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="ergo_stat_8hpp_source.html#l00038">38</a> of file <a class="el" href="ergo_stat_8hpp_source.html">ergoStat.hpp</a>.</p>
+
+<p>References <a class="el" href="gsl__extension_8h.html#af732cbdb62af230ba5297994c9e4cdc2">gsl_matrix_get_mean()</a>, <a class="el" href="spectrum_8cpp.html#aa6d2142329b3b553ce8a778f8239db33">N</a>, and <a class="el" href="transfer_8cpp.html#a52d59418c1fd6f77402b8db150d7767a">nt</a>.</p>
+
+<p>Referenced by <a class="el" href="class_polar_grid.html#ab6f38c41aef2df4a5f7c4c07fbaa8093">PolarGrid::~PolarGrid()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

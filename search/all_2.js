@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['casename',['caseName',['../sim_o_u_8cpp.html#abcb17cfffce5ecde9b06e71e77d227a3',1,'caseName():&#160;simOU.cpp'],['../transfer_8cpp.html#abcb17cfffce5ecde9b06e71e77d227a3',1,'caseName():&#160;transfer.cpp'],['../spectrum_8cpp.html#abcb17cfffce5ecde9b06e71e77d227a3',1,'caseName():&#160;spectrum.cpp']]],
+  ['casename',['caseName',['../sim_o_u_8cpp.html#abcb17cfffce5ecde9b06e71e77d227a3',1,'caseName():&#160;simOU.cpp'],['../sim_s_d_d_e_8cpp.html#abcb17cfffce5ecde9b06e71e77d227a3',1,'caseName():&#160;simSDDE.cpp'],['../transfer_8cpp.html#abcb17cfffce5ecde9b06e71e77d227a3',1,'caseName():&#160;transfer.cpp'],['../spectrum_8cpp.html#abcb17cfffce5ecde9b06e71e77d227a3',1,'caseName():&#160;spectrum.cpp']]],
   ['components',['components',['../transfer_8cpp.html#aecad9ca0f37bee172f18c2d6ec53cb9c',1,'components():&#160;transfer.cpp'],['../spectrum_8cpp.html#aecad9ca0f37bee172f18c2d6ec53cb9c',1,'components():&#160;spectrum.cpp']]],
   ['config',['config',['../transfer_8cpp.html#a3be8d930694ec109c799534056975d56',1,'config():&#160;transfer.cpp'],['../spectrum_8cpp.html#a3be8d930694ec109c799534056975d56',1,'config():&#160;spectrum.cpp']]],
   ['configar',['configAR',['../structconfig_a_r.html',1,'']]],

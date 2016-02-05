@@ -11,6 +11,7 @@ var searchData=
   ['embedding',['embedding',['../transfer_8cpp.html#a9ead67f01769704e369385aa9c86bf89',1,'embedding():&#160;transfer.cpp'],['../spectrum_8cpp.html#a9ead67f01769704e369385aa9c86bf89',1,'embedding():&#160;spectrum.cpp']]],
   ['embedmax',['embedMax',['../transfer_8cpp.html#a57a652dd57700e48f86e531afbcb3020',1,'transfer.cpp']]],
   ['ergogrid_2ehpp',['ergoGrid.hpp',['../ergo_grid_8hpp.html',1,'']]],
+  ['ergostat_2ehpp',['ergoStat.hpp',['../ergo_stat_8hpp.html',1,'']]],
   ['euler',['Euler',['../class_euler.html',1,'Euler'],['../class_euler.html#abfff40a5289c2e9ca64282c2c196e6a4',1,'Euler::Euler()']]],
   ['eulermaruyama',['EulerMaruyama',['../class_euler_maruyama.html',1,'EulerMaruyama'],['../class_euler_maruyama.html#acdf03fcef98ba7cf71c549394eda70a2',1,'EulerMaruyama::EulerMaruyama()']]],
   ['eulermaruyamasdde',['EulerMaruyamaSDDE',['../class_euler_maruyama_s_d_d_e.html',1,'EulerMaruyamaSDDE'],['../class_euler_maruyama_s_d_d_e.html#a64b504d09ac452fe0f47691f45e89ae4',1,'EulerMaruyamaSDDE::EulerMaruyamaSDDE()']]],
