@@ -1,21 +1,7 @@
-Main page                    {#mainpage}
-=========
+/** \page install Installation
 
-Introduction                  {#introduction}
-============
 
-ergoPack is a collection of scientific routines in C++
-originally developed by Alexis Tantet for _research purpose_.
-These codes are open source in order to promote reproducibility.
-Visit Alexis' [home page][UU] for contact.
-
-[TOC]
-
-Installation               {#installation}
-============
-
-Getting the code                {#getting-the-code}
-----------------
+\section getting-the-code Getting the code                
 
 First the ergoPack repository should be cloned using [git].
 To do so:
@@ -26,21 +12,23 @@ To do so:
 2. Clone the ergoPack repository (git should be installed):
 
         git clone https://github.com/atantet/ergoPack
-     
-Dependencies          {#dependencies}
-------------
+
+
+\section dependencies Dependencies          
 
 Mandatory libraries:
 - [GSL] is used as the main C scientific library.
-- [Eigen] is a C++ template library for linear algebra, mainly used for sparse matrices manipulation.
+An updated version is used which includes an extension of the sparse module
+not (yet) implemented in the official distribution (see \ref installing-the-code).
 
 Specific libraries:
-- [ARPACK++] is an object-oriented version of the ARPACK package used to calculate the spectrum of sparse matrices in atspectrum.hpp.
+- [ARPACK++] is an object-oriented version of the ARPACK package
+used to calculate the spectrum of sparse matrices in atspectrum.hpp.
 - [OpenMP][OMP] is used for multi-threading by transferOperator.hpp
 when WITH_OMP is set to 1 when compiling.
 
-Installing the code                {#installing-the-code}
--------------------
+
+\section installing-the-code Installing the code                
 
 1. Create a directory ergoPack/ in your favorite include directory $INCLUDE:
 
@@ -57,8 +45,7 @@ add in your C++ file:
         #include <ergoPack/atmatrix.hpp>
     
 
-Updating the code              {#updating-the-code}
------------------
+\section updating-the-code Updating the code              
 
 1. Pull the ergoPack repository:
 
@@ -70,11 +57,9 @@ Updating the code              {#updating-the-code}
         cp *.hpp $INCLUDE/ergoPack
 
 
-Compiling                   {#compiling}
-=========
+\section compiling Compiling                   
 
-Without OpenMP               {#without-omp}
---------------
+\subsection without-omp Without OpenMP               
 
 If INCLUDE is not a system directory such as /usr/include/ or /usr/local/include/
 then either it should be added to CPLUS_INCLUDE_PATH or at compilation using -I$INCLUDE. E.g.
@@ -86,8 +71,7 @@ If GSL's directory is not a system one or in LIBRARY_PATH then -L$GSLDIR should 
 
      g++ -L$GSLDIR source.o -lgsl
      
-With OpenMP                  {#with-omp}
------------
+\subsection with-omp With OpenMP                  
 
 If OpenMP is to be used, then WITH_OMP should be set to 1,
 -fopenmp -DWITH_OMP=$WITH_OMP used when compiling
@@ -96,16 +80,9 @@ and -lgomp when linking.
      g++ -c -fopenmp -DWITH_OMP=$WITH_OMP -I$INCLUDE source.cpp
      g++ -L$GSLDIR source.o -lgsl -lgomp
 
-Disclaimer                  {#disclaimer}
-==========
-
-These codes are developed for _research purpose_.
-_No warranty_ is given regarding their robustess.
-
-[UU]: http://www.uu.nl/staff/AJJTantet/ "Alexis' personal page"
 [git]: https://git-scm.com/ "git"
-[ergoPack_doc]: http://atantet.github.io/ergoPack/ "ergoPack documentation"
 [GSL]: http://www.gnu.org/software/gsl/ "GSL - GNU Scientific Library"
-[Eigen]: http://eigen.tuxfamily.org/ "Eigen"
 [ARPACK++]: http://www.caam.rice.edu/software/ARPACK/arpack++.html "ARPACK++"
 [OMP]: http://www.openmp.org/ "OpenMP"
+
+*/

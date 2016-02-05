@@ -6,11 +6,11 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.collections import PolyCollection
 import ergoPlot
 
-#configFile = '../cfg/OU2d.cfg'
-configFile = '../cfg/Battisti1989.cfg'
+configFile = '../cfg/OU2d.cfg'
+#configFile = '../cfg/Battisti1989.cfg'
 #configFile = '../cfg/Suarez1988.cfg'
 ergoPlot.readConfig(configFile)
-tau = 0.05
+etau = 0.05
 #tau = 0.2
 
 nevPlot = 0
@@ -154,6 +154,7 @@ ergoPlot.plotEigPowerRec(angFreq, eigValGen, msizeWeight, powerSample, powerSamp
                          xlim=[xminEigVal, -xminEigVal/100],
                          ylim=[yminEigVal, -yminEigVal],
                          zlim=[ergoPlot.powerMin, ergoPlot.powerMax])
+
 plt.savefig('%s/spectrum/reconstruction/%sRec_chunk%d_nev%d%s.%s'\
             % (ergoPlot.plotDir, powerName, int(ergoPlot.chunkWidth),
                ergoPlot.nev, postfix, ergoPlot.figFormat),
