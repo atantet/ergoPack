@@ -7,9 +7,9 @@
 #include <gsl/gsl_blas.h>
 
 /** \file ODESolvers.hpp
- *  \brief Solve ordinary differential equations.
+ *  \brief Solve Ordinary Differential Equations.
  *   
- *  Library to solve ordinary differential equations.
+ *  Solve Ordinary Differential Equations.
  *  The library uses polymorphism to design a model (class model)
  *  from building blocks.
  *  Those building blocks are the vector field (class vectorField)

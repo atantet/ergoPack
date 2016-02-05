@@ -8,15 +8,14 @@
 
 
 /** \file SDESolvers.hpp
- *  \brief Solve stocahstic differential equations.
+ *  \brief Solve Stocahstic Differential Equations.
  *   
- *  Library to solve stochastic differential equations.
+ *  Solve Stochastic Differential Equations.
  *  The library uses polymorphism to design a
- *  stochastic model (class modelStochastic) from building blocks.
- *  Those building blocks are the vector field (class vectorField),
- *  inherited from class model
- *  and a stochastic numerical scheme (class stochasticNumericalScheme),
- *  and a stochastic vector field (class stochasticVectorField).
+ *  stochastic model modelStochastic from building blocks.
+ *  These building blocks are the vector field bectorField,
+ *  the stochastic vector field stochasticVectorField
+ *  and the stochastic numerical scheme stochasticNumericalScheme.
  */
 
 

@@ -10,14 +10,14 @@
 
 
 /** \file SDDESolvers.hpp
- *  \brief Solve stocahstic delay differential equations.
+ *  \brief Solve Stochastic Delay Differential Equations.
  *   
- *  Library to solve stochastic delay differential equations.
+ *  Solve Stochastic Delay Differential Equations.
  *  The library uses polymorphism to design an
- *  SDDE model (class modelSDDE) from building blocks.
- *  Those building blocks are the delayed vector field (class vectorFieldDelay),
- *  a stochastic vector field (class vectorFieldStochastic).
- *  and an SDDE numerical scheme (class stochasticNumericalSDDE).
+ *  SDDE model modelSDDE from building blocks.
+ *  Those building blocks are the delayed vector field vectorFieldDelay,
+ *  a stochastic vector field vectorFieldStochastic.
+ *  and an SDDE numerical scheme numericalSchemeSDDE.
  */
 
 

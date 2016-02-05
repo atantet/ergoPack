@@ -16,33 +16,47 @@
 using namespace libconfig;
 
 
-/** \file simOU.cpp 
- *  \brief Simulate an multi-dimensional Ornstein-Uhlenbeck process.
+/** \file simSDDE.cpp 
+ *  \brief Simulate a Stochastic Delay Differential Equation.
  *
- *  Simulate an multi-dimensional Ornstein-Uhlenbeck process.
+ *  Simulate a Stochastic Delay Differential Equation
+ *  with polynomial vector fields.
  */
 
 // Declarations
 /** \brief User defined function to get parameters from a cfg file using libconfig. */
 void readConfig(const char *cfgFileName);
 
-char caseName[256], file_format[256], resDir[256];
-int dim;
+char caseName[256];       //!< Name of the case to simulate 
+char file_format[256];    //!< File format of output ("txt" or "bin")
+char resDir[256];         //!< Root directory in which results are written
+int dim;                  //!< Dimension of the phase space
+size_t nDelays;           //!< Number of delays
+/** Vector of polynomials to define the vector fields for each delay */
 std::vector<gsl_vector *> *driftPolynomials;
-gsl_matrix *Q;
-gsl_vector *delaysDays;
-gsl_vector_uint *delays;
-size_t nDelays;
-char delayName[256];
-gsl_vector *initStateCst;
-double LCut, dt, spinup;
-double printStep;
-size_t printStepNum;
-double L;
-char postfix[256], dstFileName[256];
+gsl_vector *delaysDays;   //!< Delays in days
+gsl_vector_uint *delays;  //!< Delays in number of time steps
+char delayName[256];      //!< Name associated with the delays
+gsl_matrix *Q;            //!< Diffusion matrix
+gsl_vector *initStateCst; //!< State to define constant initial state history
+double LCut;              //!< Length of the time series without spinup
+double spinup;            //!< Length of initial spinup period to remove
+double L;                 //!< Total length of integration
+double dt;                //!< Time step of integration
+double printStep;         //!< Time step of output
+size_t printStepNum;      //!< Time step of output in number of time steps of integration
+char postfix[256];        //!< Postfix of destination files
+char dstFileName[256];    //!< Destination file name
 
 
-// Main program
+/** \brief Simulation of an Stochastic Delay Differential Equation.
+ *
+ *  Simulation of an Stochastic Delay Differential Equation.
+ *  After parsing the configuration file,
+ *  a delayed polynomial vector field for the drift, a diffusion matrix
+ *  and an Euler-Maruyama stochastic numerical scheme are defined.
+ *  The model is then integrated forward and the results saved.
+ */
 int main(int argc, char * argv[])
 {
   FILE *dstStream;
@@ -125,7 +139,10 @@ int main(int argc, char * argv[])
 }
 
 
-// Definitions
+/**
+ * Sparse configuration file using libconfig++
+ * to define all parameters of the case.
+ */
 void
 readConfig(const char *cfgFileName)
 {

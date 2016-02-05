@@ -7,7 +7,35 @@
 #include <gsl/gsl_eigen.h>
 
 
-void getEOF(const gsl_matrix *data, gsl_vector *w, gsl_matrix *E, gsl_matrix *A)
+/** \file ergoStat.hpp
+ *  \brief Various statistical routines.
+ *  
+ *  Various statistical routines used in ergoPack.
+ */
+
+
+/*
+ * Function declarations
+ */
+
+//!< \brief EOF analysis (or PCA) of a multivariate time series.
+void getEOF(const gsl_matrix *data, gsl_vector *w, gsl_matrix *E, gsl_matrix *A);
+
+  
+/*
+ * Function definitions
+ */
+
+/**
+ * Empirical Orthogonal Functions analysis (or Principal Component Analysis)
+ * of a multivariate time series.
+ * \param[in]  data Multivariate time series on which to perform the analysis.
+ * \param[out] w    Eigenvalues of the covariance matrix giving the explained variance.
+ * \param[out] E    Matrix with an Empirical Orthogonal Function for each column.
+ * \param[out] A    Matrix with a principal component for each column.
+ */
+void
+getEOF(const gsl_matrix *data, gsl_vector *w, gsl_matrix *E, gsl_matrix *A)
 {
   size_t nt = data->size1;
   size_t N = data->size2;
