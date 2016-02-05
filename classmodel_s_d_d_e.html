@@ -110,7 +110,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ac9a58fdb5bf6f5ae1f2682470ddcf207"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor assigning a delayed vector field, a numerical scheme and a stochastic vector field and setting a constant initial state. <br /></td></tr>
 <tr class="separator:ac9a58fdb5bf6f5ae1f2682470ddcf207"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3f177e897e9830ccde63f1e452a416a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3f177e897e9830ccde63f1e452a416a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_s_d_d_e.html#ab3f177e897e9830ccde63f1e452a416a">modelSDDE</a> (<a class="el" href="classvector_field_delay.html">vectorFieldDelay</a> *delayedField_, <a class="el" href="classvector_field_stochastic.html">vectorFieldStochastic</a> *stocField_, <a class="el" href="classnumerical_scheme_s_d_d_e.html">numericalSchemeSDDE</a> *scheme_, gsl_matrix *initState)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_s_d_d_e.html#ab3f177e897e9830ccde63f1e452a416a">modelSDDE</a> (<a class="el" href="classvector_field_delay.html">vectorFieldDelay</a> *delayedField_, <a class="el" href="classvector_field_stochastic.html">vectorFieldStochastic</a> *stocField_, <a class="el" href="classnumerical_scheme_s_d_d_e.html">numericalSchemeSDDE</a> *scheme_, gsl_matrix *<a class="el" href="sim_o_u_8cpp.html#a7f33a7974f883d7f9f30bc3cc8b788fc">initState</a>)</td></tr>
 <tr class="memdesc:ab3f177e897e9830ccde63f1e452a416a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor assigning a delayed vector field, a numerical scheme and a stochastic vector field and setting the initial state. <br /></td></tr>
 <tr class="separator:ab3f177e897e9830ccde63f1e452a416a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4c4b5d93ed0b5b6708253651239ea47"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad4c4b5d93ed0b5b6708253651239ea47"></a>
@@ -120,7 +120,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a897c893f662fc7a7ffcb408331786624"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_s_d_d_e.html#a897c893f662fc7a7ffcb408331786624">stepForward</a> ()</td></tr>
 <tr class="memdesc:a897c893f662fc7a7ffcb408331786624"><td class="mdescLeft">&#160;</td><td class="mdescRight">One time-step forward integration of the <a class="el" href="classmodel_s_d_d_e.html" title="Numerical SDDE model class. ">modelSDDE</a>.  <a href="#a897c893f662fc7a7ffcb408331786624">More...</a><br /></td></tr>
 <tr class="separator:a897c893f662fc7a7ffcb408331786624"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47bb4419346ea560fc21d9194fe5cd4e"><td class="memItemLeft" align="right" valign="top">gsl_matrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_s_d_d_e.html#a47bb4419346ea560fc21d9194fe5cd4e">integrateForward</a> (const double length, const double spinup, const size_t sampling)</td></tr>
+<tr class="memitem:a47bb4419346ea560fc21d9194fe5cd4e"><td class="memItemLeft" align="right" valign="top">gsl_matrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_s_d_d_e.html#a47bb4419346ea560fc21d9194fe5cd4e">integrateForward</a> (const double length, const double <a class="el" href="spectrum_8cpp.html#a028c8dc840d3db4dfe62398e3f50c758">spinup</a>, const size_t sampling)</td></tr>
 <tr class="memdesc:a47bb4419346ea560fc21d9194fe5cd4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the <a class="el" href="classmodel_s_d_d_e.html" title="Numerical SDDE model class. ">modelSDDE</a> forward for a given period.  <a href="#a47bb4419346ea560fc21d9194fe5cd4e">More...</a><br /></td></tr>
 <tr class="separator:a47bb4419346ea560fc21d9194fe5cd4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -192,7 +192,7 @@ gsl_matrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Integrate the SDDE model forward for a given period. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>Duration of the integration. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">Spinup</td><td>Initial integration period to remove. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">spinup</td><td>Initial integration period to remove. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">sampling</td><td>Time step at which to save states. </td></tr>
   </table>
   </dd>
@@ -201,7 +201,7 @@ gsl_matrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 <p>Definition at line <a class="el" href="_s_d_d_e_solvers_8hpp_source.html#l00378">378</a> of file <a class="el" href="_s_d_d_e_solvers_8hpp_source.html">SDDESolvers.hpp</a>.</p>
 
-<p>References <a class="el" href="classvector_field_delay.html#a7d97f6f3475c401f35c9f976434d2e7c">vectorFieldDelay::dim</a>.</p>
+<p>References <a class="el" href="classvector_field_delay.html#a7d97f6f3475c401f35c9f976434d2e7c">vectorFieldDelay::dim</a>, and <a class="el" href="transfer_8cpp.html#a52d59418c1fd6f77402b8db150d7767a">nt</a>.</p>
 
 </div>
 </div>

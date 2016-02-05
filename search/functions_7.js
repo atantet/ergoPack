@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['main',['main',['../spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'spectrum.cpp']]],
+  ['main',['main',['../sim_o_u_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;simOU.cpp'],['../transfer_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;transfer.cpp'],['../spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;spectrum.cpp']]],
   ['memvector2memmatrix',['memVector2memMatrix',['../ergo_grid_8hpp.html#a16e31c83e10ee645b1defa1e39a7bd4e',1,'memVector2memMatrix(const gsl_vector_uint *gridMemVect, size_t tauStep):&#160;ergoGrid.hpp'],['../ergo_grid_8hpp.html#a4eb64905c4eb48a156abaf29cda24020',1,'memVector2memMatrix(gsl_vector_uint *gridMemVect, size_t tauStep):&#160;ergoGrid.hpp']]],
   ['memvectorlist2memmatrix',['memVectorList2memMatrix',['../ergo_grid_8hpp.html#a5df106ff4b681c4f8930e59ae1f607c9',1,'ergoGrid.hpp']]],
   ['model',['model',['../classmodel.html#a1a9463870c66c88037a07ce392cbe61b',1,'model::model(vectorField *field_, numericalScheme *scheme_)'],['../classmodel.html#a502c4dcce0a7d9e209ed6fc483269d74',1,'model::model(vectorField *field_, numericalScheme *scheme_, gsl_vector *initState)']]],

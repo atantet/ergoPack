@@ -21,6 +21,8 @@ var searchData=
   ['gettimestep',['getTimeStep',['../classnumerical_scheme.html#a63b7813d7775f5ffd4bd6359406fca49',1,'numericalScheme::getTimeStep()'],['../classnumerical_scheme_s_d_d_e.html#a460f5d864fa2a2b54ee7895c76535c37',1,'numericalSchemeSDDE::getTimeStep()'],['../classnumerical_scheme_stochastic.html#a34e04d510e427218d7ce06735ecfc10b',1,'numericalSchemeStochastic::getTimeStep()']]],
   ['gettransitioncounttriplet',['getTransitionCountTriplet',['../transfer_operator_8hpp.html#ab6396239b16cd3266654ccabce30a30c',1,'transferOperator.hpp']]],
   ['grid',['Grid',['../class_grid.html',1,'Grid'],['../class_grid.html#afc67af2723d2ef8e19f57dd1a0abc8ee',1,'Grid::Grid(const gsl_vector_uint *nx_)'],['../class_grid.html#ae7f1df4b4188a4c2ca65c5259fe98fd3',1,'Grid::Grid(const size_t dim_, const size_t inx)']]],
+  ['gridfilename',['gridFileName',['../transfer_8cpp.html#a1032fb0a33f27ee6158712b4f650ecbd',1,'transfer.cpp']]],
+  ['gridpostfix',['gridPostfix',['../transfer_8cpp.html#aa55bc3bac1b0344a916116a1d56ae17c',1,'gridPostfix():&#160;transfer.cpp'],['../spectrum_8cpp.html#aa55bc3bac1b0344a916116a1d56ae17c',1,'gridPostfix():&#160;spectrum.cpp']]],
   ['gsl_5fextension_2eh',['gsl_extension.h',['../gsl__extension_8h.html',1,'']]],
   ['gsl_5fmatrix_5fget_5fcolsum',['gsl_matrix_get_colsum',['../gsl__extension_8h.html#a11c8c9184dbb7e862c77302291f45b02',1,'gsl_extension.h']]],
   ['gsl_5fmatrix_5fget_5fmean',['gsl_matrix_get_mean',['../gsl__extension_8h.html#af732cbdb62af230ba5297994c9e4cdc2',1,'gsl_extension.h']]],

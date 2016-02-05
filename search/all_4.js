@@ -8,6 +8,8 @@ var searchData=
   ['eigvalforwardreal',['EigValForwardReal',['../classtransfer_spectrum.html#a20b8a9c67df7e58aef758776e68fdb99',1,'transferSpectrum']]],
   ['eigvecbackward',['EigVecBackward',['../classtransfer_spectrum.html#a85151a531293b19b46b9d9849c3f59e9',1,'transferSpectrum']]],
   ['eigvecforward',['EigVecForward',['../classtransfer_spectrum.html#a4e1fb279c565374009981c4c4647a8ee',1,'transferSpectrum']]],
+  ['embedding',['embedding',['../transfer_8cpp.html#a9ead67f01769704e369385aa9c86bf89',1,'embedding():&#160;transfer.cpp'],['../spectrum_8cpp.html#a9ead67f01769704e369385aa9c86bf89',1,'embedding():&#160;spectrum.cpp']]],
+  ['embedmax',['embedMax',['../transfer_8cpp.html#a57a652dd57700e48f86e531afbcb3020',1,'transfer.cpp']]],
   ['ergogrid_2ehpp',['ergoGrid.hpp',['../ergo_grid_8hpp.html',1,'']]],
   ['euler',['Euler',['../class_euler.html',1,'Euler'],['../class_euler.html#abfff40a5289c2e9ca64282c2c196e6a4',1,'Euler::Euler()']]],
   ['eulermaruyama',['EulerMaruyama',['../class_euler_maruyama.html',1,'EulerMaruyama'],['../class_euler_maruyama.html#acdf03fcef98ba7cf71c549394eda70a2',1,'EulerMaruyama::EulerMaruyama()']]],

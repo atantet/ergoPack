@@ -202,17 +202,18 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </div><div class="memdoc">
 <p>Construct a polar grid adapted to the time series (yet, only for 2D). </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">nx_</td><td>Vector giving the number of levels + 1 and number of sectors. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rGrid</td><td>Rectangular grid used to calculate the density. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nLevels_</td><td>Number of levels for the grid </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nSectors_</td><td>Number of sectors for the grid </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">support</td><td>Rectangular grid used to calculate the density. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">states</td><td>Trajectory to which to adapt the grid. </td></tr>
   </table>
   </dd>
 </dl>
 <p>The state is outside the support grid, mark it outside the polar grid </p>
 
-<p>Definition at line <a class="el" href="ergo_grid_8hpp_source.html#l00320">320</a> of file <a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ergo_grid_8hpp_source.html#l00321">321</a> of file <a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>.</p>
 
-<p>References <a class="el" href="class_grid.html#abb945e93838a6746a715a083f172be04">Grid::dim</a>, <a class="el" href="ergo_grid_8hpp.html#aa6a8b9fa195bfac7baca6efac5155a40">getDensityMLE()</a>, <a class="el" href="ergo_grid_8hpp.html#ae84084d6ac9b8f8f68f49625ed441e96">getGridMemVector()</a>, <a class="el" href="class_grid.html#a69f37cefc2c51d73a902e96eaeecc3f0">Grid::getN()</a>, <a class="el" href="gsl__extension_8h.html#af732cbdb62af230ba5297994c9e4cdc2">gsl_matrix_get_mean()</a>, <a class="el" href="gsl__extension_8h.html#a38642e8787dd23e023301df79852f0f6">gsl_matrix_get_std()</a>, and <a class="el" href="class_grid.html#a48dfe2bbf7ad988bd3cce872dce8a738">Grid::N</a>.</p>
+<p>References <a class="el" href="class_grid.html#abb945e93838a6746a715a083f172be04">Grid::dim</a>, <a class="el" href="ergo_grid_8hpp.html#aa6a8b9fa195bfac7baca6efac5155a40">getDensityMLE()</a>, <a class="el" href="ergo_grid_8hpp.html#ae84084d6ac9b8f8f68f49625ed441e96">getGridMemVector()</a>, <a class="el" href="class_grid.html#a69f37cefc2c51d73a902e96eaeecc3f0">Grid::getN()</a>, <a class="el" href="gsl__extension_8h.html#af732cbdb62af230ba5297994c9e4cdc2">gsl_matrix_get_mean()</a>, <a class="el" href="gsl__extension_8h.html#a38642e8787dd23e023301df79852f0f6">gsl_matrix_get_std()</a>, <a class="el" href="class_grid.html#a48dfe2bbf7ad988bd3cce872dce8a738">Grid::N</a>, <a class="el" href="transfer_8cpp.html#ae5db0b6d0459d65e845f911b2cf63388">nSTDHigh</a>, <a class="el" href="transfer_8cpp.html#a4b439d11830cf16b990bb49aff958b43">nSTDLow</a>, and <a class="el" href="transfer_8cpp.html#ac49b4571282666b93dfa78c0cdd5862d">nx</a>.</p>
 
 </div>
 </div>
@@ -232,7 +233,7 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 <p>Definition at line <a class="el" href="ergo_grid_8hpp_source.html#l00581">581</a> of file <a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>.</p>
 
-<p>References <a class="el" href="class_grid.html#abb945e93838a6746a715a083f172be04">Grid::dim</a>, <a class="el" href="class_grid.html#af58cb8c7330355a397b53abf802ccec0">Grid::getBoxPosition()</a>, <a class="el" href="class_grid.html#a69f37cefc2c51d73a902e96eaeecc3f0">Grid::getN()</a>, and <a class="el" href="gsl__extension_8h.html#aeaf46636a578b8f07471901e23e99bc6">gsl_vector_max_index_among()</a>.</p>
+<p>References <a class="el" href="sim_o_u_8cpp.html#a507bede4b0c41eb052cfe335cf8d4dba">A</a>, <a class="el" href="class_grid.html#abb945e93838a6746a715a083f172be04">Grid::dim</a>, <a class="el" href="class_grid.html#af58cb8c7330355a397b53abf802ccec0">Grid::getBoxPosition()</a>, <a class="el" href="class_grid.html#a69f37cefc2c51d73a902e96eaeecc3f0">Grid::getN()</a>, and <a class="el" href="gsl__extension_8h.html#aeaf46636a578b8f07471901e23e99bc6">gsl_vector_max_index_among()</a>.</p>
 
 </div>
 </div>

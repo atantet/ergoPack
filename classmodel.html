@@ -106,7 +106,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a1a9463870c66c88037a07ce392cbe61b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor assigning a vector field and a numerical scheme and setting initial state to origin. <br /></td></tr>
 <tr class="separator:a1a9463870c66c88037a07ce392cbe61b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a502c4dcce0a7d9e209ed6fc483269d74"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a502c4dcce0a7d9e209ed6fc483269d74"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel.html#a502c4dcce0a7d9e209ed6fc483269d74">model</a> (<a class="el" href="classvector_field.html">vectorField</a> *field_, <a class="el" href="classnumerical_scheme.html">numericalScheme</a> *scheme_, gsl_vector *initState)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel.html#a502c4dcce0a7d9e209ed6fc483269d74">model</a> (<a class="el" href="classvector_field.html">vectorField</a> *field_, <a class="el" href="classnumerical_scheme.html">numericalScheme</a> *scheme_, gsl_vector *<a class="el" href="sim_o_u_8cpp.html#a7f33a7974f883d7f9f30bc3cc8b788fc">initState</a>)</td></tr>
 <tr class="memdesc:a502c4dcce0a7d9e209ed6fc483269d74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor assigning a vector field and a numerical scheme and set initial state. <br /></td></tr>
 <tr class="separator:a502c4dcce0a7d9e209ed6fc483269d74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23a7dbff52aedc7c5fbd1c81d419688f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a23a7dbff52aedc7c5fbd1c81d419688f"></a>
@@ -116,7 +116,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a87ed4727415ebd1d1a1771176ec07d57"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel.html#a87ed4727415ebd1d1a1771176ec07d57">stepForward</a> ()</td></tr>
 <tr class="memdesc:a87ed4727415ebd1d1a1771176ec07d57"><td class="mdescLeft">&#160;</td><td class="mdescRight">One time-step forward integration of the model.  <a href="#a87ed4727415ebd1d1a1771176ec07d57">More...</a><br /></td></tr>
 <tr class="separator:a87ed4727415ebd1d1a1771176ec07d57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62853debbe0c9a8fc2b24e43a529c913"><td class="memItemLeft" align="right" valign="top">gsl_matrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel.html#a62853debbe0c9a8fc2b24e43a529c913">integrateForward</a> (const double length, const double spinup, const size_t sampling)</td></tr>
+<tr class="memitem:a62853debbe0c9a8fc2b24e43a529c913"><td class="memItemLeft" align="right" valign="top">gsl_matrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel.html#a62853debbe0c9a8fc2b24e43a529c913">integrateForward</a> (const double length, const double <a class="el" href="spectrum_8cpp.html#a028c8dc840d3db4dfe62398e3f50c758">spinup</a>, const size_t sampling)</td></tr>
 <tr class="memdesc:a62853debbe0c9a8fc2b24e43a529c913"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the model forward for a given period.  <a href="#a62853debbe0c9a8fc2b24e43a529c913">More...</a><br /></td></tr>
 <tr class="separator:a62853debbe0c9a8fc2b24e43a529c913"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -176,7 +176,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Integrate the model forward for a given period. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>Duration of the integration. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">Spinup</td><td>Initial integration period to remove. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">spinup</td><td>Initial integration period to remove. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">sampling</td><td>Time step at which to save states. </td></tr>
   </table>
   </dd>
@@ -185,7 +185,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 <p>Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00518">518</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
 
-<p>References <a class="el" href="classvector_field.html#ac0854b28a4ff6ab764710eff1cb820b4">vectorField::dim</a>.</p>
+<p>References <a class="el" href="classvector_field.html#ac0854b28a4ff6ab764710eff1cb820b4">vectorField::dim</a>, and <a class="el" href="transfer_8cpp.html#a52d59418c1fd6f77402b8db150d7767a">nt</a>.</p>
 
 </div>
 </div>

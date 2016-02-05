@@ -218,9 +218,9 @@ gsl_matrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </div><div class="memdoc">
 <p>Integrate SDDE one step forward for a given vector field and state using the <a class="el" href="class_euler.html" title="Euler scheme for numerical integration. ">Euler</a> Maruyama scheme. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">field</td><td>Delayed vector fields to evaluate. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">delayedField</td><td>Delayed vector fields to evaluate. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">stocField</td><td>stochastic vector field to evaluate. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname"></td><td></td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">currentState</td><td>Current state to update by one time step. </td></tr>
   </table>
   </dd>
 </dl>
@@ -232,7 +232,7 @@ gsl_matrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 <p>Definition at line <a class="el" href="_s_d_d_e_solvers_8hpp_source.html#l00318">318</a> of file <a class="el" href="_s_d_d_e_solvers_8hpp_source.html">SDDESolvers.hpp</a>.</p>
 
-<p>References <a class="el" href="classvector_field_stochastic.html#a83aa997bd0a4344db39e95873c3a9fd7">vectorFieldStochastic::evalField()</a>, <a class="el" href="classvector_field_delay.html#a952b6f0f0fc8acfc0aec74c31b9481fe">vectorFieldDelay::evalField()</a>, and <a class="el" href="classvector_field_delay.html#ab22473dc564e899cee5274dbc2c392fe">vectorFieldDelay::work</a>.</p>
+<p>References <a class="el" href="sim_o_u_8cpp.html#a03e28be41881b703c836edbfe9b51b17">dt</a>, <a class="el" href="classvector_field_stochastic.html#a83aa997bd0a4344db39e95873c3a9fd7">vectorFieldStochastic::evalField()</a>, <a class="el" href="classvector_field_delay.html#a952b6f0f0fc8acfc0aec74c31b9481fe">vectorFieldDelay::evalField()</a>, and <a class="el" href="classvector_field_delay.html#ab22473dc564e899cee5274dbc2c392fe">vectorFieldDelay::work</a>.</p>
 
 </div>
 </div>

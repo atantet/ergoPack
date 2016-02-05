@@ -118,7 +118,7 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab6396239b16cd3266654ccabce30a30c"><td class="memItemLeft" align="right" valign="top">gsl_spmatrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_operator_8hpp.html#ab6396239b16cd3266654ccabce30a30c">getTransitionCountTriplet</a> (const gsl_matrix_uint *gridMem, size_t N)</td></tr>
+<tr class="memitem:ab6396239b16cd3266654ccabce30a30c"><td class="memItemLeft" align="right" valign="top">gsl_spmatrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_operator_8hpp.html#ab6396239b16cd3266654ccabce30a30c">getTransitionCountTriplet</a> (const gsl_matrix_uint *gridMem, size_t <a class="el" href="spectrum_8cpp.html#aa6d2142329b3b553ce8a778f8239db33">N</a>)</td></tr>
 <tr class="memdesc:ab6396239b16cd3266654ccabce30a30c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get triplet vector from membership matrix.  <a href="#ab6396239b16cd3266654ccabce30a30c">More...</a><br /></td></tr>
 <tr class="separator:ab6396239b16cd3266654ccabce30a30c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae52b88b4e00ae0e45818fc4dd3b50255"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_operator_8hpp.html#ae52b88b4e00ae0e45818fc4dd3b50255">filterStochasticMatrix</a> (gsl_spmatrix *M, gsl_vector *rowCut, gsl_vector *colCut, double tol, int norm)</td></tr>
@@ -174,7 +174,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Set weak states to 0 from a stochastic matrix and its distributions based on initial and final probability of each Markov state. Attention: elements are not actually removed from sparse matrix. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">T</td><td>Compressed transition matrix to filter. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">M</td><td>Compressed transition matrix to filter. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">rowCut</td><td>The probability distribution associated with each row. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">colCut</td><td>The probability distribution associated with each column. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">tol</td><td>Probability under which Markov states are removed. </td></tr>

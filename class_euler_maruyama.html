@@ -206,8 +206,8 @@ gsl_matrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Integrate stochastically one step forward for a given vector field and state using the <a class="el" href="class_euler.html" title="Euler scheme for numerical integration. ">Euler</a> Maruyama scheme. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">field</td><td>Vector field to evaluate. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">stocField</td><td>stochastic vector field to evaluate. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname"></td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">stocField</td><td>Stochastic vector field to evaluate. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">currentState</td><td>Current state to update by one time step. </td></tr>
   </table>
   </dd>
 </dl>
@@ -216,7 +216,7 @@ gsl_matrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 <p>Definition at line <a class="el" href="_s_d_e_solvers_8hpp_source.html#l00273">273</a> of file <a class="el" href="_s_d_e_solvers_8hpp_source.html">SDESolvers.hpp</a>.</p>
 
-<p>References <a class="el" href="classvector_field.html#ac1473ca59715bf55e14eae6b45a13816">vectorField::evalField()</a>, and <a class="el" href="classvector_field_stochastic.html#a83aa997bd0a4344db39e95873c3a9fd7">vectorFieldStochastic::evalField()</a>.</p>
+<p>References <a class="el" href="sim_o_u_8cpp.html#a03e28be41881b703c836edbfe9b51b17">dt</a>, <a class="el" href="classvector_field.html#ac1473ca59715bf55e14eae6b45a13816">vectorField::evalField()</a>, and <a class="el" href="classvector_field_stochastic.html#a83aa997bd0a4344db39e95873c3a9fd7">vectorFieldStochastic::evalField()</a>.</p>
 
 </div>
 </div>
