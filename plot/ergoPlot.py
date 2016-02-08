@@ -30,7 +30,7 @@ def readConfig(configFile):
     "Read configuration file or plotSpectrum.py using libconfig for python"
     global gridFile, dim, dimObs, gridPostfix, specDir, plotDir, nev, resDir, lagMax, chunkWidth
     global file_format, printStep, component1, component2, srcPostfix
-    global angFreqMax, powerMin, powerMax, rateMax
+    global angFreqMax, powerMin, powerMax, rateMax, tauRng, nLags
     
     cfg = pylibconfig2.Config()
     cfg.read_file(configFile)
@@ -82,6 +82,7 @@ def readConfig(configFile):
 
     if hasattr(cfg, 'transfer'):
         tauRng = np.array(cfg.lookup("transfer.tauRng"))
+        nLags = tauRng.shape[0]
 
     if hasattr(cfg, 'spectrum'):
         nev = cfg.lookup("spectrum.nev");
@@ -97,89 +98,57 @@ def readConfig(configFile):
         powerMax = cfg.lookup('stat.powerMax')
         
 
-def readSpectrum(nev, EigValFile, EigVecFile, EigValAdjointFile, EigVecAdjointFile, statDist):
+def readSpectrum(nev,
+                 EigValForwardFile, EigVecForwardFile,
+                 EigValBackwardFile, EigVecBackwardFile,
+                 statDist,
+                 makeBiorthonormal=False):
     """Read transfer operator spectrum from file and create a bi-orthonormal basis \
     of eigenvectors and adjoint eigenvectors"""
 
     # Read eigenvalues
-    eigValRaw = np.loadtxt(EigValFile)
-    eigValAdjointRaw = np.loadtxt(EigValAdjointFile)
-    
+    eigValForward = np.loadtxt(EigValForwardFile)
+    eigValBackward = np.loadtxt(EigValBackwardFile)
+
     # Make complex
-    eigValRaw = eigValRaw[:, 0] + eigValRaw[:, 1]*1j
-    eigValAdjointRaw = eigValAdjointRaw[:, 0] + eigValAdjointRaw[:, 1]*1j  # P = E^{-1} \Lambda E
+    eigValForward = eigValForward[:, 0] + eigValForward[:, 1]*1j
+    eigValBackward = eigValBackward[:, 0] + eigValBackward[:, 1]*1j  # P = E^{-1} \Lambda E
     
     # Read eigenvectors
-    eigVecRaw = np.loadtxt(EigVecFile)
-    eigVecAdjointRaw = np.loadtxt(EigVecAdjointFile)
-    N = eigVecRaw.shape[1]
+    eigVecForward = np.loadtxt(EigVecForwardFile)
+    eigVecBackward = np.loadtxt(EigVecBackwardFile)
+    N = eigVecForward.shape[0] / nev
 
     # Make complex
-    eigVecRaw = eigVecRaw[::2] + eigVecRaw[1::2]*1j                        
-    eigVecAdjointRaw = eigVecAdjointRaw[::2] + eigVecAdjointRaw[1::2]*1j   #Q = F^{-1} \Lambda^* F => E^{-1} = D(\pi) F^*
+    eigVecForward = (eigVecForward[:, 0] + eigVecForward[:, 1]*1j).reshape(N, nev)
+    #Q = F^{-1} \Lambda^* F => E^{-1} = D(\pi) F^*   
+    eigVecBackward = (eigVecBackward[:, 0] + eigVecBackward[:, 1]*1j).reshape(N, nev)
 
-    # Define new vectors to build bi-orthonormal basis
-    eigVec = np.zeros((nev, N), dtype=complex)
-    eigVecAdjoint = np.zeros((nev, N), dtype=complex)
-    eigVal = np.zeros((nev,), dtype=complex)
-    eigValAdjoint = np.zeros((nev,), dtype=complex)
-    nevSingle = np.min([eigValRaw.shape[0], eigValAdjointRaw.shape[0]])
+    if makeBiorthonormal:
+        # Sort by largest magnitude
+        isort = np.argsort(np.abs(eigValForward))[::-1]
+        eigValForward = eigValForward[isort]
+        eigVecForward = eigVecForward[:, isort]
 
-    # Add complex conjugates (not returned by ARPACK++)
-    ev = 0
-    for count in np.arange(nevSingle):
-        eigVal[ev] = eigValRaw[count]
-        eigVec[ev] = eigVecRaw[count]
-        ev += 1
-        if (np.abs(eigVal[ev-1].imag) > 1.e-5) & (ev < nev):
-            eigVal[ev] = eigValRaw[count].real - eigValRaw[count].imag*1j
-            eigVec[ev] = eigVecRaw[count].real - eigVecRaw[count].imag*1j
-            ev += 1
+        # Because different eigenvalues may have the same magnitude
+        # sort the adjoint eigenvalues by correspondance to the eigenvalues.
+        isort = np.empty((nev,), dtype=int)
+        for ev in np.arange(nev):
+            isort[ev] = np.argmin(np.abs(eigValForward[ev] - np.conjugate(eigValBackward)))
+        eigValBackward = eigValBackward[isort]
+        eigVecBackward = eigVecBackward[:, isort]
 
-    # ... for adjoint
-    ev = 0
-    for count in np.arange(nevSingle):
-        eigValAdjoint[ev] = eigValAdjointRaw[count]
-        eigVecAdjoint[ev] = eigVecAdjointRaw[count]
-        ev += 1
-        if (np.abs(eigValAdjoint[ev-1].imag) > 1.e-5) & (ev < nev):
-            eigValAdjoint[ev] = eigValAdjointRaw[count].real \
-                                - eigValAdjointRaw[count].imag*1j
-            eigVecAdjoint[ev] = eigVecAdjointRaw[count].real \
-                                - eigVecAdjointRaw[count].imag*1j
-            ev += 1
+        # Normalize adjoint eigenvectors to have a bi-orthonormal basis
+        for ev in np.arange(nev):
+            norm = np.sum(np.conjugate(eigVecBackward[:, ev]) * statDist \
+                          * eigVecForward[:, ev])
+            eigVecBackward[:, ev] /= np.conjugate(norm)
 
-    # Sort by largest magnitude
-    isort = np.argsort(np.abs(eigVal))[::-1]
-    eigVal = eigVal[isort]
-    eigVec = eigVec[isort]
-    eigVec[0] /= eigVec[0].sum()
-
-    # Because different eigenvalues may have the same magnitude
-    # sort the adjoint eigenvalues by correspondance to the eigenvalues.
-    isort = np.empty((nev,), dtype=int)
-    for ev in np.arange(nev):
-        isort[ev] = np.argmin(np.abs(eigVal[ev] - np.conjugate(eigValAdjoint)))
-    eigValAdjoint = eigValAdjoint[isort]
-    eigVecAdjoint = eigVecAdjoint[isort]
-
-    # Make sure adjoint eigenvalues are conjugate to the corresponding eigenvalue
-    for ev in np.arange(nev):
-        if np.abs(eigValAdjoint[ev].imag - eigVal[ev].imag) \
-           < np.abs(eigValAdjoint[ev].imag + eigVal[ev].imag):
-            eigValAdjoint[ev] = np.conjugate(eigValAdjoint[ev])
-            eigVecAdjoint[ev] = np.conjugate(eigVecAdjoint[ev])
-
-    # Normalize adjoint eigenvectors to have a bi-orthonormal basis
-    for ev in np.arange(nev):
-        norm = np.sum(np.conjugate(eigVecAdjoint[ev]) * statDist \
-                      * eigVec[ev])
-        eigVecAdjoint[ev] /= np.conjugate(norm)
-
-    return (eigVal, eigVec, eigValAdjoint, eigVecAdjoint)
+    return (eigValForward, eigVecForward, eigValBackward, eigVecBackward)
 
 
-def getSpectralWeights(f, g, eigVec, eigVecAdjoint, statDist, nComponents, skipMean=False):
+def getSpectralWeights(f, g, eigVecForward, eigVecBackward,
+                       statDist, nComponents, skipMean=False):
     """Calculate the spectral weights as the product of \
 the scalar products of the observables on eigenvectors \
 and adjoint eigenvectors w.r.tw the stationary distribution."""
@@ -191,8 +160,8 @@ and adjoint eigenvectors w.r.tw the stationary distribution."""
         ga = f
     weights = np.zeros((nComponents,), dtype=complex)
     for k in np.arange(nComponents):
-        weights[k] = (((fa * statDist * np.conjugate(eigVecAdjoint[k])).sum() \
-                     * (eigVec[k] * statDist * np.conjugate(ga)).sum()))
+        weights[k] = (((fa * statDist * np.conjugate(eigVecBackward[:, k])).sum() \
+                     * (eigVecForward[:, k] * statDist * np.conjugate(ga)).sum()))
 
     # Normalize by correlation
     weights /= (fa * statDist * np.conjugate(ga)).sum()
@@ -485,17 +454,21 @@ def plotEigPowerRec(angFreq, eigValGen, weights, powerSample, powerSampleSTD, po
     #ax.w_zaxis.set_pane_color((1.0, 1.0, 1.0, 0.))
     #ax.grid(False)
 
-def getEigenCondition(eigVec, eigVecAdjoint, density=None):
+def getEigenCondition(eigVecForward, eigVecBackward, density=None):
     """ Return a vector containing the condition vector of each pair of eigenvectors."""
-    (nev, N) = eigVec.shape
+    (N, nev) = eigVecForward.shape
     
     if density is None:
         density = np.ones((N,), float) / N
 
     condition = np.empty((nev,))
-    for k in np.arange(nev):
-        condition[k] = (np.sqrt(np.sum(eigVec[k] * density * np.conjugate(eigVec[k]))) \
-                        * np.sqrt(np.sum(eigVecAdjoint[k]* density * np.conjugate(eigVecAdjoint[k]))) \
-                        / np.sum(eigVec[k] * density * np.conjugate(eigVecAdjoint[k]))).real \
+    for ev in np.arange(nev):
+        normForward = np.sqrt(np.sum(eigVecForward[:, ev] * density \
+                                     * np.conjugate(eigVecForward[:, ev])).real)
+        normBackward = np.sqrt(np.sum(eigVecBackward[:, ev] * density \
+                                      * np.conjugate(eigVecBackward[:, ev])).real)
+        inner = (np.sum(eigVecForward[:, ev] * density \
+                        * np.conjugate(eigVecBackward[:, ev]))).real
+        condition[ev] = normForward * normBackward / inner
 
     return condition

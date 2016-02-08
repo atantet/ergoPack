@@ -53,6 +53,10 @@ char obsName[256];              //!< Name associated with the observable
 char gridPostfix[256];          //!< Postfix associated with the grid
 configAR config;                //!< Configuration data for the eigen problem
 char configFileName[256];       //!< Name of the configuration file
+bool stationary;                //!< Whether the problem is stationary or not
+bool getForwardEigenvectors;    //!< Whether to get forward eigenvectors
+bool getBackwardEigenvectors;   //!< Whether to get backward eigenvectors
+bool makeBiorthonormal;         //!< Whether to make eigenvectors biorthonormal
 
 
 /** \brief Calculate the spectrum of a transfer operator.
@@ -87,8 +91,7 @@ int main(int argc, char * argv[])
   // Declarations
   // Transfer
   double tau;
-  char forwardTransitionFileName[256], backwardTransitionFileName[256],
-    initDistFileName[256], finalDistFileName[256], postfix[256];
+  char forwardTransitionFileName[256], initDistFileName[256], postfix[256];
   transferOperator *transferOp;
 
   // Eigen problem
@@ -101,36 +104,31 @@ int main(int argc, char * argv[])
   for (size_t lag = 0; lag < nLags; lag++)
     {
       tau = gsl_vector_get(tauRng, lag);
+      std::cout << "\nGetting spectrum for a lag of " << tau << std::endl;
 
       // Get file names
       sprintf(postfix, "%s_tau%03d", gridPostfix, (int) (tau * 1000));
       sprintf(forwardTransitionFileName, \
 	      "%s/transfer/forwardTransition/forwardTransition%s.coo", resDir, postfix);
-      sprintf(backwardTransitionFileName,
-	      "%s/transfer/backwardTransition/backwardTransition%s.coo", resDir, postfix);
       sprintf(initDistFileName, "%s/transfer/initDist/initDist%s.txt",
 	      resDir, postfix);
-      sprintf(finalDistFileName, "%s/transfer/finalDist/finalDist%s.txt",
-	      resDir, postfix);
-      sprintf(EigValForwardFileName, "%s/spectrum/eigval/eigval_nev%d%s.txt",
+      sprintf(EigValForwardFileName, "%s/spectrum/eigval/eigvalForward_nev%d%s.txt",
 	      resDir, nev, postfix);
-      sprintf(EigVecForwardFileName, "%s/spectrum/eigvec/eigvec_nev%d%s.txt",
+      sprintf(EigVecForwardFileName, "%s/spectrum/eigvec/eigvecForward_nev%d%s.txt",
 	      resDir, nev, postfix);
-      sprintf(EigValBackwardFileName, "%s/spectrum/eigval/eigvalAdjoint_nev%d%s.txt",
+      sprintf(EigValBackwardFileName, "%s/spectrum/eigval/eigvalBackward_nev%d%s.txt",
 	      resDir, nev, postfix);
-      sprintf(EigVecBackwardFileName, "%s/spectrum/eigvec/eigvecAdjoint_nev%d%s.txt",
+      sprintf(EigVecBackwardFileName, "%s/spectrum/eigvec/eigvecBackward_nev%d%s.txt",
 	      resDir, nev, postfix);
 
       
       // Read transfer operator
-      std::cout << "Reading transfer operator..." << std::endl;
+      std::cout << "Reading stationary transfer operator..." << std::endl;
       try
 	{
-	  transferOp = new transferOperator(N);
+	  transferOp = new transferOperator(N, stationary);
 	  transferOp->scanInitDist(initDistFileName);
-	  transferOp->scanFinalDist(finalDistFileName);
 	  transferOp->scanForwardTransition(forwardTransitionFileName);
-	  transferOp->scanBackwardTransition(backwardTransitionFileName);
 	}
       catch (std::exception &ex)
 	{
@@ -144,14 +142,27 @@ int main(int argc, char * argv[])
 	{
 	  // Solve eigen value problem with default configuration
 	  transferSpec = new transferSpectrum(nev, transferOp, config);
-	  std::cout << "Solving eigen problem for forward transition matrix..." << std::endl;
-	  transferSpec->getSpectrumForward();
-	  std::cout << "Found " << transferSpec->EigProbForward.ConvergedEigenvalues()
-		    << "/" << nev << " eigenvalues." << std::endl;
-	  std::cout << "Solving eigen problem for backward transition matrix..." << std::endl;
-	  transferSpec->getSpectrumBackward();
-	  std::cout << "Found " << transferSpec->EigProbBackward.ConvergedEigenvalues()
-		    << "/" << nev << " eigenvalues." << std::endl;
+
+	  if (getForwardEigenvectors)
+	    {
+	      std::cout << "Solving eigen problem for forward transition matrix..." << std::endl;
+	      transferSpec->getSpectrumForward();
+	      std::cout << "Found " << transferSpec->EigProbForward.ConvergedEigenvalues()
+			<< "/" << nev << " eigenvalues." << std::endl;	      
+	    }
+	  if (getBackwardEigenvectors)
+	    {
+	      std::cout << "Solving eigen problem for backward transition matrix..." << std::endl;
+	      transferSpec->getSpectrumBackward();
+	      std::cout << "Found " << transferSpec->EigProbBackward.ConvergedEigenvalues()
+			<< "/" << nev << " eigenvalues." << std::endl;
+	    }
+	  if (makeBiorthonormal)
+	    {
+	      std::cout << "Making set of forward and backward eigenvectors biorthonormal..."
+			<< std::endl;
+	      transferSpec->makeBiorthonormal();
+	    }
 	}
       catch (std::exception &ex)
 	{
@@ -162,9 +173,18 @@ int main(int argc, char * argv[])
       // Write spectrum 
       try
 	{
-	  std::cout << "Write spectrum..." << std::endl;
-	  transferSpec->writeSpectrum(EigValForwardFileName, EigVecForwardFileName,
-				      EigValBackwardFileName, EigVecBackwardFileName);
+	  if (getForwardEigenvectors)
+	    {
+	      std::cout << "Writing forward eigenvalues and eigenvectors..." << std::endl;
+	      transferSpec->writeSpectrumForward(EigValForwardFileName,
+						 EigVecForwardFileName);
+	    }
+	  if (getBackwardEigenvectors)
+	    {
+	      std::cout << "Writing backward eigenvalues and eigenvectors..." << std::endl;
+	      transferSpec->writeSpectrumBackward(EigValBackwardFileName,
+						 EigVecBackwardFileName);
+	    }
 	}
       catch (std::exception &ex)
 	{
@@ -173,8 +193,8 @@ int main(int argc, char * argv[])
 	}
 
       // Free
-      delete transferOp;
       delete transferSpec;
+      delete transferOp;
   }
 
   // Free
@@ -323,6 +343,10 @@ readConfig(const char *cfgFileName)
     }
     std::cout << "]" << std::endl;
 
+    stationary = cfg.lookup("transfer.stationary");
+    std::cout << "Is stationary: " << stationary << std::endl;
+
+    
     // Get spectrum setting 
     nev = cfg.lookup("spectrum.nev");
     std::cout << std::endl << "---spectrum---" << std::endl;
@@ -355,6 +379,20 @@ readConfig(const char *cfgFileName)
     std::cout << "maxit: " << config.maxit << std::endl;
     std::cout << "AutoShift: " << config.AutoShift << std::endl;
     std::cout << std::endl;
+
+    if (cfg.exists("spectrum.getForwardEigenvectors"))
+      {
+	getForwardEigenvectors = cfg.lookup("spectrum.getForwardEigenvectors");
+      }
+    if (cfg.exists("spectrum.getBackwardEigenvectors"))
+      {
+	getBackwardEigenvectors = cfg.lookup("spectrum.getBackwardEigenvectors");
+      }
+    if (cfg.exists("spectrum.makeBiorthonormal"))
+      {
+	makeBiorthonormal = cfg.lookup("spectrum.makeBiorthonormal");
+      }
+
 
     // Finish configuration
     // Define time series parameters

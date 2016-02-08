@@ -26,10 +26,11 @@ using namespace libconfig;
  * A grid membership vector is calculated for each time series 
  * assigning to each realization a grid box.
  * Then, the membership matrix is calculated for a given lag.
- * The forward and backward transition matrices as well as the initial and final distributions
+ * The forward transition matrices as well as the initial distributions
  * are calculated from the membership matrix.
  * Note that, since the transitions are calculated from long time series,
- * these distributions should be equal (to the exception of the first and last realizations).
+ * the problem must be autonomous and ergodic (stationary) so that
+ * the backward transition matrix and final distribution need not be calculated.
  * Finally, the results are printed.
  */
 
@@ -66,9 +67,8 @@ char srcFileName[256];          //!< Name of the source simulation file
 char obsName[256];              //!< Name associated with the observable
 char gridPostfix[256];          //!< Postfix associated with the grid
 char gridFileName[256];         //!< File name for the grid file
-configAR config;                //!< Configuration data for the eigen problem
 char configFileName[256];       //!< Name of the configuration file
-
+bool stationary;                //!< Whether the problem is stationary or not
 
 
 /** \brief Calculate transfer operators from time series.
@@ -119,8 +119,7 @@ int main(int argc, char * argv[])
   gsl_matrix_uint *gridMemMatrix;
     
   // Transfer operator declarations
-  char forwardTransitionFileName[256], backwardTransitionFileName[256],
-    initDistFileName[256], finalDistFileName[256], postfix[256];
+  char forwardTransitionFileName[256], initDistFileName[256], postfix[256];
 
   size_t tauNum;
   double tau;
@@ -161,7 +160,7 @@ int main(int argc, char * argv[])
   grid = new RegularGrid(nx, nSTDLow, nSTDHigh, states);
     
   // Print grid
-  grid->printGrid(gridFileName, "%.12lf", true);
+  grid->printGrid(gridFileName, "%.12lf", stationary);
     
   // Open grid membership vector stream
   sprintf(gridMemFileName, "%s/transfer/gridMem/gridMem%s.txt",
@@ -195,10 +194,7 @@ int main(int argc, char * argv[])
       sprintf(postfix, "%s_tau%03d", gridPostfix, (int) (tau * 1000));
       sprintf(forwardTransitionFileName,
 	      "%s/transfer/forwardTransition/forwardTransition%s.coo", resDir, postfix);
-      sprintf(backwardTransitionFileName,
-	      "%s/transfer/backwardTransition/backwardTransition%s.coo", resDir, postfix);
       sprintf(initDistFileName, "%s/transfer/initDist/initDist%s.txt", resDir, postfix);
-      sprintf(finalDistFileName, "%s/transfer/finalDist/finalDist%s.txt", resDir, postfix);
 
       // Get full membership matrix
       std::cout << "Getting full membership matrix from the list of membership vecotrs..."
@@ -206,15 +202,13 @@ int main(int argc, char * argv[])
       gridMemMatrix = memVector2memMatrix(gridMemVector, tauNum);
 
       // Get transition matrices as CSR
-      std::cout << "Building transfer operator..." << std::endl;
-      transferOp = new transferOperator(gridMemMatrix, grid->getN());
+      std::cout << "Building stationary transfer operator..." << std::endl;
+      transferOp = new transferOperator(gridMemMatrix, grid->getN(), true);
     
       // Write transition matrix as CSR
       std::cout << "Writing transfer operator..." << std::endl;
       transferOp->printForwardTransition(forwardTransitionFileName, "%.12lf");
-      transferOp->printBackwardTransition(backwardTransitionFileName, "%.12lf");
       transferOp->printInitDist(initDistFileName, "%.12lf");
-      transferOp->printFinalDist(finalDistFileName, "%.12lf");
 	
       // Free
       delete transferOp;
@@ -339,7 +333,7 @@ readConfig(const char *cfgFileName)
 		gsl_vector_uint_get(components, d), (int) embd);
       }
     std::cout << "]" << std::endl;
-			    
+
     
     // Get grid settings
     std::cout << std::endl << "---grid---" << std::endl;
@@ -375,7 +369,12 @@ readConfig(const char *cfgFileName)
     }
     std::cout << "]" << std::endl;
 
+    stationary = cfg.lookup("transfer.stationary");
+    std::cout << "Is stationary: " << stationary << std::endl;
+      
+    
     std::cout << std::endl;
+    
     
     // Finish configuration
     // Define time series parameters
