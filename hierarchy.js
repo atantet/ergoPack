@@ -7,9 +7,7 @@ var hierarchy =
       ] ],
       [ "PolarGrid", "class_polar_grid.html", null ]
     ] ],
-    [ "gsl_spmatrix2AR", "classgsl__spmatrix2_a_r.html", [
-      [ "gsl_spmatrix2ARShift", "classgsl__spmatrix2_a_r_shift.html", null ]
-    ] ],
+    [ "gsl_spmatrix2AR", "classgsl__spmatrix2_a_r.html", null ],
     [ "model", "classmodel.html", null ],
     [ "modelSDDE", "classmodel_s_d_d_e.html", null ],
     [ "modelStochastic", "classmodel_stochastic.html", null ],

@@ -4,7 +4,6 @@ var transfer_8cpp =
     [ "readConfig", "transfer_8cpp.html#aa010785ea3444039793b472da019f4d6", null ],
     [ "caseName", "transfer_8cpp.html#abcb17cfffce5ecde9b06e71e77d227a3", null ],
     [ "components", "transfer_8cpp.html#aecad9ca0f37bee172f18c2d6ec53cb9c", null ],
-    [ "config", "transfer_8cpp.html#a3be8d930694ec109c799534056975d56", null ],
     [ "configFileName", "transfer_8cpp.html#ab8f7d4e57ff12610ba2500706df80754", null ],
     [ "delayName", "transfer_8cpp.html#af76fd8dcdbd416c42428d108acbf2343", null ],
     [ "dim", "transfer_8cpp.html#a70b5e28b5bc3d1b63a7435c5fe50b837", null ],
@@ -30,5 +29,6 @@ var transfer_8cpp =
     [ "spinup", "transfer_8cpp.html#a028c8dc840d3db4dfe62398e3f50c758", null ],
     [ "srcFileName", "transfer_8cpp.html#a4d0857d5619c5b660d9c7508354d32f1", null ],
     [ "srcPostfix", "transfer_8cpp.html#a7bbe0f3d8db56710bd15dd46f72e784b", null ],
+    [ "stationary", "transfer_8cpp.html#a545e6f510b6127e8466e2cecdc837803", null ],
     [ "tauRng", "transfer_8cpp.html#a5556767aabd2d0b7b52309f76eb7b5f5", null ]
 ];

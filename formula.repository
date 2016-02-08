@@ -9,3 +9,17 @@
 \form#8:$ \sigma $
 \form#9:$ \beta $
 \form#10:$(M - \sigma)^{-1}$
+\form#11:$L^2$
+\form#12:$L^2_\mu$
+\form#13:$\mu$
+\form#14:$v$
+\form#15:$w$
+\form#16:$\sum_{k = 1}^n v_k \mu_k w_k $
+\form#17:$\sqrt{\sum_{k = 1}^n v_k^2 \mu_k}$
+\form#18:$\sum_{k = 1}^n v_k \mu_k w^*_k $
+\form#19:$\rho_0 = \rho_f$
+\form#20:$i$
+\form#21:$\kappa_i = \frac{\|\psi_i\|_{\rho_s} \|\psi^*_i\|_{\rho_f}} {\left<\psi_i, \psi_i^*\right>_{\rho_t}}$
+\form#22:$\psi_i$
+\form#23:$\psi_i^*$
+\form#24:$ w_i = \left<f, \psi_k^* \right>_{\rho_0} \left<\psi_k, g \right>_{\rho_f} $

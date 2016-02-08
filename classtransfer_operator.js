@@ -1,12 +1,13 @@
 var classtransfer_operator =
 [
-    [ "transferOperator", "classtransfer_operator.html#ae96ec3eeb8e71941fdb7c8ddb4ae0742", null ],
-    [ "transferOperator", "classtransfer_operator.html#a82c0442d474d0aa995a6e6246bbd2dcd", null ],
-    [ "transferOperator", "classtransfer_operator.html#a055c7c476a2677ae3ec346a50885b4f9", null ],
+    [ "transferOperator", "classtransfer_operator.html#a756036c76da87ff3d267a7a03bb501be", null ],
+    [ "transferOperator", "classtransfer_operator.html#aa23cf30fc8426e182ca2a8ba8a39f6f1", null ],
+    [ "transferOperator", "classtransfer_operator.html#a4fe924ea1b1fcd75308a0778f86cfbc4", null ],
     [ "transferOperator", "classtransfer_operator.html#a1ff27bf98cdc9e6897d3a4c886e24dd8", null ],
     [ "~transferOperator", "classtransfer_operator.html#ab439c74c7b875253c4dd86c95b88aeda", null ],
     [ "filter", "classtransfer_operator.html#a397957b2d6c8c869e48a3ee0d4701488", null ],
     [ "getN", "classtransfer_operator.html#a2f6cfbdf70f1f0d952b4c92d294a0945", null ],
+    [ "isStationary", "classtransfer_operator.html#aa536e1cc89e7dd28a07f560d591597d0", null ],
     [ "printBackwardTransition", "classtransfer_operator.html#aeaeed81e7809e9fe646286355d327838", null ],
     [ "printFinalDist", "classtransfer_operator.html#a84af92252d7b32167ad76b41a4a504f3", null ],
     [ "printForwardTransition", "classtransfer_operator.html#a173617beb7c5bcb62ffe9943b14276f2", null ],

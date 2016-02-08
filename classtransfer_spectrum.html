@@ -140,9 +140,43 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad730eba97c6849286d07ea7f206182f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#ad730eba97c6849286d07ea7f206182f6">getSpectrum</a> ()</td></tr>
 <tr class="memdesc:ad730eba97c6849286d07ea7f206182f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get spectrum of both forward and backward transition matrices.  <a href="#ad730eba97c6849286d07ea7f206182f6">More...</a><br /></td></tr>
 <tr class="separator:ad730eba97c6849286d07ea7f206182f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac672fca277634f39f31c7811e244090f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#ac672fca277634f39f31c7811e244090f">writeSpectrum</a> (const char *EigValForwardFile, const char *EigVecForwardFile, const char *EigValBackwardFile, const char *EigVecBackwardFile) const </td></tr>
-<tr class="memdesc:ac672fca277634f39f31c7811e244090f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write complex eigenvalues and eigenvectors from ARPACK++.  <a href="#ac672fca277634f39f31c7811e244090f">More...</a><br /></td></tr>
-<tr class="separator:ac672fca277634f39f31c7811e244090f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f18e82adbbf1b392990a323dbd1b55f"><td class="memItemLeft" align="right" valign="top">gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a7f18e82adbbf1b392990a323dbd1b55f">getConditionNumbers</a> ()</td></tr>
+<tr class="memdesc:a7f18e82adbbf1b392990a323dbd1b55f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get condition number associated with each eigenvalues.  <a href="#a7f18e82adbbf1b392990a323dbd1b55f">More...</a><br /></td></tr>
+<tr class="separator:a7f18e82adbbf1b392990a323dbd1b55f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e816ffd6ac5e3d52c7ba25256b937b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a2e816ffd6ac5e3d52c7ba25256b937b8">sort</a> ()</td></tr>
+<tr class="memdesc:a2e816ffd6ac5e3d52c7ba25256b937b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sort by largest magnitude.  <a href="#a2e816ffd6ac5e3d52c7ba25256b937b8">More...</a><br /></td></tr>
+<tr class="separator:a2e816ffd6ac5e3d52c7ba25256b937b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f842bdef9c421af44aa2202111a728c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a2f842bdef9c421af44aa2202111a728c">makeBiorthonormal</a> ()</td></tr>
+<tr class="memdesc:a2f842bdef9c421af44aa2202111a728c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make set of forward and backward eigenvectors biorthonormal.  <a href="#a2f842bdef9c421af44aa2202111a728c">More...</a><br /></td></tr>
+<tr class="separator:a2f842bdef9c421af44aa2202111a728c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae317b279490355a8562c4af742320740"><td class="memItemLeft" align="right" valign="top">gsl_vector_complex *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#ae317b279490355a8562c4af742320740">getWeights</a> (const gsl_vector *f, const gsl_vector *g)</td></tr>
+<tr class="memdesc:ae317b279490355a8562c4af742320740"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get weights for two observables.  <a href="#ae317b279490355a8562c4af742320740">More...</a><br /></td></tr>
+<tr class="separator:ae317b279490355a8562c4af742320740"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41bca8920670389a3caa3ae5f1724643"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a41bca8920670389a3caa3ae5f1724643">writeSpectrumForward</a> (const char *EigValForwardFile, const char *EigVecForwardFile) const </td></tr>
+<tr class="memdesc:a41bca8920670389a3caa3ae5f1724643"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write forward eigenvalues and eigenvectors.  <a href="#a41bca8920670389a3caa3ae5f1724643">More...</a><br /></td></tr>
+<tr class="separator:a41bca8920670389a3caa3ae5f1724643"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e365f3fb8d4b2ee55be7586dbd4b9a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a6e365f3fb8d4b2ee55be7586dbd4b9a5">writeSpectrumBackward</a> (const char *EigValBackwardFile, const char *EigVecBackwardFile) const </td></tr>
+<tr class="memdesc:a6e365f3fb8d4b2ee55be7586dbd4b9a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write backward eigenvalues and eigenvectors.  <a href="#a6e365f3fb8d4b2ee55be7586dbd4b9a5">More...</a><br /></td></tr>
+<tr class="separator:a6e365f3fb8d4b2ee55be7586dbd4b9a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38a5135c326ba505d7c83a7c46813e53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a38a5135c326ba505d7c83a7c46813e53">writeSpectrum</a> (const char *EigValForwardFile, const char *EigVecForwardFile, const char *EigValBackwardFile, const char *EigVecBackwardFile) const </td></tr>
+<tr class="memdesc:a38a5135c326ba505d7c83a7c46813e53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write forward and backward eigenvalues and eigenvectors.  <a href="#a38a5135c326ba505d7c83a7c46813e53">More...</a><br /></td></tr>
+<tr class="separator:a38a5135c326ba505d7c83a7c46813e53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a201f3d6c17fa442cf1538fadfd3e0fdd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a201f3d6c17fa442cf1538fadfd3e0fdd"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a201f3d6c17fa442cf1538fadfd3e0fdd">getN</a> () const </td></tr>
+<tr class="memdesc:a201f3d6c17fa442cf1538fadfd3e0fdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of grid boxes. <br /></td></tr>
+<tr class="separator:a201f3d6c17fa442cf1538fadfd3e0fdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ae76c329351aa3332d05d36b216c9c2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ae76c329351aa3332d05d36b216c9c2"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a1ae76c329351aa3332d05d36b216c9c2">isStationary</a> () const </td></tr>
+<tr class="memdesc:a1ae76c329351aa3332d05d36b216c9c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get whether stationary. <br /></td></tr>
+<tr class="separator:a1ae76c329351aa3332d05d36b216c9c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a313252653fd0d2ac53b6374b7064540b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a313252653fd0d2ac53b6374b7064540b"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a313252653fd0d2ac53b6374b7064540b">isSorted</a> () const </td></tr>
+<tr class="memdesc:a313252653fd0d2ac53b6374b7064540b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get whether forward and backward eigenvalues and vectors are sorted. <br /></td></tr>
+<tr class="separator:a313252653fd0d2ac53b6374b7064540b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ccb33f81a2c45b69b0aa8d93706a556"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ccb33f81a2c45b69b0aa8d93706a556"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a8ccb33f81a2c45b69b0aa8d93706a556">getNev</a> () const </td></tr>
+<tr class="memdesc:a8ccb33f81a2c45b69b0aa8d93706a556"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of eigen values and vectors to look for. <br /></td></tr>
+<tr class="separator:a8ccb33f81a2c45b69b0aa8d93706a556"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa07f19878e14663a5f6818cd0a8a542f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa07f19878e14663a5f6818cd0a8a542f"></a>
 <a class="el" href="structconfig_a_r.html">configAR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#aa07f19878e14663a5f6818cd0a8a542f">getConfig</a> () const </td></tr>
 <tr class="memdesc:aa07f19878e14663a5f6818cd0a8a542f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get configuration. <br /></td></tr>
@@ -151,37 +185,25 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#ae2f099f800db54d2549a20e2c7a4b9ca">setConfig</a> (const <a class="el" href="structconfig_a_r.html">configAR</a> newConfig)</td></tr>
 <tr class="memdesc:ae2f099f800db54d2549a20e2c7a4b9ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set configuration. <br /></td></tr>
 <tr class="separator:ae2f099f800db54d2549a20e2c7a4b9ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ccb33f81a2c45b69b0aa8d93706a556"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ccb33f81a2c45b69b0aa8d93706a556"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a8ccb33f81a2c45b69b0aa8d93706a556">getNev</a> () const </td></tr>
-<tr class="memdesc:a8ccb33f81a2c45b69b0aa8d93706a556"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of eigen values and vectors to look for. <br /></td></tr>
-<tr class="separator:a8ccb33f81a2c45b69b0aa8d93706a556"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a20b8a9c67df7e58aef758776e68fdb99"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a20b8a9c67df7e58aef758776e68fdb99"></a>
-double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a20b8a9c67df7e58aef758776e68fdb99">EigValForwardReal</a></td></tr>
-<tr class="memdesc:a20b8a9c67df7e58aef758776e68fdb99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Real part of eigenvalues of forward transition matrix. <br /></td></tr>
-<tr class="separator:a20b8a9c67df7e58aef758776e68fdb99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10a384f6ec763a77c5b30fcc6b5cc04d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a10a384f6ec763a77c5b30fcc6b5cc04d"></a>
-double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a10a384f6ec763a77c5b30fcc6b5cc04d">EigValForwardImag</a></td></tr>
-<tr class="memdesc:a10a384f6ec763a77c5b30fcc6b5cc04d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imaginary part of eigenvalues of forward transition matrix. <br /></td></tr>
-<tr class="separator:a10a384f6ec763a77c5b30fcc6b5cc04d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d8029f520452b0d6ac8946e8cf1e713"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9d8029f520452b0d6ac8946e8cf1e713"></a>
-double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a9d8029f520452b0d6ac8946e8cf1e713">EigValBackwardReal</a></td></tr>
-<tr class="memdesc:a9d8029f520452b0d6ac8946e8cf1e713"><td class="mdescLeft">&#160;</td><td class="mdescRight">Real part of eigenvalues of backward transition matrix. <br /></td></tr>
-<tr class="separator:a9d8029f520452b0d6ac8946e8cf1e713"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5310aab09b0aa62251489a64879cf397"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5310aab09b0aa62251489a64879cf397"></a>
-double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a5310aab09b0aa62251489a64879cf397">EigValBackwardImag</a></td></tr>
-<tr class="memdesc:a5310aab09b0aa62251489a64879cf397"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imaginary part of eigenvalues of backward transition matrix. <br /></td></tr>
-<tr class="separator:a5310aab09b0aa62251489a64879cf397"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e1fb279c565374009981c4c4647a8ee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4e1fb279c565374009981c4c4647a8ee"></a>
-double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a4e1fb279c565374009981c4c4647a8ee">EigVecForward</a></td></tr>
-<tr class="memdesc:a4e1fb279c565374009981c4c4647a8ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eigenvectors of forward transition matrix. <br /></td></tr>
-<tr class="separator:a4e1fb279c565374009981c4c4647a8ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85151a531293b19b46b9d9849c3f59e9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85151a531293b19b46b9d9849c3f59e9"></a>
-double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a85151a531293b19b46b9d9849c3f59e9">EigVecBackward</a></td></tr>
-<tr class="memdesc:a85151a531293b19b46b9d9849c3f59e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eigenvectors of backward transition matrix. <br /></td></tr>
-<tr class="separator:a85151a531293b19b46b9d9849c3f59e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5271ca76a4bb9539a6386ede7a11bc6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad5271ca76a4bb9539a6386ede7a11bc6"></a>
+gsl_vector_complex *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#ad5271ca76a4bb9539a6386ede7a11bc6">EigValForward</a></td></tr>
+<tr class="memdesc:ad5271ca76a4bb9539a6386ede7a11bc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eigenvalues of forward transition matrix. <br /></td></tr>
+<tr class="separator:ad5271ca76a4bb9539a6386ede7a11bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a101e0f4c692d7bb136e6de8306d72128"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a101e0f4c692d7bb136e6de8306d72128"></a>
+gsl_vector_complex *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a101e0f4c692d7bb136e6de8306d72128">EigValBackward</a></td></tr>
+<tr class="memdesc:a101e0f4c692d7bb136e6de8306d72128"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eigenvalues of backward transition matrix. <br /></td></tr>
+<tr class="separator:a101e0f4c692d7bb136e6de8306d72128"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0887e784d845dcd5a11e98ee7273abc6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0887e784d845dcd5a11e98ee7273abc6"></a>
+gsl_matrix_complex *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a0887e784d845dcd5a11e98ee7273abc6">EigVecForward</a></td></tr>
+<tr class="memdesc:a0887e784d845dcd5a11e98ee7273abc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eigenvectors of forward transition matrix. <br /></td></tr>
+<tr class="separator:a0887e784d845dcd5a11e98ee7273abc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2203ce5e405c87bc870a32823eb3502e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2203ce5e405c87bc870a32823eb3502e"></a>
+gsl_matrix_complex *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a2203ce5e405c87bc870a32823eb3502e">EigVecBackward</a></td></tr>
+<tr class="memdesc:a2203ce5e405c87bc870a32823eb3502e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eigenvectors of backward transition matrix. <br /></td></tr>
+<tr class="separator:a2203ce5e405c87bc870a32823eb3502e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54fe22c2604a99f4523c87cebfec5b30"><td class="memItemLeft" align="right" valign="top">ARNonSymStdEig&lt; double, <a class="el" href="classgsl__spmatrix2_a_r.html">gsl_spmatrix2AR</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a54fe22c2604a99f4523c87cebfec5b30">EigProbForward</a></td></tr>
 <tr class="separator:a54fe22c2604a99f4523c87cebfec5b30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9103f0b106a39f9e595827f8dfe10a42"><td class="memItemLeft" align="right" valign="top">ARNonSymStdEig&lt; double, <a class="el" href="classgsl__spmatrix2_a_r.html">gsl_spmatrix2AR</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_spectrum.html#a9103f0b106a39f9e595827f8dfe10a42">EigProbBackward</a></td></tr>
@@ -190,7 +212,7 @@ double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class used to calculate the spectrum of forward and backward transition matrices of a <a class="el" href="classtransfer_operator.html" title="Transfer operator class. ">transferOperator</a> object. </p>
 
-<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00089">89</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
+<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00075">75</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a71e47fd8292c69a1aa416c57077d72ba"></a>
 <div class="memitem">
@@ -229,12 +251,8 @@ double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
   </table>
   </dd>
 </dl>
-<p>Allocate for possible additional eigenvalue of complex pair</p>
-<p>Allocate for both real and imaginary part but only for one member of the pair </p>
 
-<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00163">163</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
-
-<p>References <a class="el" href="classtransfer_spectrum.html#a5310aab09b0aa62251489a64879cf397">EigValBackwardImag</a>, <a class="el" href="classtransfer_spectrum.html#a9d8029f520452b0d6ac8946e8cf1e713">EigValBackwardReal</a>, <a class="el" href="classtransfer_spectrum.html#a10a384f6ec763a77c5b30fcc6b5cc04d">EigValForwardImag</a>, <a class="el" href="classtransfer_spectrum.html#a20b8a9c67df7e58aef758776e68fdb99">EigValForwardReal</a>, <a class="el" href="classtransfer_spectrum.html#a85151a531293b19b46b9d9849c3f59e9">EigVecBackward</a>, <a class="el" href="classtransfer_spectrum.html#a4e1fb279c565374009981c4c4647a8ee">EigVecForward</a>, and <a class="el" href="classtransfer_operator.html#a2f6cfbdf70f1f0d952b4c92d294a0945">transferOperator::getN()</a>.</p>
+<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00183">183</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
 
 </div>
 </div>
@@ -251,14 +269,41 @@ double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
       </table>
 </div><div class="memdoc">
 <p>Destructor desallocates. </p>
+<p>Free memory for forward eigenvalues and eigenvectors</p>
+<p>Free memory for backward eigenvalues and eigenvectors </p>
 
-<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00183">183</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
+<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00193">193</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
 
-<p>References <a class="el" href="classtransfer_spectrum.html#a5310aab09b0aa62251489a64879cf397">EigValBackwardImag</a>, <a class="el" href="classtransfer_spectrum.html#a9d8029f520452b0d6ac8946e8cf1e713">EigValBackwardReal</a>, <a class="el" href="classtransfer_spectrum.html#a10a384f6ec763a77c5b30fcc6b5cc04d">EigValForwardImag</a>, <a class="el" href="classtransfer_spectrum.html#a20b8a9c67df7e58aef758776e68fdb99">EigValForwardReal</a>, <a class="el" href="classtransfer_spectrum.html#a85151a531293b19b46b9d9849c3f59e9">EigVecBackward</a>, and <a class="el" href="classtransfer_spectrum.html#a4e1fb279c565374009981c4c4647a8ee">EigVecForward</a>.</p>
+<p>References <a class="el" href="classtransfer_spectrum.html#a101e0f4c692d7bb136e6de8306d72128">EigValBackward</a>, <a class="el" href="classtransfer_spectrum.html#ad5271ca76a4bb9539a6386ede7a11bc6">EigValForward</a>, <a class="el" href="classtransfer_spectrum.html#a2203ce5e405c87bc870a32823eb3502e">EigVecBackward</a>, and <a class="el" href="classtransfer_spectrum.html#a0887e784d845dcd5a11e98ee7273abc6">EigVecForward</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a7f18e82adbbf1b392990a323dbd1b55f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gsl_vector * transferSpectrum::getConditionNumbers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get condition numbers associated with each eigenvalue. The condition number associated with eigenvalue <img class="formulaInl" alt="$i$" src="form_20.png"/> is <img class="formulaInl" alt="$\kappa_i = \frac{\|\psi_i\|_{\rho_s} \|\psi^*_i\|_{\rho_f}} {\left&lt;\psi_i, \psi_i^*\right&gt;_{\rho_t}}$" src="form_21.png"/>, where <img class="formulaInl" alt="$\psi_i$" src="form_22.png"/> and <img class="formulaInl" alt="$\psi_i^*$" src="form_23.png"/> are the forward and backward (adjoint) eigenvectors, respectively and norm is for <img class="formulaInl" alt="$L^2$" src="form_11.png"/> w.r.t the initial or final distributions. The condition number is equal to the inverse of the cosine of the angle between the two vectors and gives a measure of the nonnormality associated with a particular pair of eigenvectors. </p><dl class="section return"><dt>Returns</dt><dd>Condition numbers associated with each pair of eigenvectors. </dd></dl>
+<p>Get norms of eigenvectors</p>
+<p>Get norm of forward eigenvector</p>
+<p>Get norm of backward eigenvector.</p>
+<p>Divide by their inner product (in case not made biorthonormal)</p>
+<p>Set condition number </p>
+
+<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00339">339</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
+
+<p>References <a class="el" href="classtransfer_spectrum.html#a2203ce5e405c87bc870a32823eb3502e">EigVecBackward</a>, <a class="el" href="classtransfer_spectrum.html#a0887e784d845dcd5a11e98ee7273abc6">EigVecForward</a>, <a class="el" href="gsl__extension_8h.html#a8e65bdf8c39851aa48e507875ecce049">gsl_vector_complex_get_inner_product()</a>, <a class="el" href="gsl__extension_8h.html#a1cfa32e99eac294c5ee1f3695a3246f3">gsl_vector_complex_get_norm()</a>, <a class="el" href="classtransfer_operator.html#a799afe0ca307f678874a98082dae02ae">transferOperator::rho0</a>, and <a class="el" href="classtransfer_operator.html#ae56b642c3d56e1f74e6cbf60eb6a7088">transferOperator::rhof</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ad730eba97c6849286d07ea7f206182f6"></a>
 <div class="memitem">
 <div class="memproto">
@@ -275,7 +320,7 @@ double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>Get spectrum of forward transition matrix</p>
 <p>Get spectrum of backward transition matrix </p>
 
-<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00265">265</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
+<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00314">314</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
 
 <p>References <a class="el" href="classtransfer_spectrum.html#aab9e26ff58d2a5e839dfeb0072473310">getSpectrumBackward()</a>, and <a class="el" href="classtransfer_spectrum.html#a132e795e62e4cfe8768f72856c1c683e">getSpectrumForward()</a>.</p>
 
@@ -295,11 +340,13 @@ double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </div><div class="memdoc">
 <p>Get spectrum of backward transition matrix. </p>
 <p>Get transpose of backward transition matrix in ARPACK CCS format</p>
-<p>Get eigenvalues and vectors of backward transition matrix </p>
+<p>In the stationary case, the adjoint eigenvectors can be calculated as left eigenvectors of the forward transition matrix divided by the stationary distribution</p>
+<p>Get eigenvalues and vectors of backward transition matrix</p>
+<p>Divide eigenvectors (real and imaginary parts) by stationary distribution </p>
 
-<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00233">233</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
+<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00251">251</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
 
-<p>References <a class="el" href="classtransfer_spectrum.html#a9103f0b106a39f9e595827f8dfe10a42">EigProbBackward</a>, <a class="el" href="classtransfer_spectrum.html#a5310aab09b0aa62251489a64879cf397">EigValBackwardImag</a>, <a class="el" href="classtransfer_spectrum.html#a9d8029f520452b0d6ac8946e8cf1e713">EigValBackwardReal</a>, <a class="el" href="classtransfer_spectrum.html#a85151a531293b19b46b9d9849c3f59e9">EigVecBackward</a>, <a class="el" href="transfer_spectrum_8hpp.html#a83d200781e2217f11ac0b6f3e82547e3">getSpectrumAR()</a>, and <a class="el" href="classtransfer_operator.html#abd3165954b7eac0105c77698ca222f8f">transferOperator::Q</a>.</p>
+<p>References <a class="el" href="classtransfer_spectrum.html#a9103f0b106a39f9e595827f8dfe10a42">EigProbBackward</a>, <a class="el" href="classtransfer_spectrum.html#a101e0f4c692d7bb136e6de8306d72128">EigValBackward</a>, <a class="el" href="classtransfer_spectrum.html#a2203ce5e405c87bc870a32823eb3502e">EigVecBackward</a>, <a class="el" href="transfer_spectrum_8hpp.html#ac44fa6008ee2eacc221875f38595d736">getSpectrumAR()</a>, <a class="el" href="classtransfer_operator.html#a7ca4ff8ffecfd6cc0e468bfc86c58959">transferOperator::P</a>, <a class="el" href="classtransfer_operator.html#abd3165954b7eac0105c77698ca222f8f">transferOperator::Q</a>, and <a class="el" href="classtransfer_operator.html#a799afe0ca307f678874a98082dae02ae">transferOperator::rho0</a>.</p>
 
 <p>Referenced by <a class="el" href="classtransfer_spectrum.html#ad730eba97c6849286d07ea7f206182f6">getSpectrum()</a>, and <a class="el" href="spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>.</p>
 
@@ -321,20 +368,113 @@ double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>Get transpose of forward transition matrix in CCS Transposing is trivial since the transition matrix is in CRS format. However, it is more secure to avoid directly changing the type of the transition matrix.</p>
 <p>Solve eigen value problem using user-defined ARPACK++ </p>
 
-<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00202">202</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
+<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00217">217</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
 
-<p>References <a class="el" href="classtransfer_spectrum.html#a54fe22c2604a99f4523c87cebfec5b30">EigProbForward</a>, <a class="el" href="classtransfer_spectrum.html#a10a384f6ec763a77c5b30fcc6b5cc04d">EigValForwardImag</a>, <a class="el" href="classtransfer_spectrum.html#a20b8a9c67df7e58aef758776e68fdb99">EigValForwardReal</a>, <a class="el" href="classtransfer_spectrum.html#a4e1fb279c565374009981c4c4647a8ee">EigVecForward</a>, <a class="el" href="transfer_spectrum_8hpp.html#a83d200781e2217f11ac0b6f3e82547e3">getSpectrumAR()</a>, and <a class="el" href="classtransfer_operator.html#a7ca4ff8ffecfd6cc0e468bfc86c58959">transferOperator::P</a>.</p>
+<p>References <a class="el" href="classtransfer_spectrum.html#a54fe22c2604a99f4523c87cebfec5b30">EigProbForward</a>, <a class="el" href="classtransfer_spectrum.html#ad5271ca76a4bb9539a6386ede7a11bc6">EigValForward</a>, <a class="el" href="classtransfer_spectrum.html#a0887e784d845dcd5a11e98ee7273abc6">EigVecForward</a>, <a class="el" href="transfer_spectrum_8hpp.html#ac44fa6008ee2eacc221875f38595d736">getSpectrumAR()</a>, and <a class="el" href="classtransfer_operator.html#a7ca4ff8ffecfd6cc0e468bfc86c58959">transferOperator::P</a>.</p>
 
 <p>Referenced by <a class="el" href="classtransfer_spectrum.html#ad730eba97c6849286d07ea7f206182f6">getSpectrum()</a>, and <a class="el" href="spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac672fca277634f39f31c7811e244090f"></a>
+<a class="anchor" id="ae317b279490355a8562c4af742320740"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int transferSpectrum::writeSpectrum </td>
+          <td class="memname">gsl_vector_complex * transferSpectrum::getWeights </td>
+          <td>(</td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>g</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get weights associated with the projection of two observables on the backward and forward eigenvectors, respectively, i.e. <img class="formulaInl" alt="$ w_i = \left&lt;f, \psi_k^* \right&gt;_{\rho_0} \left&lt;\psi_k, g \right&gt;_{\rho_f} $" src="form_24.png"/>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>Vector representing the first observable, projected on the backward eigenvectors. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">g</td><td>Vector representing the second observable, projected on the forward eigenvectors. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Weights associated with each pair of eigenvectors for the two observables. </dd></dl>
+
+<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00381">381</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
+
+<p>References <a class="el" href="classtransfer_spectrum.html#a2203ce5e405c87bc870a32823eb3502e">EigVecBackward</a>, <a class="el" href="classtransfer_spectrum.html#a0887e784d845dcd5a11e98ee7273abc6">EigVecForward</a>, <a class="el" href="gsl__extension_8h.html#a8e65bdf8c39851aa48e507875ecce049">gsl_vector_complex_get_inner_product()</a>, <a class="el" href="gsl__extension_8h.html#a499b05c5c73cabf30d8512c430f92d6b">gsl_vector_complex_memcpy_real()</a>, <a class="el" href="classtransfer_operator.html#a799afe0ca307f678874a98082dae02ae">transferOperator::rho0</a>, and <a class="el" href="classtransfer_operator.html#ae56b642c3d56e1f74e6cbf60eb6a7088">transferOperator::rhof</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2f842bdef9c421af44aa2202111a728c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void transferSpectrum::makeBiorthonormal </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Make set of forward and backward eigenvectors biorthonormal. </p>
+<p>Test that both forward and backward eigen problems have been solved and that eigenvalues and eigenvectors have been sorted.</p>
+<p>Normalize backward eigenvectors by the scalar product with forward eigenvectors to make biorthonormal set.</p>
+<p>Get inner product of forward and backward eigenvectors</p>
+<p>Divide backward eigenvector by conjugate of inner product </p>
+
+<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00502">502</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
+
+<p>References <a class="el" href="classtransfer_spectrum.html#a101e0f4c692d7bb136e6de8306d72128">EigValBackward</a>, <a class="el" href="classtransfer_spectrum.html#ad5271ca76a4bb9539a6386ede7a11bc6">EigValForward</a>, <a class="el" href="classtransfer_spectrum.html#a2203ce5e405c87bc870a32823eb3502e">EigVecBackward</a>, <a class="el" href="classtransfer_spectrum.html#a0887e784d845dcd5a11e98ee7273abc6">EigVecForward</a>, <a class="el" href="gsl__extension_8h.html#a8e65bdf8c39851aa48e507875ecce049">gsl_vector_complex_get_inner_product()</a>, <a class="el" href="classtransfer_operator.html#ae56b642c3d56e1f74e6cbf60eb6a7088">transferOperator::rhof</a>, and <a class="el" href="classtransfer_spectrum.html#a2e816ffd6ac5e3d52c7ba25256b937b8">sort()</a>.</p>
+
+<p>Referenced by <a class="el" href="spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2e816ffd6ac5e3d52c7ba25256b937b8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void transferSpectrum::sort </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sort by largest maginitude. </p>
+<p>Test that both forward and backward eigen problems have been solved.</p>
+<p>Sort forward eigenvalues by decreasing absolute value</p>
+<p>Sort backward vectors by correspondance to forward counterparts (since different eigenvalues may have the same magnitude).</p>
+<p>Get distance from eigenvalue</p>
+<p>Sort backward eigenvalue and eigenvector</p>
+<p>Free</p>
+<p>Mark that sorting has been performed </p>
+
+<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00431">431</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
+
+<p>References <a class="el" href="classtransfer_spectrum.html#a101e0f4c692d7bb136e6de8306d72128">EigValBackward</a>, <a class="el" href="classtransfer_spectrum.html#ad5271ca76a4bb9539a6386ede7a11bc6">EigValForward</a>, <a class="el" href="classtransfer_spectrum.html#a2203ce5e405c87bc870a32823eb3502e">EigVecBackward</a>, <a class="el" href="classtransfer_spectrum.html#a0887e784d845dcd5a11e98ee7273abc6">EigVecForward</a>, <a class="el" href="gsl__extension_8h.html#a0608ea649a88fa4c67798e090cf5128f">gsl_permute_matrix_complex()</a>, <a class="el" href="gsl__extension_8h.html#a33e404c4cade90c4fe140d3b1e763e5b">gsl_vector_complex_abs()</a>, and <a class="el" href="gsl__extension_8h.html#ae39d4d8cb46c23848cefd7cd7d809fd1">gsl_vector_complex_min_index()</a>.</p>
+
+<p>Referenced by <a class="el" href="classtransfer_spectrum.html#a2f842bdef9c421af44aa2202111a728c">makeBiorthonormal()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a38a5135c326ba505d7c83a7c46813e53"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void transferSpectrum::writeSpectrum </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>EigValForwardFile</em>, </td>
@@ -364,7 +504,7 @@ double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Write complex eigenvalues and eigenvectors of forward and backward transition matrices of a transfer operator to file. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Write complex eigenvalues and eigenvectors of forward and backward transition matrices. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">EigValForwardFile</td><td>File name of the file to print forward eigenvalues. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">EigVecForwardFile</td><td>File name of the file to print forward eigenvectors. </td></tr>
@@ -374,18 +514,98 @@ double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
-<p>Open files for forward</p>
-<p>Write forward</p>
-<p>Close</p>
-<p>Open files for backward</p>
+<p>Write forward eigenvalues and eigenvectors</p>
+<p>Write backward eigenvalues and eigenvectors </p>
+
+<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00627">627</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
+
+<p>References <a class="el" href="classtransfer_spectrum.html#a6e365f3fb8d4b2ee55be7586dbd4b9a5">writeSpectrumBackward()</a>, and <a class="el" href="classtransfer_spectrum.html#a41bca8920670389a3caa3ae5f1724643">writeSpectrumForward()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6e365f3fb8d4b2ee55be7586dbd4b9a5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void transferSpectrum::writeSpectrumBackward </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>EigValBackwardFile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>EigVecBackwardFile</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Write eigenvalues and eigenvectors of backward transition matrix. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">EigValBackwardFile</td><td>File name of the file to print backward eigenvalues. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">EigVecBackwardFile</td><td>File name of the file to print backward eigenvectors. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
+<p>Open files back backward</p>
 <p>Write backward</p>
 <p>Close </p>
 
-<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00287">287</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
+<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00589">589</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
 
-<p>References <a class="el" href="classtransfer_spectrum.html#a5310aab09b0aa62251489a64879cf397">EigValBackwardImag</a>, <a class="el" href="classtransfer_spectrum.html#a9d8029f520452b0d6ac8946e8cf1e713">EigValBackwardReal</a>, <a class="el" href="classtransfer_spectrum.html#a10a384f6ec763a77c5b30fcc6b5cc04d">EigValForwardImag</a>, <a class="el" href="classtransfer_spectrum.html#a20b8a9c67df7e58aef758776e68fdb99">EigValForwardReal</a>, <a class="el" href="classtransfer_spectrum.html#a85151a531293b19b46b9d9849c3f59e9">EigVecBackward</a>, <a class="el" href="classtransfer_spectrum.html#a4e1fb279c565374009981c4c4647a8ee">EigVecForward</a>, <a class="el" href="classtransfer_operator.html#a2f6cfbdf70f1f0d952b4c92d294a0945">transferOperator::getN()</a>, and <a class="el" href="transfer_spectrum_8hpp.html#ad6351b6164ce340af545f89d7ddbc73b">writeSpectrumAR()</a>.</p>
+<p>References <a class="el" href="classtransfer_spectrum.html#a101e0f4c692d7bb136e6de8306d72128">EigValBackward</a>, <a class="el" href="classtransfer_spectrum.html#a2203ce5e405c87bc870a32823eb3502e">EigVecBackward</a>, and <a class="el" href="transfer_spectrum_8hpp.html#a3708500b43775789ac011b9cd0998b49">writeSpectrumAR()</a>.</p>
 
-<p>Referenced by <a class="el" href="spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>.</p>
+<p>Referenced by <a class="el" href="spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>, and <a class="el" href="classtransfer_spectrum.html#a38a5135c326ba505d7c83a7c46813e53">writeSpectrum()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a41bca8920670389a3caa3ae5f1724643"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void transferSpectrum::writeSpectrumForward </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>EigValForwardFile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>EigVecForwardFile</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Write eigenvalues and eigenvectors of forward transition matrix. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">EigValForwardFile</td><td>File name of the file to print forward eigenvalues. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">EigVecForwardFile</td><td>File name of the file to print forward eigenvectors. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
+<p>Open files for forward</p>
+<p>Write forward</p>
+<p>Close </p>
+
+<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00554">554</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
+
+<p>References <a class="el" href="classtransfer_spectrum.html#ad5271ca76a4bb9539a6386ede7a11bc6">EigValForward</a>, <a class="el" href="classtransfer_spectrum.html#a0887e784d845dcd5a11e98ee7273abc6">EigVecForward</a>, and <a class="el" href="transfer_spectrum_8hpp.html#a3708500b43775789ac011b9cd0998b49">writeSpectrumAR()</a>.</p>
+
+<p>Referenced by <a class="el" href="spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>, and <a class="el" href="classtransfer_spectrum.html#a38a5135c326ba505d7c83a7c46813e53">writeSpectrum()</a>.</p>
 
 </div>
 </div>
@@ -401,7 +621,7 @@ double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </div><div class="memdoc">
 <p>Eigen value problem for backward transition matrix </p>
 
-<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00105">105</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
+<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00097">97</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
 
 <p>Referenced by <a class="el" href="classtransfer_spectrum.html#aab9e26ff58d2a5e839dfeb0072473310">getSpectrumBackward()</a>, and <a class="el" href="spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>.</p>
 
@@ -418,7 +638,7 @@ double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </div><div class="memdoc">
 <p>Eigen value problem for forward transition matrix </p>
 
-<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00103">103</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
+<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00095">95</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
 
 <p>Referenced by <a class="el" href="classtransfer_spectrum.html#a132e795e62e4cfe8768f72856c1c683e">getSpectrumForward()</a>, and <a class="el" href="spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>.</p>
 
@@ -434,7 +654,7 @@ double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classtransfer_spectrum.html">transferSpectrum</a></li>
-    <li class="footer">Generated on Fri Feb 5 2016 22:23:02 for ergoPack by
+    <li class="footer">Generated on Mon Feb 8 2016 12:14:12 for ergoPack by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>

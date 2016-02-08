@@ -30,7 +30,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_o_d_e_solvers_8hpp.html",
-"ergo_grid_8hpp.html#a4eb64905c4eb48a156abaf29cda24020"
+"ergo_grid_8hpp.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -9,7 +9,6 @@ var annotated_dup =
     [ "EulerMaruyamaSDDE", "class_euler_maruyama_s_d_d_e.html", "class_euler_maruyama_s_d_d_e" ],
     [ "Grid", "class_grid.html", "class_grid" ],
     [ "gsl_spmatrix2AR", "classgsl__spmatrix2_a_r.html", "classgsl__spmatrix2_a_r" ],
-    [ "gsl_spmatrix2ARShift", "classgsl__spmatrix2_a_r_shift.html", "classgsl__spmatrix2_a_r_shift" ],
     [ "linearField", "classlinear_field.html", "classlinear_field" ],
     [ "Lorenz63", "class_lorenz63.html", "class_lorenz63" ],
     [ "model", "classmodel.html", "classmodel" ],

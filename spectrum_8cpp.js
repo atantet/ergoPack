@@ -11,9 +11,12 @@ var spectrum_8cpp =
     [ "dstFileName", "spectrum_8cpp.html#a1e5eb2aee191c8a249a6c2765e0191d8", null ],
     [ "dt", "spectrum_8cpp.html#a03e28be41881b703c836edbfe9b51b17", null ],
     [ "embedding", "spectrum_8cpp.html#a9ead67f01769704e369385aa9c86bf89", null ],
+    [ "getBackwardEigenvectors", "spectrum_8cpp.html#a0b3feb5125bce352938bcaf68e3e9fc7", null ],
+    [ "getForwardEigenvectors", "spectrum_8cpp.html#ac93dc7ea660861d54764a0922aa4fb42", null ],
     [ "gridPostfix", "spectrum_8cpp.html#aa55bc3bac1b0344a916116a1d56ae17c", null ],
     [ "L", "spectrum_8cpp.html#a2442c8274ae11905a74c1bf95501af09", null ],
     [ "LCut", "spectrum_8cpp.html#a89543d44945ce4a57fc160f958c59d8d", null ],
+    [ "makeBiorthonormal", "spectrum_8cpp.html#a8f85a6a4912163cf2dc0d8ec4e57b3cb", null ],
     [ "N", "spectrum_8cpp.html#aa6d2142329b3b553ce8a778f8239db33", null ],
     [ "nev", "spectrum_8cpp.html#a015e64d999600a1ac5f5bdb700cd17b6", null ],
     [ "nLags", "spectrum_8cpp.html#afc207ecfbf04e30774e0dd94922e279f", null ],
@@ -26,5 +29,6 @@ var spectrum_8cpp =
     [ "resDir", "spectrum_8cpp.html#ab1844aa717fc79812fae9c199d1ef1dd", null ],
     [ "spinup", "spectrum_8cpp.html#a028c8dc840d3db4dfe62398e3f50c758", null ],
     [ "srcPostfix", "spectrum_8cpp.html#a7bbe0f3d8db56710bd15dd46f72e784b", null ],
+    [ "stationary", "spectrum_8cpp.html#a545e6f510b6127e8466e2cecdc837803", null ],
     [ "tauRng", "spectrum_8cpp.html#a5556767aabd2d0b7b52309f76eb7b5f5", null ]
 ];

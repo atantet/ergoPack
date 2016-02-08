@@ -116,8 +116,11 @@ $(document).ready(function(){initNavTree('gsl__extension_8h.html','');});
 
 <p>Extend GSL with utility functions.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;gsl/gsl_vector.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;gsl/gsl_complex.h&gt;</code><br />
+<code>#include &lt;gsl/gsl_complex_math.h&gt;</code><br />
+<code>#include &lt;gsl/gsl_vector.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_matrix.h&gt;</code><br />
+<code>#include &lt;gsl/gsl_permutation.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_errno.h&gt;</code><br />
 <code>#include &lt;math.h&gt;</code><br />
 </div>
@@ -134,6 +137,13 @@ Functions</h2></td></tr>
 <tr class="memitem:ae7e80dbf57c33d4f61ab0bf1eea9829e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#ae7e80dbf57c33d4f61ab0bf1eea9829e">gsl_vector_get_sum</a> (const gsl_vector *v)</td></tr>
 <tr class="memdesc:ae7e80dbf57c33d4f61ab0bf1eea9829e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get sum of vector elements.  <a href="#ae7e80dbf57c33d4f61ab0bf1eea9829e">More...</a><br /></td></tr>
 <tr class="separator:ae7e80dbf57c33d4f61ab0bf1eea9829e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38e8027a97afbe4c31bf340c2058e025"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38e8027a97afbe4c31bf340c2058e025"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a38e8027a97afbe4c31bf340c2058e025">gsl_vector_get_innerproduct</a> (const gsl_vector *v, const gsl_vector *w, const gsl_vector *mu)</td></tr>
+<tr class="memdesc:a38e8027a97afbe4c31bf340c2058e025"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get inner product of two vectors for a given measure. <br /></td></tr>
+<tr class="separator:a38e8027a97afbe4c31bf340c2058e025"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82abb50ad76254cf7cfb87ece0cbf0b2"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a82abb50ad76254cf7cfb87ece0cbf0b2">gsl_vector_get_norm</a> (const gsl_vector *v, const gsl_vector *mu)</td></tr>
+<tr class="memdesc:a82abb50ad76254cf7cfb87ece0cbf0b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <img class="formulaInl" alt="$L^2$" src="form_11.png"/> norm of a vector for a given measure.  <a href="#a82abb50ad76254cf7cfb87ece0cbf0b2">More...</a><br /></td></tr>
+<tr class="separator:a82abb50ad76254cf7cfb87ece0cbf0b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d3b61772aef3c5e6525295d94f4dc90"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a2d3b61772aef3c5e6525295d94f4dc90">gsl_vector_get_prod</a> (const gsl_vector *v)</td></tr>
 <tr class="memdesc:a2d3b61772aef3c5e6525295d94f4dc90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get product of vector elements.  <a href="#a2d3b61772aef3c5e6525295d94f4dc90">More...</a><br /></td></tr>
 <tr class="separator:a2d3b61772aef3c5e6525295d94f4dc90"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,6 +167,36 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gs
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a1f83311e66817cec1e222f1bcd270441">gsl_vector_linspace</a> (gsl_vector *v, const double lower, const double upper, const size_t n)</td></tr>
 <tr class="memdesc:a1f83311e66817cec1e222f1bcd270441"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get vector of a given number equally-spaced numbers between two bounds. <br /></td></tr>
 <tr class="separator:a1f83311e66817cec1e222f1bcd270441"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a499b05c5c73cabf30d8512c430f92d6b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a499b05c5c73cabf30d8512c430f92d6b">gsl_vector_complex_memcpy_real</a> (gsl_vector_complex *dst, const gsl_vector *src)</td></tr>
+<tr class="memdesc:a499b05c5c73cabf30d8512c430f92d6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy vector to real part of complex vector.  <a href="#a499b05c5c73cabf30d8512c430f92d6b">More...</a><br /></td></tr>
+<tr class="separator:a499b05c5c73cabf30d8512c430f92d6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3deeb1f9a10b0a2b16aae2c14ceb35b7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a3deeb1f9a10b0a2b16aae2c14ceb35b7">gsl_vector_complex_memcpy_imag</a> (gsl_vector_complex *dst, const gsl_vector *src)</td></tr>
+<tr class="memdesc:a3deeb1f9a10b0a2b16aae2c14ceb35b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy vector to imaginary part of complex vector.  <a href="#a3deeb1f9a10b0a2b16aae2c14ceb35b7">More...</a><br /></td></tr>
+<tr class="separator:a3deeb1f9a10b0a2b16aae2c14ceb35b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33e404c4cade90c4fe140d3b1e763e5b"><td class="memItemLeft" align="right" valign="top">gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a33e404c4cade90c4fe140d3b1e763e5b">gsl_vector_complex_abs</a> (const gsl_vector_complex *v)</td></tr>
+<tr class="memdesc:a33e404c4cade90c4fe140d3b1e763e5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get absolute values of complex vector.  <a href="#a33e404c4cade90c4fe140d3b1e763e5b">More...</a><br /></td></tr>
+<tr class="separator:a33e404c4cade90c4fe140d3b1e763e5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0ffd08701a1b2554e594cd341006ae8"><td class="memItemLeft" align="right" valign="top">gsl_complex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#ab0ffd08701a1b2554e594cd341006ae8">gsl_vector_complex_max</a> (const gsl_vector_complex *v)</td></tr>
+<tr class="memdesc:ab0ffd08701a1b2554e594cd341006ae8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the maximum in absolute value of a complex vector.  <a href="#ab0ffd08701a1b2554e594cd341006ae8">More...</a><br /></td></tr>
+<tr class="separator:ab0ffd08701a1b2554e594cd341006ae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c42452d1a41459c8ec7ab16af5de399"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a6c42452d1a41459c8ec7ab16af5de399">gsl_vector_complex_max_index</a> (const gsl_vector_complex *v)</td></tr>
+<tr class="memdesc:a6c42452d1a41459c8ec7ab16af5de399"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the index of the maximum in absolute value of a complex vector.  <a href="#a6c42452d1a41459c8ec7ab16af5de399">More...</a><br /></td></tr>
+<tr class="separator:a6c42452d1a41459c8ec7ab16af5de399"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab58dd51ec0f1c3261c498f0c01c6dc50"><td class="memItemLeft" align="right" valign="top">gsl_complex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#ab58dd51ec0f1c3261c498f0c01c6dc50">gsl_vector_complex_min</a> (const gsl_vector_complex *v)</td></tr>
+<tr class="memdesc:ab58dd51ec0f1c3261c498f0c01c6dc50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the minimum in absolute value of a complex vector.  <a href="#ab58dd51ec0f1c3261c498f0c01c6dc50">More...</a><br /></td></tr>
+<tr class="separator:ab58dd51ec0f1c3261c498f0c01c6dc50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae39d4d8cb46c23848cefd7cd7d809fd1"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#ae39d4d8cb46c23848cefd7cd7d809fd1">gsl_vector_complex_min_index</a> (const gsl_vector_complex *v)</td></tr>
+<tr class="memdesc:ae39d4d8cb46c23848cefd7cd7d809fd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the index of the minimum in absolute value of a complex vector.  <a href="#ae39d4d8cb46c23848cefd7cd7d809fd1">More...</a><br /></td></tr>
+<tr class="separator:ae39d4d8cb46c23848cefd7cd7d809fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e65bdf8c39851aa48e507875ecce049"><td class="memItemLeft" align="right" valign="top">gsl_complex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a8e65bdf8c39851aa48e507875ecce049">gsl_vector_complex_get_inner_product</a> (const gsl_vector_complex *v, const gsl_vector_complex *w, const gsl_vector *mu)</td></tr>
+<tr class="memdesc:a8e65bdf8c39851aa48e507875ecce049"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate inner product between two complex vectors for a given measure.  <a href="#a8e65bdf8c39851aa48e507875ecce049">More...</a><br /></td></tr>
+<tr class="separator:a8e65bdf8c39851aa48e507875ecce049"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cfa32e99eac294c5ee1f3695a3246f3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a1cfa32e99eac294c5ee1f3695a3246f3">gsl_vector_complex_get_norm</a> (const gsl_vector_complex *v, const gsl_vector *mu)</td></tr>
+<tr class="memdesc:a1cfa32e99eac294c5ee1f3695a3246f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the norm <img class="formulaInl" alt="$L^2_\mu$" src="form_12.png"/> of a complex vector for a given measure <img class="formulaInl" alt="$\mu$" src="form_13.png"/>.  <a href="#a1cfa32e99eac294c5ee1f3695a3246f3">More...</a><br /></td></tr>
+<tr class="separator:a1cfa32e99eac294c5ee1f3695a3246f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0608ea649a88fa4c67798e090cf5128f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a0608ea649a88fa4c67798e090cf5128f">gsl_permute_matrix_complex</a> (const gsl_permutation *p, gsl_matrix_complex *m, const size_t axis)</td></tr>
+<tr class="memdesc:a0608ea649a88fa4c67798e090cf5128f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Permute rows or columns of a matrix.  <a href="#a0608ea649a88fa4c67798e090cf5128f">More...</a><br /></td></tr>
+<tr class="separator:a0608ea649a88fa4c67798e090cf5128f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc7db93d02ba90775277b0a4c9c6c178"><td class="memItemLeft" align="right" valign="top">gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#acc7db93d02ba90775277b0a4c9c6c178">gsl_matrix_get_rowsum</a> (const gsl_matrix *m)</td></tr>
 <tr class="memdesc:acc7db93d02ba90775277b0a4c9c6c178"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the sum of the elements of a matrix over each row.  <a href="#acc7db93d02ba90775277b0a4c9c6c178">More...</a><br /></td></tr>
 <tr class="separator:acc7db93d02ba90775277b0a4c9c6c178"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,6 +213,8 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a38642e8787dd23e023301df79852f0f6"><td class="memItemLeft" align="right" valign="top">gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a38642e8787dd23e023301df79852f0f6">gsl_matrix_get_std</a> (const gsl_matrix *m, const size_t axis)</td></tr>
 <tr class="memdesc:a38642e8787dd23e023301df79852f0f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the standard deviation over the elements of a matrix along a given axis.  <a href="#a38642e8787dd23e023301df79852f0f6">More...</a><br /></td></tr>
 <tr class="separator:a38642e8787dd23e023301df79852f0f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a926db00bfba5796f036ab13f89ea0a64"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a926db00bfba5796f036ab13f89ea0a64">gsl_vector_get_inner_product</a> (const gsl_vector *v, const gsl_vector *w, const gsl_vector *mu)</td></tr>
+<tr class="separator:a926db00bfba5796f036ab13f89ea0a64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32d2d33f467231ec046bea63b623a762"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a32d2d33f467231ec046bea63b623a762">gsl_vector_max_index_among</a> (const gsl_vector *v, const gsl_vector_uint *marker)</td></tr>
 <tr class="separator:a32d2d33f467231ec046bea63b623a762"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95d940106bc333e84cc719a33c62cfa9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a95d940106bc333e84cc719a33c62cfa9">gsl_vector_linspace</a> (gsl_vector *v, const double lower, const double upper)</td></tr>
@@ -206,7 +248,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Vector of the sum of the columns. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00284">284</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00682">682</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#ae7e80dbf57c33d4f61ab0bf1eea9829e">gsl_vector_get_sum()</a>.</p>
 
@@ -246,7 +288,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Vector of with the means. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00307">307</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00705">705</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#a11c8c9184dbb7e862c77302291f45b02">gsl_matrix_get_colsum()</a>, and <a class="el" href="gsl__extension_8h.html#acc7db93d02ba90775277b0a4c9c6c178">gsl_matrix_get_rowsum()</a>.</p>
 
@@ -275,7 +317,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Vector of the sum of the rows. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00263">263</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00661">661</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#ae7e80dbf57c33d4f61ab0bf1eea9829e">gsl_vector_get_sum()</a>.</p>
 
@@ -315,7 +357,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Vector of with the standard deviation. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00369">369</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00767">767</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#ac99d76cdfdb5bd2b172823aa55323ca4">gsl_matrix_get_var()</a>, and <a class="el" href="gsl__extension_8h.html#a382311a4708768dbbee4a5dd12617122">gsl_vector_sqrt()</a>.</p>
 
@@ -355,11 +397,399 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Vector of with the variance. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00337">337</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00735">735</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#af732cbdb62af230ba5297994c9e4cdc2">gsl_matrix_get_mean()</a>.</p>
 
 <p>Referenced by <a class="el" href="gsl__extension_8h.html#a38642e8787dd23e023301df79852f0f6">gsl_matrix_get_std()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0608ea649a88fa4c67798e090cf5128f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int gsl_permute_matrix_complex </td>
+          <td>(</td>
+          <td class="paramtype">const gsl_permutation *&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gsl_matrix_complex *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>axis</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Permute rows (axis = 0) or columns (axis = 1) of a matrix according to permutation. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>Permutation. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">m</td><td>Matrix to permute. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">axis</td><td>Axis along which to permute. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
+<p>Get size of axis along which to permute</p>
+<p>Save matrix</p>
+<p>Permute </p>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00614">614</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+<p>Referenced by <a class="el" href="classtransfer_spectrum.html#a2e816ffd6ac5e3d52c7ba25256b937b8">transferSpectrum::sort()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a33e404c4cade90c4fe140d3b1e763e5b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gsl_vector * gsl_vector_complex_abs </td>
+          <td>(</td>
+          <td class="paramtype">const gsl_vector_complex *&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get absolute values of complex vector. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>Complex vector for which to calculate the absolute value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Real vector of absolute values. </dd></dl>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00400">400</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+<p>Referenced by <a class="el" href="classtransfer_spectrum.html#a2e816ffd6ac5e3d52c7ba25256b937b8">transferSpectrum::sort()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8e65bdf8c39851aa48e507875ecce049"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gsl_complex gsl_vector_complex_get_inner_product </td>
+          <td>(</td>
+          <td class="paramtype">const gsl_vector_complex *&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector_complex *&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>mu</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Calculate inner product between two complex vectors for a given measure. The inner product of <img class="formulaInl" alt="$L^2_\mu$" src="form_12.png"/> between <img class="formulaInl" alt="$v$" src="form_14.png"/> and <img class="formulaInl" alt="$w$" src="form_15.png"/> is equal to <img class="formulaInl" alt="$\sum_{k = 1}^n v_k \mu_k w^*_k $" src="form_18.png"/>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>Left vector (bra). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>Right vector (ket). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mu</td><td>Measure with respect to which to calculate the inner product. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Inner product between the two vectors. </dd></dl>
+<p>Get product i</p>
+<p>Add product i </p>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00549">549</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+<p>Referenced by <a class="el" href="classtransfer_spectrum.html#a7f18e82adbbf1b392990a323dbd1b55f">transferSpectrum::getConditionNumbers()</a>, <a class="el" href="classtransfer_spectrum.html#ae317b279490355a8562c4af742320740">transferSpectrum::getWeights()</a>, <a class="el" href="gsl__extension_8h.html#a1cfa32e99eac294c5ee1f3695a3246f3">gsl_vector_complex_get_norm()</a>, and <a class="el" href="classtransfer_spectrum.html#a2f842bdef9c421af44aa2202111a728c">transferSpectrum::makeBiorthonormal()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1cfa32e99eac294c5ee1f3695a3246f3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double gsl_vector_complex_get_norm </td>
+          <td>(</td>
+          <td class="paramtype">const gsl_vector_complex *&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>mu</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Calculate the norm <img class="formulaInl" alt="$L^2_\mu$" src="form_12.png"/> of a complex vector for a given measure <img class="formulaInl" alt="$\mu$" src="form_13.png"/>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>Vector from which to calculate the norm. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mu</td><td>Measure with respect to which to calculate the norm. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Norm of the vector. </dd></dl>
+<p>Copy vector</p>
+<p>Get norm</p>
+<p>Free </p>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00585">585</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+<p>References <a class="el" href="gsl__extension_8h.html#a8e65bdf8c39851aa48e507875ecce049">gsl_vector_complex_get_inner_product()</a>.</p>
+
+<p>Referenced by <a class="el" href="classtransfer_spectrum.html#a7f18e82adbbf1b392990a323dbd1b55f">transferSpectrum::getConditionNumbers()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab0ffd08701a1b2554e594cd341006ae8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gsl_complex gsl_vector_complex_max </td>
+          <td>(</td>
+          <td class="paramtype">const gsl_vector_complex *&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Find the maximum in absolute value of a complex vector. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>Complex vector from which to find the maximum. return Maximum in absolute value of a complex vector. </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Find maximum </p>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00419">419</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6c42452d1a41459c8ec7ab16af5de399"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t gsl_vector_complex_max_index </td>
+          <td>(</td>
+          <td class="paramtype">const gsl_vector_complex *&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Find the index of the maximum in absolute value of a complex vector. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>Complex vector from which to find the index of maximum. return Index of the maximum in absolute value of the complex vector. </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Find maximum </p>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00449">449</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3deeb1f9a10b0a2b16aae2c14ceb35b7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int gsl_vector_complex_memcpy_imag </td>
+          <td>(</td>
+          <td class="paramtype">gsl_vector_complex *&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Copy vector to imaginary part of complex vector. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">dst</td><td>Destination complex vector to which copy imaginary part. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">src</td><td>Source vector to copy. </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Copy source vector to imaginary part of complex destination vector </p>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00380">380</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a499b05c5c73cabf30d8512c430f92d6b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int gsl_vector_complex_memcpy_real </td>
+          <td>(</td>
+          <td class="paramtype">gsl_vector_complex *&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Copy vector to real part of complex vector. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">dst</td><td>Destination complex vector to which copy real part. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">src</td><td>Source vector to copy. </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Copy source vector to real part of complex destination vector </p>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00359">359</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+<p>Referenced by <a class="el" href="classtransfer_spectrum.html#ae317b279490355a8562c4af742320740">transferSpectrum::getWeights()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab58dd51ec0f1c3261c498f0c01c6dc50"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gsl_complex gsl_vector_complex_min </td>
+          <td>(</td>
+          <td class="paramtype">const gsl_vector_complex *&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Find the minimum in absolute value of a complex vector. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>Complex vector from which to find the minimum. return Minimum in absolute value of a complex vector. </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Find minimum </p>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00482">482</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae39d4d8cb46c23848cefd7cd7d809fd1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t gsl_vector_complex_min_index </td>
+          <td>(</td>
+          <td class="paramtype">const gsl_vector_complex *&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Find the index of the minimum in absolute value of a complex vector. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>Complex vector from which to find the index of minimum. return Index of the minimum in absolute value of the complex vector. </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Find minimum </p>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00512">512</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+<p>Referenced by <a class="el" href="classtransfer_spectrum.html#a2e816ffd6ac5e3d52c7ba25256b937b8">transferSpectrum::sort()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a926db00bfba5796f036ab13f89ea0a64"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double gsl_vector_get_inner_product </td>
+          <td>(</td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>mu</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the inner product of two vectors for a given measure. The inner product of <img class="formulaInl" alt="$L^2_\mu$" src="form_12.png"/> between <img class="formulaInl" alt="$v$" src="form_14.png"/> and <img class="formulaInl" alt="$w$" src="form_15.png"/> is equal to <img class="formulaInl" alt="$\sum_{k = 1}^n v_k \mu_k w_k $" src="form_16.png"/>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>Left vector (bra). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>Right vector (ket). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mu</td><td>Vector of the measure associated with the inner product. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Inner product. </dd></dl>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00152">152</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+<p>References <a class="el" href="gsl__extension_8h.html#ae7e80dbf57c33d4f61ab0bf1eea9829e">gsl_vector_get_sum()</a>.</p>
+
+<p>Referenced by <a class="el" href="gsl__extension_8h.html#a82abb50ad76254cf7cfb87ece0cbf0b2">gsl_vector_get_norm()</a>.</p>
 
 </div>
 </div>
@@ -384,11 +814,49 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Mean of the vector. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00147">147</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00246">246</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#ae7e80dbf57c33d4f61ab0bf1eea9829e">gsl_vector_get_sum()</a>.</p>
 
 <p>Referenced by <a class="el" href="gsl__extension_8h.html#a1977d7583003756777e469632dfec69d">gsl_vector_get_var()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a82abb50ad76254cf7cfb87ece0cbf0b2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double gsl_vector_get_norm </td>
+          <td>(</td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>mu</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the <img class="formulaInl" alt="$L^2_\mu$" src="form_12.png"/> norm of a vector for a given measure <img class="formulaInl" alt="$\mu$" src="form_13.png"/>. The <img class="formulaInl" alt="$L^2_\mu$" src="form_12.png"/> norm of <img class="formulaInl" alt="$v$" src="form_14.png"/> is equal to <img class="formulaInl" alt="$\sqrt{\sum_{k = 1}^n v_k^2 \mu_k}$" src="form_17.png"/>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>Vector of which to calculate the norm. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mu</td><td>Vector of the measure associated with the norm. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Norm of the vector. </dd></dl>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00184">184</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+<p>References <a class="el" href="gsl__extension_8h.html#a926db00bfba5796f036ab13f89ea0a64">gsl_vector_get_inner_product()</a>.</p>
 
 </div>
 </div>
@@ -413,7 +881,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Product of vector elements. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00113">113</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00212">212</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 </div>
 </div>
@@ -438,7 +906,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Standard Deviation of the vector. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00188">188</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00287">287</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#a1977d7583003756777e469632dfec69d">gsl_vector_get_var()</a>.</p>
 
@@ -465,9 +933,9 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Sum of vector elements. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00096">96</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00131">131</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
-<p>Referenced by <a class="el" href="gsl__extension_8h.html#a11c8c9184dbb7e862c77302291f45b02">gsl_matrix_get_colsum()</a>, <a class="el" href="gsl__extension_8h.html#acc7db93d02ba90775277b0a4c9c6c178">gsl_matrix_get_rowsum()</a>, <a class="el" href="gsl__extension_8h.html#af1130ab234ac6a334fc5175d317aed47">gsl_vector_get_mean()</a>, and <a class="el" href="gsl__extension_8h.html#a6d71910f1fb03add1ee3804625ada99c">gsl_vector_normalize()</a>.</p>
+<p>Referenced by <a class="el" href="gsl__extension_8h.html#a11c8c9184dbb7e862c77302291f45b02">gsl_matrix_get_colsum()</a>, <a class="el" href="gsl__extension_8h.html#acc7db93d02ba90775277b0a4c9c6c178">gsl_matrix_get_rowsum()</a>, <a class="el" href="gsl__extension_8h.html#a926db00bfba5796f036ab13f89ea0a64">gsl_vector_get_inner_product()</a>, <a class="el" href="gsl__extension_8h.html#af1130ab234ac6a334fc5175d317aed47">gsl_vector_get_mean()</a>, and <a class="el" href="gsl__extension_8h.html#a6d71910f1fb03add1ee3804625ada99c">gsl_vector_normalize()</a>.</p>
 
 </div>
 </div>
@@ -492,7 +960,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Variance of the vector. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00159">159</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00258">258</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#af1130ab234ac6a334fc5175d317aed47">gsl_vector_get_mean()</a>.</p>
 
@@ -538,7 +1006,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00238">238</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00338">338</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 </div>
 </div>
@@ -574,7 +1042,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Index of the maximum. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00201">201</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00301">301</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 </div>
 </div>
@@ -598,7 +1066,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00079">79</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00114">114</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#ae7e80dbf57c33d4f61ab0bf1eea9829e">gsl_vector_get_sum()</a>.</p>
 
@@ -627,7 +1095,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00064">64</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00099">99</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>Referenced by <a class="el" href="gsl__extension_8h.html#a38642e8787dd23e023301df79852f0f6">gsl_matrix_get_std()</a>.</p>
 
@@ -654,7 +1122,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Product of vector elements. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00130">130</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00229">229</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 </div>
 </div>
@@ -665,7 +1133,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="gsl__extension_8h.html">gsl_extension.h</a></li>
-    <li class="footer">Generated on Fri Feb 5 2016 22:23:02 for ergoPack by
+    <li class="footer">Generated on Mon Feb 8 2016 12:14:12 for ergoPack by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>
