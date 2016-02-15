@@ -5,12 +5,18 @@
 #include <vector>
 #include <stdexcept>
 #include <ios>
+#include <limits>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_spmatrix.h>
 #include <ergoPack/gsl_extension.h>
 #include <ergoPack/ergoGrid.hpp>
+
+
+/** \addtogroup transfer
+ * @{
+ */
 
 /** \file transferOperator.hpp
  * \brief Calculate discretized approximation of transfer/Koopman operators from time series.
@@ -250,6 +256,8 @@ transferOperator::allocate()
   P = NULL;
   rho0 = gsl_vector_alloc(N);
   
+  /** If stationary problem, rho0 = rhof = stationary distribution
+   *  and the backward transition matrix need not be calculated */
   Q = NULL;
   if (!stationary)
     {    
@@ -273,54 +281,66 @@ int
 transferOperator::buildFromMembership(const gsl_matrix_uint *gridMem)
 {
   gsl_spmatrix *T;
+  const double tol = std::numeric_limits<double>::epsilon() * N * 100;
 
+  // Allocate distributions and set matrices to NULL pointer
+  allocate();
+
+  
   // Get transition count triplets
   T = getTransitionCountTriplet(gridMem, N);
+
   
   /** Convert to CRS summing duplicates */
   if (!(P = gsl_spmatrix_compress(T, GSL_SPMATRIX_CRS)))
     {
+      fprintf(stderr, "transferOperator::buildFromMembership: error compressing\
+forward transition matrix.\n");
       throw std::exception();
     }
 
   /** Get initial distribution */
-  if (!gsl_spmatrix_get_rowsum(rho0, P))
+  if (gsl_spmatrix_get_rowsum(rho0, P))
     {
+      fprintf(stderr, "transferOperator::buildFromMembership: error getting\
+sum of rows of forward transition matrix.\n");
       throw std::exception();
     }
 
+  
+  /** If the problem is not stationary, get final distribution
+   *  and backward transition matrix */
   if (!stationary)
     {
       /** Get transpose copy */
       if (!(Q = gsl_spmatrix_alloc_nzmax(N, N, P->nz, GSL_SPMATRIX_CRS)))
 	{
+	  fprintf(stderr, "transferOperator::buildFromMembership: error allocating\
+backward transition matrix.\n");
 	  throw std::bad_alloc();
 	}
       if (gsl_spmatrix_transpose_memcpy(Q, P))
 	{
+	  fprintf(stderr, "transferOperator::buildFromMembership: error copying\
+forward transition matrix to backward.\n");
 	  throw std::exception();
 	}
   
       /** Get final distribution */
-      if (!gsl_spmatrix_get_colsum(rhof, P))
+      if (gsl_spmatrix_get_colsum(rhof, P))
 	{
+	  fprintf(stderr, "transferOperator::buildFromMembership: error getting\
+sum of columns of forward transition matrix.\n");
 	  throw std::exception();
 	}
 
       /** Make the backward transition matrix left stochastic */
-      gsl_spmatrix_div_cols(Q, rho0);
+      gsl_spmatrix_div_cols(Q, rho0, tol);
       gsl_vector_normalize(rho0);
-    }
-  else
-    {
-      /** If stationary problem, rho0 = rhof = stationary distribution
-       *  and the backward transition matrix need not be calculated */
-      Q = NULL;
-      rhof = rho0;
     }
   
   /** Make the forward transition matrix left stochastic */
-  gsl_spmatrix_div_cols(P, rhof);
+  gsl_spmatrix_div_cols(P, rhof, tol);
   gsl_vector_normalize(rhof);
   
   /** Free */
@@ -344,13 +364,20 @@ transferOperator::filter(double tol)
   /** Filter forward transition matrix */
   if (status = filterStochasticMatrix(P, rho0, rhof, tol, 2))
     {
+      fprintf(stderr, "transferOperator::filter: error filtering\
+forward transition matrix.\n");
       throw std::exception();
     }
 
   /** Filter forward transition matrix */
-  if (status = filterStochasticMatrix(Q, rhof, rho0, tol, 2))
+  if (Q)
     {
-      throw std::exception();
+      if (status = filterStochasticMatrix(Q, rhof, rho0, tol, 2))
+	{
+	  fprintf(stderr, "transferOperator::filter: error filtering\
+backward transition matrix.\n");
+	  throw std::exception();
+	}
     }
   
   return 0;
@@ -402,7 +429,7 @@ transferOperator::printBackwardTransition(const char *path, const char *dataForm
 {
   FILE *fp;
 
-  if (!stationary)
+  if (Q)
     {
       // Open file
       if (!(fp = fopen(path, "w")))
@@ -425,7 +452,7 @@ printing transition matrix");
   else
     {
       throw std::ios::failure("transferOperator::printBackwardTransition, \
-backward transition matrix not calculated because problem is stationary");
+backward transition matrix not calculated.");
     }
 
   return 0;
@@ -469,27 +496,18 @@ transferOperator::printFinalDist(const char *path, const char *dataFormat="%lf")
 {
   FILE *fp;
 
-  if (!stationary)
-    {
-      // Open file
-      if (!(fp = fopen(path, "w")))
-	{
-	  throw std::ios::failure("transferOperator::printFinalDist, \
-opening stream to write");
-	}
-
-      // Print
-      gsl_vector_fprintf(fp, rhof, dataFormat);
-
-      // Close
-      fclose(fp);
-    }
-  else
+  // Open file
+  if (!(fp = fopen(path, "w")))
     {
       throw std::ios::failure("transferOperator::printFinalDist, \
-final distribution not calculated because problem is stationary");
+opening stream to write");
     }
-
+  
+  // Print
+  gsl_vector_fprintf(fp, rhof, dataFormat);
+  
+  // Close
+  fclose(fp);
 
   return 0;
 }
@@ -534,6 +552,8 @@ Triplet matrix size not consistent with this->N");
   gsl_spmatrix_free(T);
   if (!P)
     {
+      fprintf(stderr, "transferOperator::scanForwardTransition: error\
+compressing forward transition matrix.\n");
       throw std::exception();
     }
 
@@ -576,7 +596,7 @@ scanning transition matrix");
       /** Check if matrix dimension consistent with grid size */
       if ((T->size1 != T->size2) || (T->size1 != N))
 	{
-	  throw std::length_error("transferOperator::scanForwardTransition, \
+	  throw std::length_error("transferOperator::scanBackwardTransition, \
 Triplet matrix size not consistent with this->N");
 	}
 
@@ -585,6 +605,8 @@ Triplet matrix size not consistent with this->N");
       gsl_spmatrix_free(T);
       if (!Q)
 	{
+	  fprintf(stderr, "transferOperator::scanBackwardTransition: error\
+compressing backward transition matrix.\n");
 	  throw std::exception();
 	}
 
@@ -593,7 +615,7 @@ Triplet matrix size not consistent with this->N");
     }
   else
     {
-      throw std::ios::failure("transferOperator::scanBackwardTransition, \
+      throw std::ios::failure("transferOperator::scanBackwardTransition:\
 backward transition matrix not scanned because problem is stationary");
     }
 
@@ -689,6 +711,8 @@ getTransitionCountTriplet(const gsl_matrix_uint *gridMem, size_t N)
   /** Allocate triplet sparse matrix */
   if (!(T = gsl_spmatrix_alloc_nzmax(N, N, nTraj, GSL_SPMATRIX_TRIPLET)))
     {
+      fprintf(stderr, "getTransitionCountTriplet: error allocating\
+triplet count matrix.\n");
       std::bad_alloc();
     }
 
@@ -734,6 +758,7 @@ filterStochasticMatrix(gsl_spmatrix *M,
   double totalSum;
   gsl_vector *sum;
   gsl_vector_uint *rowOut, *colOut;
+  double eps;
 
   /** Check which nodes should be filtered
    * and set distribution to 0 */
@@ -798,15 +823,17 @@ filterStochasticMatrix(gsl_spmatrix *M,
       gsl_spmatrix_scale(M, 1. / totalSum);
       break;
     case 1:
+      eps = std::numeric_limits<double>::epsilon() * M->size2 * 100;
       sum = gsl_vector_alloc(M->size1);
       gsl_spmatrix_get_rowsum(sum, M);
-      gsl_spmatrix_div_rows(M, sum);
+      gsl_spmatrix_div_rows(M, sum, eps);
       gsl_vector_free(sum);
       break;
     case 2:
+      eps = std::numeric_limits<double>::epsilon() * M->size1 * 100;
       sum = gsl_vector_alloc(M->size1);
       gsl_spmatrix_get_colsum(sum, M);
-      gsl_spmatrix_div_cols(M, sum);
+      gsl_spmatrix_div_cols(M, sum, eps);
       gsl_vector_free(sum);
       break;
     default:
@@ -822,5 +849,9 @@ filterStochasticMatrix(gsl_spmatrix *M,
   return 0;
 }
 
+
+/**
+ * @}
+ */
 
 #endif

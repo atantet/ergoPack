@@ -16,8 +16,8 @@ fs_yticklabels = fs_default
 fs_legend_title = fs_default
 fs_legend_labels = fs_default
 fs_cbar_label = fs_default
-#            figFormat = 'eps'
-figFormat = 'png'
+figFormat = 'eps'
+#figFormat = 'png'
 dpi = 300
 msize = 32
 bbox_inches = 'tight'
@@ -26,89 +26,16 @@ bbox_inches = 'tight'
 # Definitions
 #############
 
-def readConfig(configFile):
-    "Read configuration file or plotSpectrum.py using libconfig for python"
-    global gridFile, dim, dimObs, gridPostfix, specDir, plotDir, nev, resDir, lagMax, chunkWidth
-    global file_format, printStep, component1, component2, srcPostfix
-    global angFreqMax, powerMin, powerMax, rateMax, tauRng, nLags
-    
-    cfg = pylibconfig2.Config()
-    cfg.read_file(configFile)
-
-    if hasattr(cfg, 'general'):
-        resDir = cfg.lookup("general.resDir")
-        specDir = '%s/spectrum/' % resDir
-        plotDir = '%s/plot/' % resDir
-        
-    delayName = ""
-    if hasattr(cfg, 'model'):
-        caseName = cfg.lookup("model.caseName")
-        dim = cfg.lookup("model.dim")
-        if hasattr(cfg.model, 'delaysDays'):
-            delaysDays = np.array(cfg.lookup("model.delaysDays"))
-            for d in np.arange(delaysDays.shape[0]):
-                delayName = "%s_d%d" % (delayName, delaysDays[d])
-
-    if hasattr(cfg, 'simulation'):
-        LCut = cfg.lookup("simulation.LCut")
-        dt = cfg.lookup("simulation.dt")
-        spinup = cfg.lookup("simulation.spinup")
-        printStep = cfg.lookup("simulation.printStep")
-        L = LCut + spinup
-        printStepNum = int(printStep / dt)
-        file_format = cfg.lookup("simulation.file_format")
-        srcPostfix = "_%s%s_L%d_spinup%d_dt%d_samp%d" \
-                     % (caseName, delayName, L, spinup, -np.round(np.log10(dt)), printStepNum)
-
-    obsName = ""
-    if hasattr(cfg, 'observable'):
-        components = np.array(cfg.lookup("observable.components"))
-        embeddingDays = np.array(cfg.lookup("observable.embeddingDays"))
-        embedding = (embeddingDays / 365 / printStep).astype(int)
-        dimObs = components.shape[0]
-        for d in np.arange(dimObs):
-	    obsName = "%s_c%d_e%d" % (obsName, components[d], embeddingDays[d])
-
-    gridCFG = ""
-    if hasattr(cfg, 'grid'):
-        nx = np.array(cfg.lookup("grid.nx"))
-        nSTDLow = np.array(cfg.lookup("grid.nSTDLow"))
-        nSTDHigh = np.array(cfg.lookup("grid.nSTDHigh"))
-        N = np.prod(nx)
-        for d in np.arange(dimObs):
-            gridCFG = "%s_n%dl%dh%d" % (gridCFG, nx[d], nSTDLow[d], nSTDHigh[d])
-        gridPostfix = "%s%s%s" % (srcPostfix, obsName, gridCFG)
-        gridFile = '%s/grid/grid%s.txt' % (resDir, gridPostfix)
-
-    if hasattr(cfg, 'transfer'):
-        tauRng = np.array(cfg.lookup("transfer.tauRng"))
-        nLags = tauRng.shape[0]
-
-    if hasattr(cfg, 'spectrum'):
-        nev = cfg.lookup("spectrum.nev");
-
-    if hasattr(cfg, 'stat'):
-        component1 = cfg.lookup('stat.component1')
-        component2 = cfg.lookup('stat.component2')
-        lagMax = cfg.lookup('stat.lagMax')
-        chunkWidth = cfg.lookup('stat.chunkWidth')
-        angFreqMax = cfg.lookup('stat.angFreqMax')
-        rateMax = cfg.lookup('stat.rateMax')
-        powerMin = cfg.lookup('stat.powerMin')
-        powerMax = cfg.lookup('stat.powerMax')
-        
-
-def readSpectrum(nev,
-                 EigValForwardFile, EigVecForwardFile,
+def readSpectrum(EigValForwardFile, EigVecForwardFile,
                  EigValBackwardFile, EigVecBackwardFile,
-                 statDist,
-                 makeBiorthonormal=False):
+                 statDist, makeBiorthonormal=False):
     """Read transfer operator spectrum from file and create a bi-orthonormal basis \
     of eigenvectors and adjoint eigenvectors"""
 
     # Read eigenvalues
     eigValForward = np.loadtxt(EigValForwardFile)
     eigValBackward = np.loadtxt(EigValBackwardFile)
+    nev = eigValForward.shape[0]
 
     # Make complex
     eigValForward = eigValForward[:, 0] + eigValForward[:, 1]*1j
@@ -124,6 +51,83 @@ def readSpectrum(nev,
     #Q = F^{-1} \Lambda^* F => E^{-1} = D(\pi) F^*   
     eigVecBackward = (eigVecBackward[:, 0] + eigVecBackward[:, 1]*1j).reshape(N, nev)
 
+    if makeBiorthonormal:
+        # Sort by largest magnitude
+        isort = np.argsort(np.abs(eigValForward))[::-1]
+        eigValForward = eigValForward[isort]
+        eigVecForward = eigVecForward[:, isort]
+        eigVecForward[:, 0] = np.abs(eigVecForward[:, 0]) / np.max(np.abs(eigVecForward[:, 0]))
+
+        # Because different eigenvalues may have the same magnitude
+        # sort the adjoint eigenvalues by correspondance to the eigenvalues.
+        isort = np.empty((nev,), dtype=int)
+        for ev in np.arange(nev):
+            isort[ev] = np.argmin(np.abs(eigValForward[ev] - np.conjugate(eigValBackward)))
+        eigValBackward = eigValBackward[isort]
+        eigVecBackward = eigVecBackward[:, isort]
+
+        # Normalize adjoint eigenvectors to have a bi-orthonormal basis
+        for ev in np.arange(nev):
+            norm = np.sum(np.conjugate(eigVecBackward[:, ev]) * statDist \
+                          * eigVecForward[:, ev])
+            eigVecBackward[:, ev] /= np.conjugate(norm)
+
+    return (eigValForward, eigVecForward, eigValBackward, eigVecBackward)
+
+
+def readSpectrumCompressed(EigValForwardFile, EigVecForwardFile,
+                           EigValBackwardFile, EigVecBackwardFile,
+                           statDist, makeBiorthonormal=False):
+    """Read transfer operator spectrum from file and create a bi-orthonormal basis \
+    of eigenvectors and adjoint eigenvectors"""
+
+    skiprows = 2
+    
+    # Read eigenvalues
+    eigValForwardCmp = np.loadtxt(EigValForwardFile)
+    eigValBackwardCmp = np.loadtxt(EigValBackwardFile)
+    nev = eigValForwardCmp.shape[0]
+
+    # Make complex
+    eigValForward = eigValForwardCmp[:, 0] \
+                    + 1j*eigValForwardCmp[:, 1]
+    eigValBackward = eigValBackwardCmp[:, 0] \
+                     + 1j*eigValBackwardCmp[:, 1]  # P = E^{-1} \Lambda E
+    indexForward = eigValForwardCmp[:, 2]
+    indexBackward = eigValBackwardCmp[:, 2]
+    
+    # Read eigenvectors
+    eigVecForwardCmp = np.loadtxt(EigVecForwardFile,
+                                  skiprows=skiprows).reshape(nev, -1).T
+    eigVecBackwardCmp = np.loadtxt(EigVecBackwardFile,
+                                   skiprows=skiprows).reshape(nev, -1).T
+    N = eigVecForwardCmp.shape[0]
+
+    # Get full forward vectors
+    eigVecForward = np.empty((N, nev), dtype=complex)
+    for ev in np.arange(nev):
+        if indexForward[ev] == 0:
+            eigVecForward[:, ev] = eigVecForwardCmp[:, ev]
+        elif indexForward[ev] == 1:
+            eigVecForward[:, ev] = eigVecForwardCmp[:, ev] \
+                                   + 1j*eigVecForwardCmp[:, ev+1]
+        elif indexForward[ev] == -1:
+            eigVecForward[:, ev] = eigVecForwardCmp[:, ev - 1] \
+                                   - 1j*eigVecForwardCmp[:, ev]
+
+    # Get full forward vectors
+    eigVecBackward = np.empty((N, nev), dtype=complex)
+    ev = 0
+    for ev in np.arange(nev):
+        if indexBackward[ev] == 0:
+            eigVecBackward[:, ev] = eigVecBackwardCmp[:, ev]
+        elif indexBackward[ev] == 1:
+            eigVecBackward[:, ev] = eigVecBackwardCmp[:, ev] \
+                                   + 1j*eigVecBackwardCmp[:, ev+1]
+        elif indexBackward[ev] == -1:
+            eigVecBackward[:, ev] = eigVecBackwardCmp[:, ev - 1] \
+                                   - 1j*eigVecBackwardCmp[:, ev]
+            
     if makeBiorthonormal:
         # Sort by largest magnitude
         isort = np.argsort(np.abs(eigValForward))[::-1]
@@ -148,49 +152,51 @@ def readSpectrum(nev,
 
 
 def getSpectralWeights(f, g, eigVecForward, eigVecBackward,
-                       statDist, nComponents, skipMean=False):
+                       statDist, skipMean=False):
     """Calculate the spectral weights as the product of \
 the scalar products of the observables on eigenvectors \
 and adjoint eigenvectors w.r.tw the stationary distribution."""
+    ne = eigVecForward.shape[1]
     if skipMean:
         fa = f.copy() - (f * statDist).sum()
         ga = g.copy() - (g * statDist).sum()
     else:
         fa = f
         ga = f
-    weights = np.zeros((nComponents,), dtype=complex)
-    for k in np.arange(nComponents):
+    weights = np.zeros((ne,), dtype=complex)
+    for k in np.arange(ne):
         weights[k] = (((fa * statDist * np.conjugate(eigVecBackward[:, k])).sum() \
                      * (eigVecForward[:, k] * statDist * np.conjugate(ga)).sum()))
 
-    # Normalize by correlation
-    weights /= (fa * statDist * np.conjugate(ga)).sum()
-
     return weights
 
-def spectralRecCorrelation(lags, f, g, eigValGen, weights, statDist, nComponents, skipMean=False):
+def spectralRecCorrelation(lags, f, g, eigValGen, weights, statDist, skipMean=False, norm=False):
     """Calculate the reconstruction of the correlation function \
 from the spectrum of the generator"""
-    components = np.zeros((nComponents, lags.shape[0]),
-                               dtype=complex)
-    for k in np.arange(nComponents):
+    ne = eigValGen.shape[0]
+    components = np.zeros((ne, lags.shape[0]), dtype=complex)
+    for k in np.arange(ne):
         components[k] = np.exp(eigValGen[k] * lags) * weights[k]
     reconstruction = components.sum(0).real
     
     # Remove mean
+    mean_f = (f * statDist).sum()
+    mean_g = (statDist * np.conjugate(g)).sum()
     if not skipMean:
-        mean_f = (f * statDist).sum()
-        mean_g = (statDist * np.conjugate(g)).sum()
         reconstruction -= mean_f * mean_g / (f * statDist * np.conjugate(g)).sum()
-        
+
+    if norm:
+        reconstruction /= ((f - mean_f) * statDist * np.conjugate(g - mean_g)).sum()
+
+
     return (reconstruction, components)
 
-def spectralRecPower(angFreq, f, g, eigValGen, weights, statDist, nComponents):
+def spectralRecPower(angFreq, f, g, eigValGen, weights, statDist, norm=False):
     """Calculate the reconstruction of the power spectrum \
 from the spectrum of the generator"""
-    components = np.zeros((nComponents, angFreq.shape[0]),
-                               dtype=complex)
-    for k in np.arange(nComponents): 
+    ne = eigValGen.shape[0]
+    components = np.zeros((ne, angFreq.shape[0]), dtype=complex)
+    for k in np.arange(1, ne): 
         if np.abs(eigValGen[k].real) > 1.e-6:
             components[k] = (-eigValGen[k].real) \
                             / ((angFreq + eigValGen[k].imag)**2 + eigValGen[k].real**2) \
@@ -199,6 +205,11 @@ from the spectrum of the generator"""
             components[k] = 0.
     reconstruction = components.sum(0).real
 
+    if norm:
+        mean_f = (f * statDist).sum()
+        mean_g = (statDist * np.conjugate(g)).sum()
+        reconstruction /= ((f - mean_f) * statDist * np.conjugate(g - mean_g)).sum()
+        
     return (reconstruction, components)
     
 def plot2D(X, Y, vectOrig, xlabel=r'$x$', ylabel=r'y', alpha=0.):
@@ -206,10 +217,14 @@ def plot2D(X, Y, vectOrig, xlabel=r'$x$', ylabel=r'y', alpha=0.):
     ax = fig.add_subplot(111)
     vect = vectOrig.copy()
     vecAlpha = vect[vect != 0]
-    vmax = np.sort(np.abs(vecAlpha))[int((1. - 2*alpha) \
-                                         * vecAlpha.shape[0])]
-    vect[vect > vmax] = vmax
-    vect[vect < -vmax] = -vmax
+    if alpha > 0:
+        vmax = np.sort(np.abs(vecAlpha))[int((1. - 2*alpha) \
+                                             * vecAlpha.shape[0])]
+        vect[vect > vmax] = vmax
+        vect[vect < -vmax] = -vmax
+    else:
+        vmax = np.max(np.abs(vect))
+        
     h = ax.contourf(X, Y, vect.reshape(X.shape), levels,
                     cmap=cm.RdBu_r, vmin=-vmax, vmax=vmax)
     ax.set_xlim(X[0].min(), X[0].max())

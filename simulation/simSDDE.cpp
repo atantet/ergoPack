@@ -17,6 +17,7 @@ using namespace libconfig;
 
 
 /** \file simSDDE.cpp 
+ *  \ingroup examples
  *  \brief Simulate a Stochastic Delay Differential Equation.
  *
  *  Simulate a Stochastic Delay Differential Equation

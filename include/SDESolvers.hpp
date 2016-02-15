@@ -6,6 +6,9 @@
 #include <gsl/gsl_blas.h>
 #include <ergoPack/ODESolvers.hpp>
 
+/** \addtogroup simulation
+ * @{
+ */
 
 /** \file SDESolvers.hpp
  *  \brief Solve Stocahstic Differential Equations.
@@ -335,5 +338,9 @@ modelStochastic::integrateForward(const double length, const double spinup,
 
   return data;
 }
+
+/**
+ * @}
+ */
 
 #endif

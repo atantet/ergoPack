@@ -1,0 +1,7 @@
+/** \defgroup simulation Simulating */
+
+/** \defgroup transfer Transfer operators */
+
+/** \defgroup grid Gridding */
+
+/** \defgroup examples Examples */

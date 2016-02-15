@@ -16,6 +16,7 @@ using namespace libconfig;
 
 
 /** \file simOU.cpp 
+ *  \ingroup examples
  *  \brief Simulate an multi-dimensional Ornstein-Uhlenbeck process.
  *
  *  Simulate an multi-dimensional Ornstein-Uhlenbeck process.
@@ -257,5 +258,4 @@ readConfig(const char *cfgFileName)
 
   return;
 }
-
 

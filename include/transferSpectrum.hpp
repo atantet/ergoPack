@@ -16,6 +16,11 @@
 #include <arpack++/arsnsym.h>
 #include <ergoPack/transferOperator.hpp>
 
+
+/** \addtogroup transfer
+ * @{
+ */
+
 /** \file transferSpectrum.hpp
  *  \brief Get spectrum of transferOperator using ARPACK++.
  *   
@@ -91,10 +96,10 @@ public:
   gsl_matrix_complex *EigVecForward;  //!< Eigenvectors of forward transition matrix
   gsl_matrix_complex *EigVecBackward; //!< Eigenvectors of backward transition matrix
   
-  /** Eigen value problem for forward transition matrix */
-  ARNonSymStdEig<double, gsl_spmatrix2AR > EigProbForward;
-  /** Eigen value problem for backward transition matrix */
-  ARNonSymStdEig<double, gsl_spmatrix2AR > EigProbBackward; 
+  
+  ARNonSymStdEig<double, gsl_spmatrix2AR > EigProbForward; //!< Eigen value problem for forward transition matrix
+  ARNonSymStdEig<double, gsl_spmatrix2AR > EigProbBackward; //!< Eigen value problem for backward transition matrix
+
 
   /** \brief Constructor allocating for nev_ eigenvalues and vectors. */
   transferSpectrum(const int nev_, const transferOperator *transferOp_,
@@ -810,5 +815,8 @@ writeSpectrumAR(FILE *fEigVal, FILE *fEigVec,
   return;
 }
 
+/**
+ * @}
+ */
 
 #endif

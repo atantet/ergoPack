@@ -3,83 +3,134 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.collections import LineCollection
+import itertools
+import pylibconfig2
 import ergoPlot
 
-#configFile = '../cfg/OU2d.cfg'
-configFile = '../cfg/Battisti1989.cfg'
+configFile = '../cfg/OU2d.cfg'
+#configFile = '../cfg/Battisti1989.cfg'
 #configFile = '../cfg/Suarez1988.cfg'
-ergoPlot.readConfig(configFile)
+cfg = pylibconfig2.Config()
+cfg.read_file(configFile)
 
-nevPlot = 15
-xminEigVal = -ergoPlot.rateMax
-yminEigVal = -ergoPlot.angFreqMax
+delayName = ""
+for d in np.arange(len(cfg.model.delaysDays)):
+    delayName = "%s_d%d" % (delayName, cfg.model.delaysDays[d])
+
+L = cfg.simulation.LCut + cfg.simulation.spinup
+printStepNum = int(cfg.simulation.printStep / cfg.simulation.dt)
+srcPostfix = "_%s%s_L%d_spinup%d_dt%d_samp%d" \
+             % (cfg.model.caseName, delayName, L, cfg.simulation.spinup,
+                -np.round(np.log10(cfg.simulation.dt)), printStepNum)
+
+embedding = (np.array(cfg.observable.embeddingDays) / 365 \
+             / cfg.simulation.printStep).astype(int)
+dimObs = len(cfg.observable.components)
+obsName = ""
+for d in np.arange(dimObs):
+    obsName = "%s_c%d_e%d" % (obsName, cfg.observable.components[d],
+                              cfg.observable.embeddingDays[d])
+
+N = np.prod(np.array(cfg.grid.nx))
+gridPostfix = ""
+for d in np.arange(dimObs):
+    gridPostfix = "%s_n%dl%dh%d" % (gridPostfix, cfg.grid.nx[d],
+                                    cfg.grid.nSTDLow[d], cfg.grid.nSTDHigh[d])
+gridPostfix = "%s%s%s" % (srcPostfix, obsName, gridPostfix)
+gridFile = '%s/grid/grid%s.txt' % (cfg.general.resDir, gridPostfix)
+
+nLags = len(cfg.transfer.tauRng)
+
+nevPlot = cfg.spectrum.nev
+xminEigVal = -cfg.stat.rateMax
+yminEigVal = -cfg.stat.angFreqMax
 ev_xlabel = r'$x_1$'
 ev_ylabel = r'$x_2$'
-nComponents = 15
 
 # Read grid
 (X, Y) = ergoPlot.readGrid(ergoPlot.gridFile, ergoPlot.dimObs)
 coord = (X.flatten(), Y.flatten())
 
 
-eigenCondition = np.empty((ergoPlot.nLags, ergoPlot.nev))
-eigValGen = np.empty((ergoPlot.nLags, ergoPlot.nev), dtype=complex)
-for lag in np.arange(ergoPlot.nLags):
-    tau = ergoPlot.tauRng[lag]
+eigenCondition = np.empty((nLags, cfg.spectrum.nev))
+eigVal = np.empty((nLags, cfg.spectrum.nev), dtype=complex)
+eigValGen = np.empty((nLags, cfg.spectrum.nev), dtype=complex)
+for lag in np.arange(nLags):
+    tau = cfg.transfer.tauRng[lag]
     
     # Define file names
     postfix = "%s_tau%03d" % (ergoPlot.gridPostfix, tau * 1000)
-    EigValFile = '%s/eigVal/eigVal_nev%d%s.txt' % (ergoPlot.specDir, ergoPlot.nev, postfix)
-    EigVecFile = '%s/eigVec/eigVec_nev%d%s.txt' % (ergoPlot.specDir, ergoPlot.nev, postfix)
-    EigValAdjointFile = '%s/eigVal/eigValAdjoint_nev%d%s.txt' \
-                        % (ergoPlot.specDir, ergoPlot.nev, postfix)
-    EigVecAdjointFile = '%s/eigVec/eigVecAdjoint_nev%d%s.txt' \
-                        % (ergoPlot.specDir, ergoPlot.nev, postfix)
+    EigValForwardFile = '%s/eigval/eigValForward_nev%d%s.txt' \
+                        % (cfg.general.specDir, cfg.spectrum.nev, postfix)
+    EigVecForwardFile = '%s/eigvec/eigVecForward_nev%d%s.txt' \
+                        % (cfg.general.specDir, cfg.spectrum.nev, postfix)
+    EigValBackwardFile = '%s/eigval/eigValBackward_nev%d%s.txt' \
+                        % (cfg.general.specDir, cfg.spectrum.nev, postfix)
+    EigVecBackwardFile = '%s/eigvec/eigVecBackward_nev%d%s.txt' \
+                        % (cfg.general.specDir, cfg.spectrum.nev, postfix)
 
     # Read stationary distribution
-    statDist = np.loadtxt('%s/transfer/initDist/initDist%s.txt' % (ergoPlot.resDir, postfix))
+    statDist = np.loadtxt('%s/transfer/initDist/initDist%s.txt' \
+                          % (cfg.general.resDir, postfix))
 
     # Read transfer operator spectrum from file and create a bi-orthonormal basis
     # of eigenvectors and adjoint eigenvectors:
     print 'Readig spectrum of tau = ', tau
-    (eigVal, eigVec, eigValAdjoint, eigVecAdjoint) \
-        = ergoPlot.readSpectrum(ergoPlot.nev, EigValFile, EigVecFile,
-                                EigValAdjointFile, EigVecAdjointFile, statDist)
-
-    print 'Getting conditionning of eigenvectors...'
-    eigenCondition[lag] = ergoPlot.getEigenCondition(eigVec, eigVecAdjoint, statDist)
-    numpy.set_printoptions(precision=2)
-    print "Eigen condition numbers:", eigenCondition[lag]
-
+    (eigValForward, eigVecForward, eigValBackward, eigVecBackward) \
+        = ergoPlot.readSpectrum(cfg.spectrum.nev, EigValForwardFile, EigVecForwardFile,
+                                EigValBackwardFile, EigVecBackwardFile, statDist)
+    # Save eigenvalues
+    eigVal[lag] = eigValForward.copy()
     # Get generator eigenvalues
-    print 'Getting generator eigenvalues...'
-    eigValGen[lag] = (np.log(np.abs(eigVal)) + np.angle(eigVal)*1j) / tau
+    eigValGen[lag] = (np.log(np.abs(eigValForward)) + np.angle(eigValForward)*1j) / tau
+    # Get condition number
+    eigenCondition[lag] = ergoPlot.getEigenCondition(eigVecForward, eigVecBackward,
+                                                     statDist)
+
+    print 'lag ', lag
+    print eigVal[lag]
+    print eigValGen[lag]
+    print eigenCondition[lag]
 
     # Smoothen
     if lag > 0:
-        tmp = eigValGen[lag].copy()
-        for ev in np.arange(ergoPlot.nev):
-            eigValGen[lag, ev] = tmp[np.argmin(np.abs(tmp - eigValGen[lag-1, ev]))]
+        tmpEigVal = eigVal[lag].copy()
+        tmpEigValGen = eigValGen[lag].copy()
+        tmpEigenCondition = eigenCondition[lag].copy()
+        for ev in np.arange(cfg.spectrum.nev):
+            idx = np.argmin(np.abs(tmpEigVal[ev] - eigVal[lag-1]))
+            eigVal[lag, idx] = tmpEigVal[ev]
+            eigValGen[lag, idx] = tmpEigValGen[ev]
+            eigenCondition[lag, idx] = tmpEigenCondition[ev]
+        print 'sort'
+        print eigVal[lag]
+        print eigValGen[lag]
+        print eigenCondition[lag]
 
-# Plot
+    plt.figure()
+    plt.scatter(eigValGen[lag].real, eigValGen[lag].imag)
+    plt.xlim(xminEigVal / 2, -xminEigVal / 100)
+    plt.ylim(yminEigVal, -yminEigVal)
+
+
+
+# Plot condition numbers versus absolute value of eigenvalue
+# for different lags (and for each eigenvalue)
 fig = plt.figure()
 ax = fig.add_subplot(111)
+markers = itertools.cycle((',', '+', '.', 'o', '*', '^', 'v', '<', '>', '8', 's'))
+colors = itertools.cycle(('r', 'g', 'b', 'c', 'm', 'y', 'k'))
+msize = 20
+maxCond = 2.5
 for ev in np.arange(nevPlot):
-    eig = np.array([eigValGen[:, ev].real, eigValGen[:, ev].imag]).T.reshape(-1, 1, 2)
-    segments = np.concatenate((eig[:-1], eig[1:]), 1)
-    lc = LineCollection(segments, cmap=plt.get_cmap('hot_r'),
-                        norm=plt.Normalize(ergoPlot.tauRng[0], ergoPlot.tauRng[-1]))
-    #ax.plot(eigValGen.real[:, ev], eigValGen.imag[:, ev])
-    lc.set_array(ergoPlot.tauRng)
-    lc.set_linewidth(3)
-    ax.add_collection(lc)
-    plt.plot(eigValGen[0, ev].real, eigValGen[0, ev].imag, 'ok')
-    plt.plot(eigValGen[-1, ev].real, eigValGen[-1, ev].imag, '>k')
-ax.set_xlim(xminEigVal, -xminEigVal / 100)
-ax.set_ylim(yminEigVal, -yminEigVal)
-
-fig = plt.figure()
-ax = fig.add_subplot(111)
-for ev in np.arange(nevPlot):
-    ax.plot(ergoPlot.tauRng, eigenCondition[:, ev])
-ax.set_ylim(0., 10.)
+    color = colors.next()
+    plt.plot(eigValGen[:, ev].real, eigenCondition[:, ev],
+             linestyle='-', linewidth=1, color=color)
+    while markers.next() != ',':
+        continue
+    for k in np.arange(nLags):
+        marker = markers.next()
+        plt.scatter(eigValGen[k, ev].real, eigenCondition[k, ev],
+                    color=color, marker=marker, s=msize)
+ax.set_xlim(xminEigVal / 2, -xminEigVal / 100)
+ax.set_ylim(0., maxCond)

@@ -2,37 +2,50 @@ import os
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+import pylibconfig2
 import ergoStat
 
 configFile = sys.argv[1]
-ergoStat.readConfig(configFile)
+cfg = pylibconfig2.Config()
+cfg.read_file(configFile)
 
-sampFreq = 1. / ergoStat.printStep
-lagMaxNum = int(np.round(ergoStat.lagMax / ergoStat.printStep))
-lags = np.arange(-ergoStat.lagMax, ergoStat.lagMax + 0.999 * ergoStat.printStep, ergoStat.printStep)
-corrName = 'C%d%d' % (ergoStat.component1, ergoStat.component2)
-powerName = 'S%d%d' % (ergoStat.component1, ergoStat.component2)
+delayName = ""
+if hasattr(cfg.model, 'delaysDays'):
+    for d in np.arange(len(cfg.model.delaysDays)):
+        delayName = "%s_d%d" % (delayName, cfg.model.delaysDays[d])
+
+L = cfg.simulation.LCut + cfg.simulation.spinup
+printStepNum = int(cfg.simulation.printStep / cfg.simulation.dt)
+srcPostfix = "_%s%s_L%d_spinup%d_dt%d_samp%d" \
+             % (cfg.model.caseName, delayName, L, cfg.simulation.spinup,
+                -np.round(np.log10(cfg.simulation.dt)), printStepNum)
+
+sampFreq = 1. / cfg.simulation.printStep
+lagMaxNum = int(np.round(cfg.stat.lagMax / cfg.simulation.printStep))
+lags = np.arange(-cfg.stat.lagMax, cfg.stat.lagMax + 0.999 * cfg.simulation.printStep, cfg.simulation.printStep)
+corrName = 'C%d%d' % (cfg.stat.idxf, cfg.stat.idxg)
+powerName = 'S%d%d' % (cfg.stat.idxf, cfg.stat.idxg)
 
 # Read time series
-simFile = '%s/simulation/sim%s.%s' % (ergoStat.resDir, ergoStat.srcPostfix, ergoStat.file_format)
+simFile = '%s/simulation/sim%s.%s' % (cfg.general.resDir, srcPostfix, cfg.simulation.file_format)
 print 'Reading time series from ' + simFile
-if ergoStat.file_format == 'bin':
+if cfg.simulation.file_format == 'bin':
     X = np.fromfile(simFile, dtype=float)
 else:
     X = np.loadtxt(simFile, dtype=float)
-X = X.reshape(np.prod(X.shape) / ergoStat.dim, ergoStat.dim)
+X = X.reshape(np.prod(X.shape) / cfg.model.dim, cfg.model.dim)
 
 # Read datasets
-observable1 = X[:, ergoStat.component1]
-observable2 = X[:, ergoStat.component2]
+observable1 = X[:, cfg.stat.idxf]
+observable2 = X[:, cfg.stat.idxg]
 nt = observable1.shape[0]
-ntWindow = int(ergoStat.chunkWidth * sampFreq)
-time = np.arange(0, nt, ergoStat.printStep)
+ntWindow = int(cfg.stat.chunkWidth * sampFreq)
+time = np.arange(0, nt, cfg.simulation.printStep)
 
 
 # Get ccf averaged over seeds (should add weights based on length)
 print 'Calculating correlation function...'
-ccf = ergoStat.ccf(observable1, observable2, lagMax=ergoStat.lagMax,
+ccf = ergoStat.ccf(observable1, observable2, lagMax=cfg.stat.lagMax,
                    sampFreq=sampFreq)
 
 
@@ -40,24 +53,24 @@ ccf = ergoStat.ccf(observable1, observable2, lagMax=ergoStat.lagMax,
 print 'Calculating periodogram function...'
 (freq, perio, perioSTD) \
     = ergoStat.getPerio(observable1, observable2,
-                        sampFreq=sampFreq, chunkWidth=ergoStat.chunkWidth,
+                        sampFreq=sampFreq, chunkWidth=cfg.stat.chunkWidth,
                         norm=False)
 
 
 # Save results
 np.savetxt('%s/correlation/%s_lag%d%s.txt'\
-           % (ergoStat.resDir, corrName, int(ergoStat.lagMax),
-              ergoStat.srcPostfix), ccf)
+           % (cfg.general.resDir, corrName, int(cfg.stat.lagMax),
+              srcPostfix), ccf)
 np.savetxt('%s/correlation/lags_lag%d%s.txt'\
-           % (ergoStat.resDir, int(ergoStat.lagMax),
-              ergoStat.srcPostfix), lags)
+           % (cfg.general.resDir, int(cfg.stat.lagMax),
+              srcPostfix), lags)
 np.savetxt('%s/power/%s_chunk%d%s.txt'\
-           % (ergoStat.resDir, powerName, int(ergoStat.chunkWidth),
-              ergoStat.srcPostfix), perio)
+           % (cfg.general.resDir, powerName, int(cfg.stat.chunkWidth),
+              srcPostfix), perio)
 np.savetxt('%s/power/%sSTD_chunk%d%s.txt' \
-           % (ergoStat.resDir, powerName, int(ergoStat.chunkWidth),
-              ergoStat.srcPostfix), perioSTD)
+           % (cfg.general.resDir, powerName, int(cfg.stat.chunkWidth),
+              srcPostfix), perioSTD)
 np.savetxt('%s/power/freq_chunk%d%s.txt' \
-           % (ergoStat.resDir, ergoStat.chunkWidth,
-              ergoStat.srcPostfix), freq)
+           % (cfg.general.resDir, cfg.stat.chunkWidth,
+              srcPostfix), freq)
 

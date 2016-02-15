@@ -17,6 +17,10 @@
  */
 
 
+/** \ingroup simulation
+ * @{
+ */
+
 /*
  * Class declarations:
  */
@@ -538,5 +542,9 @@ model::integrateForward(const double length, const double spinup,
 
   return data;
 }
+
+/**
+ * @}
+ */
 
 #endif

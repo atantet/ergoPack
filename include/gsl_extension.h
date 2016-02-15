@@ -75,15 +75,15 @@ int gsl_permute_matrix_complex(const gsl_permutation * p, gsl_matrix_complex * m
 
 
 /** \brief Get the sum of the elements of a matrix over each row. */
-gsl_vector *gsl_matrix_get_rowsum(const gsl_matrix *m);
+int gsl_matrix_get_rowsum(gsl_vector *sum, const gsl_matrix *m);
 /** \brief Get the sum of the elements of a matrix over each column. */
-gsl_vector *gsl_matrix_get_colsum(const gsl_matrix *m);
+int gsl_matrix_get_colsum(gsl_vector *sum, const gsl_matrix *m);
 /** \brief Get the mean over the elements of a matrix along a given axis. */
-gsl_vector *gsl_matrix_get_mean(const gsl_matrix *m, const size_t axis);
+int gsl_matrix_get_mean(gsl_vector *mean, const gsl_matrix *m, const size_t axis);
 /** \brief Get the variance over the elements of a matrix along a given axis. */
-gsl_vector *gsl_matrix_get_variance(const gsl_matrix *m, const size_t axis);
+int gsl_matrix_get_variance(gsl_vector *var, const gsl_matrix *m, const size_t axis);
 /** \brief Get the standard deviation over the elements of a matrix along a given axis. */
-gsl_vector *gsl_matrix_get_std(const gsl_matrix *m, const size_t axis);
+int gsl_matrix_get_std(gsl_vector *std, const gsl_matrix *m, const size_t axis);
 
 
 /*
@@ -654,14 +654,14 @@ to permute", GSL_EINVAL);
 
 /** 
  * Get the sum of the elements of a matrix over each row.
- * \param[in] m Matrix over which to sum.
- * \return      Vector of the sum of the rows.
+ * \param[out] sum Vector of the sum of the rows.
+ * \param[in]  m   Matrix over which to sum.
+ * \return         Exit status.
  */
-gsl_vector *
-gsl_matrix_get_rowsum(const gsl_matrix *m)
+int
+gsl_matrix_get_rowsum(gsl_vector *sum, const gsl_matrix *m)
 {
   size_t i;
-  gsl_vector *sum = gsl_vector_alloc(m->size1);
   
   for (i = 0; i < m->size1; i++)
     {
@@ -669,83 +669,107 @@ gsl_matrix_get_rowsum(const gsl_matrix *m)
       gsl_vector_set(sum, i, gsl_vector_get_sum(&view.vector));
     }
 
-  return sum;
+  return 0;
 }
   
 
 /** 
  * Get the sum of the elements of a matrix over each column.
- * \param[in] m Matrix over which to sum.
- * \return      Vector of the sum of the columns.
+ * \param[out] sum Vector of the sum of the columns.
+ * \param[in]  m   Matrix over which to sum.
+ * \return         Exit status.
  */
-gsl_vector *
-gsl_matrix_get_colsum(const gsl_matrix *m)
+int
+gsl_matrix_get_colsum(gsl_vector *sum, const gsl_matrix *m)
 {
-  size_t j;
-  gsl_vector *sum = gsl_vector_alloc(m->size2);
+  size_t i;
   
-  for (j = 0; j < m->size2; j++)
+  for (i = 0; i < m->size2; i++)
     {
-      gsl_vector_const_view view = gsl_matrix_const_column(m, j);
-      gsl_vector_set(sum, j, gsl_vector_get_sum(&view.vector));
+      gsl_vector_const_view view = gsl_matrix_const_column(m, i);
+      gsl_vector_set(sum, i, gsl_vector_get_sum(&view.vector));
     }
 
-  return sum;
+  return 0;
 }
-
+  
 
 /** 
  * Get the mean of the elements of a matrix along a given axis.
- * \param[in] m    Matrix over which to calculate the mean.
- * \param[in] axis Axis over which to calculate the mean
- *                 (0: along columns, 1: along rows).
- * \return         Vector of with the means.
+ * \param[out] mean Vector of the means.
+ * \param[in]  m    Matrix over which to calculate the mean.
+ * \param[in]  axis Axis over which to calculate the mean
+ *                  (0: along columns, 1: along rows).
+ * \return          Exit status.
  */
-gsl_vector *
-gsl_matrix_get_mean(const gsl_matrix *m, const size_t axis)
+int
+gsl_matrix_get_mean(gsl_vector *mean, const gsl_matrix *m, const size_t axis)
 {
-  gsl_vector *mean;
-
   switch (axis)
     {
     case 0:
-      mean = gsl_matrix_get_colsum(m);
+      gsl_matrix_get_colsum(mean, m);
       gsl_vector_scale(mean, 1. / m->size1);
       break;
     case 1:
-      mean = gsl_matrix_get_rowsum(m);
+      gsl_matrix_get_rowsum(mean, m);
       gsl_vector_scale(mean, 1. / m->size2);
       break;
     default:
       GSL_ERROR_NULL("axis should be 0 or 1.", GSL_EINVAL);
     }
 
-  return mean;
+  return GSL_SUCCESS;
 }
   
 
 /** 
  * Get the variance of the elements of a matrix along a given axis.
+ * \param[out] var Vector of the variances.
  * \param[in] m    Matrix over which to calculate the variance.
  * \param[in] axis Axis over which to calculate the variance
  *                 (0: along columns, 1: along rows).
- * \return         Vector of with the variance.
+ * \return         Exit status.
  */
-gsl_vector *
-gsl_matrix_get_var(const gsl_matrix *m, const size_t axis)
+int
+gsl_matrix_get_var(gsl_vector *var, const gsl_matrix *m, const size_t axis)
 {
-  gsl_vector *var, *mean;
-  gsl_matrix *m2 = gsl_matrix_alloc(m->size1, m->size2);
+  gsl_vector *mean;
+  gsl_matrix *m2;
+  size_t sizeAxis;
+
+  switch (axis)
+    {
+    case 0:
+      sizeAxis = m->size2;
+      break;
+    case 1:
+      sizeAxis = m->size1;
+      break;
+    default:
+      GSL_ERROR_NULL("axis should be 0 or 1.", GSL_EINVAL);
+    }
+
+  if (var->size != sizeAxis)
+    {
+      GSL_ERROR_NULL("Output vector should have the same size as\
+the number of columns (axis = 0) or rows (axis = 1) of the matrix",
+		     GSL_EINVAL);
+    }
+      
+  //! Allocate
+  mean = gsl_vector_alloc(sizeAxis);
+  m2 = gsl_matrix_alloc(m->size1, m->size2);
 
   // Get matrix of squared elements
   gsl_matrix_memcpy(m2, m);
   gsl_matrix_mul_elements(m2, m);
 
   // Get mean of squares
-  var = gsl_matrix_get_mean(m2, axis);
+  gsl_matrix_get_mean(var, m2, axis);
 
   // remove mean
-  mean = gsl_matrix_get_mean(m, axis);
+  gsl_matrix_get_mean(mean, m, axis);
   gsl_vector_mul(mean, mean);
   gsl_vector_sub(var, mean);
   
@@ -753,28 +777,48 @@ gsl_matrix_get_var(const gsl_matrix *m, const size_t axis)
   gsl_matrix_free(m2);
   gsl_vector_free(mean);
   
-  return var;
+  return GSL_SUCCESS;
 }
   
 /** 
  * Get the standard deviation of the elements of a matrix along a given axis.
- * \param[in] m    Matrix over which to calculate the standard deviation.
- * \param[in] axis Axis over which to calculate the standard deviation
- *                 (0: along columns, 1: along rows).
- * \return         Vector of with the standard deviation.
+ * \param[out] std  Vector of the standard deviations.
+ * \param[in]  m    Matrix over which to calculate the standard deviation.
+ * \param[in]  axis Axis over which to calculate the standard deviation
+ *                  (0: along columns, 1: along rows).
+ * \return          Exit status.
  */
-gsl_vector *
-gsl_matrix_get_std(const gsl_matrix *m, const size_t axis)
+int
+gsl_matrix_get_std(gsl_vector *std, const gsl_matrix *m, const size_t axis)
 {
-  gsl_vector *std;
+  size_t sizeAxis;
 
+  switch (axis)
+    {
+    case 0:
+      sizeAxis = m->size2;
+      break;
+    case 1:
+      sizeAxis = m->size1;
+      break;
+    default:
+      GSL_ERROR_NULL("axis should be 0 or 1.", GSL_EINVAL);
+    }
+
+  if (std->size != sizeAxis)
+    {
+      GSL_ERROR_NULL("Output vector should have the same size as\
+the number of columns (axis = 0) or rows (axis = 1) of the matrix",
+		     GSL_EINVAL);
+    }
+      
   // Get variance
-  std = gsl_matrix_get_var(m, axis);
+  gsl_matrix_get_var(std, m, axis);
 
   // Get square root
   gsl_vector_sqrt(std);
   
-  return std;
+  return GSL_SUCCESS;
 }
   
 #endif

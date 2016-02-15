@@ -16,6 +16,11 @@
 #include <ergoPack/ergoStat.hpp>
 
 
+
+/** \addtogroup grid
+ * @{
+ */
+
 /** \file ergoGrid.hpp
  *  \brief Various grid definitions used for Galerkin approximation.
  *  
@@ -413,8 +418,10 @@ RegularGrid::getAdaptedRegularGrid(const gsl_vector *nSTDLow, const gsl_vector *
   gsl_vector *xmin, *xmax, *statesMean, *statesSTD;
   
   // Get mean and standard deviation of time series
-  statesMean = gsl_matrix_get_mean(states, 0);
-  statesSTD = gsl_matrix_get_std(states, 0);
+  statesMean = gsl_vector_alloc(states->size2);
+  gsl_matrix_get_mean(statesMean, states, 0);
+  statesSTD = gsl_vector_alloc(states->size2);
+  gsl_matrix_get_std(statesSTD, states, 0);
   
   // Create grid
   // Define grid limits
@@ -936,5 +943,9 @@ getDensityMLE(const gsl_vector_uint *gridMemVect, const Grid *grid,
 
   return;
 }
+
+/**
+ * @}
+ */
 
 #endif

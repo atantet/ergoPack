@@ -49,7 +49,8 @@ getEOF(const gsl_matrix *data, gsl_vector *w, gsl_matrix *E, gsl_matrix *A)
   // Get anomalies
   A = gsl_matrix_alloc(nt, N);
   gsl_matrix_memcpy(A, X);
-  mean = gsl_matrix_get_mean(A, 0);
+  mean = gsl_vector_alloc(N);
+  gsl_matrix_get_mean(mean, A, 0);
   for (size_t j = 0; j < X->size2; j++)
     {
       col = gsl_matrix_column(X, j);

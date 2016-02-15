@@ -9,6 +9,10 @@
 #include <ergoPack/SDESolvers.hpp>
 
 
+/** \addtogroup simulation
+ * @{
+ */
+
 /** \file SDDESolvers.hpp
  *  \brief Solve Stochastic Delay Differential Equations.
  *   
@@ -407,5 +411,9 @@ modelSDDE::integrateForward(const double length, const double spinup,
 
   return data;
 }
+
+/**
+ * @}
+ */
 
 #endif
