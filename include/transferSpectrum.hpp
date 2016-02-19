@@ -233,8 +233,6 @@ transferSpectrum::getSpectrumForward()
    *  However, it is more secure to avoid directly changing the type of
    *  the transition matrix. */
   cpy = gsl_spmatrix_alloc_nzmax(transferOp->P->size2, transferOp->P->size1, 0, GSL_SPMATRIX_CCS);
-  cpy->innerSize = transferOp->P->innerSize;
-  cpy->outerSize = transferOp->P->outerSize;
   cpy->i = transferOp->P->i;
   cpy->data = transferOp->P->data;
   cpy->p = transferOp->P->p;
@@ -270,8 +268,6 @@ transferSpectrum::getSpectrumBackward()
       /** Get transpose of backward transition matrix in ARPACK CCS format */
       cpy = gsl_spmatrix_alloc_nzmax(transferOp->Q->size2, transferOp->Q->size1,
 				     0, GSL_SPMATRIX_CCS);
-      cpy->innerSize = transferOp->Q->innerSize;
-      cpy->outerSize = transferOp->Q->outerSize;
       cpy->i = transferOp->Q->i;
       cpy->data = transferOp->Q->data;
       cpy->p = transferOp->Q->p;
@@ -665,7 +661,7 @@ gsl_spmatrix2AR::MultMv(double *v, double *w)
   if (GSL_SPMATRIX_ISCRS(M))
     {
       /* (row, column) = (outerIdx, M->i) */
-      for (outerIdx = 0; outerIdx < M->outerSize; ++outerIdx)
+      for (outerIdx = 0; outerIdx < M->size1; ++outerIdx)
 	{
 	  for (p = M->p[outerIdx]; p < M->p[outerIdx + 1]; ++p)
 	    {
@@ -676,7 +672,7 @@ gsl_spmatrix2AR::MultMv(double *v, double *w)
   else if (GSL_SPMATRIX_ISCCS(M))
     {
       /* (row, column) = (M->i, outerIdx) */
-      for (outerIdx = 0; outerIdx < M->outerSize; ++outerIdx)
+      for (outerIdx = 0; outerIdx < M->size2; ++outerIdx)
 	{
 	  for (p = M->p[outerIdx]; p < M->p[outerIdx + 1]; ++p)
 	    {

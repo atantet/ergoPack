@@ -147,7 +147,8 @@ public:
  */
 
 /** \brief Get triplet vector from membership matrix. */
-gsl_spmatrix *getTransitionCountTriplet(const gsl_matrix_uint *gridMem, size_t N);
+void getTransitionCountTriplet(const gsl_matrix_uint *gridMem, size_t N,
+			       gsl_spmatrix *T, gsl_vector *rho0, gsl_vector *rhof);
 /** \brief Remove weak nodes from a transition matrix. */
 int filterStochasticMatrix(gsl_spmatrix *M, gsl_vector *rowCut, gsl_vector *colCut,
 			   double tol, int norm);
@@ -280,34 +281,36 @@ transferOperator::allocate()
 int
 transferOperator::buildFromMembership(const gsl_matrix_uint *gridMem)
 {
+  const size_t nTraj = gridMem->size1;
   gsl_spmatrix *T;
   const double tol = std::numeric_limits<double>::epsilon() * N * 100;
 
   // Allocate distributions and set matrices to NULL pointer
   allocate();
 
-  
+
   // Get transition count triplets
-  T = getTransitionCountTriplet(gridMem, N);
+  if (!(T = gsl_spmatrix_alloc_nzmax(N, N, nTraj, GSL_SPMATRIX_TRIPLET)))
+    {
+      fprintf(stderr, "getTransitionCountTriplet: error allocating\
+triplet count matrix.\n");
+      std::bad_alloc();
+    }
+
+  if (stationary)
+    getTransitionCountTriplet(gridMem, N, T, rho0, NULL);
+  else
+    getTransitionCountTriplet(gridMem, N, T, rho0, rhof);
 
   
   /** Convert to CRS summing duplicates */
-  if (!(P = gsl_spmatrix_compress(T, GSL_SPMATRIX_CRS)))
+  if (!(P = gsl_spmatrix_crs(T)))
     {
       fprintf(stderr, "transferOperator::buildFromMembership: error compressing\
 forward transition matrix.\n");
       throw std::exception();
     }
 
-  /** Get initial distribution */
-  if (gsl_spmatrix_get_rowsum(rho0, P))
-    {
-      fprintf(stderr, "transferOperator::buildFromMembership: error getting\
-sum of rows of forward transition matrix.\n");
-      throw std::exception();
-    }
-
-  
   /** If the problem is not stationary, get final distribution
    *  and backward transition matrix */
   if (!stationary)
@@ -326,14 +329,6 @@ forward transition matrix to backward.\n");
 	  throw std::exception();
 	}
   
-      /** Get final distribution */
-      if (gsl_spmatrix_get_colsum(rhof, P))
-	{
-	  fprintf(stderr, "transferOperator::buildFromMembership: error getting\
-sum of columns of forward transition matrix.\n");
-	  throw std::exception();
-	}
-
       /** Make the backward transition matrix left stochastic */
       gsl_spmatrix_div_cols(Q, rho0, tol);
       gsl_vector_normalize(rho0);
@@ -534,7 +529,7 @@ opening stream to read");
   }
 
   /** Scan, summing if duplicate */
-  if (!(T = gsl_spmatrix_fscanf(fp, 1)))
+  if (!(T = gsl_spmatrix_fscanf(fp)))
     {
       throw std::ios::failure("transferOperator::scanForwardTransition, \
 scanning transition matrix");
@@ -548,7 +543,7 @@ Triplet matrix size not consistent with this->N");
     }
 
   /** Compress */
-  P = gsl_spmatrix_compress(T, GSL_SPMATRIX_CRS);
+  P = gsl_spmatrix_crs(T);
   gsl_spmatrix_free(T);
   if (!P)
     {
@@ -587,7 +582,7 @@ opening stream to read");
 	}
 
       /** Scan, summing if duplicate */
-      if (!(T = gsl_spmatrix_fscanf(fp, 1)))
+      if (!(T = gsl_spmatrix_fscanf(fp)))
 	{
 	  throw std::ios::failure("transferOperator::scanBackwardTransition, \
 scanning transition matrix");
@@ -601,7 +596,7 @@ Triplet matrix size not consistent with this->N");
 	}
 
       /** Compress */
-      Q = gsl_spmatrix_compress(T, GSL_SPMATRIX_CRS);
+      Q = gsl_spmatrix_crs(T);
       gsl_spmatrix_free(T);
       if (!Q)
 	{
@@ -696,41 +691,53 @@ final distribution not scanned because problem is stationary");
 /** 
  * Get the triplet vector counting the transitions
  * from pairs of grid boxes from the grid membership matrix.
- * \param[in] gridMem Grid membership matrix.
- * \param[in] N       Size of the grid.
- * \return            Triplet vector counting the transitions.
+ * \param[in]  gridMem Grid membership matrix.
+ * \param[in]  N       Size of the grid.
+ * \param[out] T       Triplet matrix counting the transitions.
+ * \param[out] rho0    Initial states count
+ * \param[out] rhof    Final states count
  */
-gsl_spmatrix *
-getTransitionCountTriplet(const gsl_matrix_uint *gridMem, size_t N)
+void
+getTransitionCountTriplet(const gsl_matrix_uint *gridMem, size_t N,
+			  gsl_spmatrix *T, gsl_vector *rho0=NULL, gsl_vector *rhof=NULL)
 {
   const size_t nTraj = gridMem->size1;
   size_t box0, boxf;
   size_t nOut = 0;
-  gsl_spmatrix *T;
-
-  /** Allocate triplet sparse matrix */
-  if (!(T = gsl_spmatrix_alloc_nzmax(N, N, nTraj, GSL_SPMATRIX_TRIPLET)))
-    {
-      fprintf(stderr, "getTransitionCountTriplet: error allocating\
-triplet count matrix.\n");
-      std::bad_alloc();
-    }
+  double *ptr;
 
   /** Record transitions */
-  for (size_t traj = 0; traj < nTraj; traj++) {
-    box0 = gsl_matrix_uint_get(gridMem, traj, 0);
-    boxf = gsl_matrix_uint_get(gridMem, traj, 1);
+  if (rho0)
+    gsl_vector_set_zero(rho0);
+  if (rhof)
+    gsl_vector_set_zero(rhof);
+  for (size_t traj = 0; traj < nTraj; traj++)
+    {
+      box0 = gsl_matrix_uint_get(gridMem, traj, 0);
+      boxf = gsl_matrix_uint_get(gridMem, traj, 1);
     
-    /** Add transition triplet, summing if duplicate */
-    if ((box0 < N) && (boxf < N))
-      gsl_spmatrix_set(T, box0, boxf, 1., 1);
-    else
-      nOut++;
-  }
+      /** Add transition triplet, summing if duplicate */
+      if ((box0 < N) && (boxf < N))
+	{
+	  ptr = gsl_spmatrix_ptr(T, box0, boxf);
+	  if (ptr)
+	    *ptr += 1.; /* sum duplicate values */
+	  else
+	    gsl_spmatrix_set(T, box0, boxf, 1.);   /* initalize to x */
+
+	  // Add initial and final boxes to initial and final distributions, respectively
+	  if (rho0)
+	    gsl_vector_set(rho0, box0, gsl_vector_get(rho0, box0) + 1.);
+	  if (rhof)
+	    gsl_vector_set(rhof, boxf, gsl_vector_get(rhof, boxf) + 1.);
+	}
+      else
+	nOut++;
+    }
   std::cout <<  nOut * 100. / nTraj
 	    << "% of the trajectories ended up out of the domain." << std::endl;
 
-  return T;
+  return;
 }
 
 
@@ -788,7 +795,7 @@ filterStochasticMatrix(gsl_spmatrix *M,
     }
   else if (GSL_SPMATRIX_ISCCS(M))
     {
-      for (outerIdx = 0; outerIdx < M->outerSize; outerIdx++)
+      for (outerIdx = 0; outerIdx < M->size2; outerIdx++)
 	{
 	  isColOut = gsl_vector_uint_get(colOut, outerIdx);
 	  for (p = M->p[outerIdx]; p < M->p[outerIdx + 1]; p++)
@@ -802,7 +809,7 @@ filterStochasticMatrix(gsl_spmatrix *M,
     }
   else if (GSL_SPMATRIX_ISCRS(M))
     {
-      for (outerIdx = 0; outerIdx < M->outerSize; outerIdx++)
+      for (outerIdx = 0; outerIdx < M->size1; outerIdx++)
 	{
 	  isRowOut = gsl_vector_uint_get(rowOut, outerIdx);
 	  for (p = M->p[outerIdx]; p < M->p[outerIdx + 1]; p++)

@@ -33,6 +33,7 @@
 # Backups
 *~
 \#*\#
+.\#*
 
 # OSX
 .DS_Store

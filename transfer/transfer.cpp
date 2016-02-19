@@ -216,18 +216,10 @@ int main(int argc, char * argv[])
     {
       tau = gsl_vector_get(tauRng, lag);
       tauNum = (size_t) (tau / printStep);
+      sprintf(postfix, "%s_tau%03d", gridPostfix, (int) (tau * 1000));
       std::cout << "\nConstructing transfer operator for a lag of " << tau << std::endl;
 
-      // Update file names
-      sprintf(postfix, "%s_tau%03d", gridPostfix, (int) (tau * 1000));
-      sprintf(forwardTransitionFileName,
-	      "%s/transfer/forwardTransition/forwardTransition%s.coo", resDir, postfix);
-      sprintf(initDistFileName, "%s/transfer/initDist/initDist%s.txt", resDir, postfix);
-      sprintf(backwardTransitionFileName,
-	      "%s/transfer/backwardTransition/backwardTransition%s.coo", resDir, postfix);
-      sprintf(finalDistFileName, "%s/transfer/finalDist/finalDist%s.txt", resDir, postfix);
 
-      
       // Get full membership matrix
       std::cout << "Getting full membership matrix from the list of membership vecotrs..."
 		<< std::endl;
@@ -237,18 +229,36 @@ int main(int argc, char * argv[])
       // Get transition matrices as CSR
       std::cout << "Building stationary transfer operator..." << std::endl;
       transferOp = new transferOperator(gridMemMatrix, N, stationary);
-      
+
+
+      // Write results
       // Write forward transition matrix
       std::cout << "Writing forward transition matrix and initial distribution..." << std::endl;
+      sprintf(forwardTransitionFileName,
+	      "%s/transfer/forwardTransition/forwardTransition%s.coo", resDir, postfix);
       transferOp->printForwardTransition(forwardTransitionFileName, "%.12lf");
-      transferOp->printInitDist(initDistFileName, "%.12lf");
+
+      // Write initial distribution
+      if (lag == 0)
+	{
+	  sprintf(initDistFileName, "%s/transfer/initDist/initDist%s.txt", resDir, gridPostfix);
+	  transferOp->printInitDist(initDistFileName, "%.12lf");
+	}
       
       // Write backward transition matrix
       if (!stationary)
 	{
 	  std::cout << "Writing backward transition matrix and final distribution..." << std::endl;
+	  sprintf(backwardTransitionFileName,
+		  "%s/transfer/backwardTransition/backwardTransition%s.coo", resDir, postfix);
 	  transferOp->printBackwardTransition(backwardTransitionFileName, "%.12lf");
-	  transferOp->printFinalDist(finalDistFileName, "%.12lf");
+
+	  // Write final distribution 
+	  if (lag == 0)
+	    {
+	      sprintf(finalDistFileName, "%s/transfer/finalDist/finalDist%s.txt", resDir, postfix);
+	      transferOp->printFinalDist(finalDistFileName, "%.12lf");
+	    }
 	}
 	
       // Free

@@ -7,13 +7,13 @@ from matplotlib.collections import PolyCollection
 import pylibconfig2
 import ergoPlot
 
-#configFile = '../cfg/OU2d.cfg'
-#ev_xlabel = r'$x_1$'
-#ev_ylabel = r'$x_2$'
+configFile = '../cfg/OU2d.cfg'
+ev_xlabel = r'$x_1$'
+ev_ylabel = r'$x_2$'
 #configFile = '../cfg/Battisti1989.cfg'
-configFile = '../cfg/Suarez1988.cfg'
-ev_xlabel = r'$y(t)$'
-ev_ylabel = r'$y(t - \tau)$'
+#configFile = '../cfg/Suarez1988.cfg'
+#ev_xlabel = r'$y(t)$'
+#ev_ylabel = r'$y(t - \tau)$'
 cfg = pylibconfig2.Config()
 cfg.read_file(configFile)
 

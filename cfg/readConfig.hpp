@@ -1,3 +1,6 @@
+#ifndef READ_CONFIG_HPP
+#define READ_CONFIG_HPP
+
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
@@ -317,3 +320,5 @@ freeConfig()
 
   return;
 }
+
+#endif
