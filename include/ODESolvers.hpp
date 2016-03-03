@@ -115,11 +115,137 @@ polynomial1D(const size_t degree_) : degree(degree_), vectorField(1)
 };
 
 
+/** \brief Abstract class for codimension one bifurcations of equilibria.
+ *
+ *  Abstract class for codimension one bifurcations of equilibria
+ * (Guckenheimer and Holmes 1988, Strogatz 1994).
+ */
+class codim1Field : public vectorField {
+protected:
+  double mu;  //< Parameter \f$ mu \f$ of the bifurcation.
+  
+public:
+  /** \brief Constructor defining the model parameters. */
+  codim1Field(const size_t dim, const double mu_)
+    : vectorField(dim_), mu(mu_) {}
+
+  /** \brief Destructor. */
+  ~codim1Field(){}
+
+  /** \brief Return the parameters of the model. */
+  virtual void getParameters(double *mu_) { *mu_ = mu; return; }
+
+  /** \brief Set parameters of the model. */
+  virtual void setParameters(const double mu_) { mu = mu_; return; }
+
+  /** \brief Virtual method for evaluating the vector field at a given state. */
+  virtual void evalField(gsl_vector *state, gsl_vector *field) = 0;
+};
+
+
+/** \brief Vector field for the normal form of the saddle-node bifurcation.
+ *
+ *  Vector field for the normal form of the saddle-node bifurcation
+ * (Guckenheimer and Holmes, 1988, Strogatz 1994):
+ *
+ *           F(x) = \mu - x^2.
+ *
+ */
+class saddleNodeField : public codim1Field {
+public:
+  /** \brief Constructor defining the model parameters. */
+  saddleNodeField(const double mu_)
+    : codim1Field(1, mu_) {}
+
+  /** \brief Evaluate the saddle-node vector field at a given state. */
+  void evalField(gsl_vector *state, gsl_vector *field);
+};
+
+
+/** \brief Vector field for the normal form of the transcritical bifurcation.
+ *
+ *  Vector field for the normal form of the transcritical bifurcation
+ * (Guckenheimer and Holmes, 1988, Strogatz 1994):
+ *
+ *            F(x) = \mu - x^2.
+ *
+ */
+class transcriticalField : public codim1Field {
+public:
+  /** \brief Constructor defining the model parameters. */
+  transcriticalField(const double mu_)
+    : codim1Field(1, mu_) {}
+
+  /** \brief Evaluate the transcritical vector field at a given state. */
+  void evalField(gsl_vector *state, gsl_vector *field);
+};
+
+
+/** \brief Vector field for the normal form of the supercritical pitchfork bifurcation.
+ *
+ *  Vector field for the normal form of the supercritical pitchfork bifurcation
+ * (Guckenheimer and Holmes, 1988, Strogatz 1994):
+ *
+ *            F(x) = \mu x - x^2.
+ *
+ */
+class pitchforkField : public codim1Field {
+public:
+  /** \brief Constructor defining the model parameters. */
+  pitchforkField(const double mu_)
+    : codim1Field(1, mu_) {}
+
+  /** \brief Evaluate the supercritical pitchfork vector field at a given state. */
+  void evalField(gsl_vector *state, gsl_vector *field);
+};
+
+
+/** \brief Vector field for the normal form of the subcritical pitchfork bifurcation.
+ *
+ *  Vector field for the normal form of the subcritical pitchfork bifurcation
+ * (Guckenheimer and Holmes, 1988, Strogatz 1994):
+ *
+ *            F(x) = \mu x + x^3.
+ *
+ */
+class pitchforkSubField : public codim1Field {
+public:
+  /** \brief Constructor defining the model parameters. */
+  pitchforkSubField(const double mu_)
+    : codim1Field(1, mu_) {}
+
+  /** \brief Evaluate the subcritical pitchfork vector field at a given state. */
+  void evalField(gsl_vector *state, gsl_vector *field);
+};
+
+
+/** \brief Vector field for the normal form of the Hopf bifurcation.
+ *
+ *  Vector field for the normal form of the Hopf bifurcation
+ * (Guckenheimer and Holmes, 1988, Strogatz 1994):
+ *
+ *            F_1(x) = -y + x (\mu - (x^2 + y^2))
+ *            F_2(x) = x + y (\mu - (x^2 + y^2)).
+ *
+ */
+class HopfField : public codim1Field {
+public:
+  /** \brief Constructor defining the model parameters. */
+  HopfField(const double mu_)
+    : codim1Field(2, mu_) {}
+
+  /** \brief Evaluate the Hopf vector field at a given state. */
+  void evalField(gsl_vector *state, gsl_vector *field);
+};
+
+
 /** \brief Vector field for the normal form of the cusp bifurcation.
  *
  *  Vector field for the normal form of the cusp bifurcation
  * (Guckenheimer and Holmes, 1988, Strogatz 1994):
- *  \f$ F(x) = h + r x - x^3 \f$.
+ *
+ *            F(x) = h + r x - x^3.
+ *
  */
 class cuspField : public vectorField {
   
@@ -349,6 +475,104 @@ polynomial1D::evalField(gsl_vector *state, gsl_vector *field)
   
   gsl_vector_set(field, 0, tmp);
 
+  return;
+}
+
+
+/** 
+ * Evaluate the vector field of the normal form of the saddleNode bifurcation
+ * (Guckenheimer & Holmes, 1988, Strogatz,  1994) at a given state:
+ * 
+ *         F(x) = \mu - x^2
+ *
+ * \param[in]  state State at which to evaluate the vector field.
+ * \param[out] field Vector resulting from the evaluation of the vector field.
+ */
+void
+saddleNodeField::evalField(gsl_vector *state, gsl_vector *field)
+{
+  // F(x) = mu - x^2
+  gsl_vector_set(field, 0, mu - pow(gsl_vector_get(state, 0), 2));
+  
+  return;
+}
+
+
+/** 
+ * Evaluate the vector field of the normal form of the transcritical bifurcation
+ * (Guckenheimer & Holmes, 1988, Strogatz,  1994) at a given state:
+ * 
+ *         F(x) = \mu x - x^2
+ *
+ * \param[in]  state State at which to evaluate the vector field.
+ * \param[out] field Vector resulting from the evaluation of the vector field.
+ */
+void
+transcriticalField::evalField(gsl_vector *state, gsl_vector *field)
+{
+  // F(x) = mu*x - x^2
+  gsl_vector_set(field, 0, gsl_vector_get(state, 0) * (mu - gsl_vector_get(state, 0)));
+  
+  return;
+}
+
+
+/** 
+ * Evaluate the vector field of the normal form of the supercritical pitchfork bifurcation
+ * (Guckenheimer & Holmes, 1988, Strogatz,  1994) at a given state:
+ * 
+ *         F(x) = mu x - x^3
+ *
+ * \param[in]  state State at which to evaluate the vector field.
+ * \param[out] field Vector resulting from the evaluation of the vector field.
+ */
+void
+pitchforkField::evalField(gsl_vector *state, gsl_vector *field)
+{
+  // F(x) = mu*x - x^3
+  gsl_vector_set(field, 0, mu*gsl_vector_get(state, 0)
+		 - pow(gsl_vector_get(state, 0), 3));
+  
+  return;
+}
+
+
+/** 
+ * Evaluate the vector field of the normal form of the subcritical pitchfork bifurcation
+ * (Guckenheimer & Holmes, 1988, Strogatz,  1994) at a given state:
+ * 
+ *         F(x) = mu x + x^3
+ *
+ * \param[in]  state State at which to evaluate the vector field.
+ * \param[out] field Vector resulting from the evaluation of the vector field.
+ */
+void
+pitchforkSubField::evalField(gsl_vector *state, gsl_vector *field)
+{
+  // F(x) = mu*x + x^3
+  gsl_vector_set(field, 0, mu*gsl_vector_get(state, 0)
+		 + pow(gsl_vector_get(state, 0), 3));
+  
+  return;
+}
+
+
+/** 
+ * Evaluate the vector field of the normal form of the Hopf bifurcation
+ * (Guckenheimer & Holmes, 1988, Strogatz,  1994) at a given state:
+ *
+ *            F_1(x) = -y + x (\mu - (x^2 + y^2))
+ *            F_2(x) = x + y (\mu - (x^2 + y^2)).
+ *
+ * \param[in]  state State at which to evaluate the vector field.
+ * \param[out] field Vector resulting from the evaluation of the vector field.
+ */
+void
+HopfField::evalField(gsl_vector *state, gsl_vector *field)
+{
+  // F(x) = mu*x - x^2
+  gsl_vector_set(field, 0, gsl_vector_get(state, 0) * (mu - gsl_vector_get(state, 0)));
+  
   return;
 }
 

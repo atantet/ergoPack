@@ -7,13 +7,14 @@ from matplotlib.collections import PolyCollection
 import pylibconfig2
 import ergoPlot
 
-configFile = '../cfg/OU2d.cfg'
-ev_xlabel = r'$x_1$'
-ev_ylabel = r'$x_2$'
+#configFile = '../cfg/OU2d.cfg'
+#compName1 = 'x_1'
+#compName2 = 'x_2'
 #configFile = '../cfg/Battisti1989.cfg'
-#configFile = '../cfg/Suarez1988.cfg'
-#ev_xlabel = r'$y(t)$'
-#ev_ylabel = r'$y(t - \tau)$'
+configFile = '../cfg/Suarez1988.cfg'
+compName1 = r'y(t\prime)'
+compName2 = r'y(t\prime - \tau_d)'
+
 cfg = pylibconfig2.Config()
 cfg.read_file(configFile)
 
@@ -53,14 +54,29 @@ gridPostfix = "%s%s%s" % (srcPostfix, obsName, gridPostfix)
 gridFile = '%s/grid/grid%s.txt' % (cfg.general.resDir, gridPostfix)
 
 nLags = len(cfg.transfer.tauRng)
+ev_xlabel = r'$%s$' % compName1
+ev_ylabel = r'$%s$' % compName2
+corrLabel = r'$C_{%s, %s}(t)$' % (compName1, compName2)
+powerLabel = r'$S_{%s, %s}(\omega)$' % (compName1, compName2)
 
-nevPlot = 5
+nevPlot = 0
 xminEigVal = -cfg.stat.rateMax
 yminEigVal = -cfg.stat.angFreqMax
 #plotBackward = False
 plotBackward = True
 #plotImag = False
 plotImag = True
+xlimEig = [xminEigVal, -xminEigVal/100]
+ylimEig = [yminEigVal, -yminEigVal]
+zlimEig = [cfg.stat.powerMin, cfg.stat.powerMax]
+xticks = None
+yticksPos = np.arange(0, ylimEig[1], 5.)
+yticksNeg = np.arange(0, ylimEig[0], -5.)[::-1]
+yticks = np.concatenate((yticksNeg, yticksPos))
+zticks = np.logspace(np.log10(zlimEig[0]), np.log10(zlimEig[1]),
+                     int(np.round(np.log10(zlimEig[1]/zlimEig[0]) + 1)))
+maxCondition = 5
+
 
 # Read grid
 (X, Y) = ergoPlot.readGrid(gridFile, dimObs)
@@ -134,10 +150,10 @@ corrName = 'C%d%d' % (cfg.stat.idxf, cfg.stat.idxg)
 powerName = 'S%d%d' % (cfg.stat.idxf, cfg.stat.idxg)
 f = coord[cfg.stat.idxf]
 g = coord[cfg.stat.idxg]
-corrLabel = r'$C_{x_%d, x_%d}(t)$' % (cfg.stat.idxf + 1,
-                                      cfg.stat.idxg + 1)
-powerLabel = r'$S_{x_%d, x_%d}(\omega)$' % (cfg.stat.idxf + 1,
-                                            cfg.stat.idxg + 1)
+# corrLabel = r'$C_{x_%d, x_%d}(t)$' % (cfg.stat.idxf + 1,
+#                                       cfg.stat.idxg + 1)
+# powerLabel = r'$S_{x_%d, x_%d}(\omega)$' % (cfg.stat.idxf + 1,
+#                                             cfg.stat.idxg + 1)
 realLabel = r'$\Re(\bar{\lambda}_k)$'
 imagLabel = r'$\Im(\bar{\lambda}_k)$'
 
@@ -152,9 +168,6 @@ lags = np.loadtxt('%s/correlation/lags_lag%d%s.txt'\
 powerSample = np.loadtxt('%s/power/%s_chunk%d%s.txt'\
                          % (cfg.general.resDir, powerName, int(cfg.stat.chunkWidth),
                             srcPostfix))
-powerSampleSTD = np.loadtxt('%s/power/%sSTD_chunk%d%s.txt' \
-                            % (cfg.general.resDir, powerName, int(cfg.stat.chunkWidth),
-                               srcPostfix))
 freq = np.loadtxt('%s/power/freq_chunk%d%s.txt' \
                   % (cfg.general.resDir, cfg.stat.chunkWidth,
                      srcPostfix))
@@ -163,18 +176,14 @@ freq = np.loadtxt('%s/power/freq_chunk%d%s.txt' \
 angFreq = freq * 2*np.pi
 cfg0 = ((f - (f * statDist).sum()) * statDist * (g - (g * statDist).sum())).sum()
 powerSample /= 2 * np.pi * cfg0
-powerSampleSTD /= 2 * np.pi * cfg0
-
-# Get error bars
-powerSampleDown = powerSample - powerSampleSTD / 2
-powerSampleUp = powerSample + powerSampleSTD / 2
 
 # Reconstruct correlation and power spectrum
 # Get normalized weights
 weights = ergoPlot.getSpectralWeights(f, g, eigVecForward, eigVecBackward,
                                       statDist, skipMean=True)
 # Remove components with heigh condition number
-weights[eigenCondition > 3] = 0.
+weights[eigenCondition > maxCondition] = 0.
+eigenCondition[eigenCondition > maxCondition] = maxCondition
 (corrRec, compCorrRec) = ergoPlot.spectralRecCorrelation(lags, f, g, eigValGen, weights,
                                                          statDist, skipMean=True, norm=True)
 (powerRec, compPowerRec) = ergoPlot.spectralRecPower(angFreq, f, g, eigValGen, weights,
@@ -190,16 +199,16 @@ plt.savefig('%s/spectrum/reconstruction/%sRec_lag%d_nev%d%s.%s'\
 
 # PLot spectrum, powerSampledogram and spectral reconstruction
 weights /= cfg0
-msizeWeight = np.zeros((weights.shape[0]))
-msizeWeight[weights.real > 0] = np.log10(weights[weights.real > 0].real)
-msizeWeight[weights.real > 0] = (msizeWeight[weights.real > 0] + 8) * 10
-# msizeWeight[weights.real > 0] = (msizeWeight[weights.real > 0] + 6) * 3
-msizeWeight[msizeWeight < 0] = 0.
-ergoPlot.plotEigPowerRec(angFreq, eigValGen, msizeWeight, powerSample, powerSampleSTD,
-                         powerRec, xlabel=realLabel, ylabel=imagLabel, zlabel=powerLabel,
-                         xlim=[xminEigVal, -xminEigVal/100],
-                         ylim=[yminEigVal, -yminEigVal],
-                         zlim=[cfg.stat.powerMin, cfg.stat.powerMax])
+msize = np.zeros((weights.shape[0]))
+msize[weights.real > 0] = np.log10(weights[weights.real > 0].real)
+msize[weights.real > 0] = (msize[weights.real > 0] + 8) * 10
+# msize[weights.real > 0] = (msize[weights.real > 0] + 6) * 3
+msize[msize < 0] = 0.
+ergoPlot.plotEigPowerRec(angFreq, eigValGen, powerSample, powerRec,
+                         markersize=msize, condition=eigenCondition,
+                         xlabel=realLabel, ylabel=imagLabel, zlabel=powerLabel,
+                         xlim=xlimEig, ylim=ylimEig, zlim=zlimEig,
+                         xticks=xticks, yticks=yticks, zticks=zticks)
 plt.savefig('%s/spectrum/reconstruction/%sRec_chunk%d_nev%d%s.%s'\
             % (cfg.general.plotDir, powerName, int(cfg.stat.chunkWidth),
                cfg.spectrum.nev, postfix, ergoPlot.figFormat),

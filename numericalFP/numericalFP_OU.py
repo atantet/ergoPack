@@ -84,7 +84,7 @@ cfg.read_file(configFile)
 
 # Grid definition
 nx0 = 400
-nSTD0 = 20
+nSTD0 = 10
 
 # Number of eigenvalues
 nev = 50
