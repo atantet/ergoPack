@@ -122,11 +122,11 @@ polynomial1D(const size_t degree_) : degree(degree_), vectorField(1)
  */
 class codim1Field : public vectorField {
 protected:
-  double mu;  //< Parameter \f$ mu \f$ of the bifurcation.
+  double mu;  //!< Parameter \f$ mu \f$ of the bifurcation.
   
 public:
   /** \brief Constructor defining the model parameters. */
-  codim1Field(const size_t dim, const double mu_)
+  codim1Field(const size_t dim_, const double mu_)
     : vectorField(dim_), mu(mu_) {}
 
   /** \brief Destructor. */

@@ -1,11 +1,39 @@
 /** \page tutorial Tutorial
 
-\section Simulating
+The main purpose of ergoPack is to study the mixing properties
+of high-dimensional (random) dynamical systems
+in terms of the spectrum of reduced transfer operators.
+However, it also includes modules to generate time series of typical systems
+such as normal forms of codimension one bifurcations,
+low-dimensional chaotic flows, stochastic processes and delayed systems.
+These time series can then be used to estimate tranfer operators
+as in the present tutorial.
 
-\section Building transfer operators
+\section tutoSimulating Simulating
 
-\section Calculating the spectrum
+ergoPack includes three headers to generate time series
+of ordinary, stochastic and delay differential equations:
+- ODESolvers.hpp: for the integration of Ordinary Differential Equations (ODEs).
+Also includes some base clases used by the other headers.
+- SDESolvers.hpp: for the integration of Stochastic Differential Equations (SDEs).
+- SDDESolvers.hpp: for the integration of (Stochastic) Delay Differential Equations (SDDEs).
 
-\section Reconstructing the correlation function and power spectrum
+These headers use C++ polymorphism making them as modular as possible.
+To integrate a given system, one defines a model with a vector field for the drift
+(possibly including delays), a stochastic vector field for the diffusion
+and a finite-difference numerical scheme.
+
+\subsection tutoODE ODE example: the Lorenz flow (Lorenz 1963)
+
+\subsection tutoSDE SDE example: a two-dimensional Ornstein-Uhlenbeck process
+
+\subsection tutoSDDE SDDE example: the nonlinear delayed oscillator (Suarez & Schopf 1988)
+
+
+\section tutoTransfer transfer Building transfer operators
+
+\section tutoSpectrum Calculating the spectrum
+
+//\section Reconstructing the correlation function and power spectrum
 
 */

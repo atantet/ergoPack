@@ -85,6 +85,10 @@ int gsl_matrix_get_mean(gsl_vector *mean, const gsl_matrix *m, const size_t axis
 int gsl_matrix_get_variance(gsl_vector *var, const gsl_matrix *m, const size_t axis);
 /** \brief Get the standard deviation over the elements of a matrix along a given axis. */
 int gsl_matrix_get_std(gsl_vector *std, const gsl_matrix *m, const size_t axis);
+/** \brief Get the min over the elements of a matrix along a given axis. */
+int gsl_matrix_get_min(gsl_vector *min, const gsl_matrix *m, const size_t axis);
+/** \brief Get the max over the elements of a matrix along a given axis. */
+int gsl_matrix_get_max(gsl_vector *max, const gsl_matrix *m, const size_t axis);
 
 /** \brief Get the sum of the elements of a compressed matrix over each row. */
 int gsl_spmatrix_get_rowsum(gsl_vector *sum, const gsl_spmatrix *m);
@@ -727,7 +731,7 @@ gsl_matrix_get_mean(gsl_vector *mean, const gsl_matrix *m, const size_t axis)
       gsl_vector_scale(mean, 1. / m->size2);
       break;
     default:
-      GSL_ERROR_NULL("axis should be 0 or 1.", GSL_EINVAL);
+      GSL_ERROR("axis should be 0 or 1.", GSL_EINVAL);
     }
 
   return GSL_SUCCESS;
@@ -758,14 +762,14 @@ gsl_matrix_get_var(gsl_vector *var, const gsl_matrix *m, const size_t axis)
       sizeAxis = m->size1;
       break;
     default:
-      GSL_ERROR_NULL("axis should be 0 or 1.", GSL_EINVAL);
+      GSL_ERROR("axis should be 0 or 1.", GSL_EINVAL);
     }
 
   if (var->size != sizeAxis)
     {
-      GSL_ERROR_NULL("Output vector should have the same size as\
+      GSL_ERROR("Output vector should have the same size as\
 the number of columns (axis = 0) or rows (axis = 1) of the matrix",
-		     GSL_EINVAL);
+		 GSL_EINVAL);
     }
       
   //! Allocate
@@ -813,14 +817,14 @@ gsl_matrix_get_std(gsl_vector *std, const gsl_matrix *m, const size_t axis)
       sizeAxis = m->size1;
       break;
     default:
-      GSL_ERROR_NULL("axis should be 0 or 1.", GSL_EINVAL);
+      GSL_ERROR("axis should be 0 or 1.", GSL_EINVAL);
     }
 
   if (std->size != sizeAxis)
     {
-      GSL_ERROR_NULL("Output vector should have the same size as\
+      GSL_ERROR("Output vector should have the same size as\
 the number of columns (axis = 0) or rows (axis = 1) of the matrix",
-		     GSL_EINVAL);
+		GSL_EINVAL);
     }
       
   // Get variance
@@ -828,6 +832,106 @@ the number of columns (axis = 0) or rows (axis = 1) of the matrix",
 
   // Get square root
   gsl_vector_sqrt(std);
+  
+  return GSL_SUCCESS;
+}
+  
+/** 
+ * Get the min of the elements of a matrix along a given axis.
+ * \param[out] min  Vector of the min.
+ * \param[in]  m    Matrix over which to calculate the min.
+ * \param[in]  axis Axis over which to calculate the min
+ *                  (0: along columns, 1: along rows).
+ * \return          Exit status.
+ */
+int
+gsl_matrix_get_min(gsl_vector *min, const gsl_matrix *m, const size_t axis)
+{
+  size_t i;
+  
+  switch (axis)
+    {
+    case 0:
+      if (min->size != m->size2)
+	{
+	  GSL_ERROR("Output vector should have the same size as\
+the number of columns (axis = 0) or rows (axis = 1) of the matrix",
+		    GSL_EINVAL);
+	}
+      
+      for (i = 0; i < m->size2; i++)
+	{
+	  gsl_vector_const_view view = gsl_matrix_const_column(m, i);
+	  gsl_vector_set(min, i, gsl_vector_min(&view.vector));
+	}
+      break;
+    case 1:
+      if (min->size != m->size1)
+	{
+	  GSL_ERROR("Output vector should have the same size as\
+the number of columns (axis = 0) or rows (axis = 1) of the matrix",
+		    GSL_EINVAL);
+	}
+      
+      for (i = 0; i < m->size1; i++)
+	{
+	  gsl_vector_const_view view = gsl_matrix_const_row(m, i);
+	  gsl_vector_set(min, i, gsl_vector_min(&view.vector));
+	}
+      break;
+    default:
+      GSL_ERROR("axis should be 0 or 1.", GSL_EINVAL);
+    }
+  
+  return GSL_SUCCESS;
+}
+  
+/** 
+ * Get the max of the elements of a matrix along a given axis.
+ * \param[out] max  Vector of the max.
+ * \param[in]  m    Matrix over which to calculate the max.
+ * \param[in]  axis Axis over which to calculate the max
+ *                  (0: along columns, 1: along rows).
+ * \return          Exit status.
+ */
+int
+gsl_matrix_get_max(gsl_vector *max, const gsl_matrix *m, const size_t axis)
+{
+  size_t i;
+  
+  switch (axis)
+    {
+    case 0:
+      if (max->size != m->size2)
+	{
+	  GSL_ERROR("Output vector should have the same size as\
+the number of columns (axis = 0) or rows (axis = 1) of the matrix",
+		    GSL_EINVAL);
+	}
+      
+      for (i = 0; i < m->size2; i++)
+	{
+	  gsl_vector_const_view view = gsl_matrix_const_column(m, i);
+	  gsl_vector_set(max, i, gsl_vector_max(&view.vector));
+	}
+      break;
+    case 1:
+      if (max->size != m->size1)
+	{
+	  GSL_ERROR("Output vector should have the same size as\
+the number of columns (axis = 0) or rows (axis = 1) of the matrix",
+		    GSL_EINVAL);
+	}
+      
+      for (i = 0; i < m->size1; i++)
+	{
+	  gsl_vector_const_view view = gsl_matrix_const_row(m, i);
+	  gsl_vector_set(max, i, gsl_vector_max(&view.vector));
+	}
+      break;
+    default:
+      GSL_ERROR("axis should be 0 or 1.", GSL_EINVAL);
+    }
   
   return GSL_SUCCESS;
 }

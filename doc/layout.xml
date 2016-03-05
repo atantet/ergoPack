@@ -4,7 +4,6 @@
   <navindex>
     <tab type="mainpage" visible="yes" title=""/>
     <tab type="usergroup" visible="yes" title="Installation" url="@ref install">
-      <tab type="user" visible="yes" title="Getting the code" url="@ref getting-the-code"/>
     </tab>
     <tab type="usergroup" visible="yes" title="Tutorial" url="@ref tutorial">
     </tab>

@@ -11,7 +11,7 @@
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_sf_log.h>
 #include <libconfig.h++>
-#include <ergoPack/transferSpectrum.hpp>
+#include <transferSpectrum.hpp>
 
 
 using namespace libconfig;
@@ -88,6 +88,16 @@ readConfig(const char *cfgFileName)
     // Case name
     strcpy(caseName, (const char *) cfg.lookup("model.caseName"));
     std::cout << "Case name: " << caseName << std::endl;
+    if (cfg.exists("model.rho") & cfg.exists("model.sigma") & cfg.exists("model.beta"))
+      {
+	double rho, sigma, beta;
+	rho = cfg.lookup("model.rho");
+	sigma = cfg.lookup("model.sigma");
+	beta = cfg.lookup("model.beta");
+	strcpy(cpyBuffer, caseName);
+	sprintf(caseName, "%s_rho%d_sigma%d_beta%d", cpyBuffer,
+		(int) (rho * 1000), (int) (sigma * 1000), (int) (beta * 1000));
+      }	
     
     // Get delays in days and the number of delays
     sprintf(delayName, "");
@@ -165,24 +175,40 @@ readConfig(const char *cfgFileName)
     // Get grid settings
     std::cout << std::endl << "---grid---" << std::endl;
     const Setting &nxSetting = cfg.lookup("grid.nx");
-    const Setting &nSTDLowSetting = cfg.lookup("grid.nSTDLow");
-    const Setting &nSTDHighSetting = cfg.lookup("grid.nSTDHigh");
     nx = gsl_vector_uint_alloc(dimObs);
-    nSTDLow = gsl_vector_alloc(dimObs);
-    nSTDHigh = gsl_vector_alloc(dimObs);
     N = 1;
     for (size_t d = 0; d < (size_t) (dimObs); d++)
       {
 	gsl_vector_uint_set(nx, d, nxSetting[d]);
 	N *= gsl_vector_uint_get(nx, d);
-	gsl_vector_set(nSTDLow, d, nSTDLowSetting[d]);
-	gsl_vector_set(nSTDHigh, d, nSTDHighSetting[d]);
-	std::cout << "Grid definition (nSTDLow, nSTDHigh, n):" << std::endl;
-	std::cout << "dim " << d+1 << ": ("
-		  << gsl_vector_get(nSTDLow, d) << ", "
-		  << gsl_vector_get(nSTDHigh, d) << ", "
-		  << gsl_vector_uint_get(nx, d) << ")" << std::endl;
+	std::cout << "Number of grid boxes per dimension:" << std::endl;
+	std::cout << "dim " << d+1 << ": "
+		  << gsl_vector_uint_get(nx, d) << std::endl;
     }
+    if (cfg.exists("grid.nSTDLow") & cfg.exists("grid.nSTDLow"))
+      {
+	const Setting &nSTDLowSetting = cfg.lookup("grid.nSTDLow");
+	const Setting &nSTDHighSetting = cfg.lookup("grid.nSTDHigh");
+	nSTDLow = gsl_vector_alloc(dimObs);
+	nSTDHigh = gsl_vector_alloc(dimObs);
+	for (size_t d = 0; d < (size_t) (dimObs); d++)
+	  {
+	    gsl_vector_uint_set(nx, d, nxSetting[d]);
+	    N *= gsl_vector_uint_get(nx, d);
+	    gsl_vector_set(nSTDLow, d, nSTDLowSetting[d]);
+	    gsl_vector_set(nSTDHigh, d, nSTDHighSetting[d]);
+	    std::cout << "Grid limits (nSTDLow, nSTDHigh):" << std::endl;
+	    std::cout << "dim " << d+1 << ": ("
+		      << gsl_vector_get(nSTDLow, d) << ", "
+		      << gsl_vector_get(nSTDHigh, d) << ", "
+		      << gsl_vector_uint_get(nx, d) << ")" << std::endl;
+	  }
+      }
+    else
+      {
+	nSTDLow = NULL;
+	nSTDHigh = NULL;
+      }
     if (cfg.exists("grid.readGridMem"))
       readGridMem = cfg.lookup("grid.readGridMem");
     else
@@ -271,10 +297,18 @@ readConfig(const char *cfgFileName)
     sprintf(gridPostfix, "");
     for (size_t d = 0; d < (size_t) dimObs; d++) {
       strcpy(cpyBuffer, gridPostfix);
-      sprintf(gridPostfix, "%s_n%dl%dh%d", cpyBuffer,
-	      gsl_vector_uint_get(nx, d),
-	      (int) gsl_vector_get(nSTDLow, d),
-	      (int) gsl_vector_get(nSTDHigh, d));
+      if (nSTDLow && nSTDHigh)
+	{
+	  sprintf(gridPostfix, "%s_n%dl%dh%d", cpyBuffer,
+		  gsl_vector_uint_get(nx, d),
+		  (int) gsl_vector_get(nSTDLow, d),
+		  (int) gsl_vector_get(nSTDHigh, d));
+	}
+      else
+	{
+	  sprintf(gridPostfix, "%s_n%dminmax", cpyBuffer,
+		  gsl_vector_uint_get(nx, d));
+	}
     }
     strcpy(cpyBuffer, gridPostfix);    
     sprintf(gridPostfix, "%s%s%s", srcPostfix, obsName, cpyBuffer);

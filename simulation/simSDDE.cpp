@@ -9,9 +9,9 @@
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
 #include <libconfig.h++>
-#include <ergoPack/ODESolvers.hpp>
-#include <ergoPack/SDESolvers.hpp>
-#include <ergoPack/SDDESolvers.hpp>
+#include <ODESolvers.hpp>
+#include <SDESolvers.hpp>
+#include <SDDESolvers.hpp>
 
 using namespace libconfig;
 

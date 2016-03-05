@@ -14,7 +14,7 @@
 #include <gsl/gsl_permute_vector.h>
 #include <gsl/gsl_sort_vector.h>
 #include <arpack++/arsnsym.h>
-#include <ergoPack/transferOperator.hpp>
+#include <transferOperator.hpp>
 
 
 /** \addtogroup transfer
@@ -291,9 +291,9 @@ transferSpectrum::getSpectrumBackward()
       /** Divide eigenvectors (real and imaginary parts) by stationary distribution */
       for (size_t i = 0; i < N; i++)
 	{
-	  if (gsl_vector_get(transferOp->rho0, i) > 0)
+	  if (gsl_vector_get(transferOp->initDist, i) > 0)
 	    {
-	      element = gsl_complex_rect(1. / gsl_vector_get(transferOp->rho0, i), 0.);
+	      element = gsl_complex_rect(1. / gsl_vector_get(transferOp->initDist, i), 0.);
 	      view = gsl_matrix_complex_row(EigVecBackward, i);
 	      gsl_vector_complex_scale(&view.vector, element);
   	    }
@@ -349,18 +349,18 @@ transferSpectrum::getConditionNumbers()
       gsl_vector_complex_const_view viewFor
 	= gsl_matrix_complex_const_column(EigVecForward, ev);
       normForward = gsl_vector_complex_get_norm(&viewFor.vector,
-						transferOp->rho0);
+						transferOp->initDist);
 
       //! Get norm of backward eigenvector.
       gsl_vector_complex_const_view viewBack
 	= gsl_matrix_complex_const_column(EigVecBackward, ev);
       normBackward = gsl_vector_complex_get_norm(&viewBack.vector,
-						 transferOp->rhof);
+						 transferOp->finalDist);
 
       //! Divide by their inner product (in case not made biorthonormal)
       inner = GSL_REAL(gsl_vector_complex_get_inner_product(&viewFor.vector,
 							    &viewBack.vector,
-							    transferOp->rhof));
+							    transferOp->finalDist));
 
       //! Set condition number
       gsl_vector_set(conditionNumbers, ev, normForward * normBackward / inner);
@@ -404,14 +404,14 @@ must have the same size as the grid." << std::endl;
       // Project on backward eigenvector
       gsl_vector_complex_const_view viewBack
 	= gsl_matrix_complex_const_column(EigVecBackward, ev);
-      weight = gsl_vector_complex_get_inner_product(fc, &viewBack.vector, transferOp->rho0);
+      weight = gsl_vector_complex_get_inner_product(fc, &viewBack.vector, transferOp->initDist);
 
       // Project on forward eigenvector
       gsl_vector_complex_const_view viewFor
 	= gsl_matrix_complex_const_column(EigVecForward, ev);
       weight = gsl_complex_mul(weight,
 			       gsl_vector_complex_get_inner_product(&viewFor.vector, gc,
-								    transferOp->rhof));
+								    transferOp->finalDist));
 
       // Set weight
       gsl_vector_complex_set(weights, ev, weight);
@@ -534,7 +534,7 @@ must be solved first before to make biorthonormal set" << std::endl;
    	 = gsl_matrix_complex_column(EigVecBackward, ev);
        inner = gsl_vector_complex_get_inner_product(&viewFor.vector,
    						    &viewBack.vector,
-   						    transferOp->rhof);
+   						    transferOp->finalDist);
        //! Divide backward eigenvector by conjugate of inner product
        inner = gsl_complex_conjugate(inner);
        inner = gsl_complex_inverse(inner);

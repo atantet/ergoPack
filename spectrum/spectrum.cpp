@@ -6,8 +6,8 @@
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_math.h>
-#include <ergoPack/transferOperator.hpp>
-#include <ergoPack/transferSpectrum.hpp>
+#include <transferOperator.hpp>
+#include <transferSpectrum.hpp>
 #include "../cfg/readConfig.hpp"
 
 
@@ -40,6 +40,7 @@ int dimObs;                     //!< Dimension of the observable
 size_t embedMax;                //!< Maximum lag for the embedding
 gsl_vector_uint *components;    //!< Components in the time series used by the observable
 gsl_vector_uint *embedding;     //!< Embedding lags for each component
+bool readGridMem;               //!< Whether to read the grid membership vector
 size_t N;                       //!< Dimension of the grid
 gsl_vector_uint *nx;            //!< Number of grid boxes per dimension
 gsl_vector *nSTDLow;            //!< Number of standard deviations below mean to span by the grid 
@@ -93,6 +94,9 @@ int main(int argc, char * argv[])
   char forwardTransitionFileName[256], initDistFileName[256],
     backwardTransitionFileName[256], finalDistFileName[256], postfix[256];
   transferOperator *transferOp;
+  gsl_vector *initDist = gsl_vector_alloc(N);
+  gsl_vector *finalDist = gsl_vector_alloc(N);
+
 
   // Eigen problem
   char EigValForwardFileName[256], EigVecForwardFileName[256],
@@ -112,12 +116,8 @@ int main(int argc, char * argv[])
 	      "%s/transfer/forwardTransition/forwardTransition%s.coo", resDir, postfix);
       sprintf(backwardTransitionFileName, \
 	      "%s/transfer/backwardTransition/backwardTransition%s.coo", resDir, postfix);
-      sprintf(initDistFileName, "%s/transfer/initDist/initDist%s.txt",
-	      resDir, postfix);
       sprintf(EigValForwardFileName, "%s/spectrum/eigval/eigvalForward_nev%d%s.txt",
 	      resDir, nev, postfix);
-      sprintf(finalDistFileName, "%s/transfer/finalDist/finalDist%s.txt",
-	      resDir, postfix);
       sprintf(EigValForwardFileName, "%s/spectrum/eigval/eigvalForward_nev%d%s.txt",
 	      resDir, nev, postfix);
       sprintf(EigVecForwardFileName, "%s/spectrum/eigvec/eigvecForward_nev%d%s.txt",
@@ -127,18 +127,37 @@ int main(int argc, char * argv[])
       sprintf(EigVecBackwardFileName, "%s/spectrum/eigvec/eigvecBackward_nev%d%s.txt",
 	      resDir, nev, postfix);
 
-      
       // Read transfer operator
       std::cout << "Reading stationary transfer operator..." << std::endl;
       try
 	{
 	  transferOp = new transferOperator(N, stationary);
-	  transferOp->scanInitDist(initDistFileName);
+	  // Only scan initial distribution for the first lag
+	  if (lag == 0)
+	    {
+	      sprintf(initDistFileName, "%s/transfer/initDist/initDist%s.txt",
+		      resDir, gridPostfix);
+	      transferOp->scanInitDist(initDistFileName);
+	      gsl_vector_memcpy(initDist, transferOp->initDist);
+	    }
+	  else
+	    transferOp->setInitDist(initDist);
+	  // Scan forward transition matrix
 	  transferOp->scanForwardTransition(forwardTransitionFileName);
 
 	  if (!stationary)
 	    {
-	      transferOp->scanFinalDist(finalDistFileName);
+	      // Only scan final distribution for the first lag
+	      if (lag == 0)
+		{
+		  sprintf(finalDistFileName, "%s/transfer/finalDist/finalDist%s.txt",
+			  resDir, gridPostfix);
+		  transferOp->scanFinalDist(finalDistFileName);
+		  gsl_vector_memcpy(finalDist, transferOp->finalDist);
+		}
+	      else
+		transferOp->setFinalDist(finalDist);
+	      // Scan backward transition matrix
 	      transferOp->scanBackwardTransition(backwardTransitionFileName);
 	    }
 	}
@@ -211,6 +230,8 @@ int main(int argc, char * argv[])
 
   // Free
   freeConfig();
+  gsl_vector_free(initDist);
+  gsl_vector_free(finalDist);
   
   return 0;
 }

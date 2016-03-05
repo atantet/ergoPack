@@ -5,8 +5,8 @@
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_blas.h>
-#include <ergoPack/ODESolvers.hpp>
-#include <ergoPack/SDESolvers.hpp>
+#include <ODESolvers.hpp>
+#include <SDESolvers.hpp>
 
 
 /** \addtogroup simulation

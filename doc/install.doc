@@ -1,75 +1,101 @@
 /** \page install Installation
 
 
-\section getting-the-code Getting the code                
+\section installing-the-code Downloading and installing ergoPack
 
 First the ergoPack repository should be cloned using [git].
-To do so:
-1. Change directory to where you want to clone the repository $GITDIR:
+To do so, clone the ergoPack repository to some directory $GITDIR
+(git should be installed using your favorite package manager):
 
-        cd $GITDIR
-     
-2. Clone the ergoPack repository (git should be installed):
+    cd $GITDIR
+    git clone https://github.com/atantet/ergoPack
+Then, copy the source files to your include directory $INCLUDE/:
 
-        git clone https://github.com/atantet/ergoPack
-
-
-\section dependencies Dependencies          
-
-Mandatory libraries:
-- [GSL] is used as the main C scientific library.
-An updated version is used which includes an extension of the sparse module
-not (yet) implemented in the official distribution (see \ref installing-the-code).
-
-Specific libraries:
-- [ARPACK++] is an object-oriented version of the ARPACK package
-used to calculate the spectrum of sparse matrices in atspectrum.hpp.
-- [OpenMP][OMP] is used for multi-threading by transferOperator.hpp
-when WITH_OMP is set to 1 when compiling.
-
-
-\section installing-the-code Installing the code                
-
-1. Create a directory ergoPack/ in your favorite include directory $INCLUDE:
-
-        mkdir $INCLUDE/ergoPack
-     
-2. Copy the ergoPack/*.hpp source files to $INCLUDE/ergoPack/:
-
-        cd $GITDIR/ergoPack
-        cp *.hpp $INCLUDE/ergoPack
-     
-3. Include these files in your C++ codes. For example, in order to include the matrix manipulation functions in atmatrix.hpp,
-add in your C++ file:
-
-        #include <ergoPack/atmatrix.hpp>
+    cp ergoPack/include/*.hpp $INCLUDE/
     
 
 \section updating-the-code Updating the code              
 
 1. Pull the ergoPack repository:
 
-        cd $GITDIR/ergoPack     
-        git pull
+       cd $GITDIR/ergoPack     
+       git pull
      
 2. Copy the source files to your favorite include directory $INCLUDE:
 
-        cp *.hpp $INCLUDE/ergoPack
+       cp include/*.hpp $INCLUDE/
+
+
+\section dependencies Dependencies          
+
+- [GSL] is used as the main C scientific library.
+As of now, the last development version of GSL is necessary,
+as it includes a required extension of its sparse module.
+The git repository is cloned to your local directory by running:
+
+    cd $GITDIR
+    git clone git://git.savannah.gnu.org/gsl.git
+The library can then be installed using the usual Unix tools:
+
+    cd $GITDIR/gsl/
+    ./configure [--prefix=...]
+    make
+    make install
+    
+- [ARPACK++] is an object-oriented version of the ARPACK package
+used to calculate the spectrum of sparse matrices in transferSpectrum.hpp.
+It can be downloaded from the maintained repository arpackpp and installed
+by copying the source files to your include directory $INCLUDE:
+
+    cd $GITDIR
+    git clone https://github.com/m-reuter/arpackpp
+    cp arpackpp/include/* $INCLUDE/
+ARPACK++ depends at least on BLAS and ARPACK. If not installed yet,
+they can be compiled from the arpackpp directory
+and installed to your library directory $LIB:
+
+    cd $GITDIR/arpackpp/
+    ./install-openblas.sh
+    ./install-arpack-ng.sh
+    cp external/*.a $LIB/
+    
+- [libconfig] is used in the examples to parse configuration files playing
+the role of Fortran's namelists.
+It is not required if the user uses her/his own configuration strategy.
+To download from the git repository and install:
+
+    cd $GITDIR
+    git clone https://github.com/hyperrealm/libconfig
+    cd $GITDIR/libconfig
+    ./configure [--prefix=...]
+    make
+    make install
+    
+- [OpenMP][OMP] is the optional multi-threading standard used by transferOperator.hpp
+when WITH_OMP=1 at compilation. It is integrated in most modern compilers such as gcc.
 
 
 \section compiling Compiling                   
 
 \subsection without-omp Without OpenMP               
 
-If INCLUDE is not a system directory such as /usr/include/ or /usr/local/include/
+Include the ergoPack headers in your C++ codes. For example,
+in order to include the transfer operator header transferOperator.hpp, add in your C++ file:
+
+    #include <transferOperator.hpp>
+If $INCLUDE is not a system directory such as /usr/include/ or /usr/local/include/
 then either it should be added to CPLUS_INCLUDE_PATH or at compilation using -I$INCLUDE. E.g.
 
-     g++ -c -I$INCLUDE source.cpp
+    g++ -c -I$INCLUDE source.cpp
 
-When linking, GSL should be linked by added -lgsl.
-If GSL's directory is not a system one or in LIBRARY_PATH then -L$GSLDIR should be added. E.g.
+When linking, GSL should always be linked by added -lgsl.
+If GSL's directory is not a system one or in LIBRARY_PATH then -L$GSLDIR should be added.
+BLAS and ARPACK should be linked when using ARPACK++ in transferSpectrum.hpp by adding -lopenblas -larpack.
+If [libconfig] is used for parsing, it should also be linked by adding -lconfig++.
+For example:
 
-     g++ -L$GSLDIR source.o -lgsl
+    g++ -L$GSLDIR source.o -lgsl -lconfig++ -lopenblas -larpack
+Note that an appropriate Makefile is provided in each example directory.
      
 \subsection with-omp With OpenMP                  
 
@@ -77,12 +103,13 @@ If OpenMP is to be used, then WITH_OMP should be set to 1,
 -fopenmp -DWITH_OMP=$WITH_OMP used when compiling
 and -lgomp when linking.
 
-     g++ -c -fopenmp -DWITH_OMP=$WITH_OMP -I$INCLUDE source.cpp
-     g++ -L$GSLDIR source.o -lgsl -lgomp
+    g++ -c -fopenmp -DWITH_OMP=$WITH_OMP -I$INCLUDE source.cpp
+    g++ -L$GSLDIR source.o  -lgsl -lconfig++ -lopenblas -larpack -lgomp
 
 [git]: https://git-scm.com/ "git"
 [GSL]: http://www.gnu.org/software/gsl/ "GSL - GNU Scientific Library"
 [ARPACK++]: http://www.caam.rice.edu/software/ARPACK/arpack++.html "ARPACK++"
+[libconfig]: http://www.hyperrealm.com/libconfig/ "Libconfig"
 [OMP]: http://www.openmp.org/ "OpenMP"
 
 */

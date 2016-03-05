@@ -6,8 +6,8 @@
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_sf_log.h>
-#include <ergoPack/transferOperator.hpp>
-#include <ergoPack/gsl_extension.h>
+#include <transferOperator.hpp>
+#include <gsl_extension.h>
 #include "../cfg/readConfig.hpp"
 
 

@@ -9,11 +9,11 @@
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_matrix.h>
-#include <ergoPack/gsl_extension.h>
+#include <gsl_extension.h>
 #if defined (WITH_OMP) && WITH_OMP == 1
 #include <omp.h>
 #endif
-#include <ergoPack/ergoStat.hpp>
+#include <ergoStat.hpp>
 
 
 
@@ -232,21 +232,34 @@ RegularGrid::RegularGrid(const size_t inx, const double nSTDLow, const double nS
 			 const gsl_matrix *states)
   : CurvilinearGrid(states->size2, inx)
 {
+  gsl_vector *nSTDLowv, *nSTDHighv;
+  
   // Allocate memory for the grid bounds
   allocateBounds();
   
   // Get uniform vectors
-  gsl_vector *nSTDLowv = gsl_vector_alloc(dim);
-  gsl_vector *nSTDHighv = gsl_vector_alloc(dim);
-  gsl_vector_set_all(nSTDLowv, nSTDLow);
-  gsl_vector_set_all(nSTDHighv, nSTDHigh);
+  if (nSTDLow && nSTDHigh)
+    {
+      nSTDLowv = gsl_vector_alloc(dim);
+      nSTDHighv = gsl_vector_alloc(dim);
+      gsl_vector_set_all(nSTDLowv, nSTDLow);
+      gsl_vector_set_all(nSTDHighv, nSTDHigh);
+    }
+  else
+    {
+      nSTDLowv = NULL;
+      nSTDHighv = NULL;
+    }
 
   // Get adapted grid
   getAdaptedRegularGrid(nSTDLowv, nSTDHighv, states);
 
   // Free
-  gsl_vector_free(nSTDLowv);
-  gsl_vector_free(nSTDHighv);
+  if (nSTDLowv && nSTDHighv)
+    {
+      gsl_vector_free(nSTDLowv);
+      gsl_vector_free(nSTDHighv);
+    }
 }
 
 
@@ -417,34 +430,50 @@ RegularGrid::getAdaptedRegularGrid(const gsl_vector *nSTDLow, const gsl_vector *
 {
   gsl_vector *xmin, *xmax, *statesMean, *statesSTD;
   
-  // Get mean and standard deviation of time series
-  statesMean = gsl_vector_alloc(states->size2);
-  gsl_matrix_get_mean(statesMean, states, 0);
-  statesSTD = gsl_vector_alloc(states->size2);
-  gsl_matrix_get_std(statesSTD, states, 0);
-  
-  // Create grid
-  // Define grid limits
   xmin = gsl_vector_alloc(dim);
   xmax = gsl_vector_alloc(dim);
-  for (size_t d = 0; d < dim; d++)
+
+  // If then number of STD is given, get mean and std of time series
+  // Otherwise, get minimum and maximum
+  if (nSTDLow && nSTDHigh)
     {
-      gsl_vector_set(xmin, d, gsl_vector_get(statesMean, 0)
-		     - gsl_vector_get(nSTDLow, d)
-		     * gsl_vector_get(statesSTD, d));
-      gsl_vector_set(xmax, d, gsl_vector_get(statesMean, d)
-		     + gsl_vector_get(nSTDHigh, d)
-		     * gsl_vector_get(statesSTD, d));
+      // Find mean and std
+      statesMean = gsl_vector_alloc(states->size2);
+      statesSTD = gsl_vector_alloc(states->size2);
+      gsl_matrix_get_mean(statesMean, states, 0);
+      gsl_matrix_get_std(statesSTD, states, 0);
+      
+      // Define limits as multiples of std around the mean
+      for (size_t d = 0; d < dim; d++)
+	{
+	  gsl_vector_set(xmin, d, gsl_vector_get(statesMean, 0)
+			 - gsl_vector_get(nSTDLow, d)
+			 * gsl_vector_get(statesSTD, d));
+	  gsl_vector_set(xmax, d, gsl_vector_get(statesMean, d)
+			 + gsl_vector_get(nSTDHigh, d)
+			 * gsl_vector_get(statesSTD, d));
+	}
+      
+      // Free
+      gsl_vector_free(statesMean);
+      gsl_vector_free(statesSTD);
     }
-    
+  else
+    {
+      // Get min and max of time series
+      gsl_matrix_get_min(xmin, states, 0);
+      gsl_matrix_get_max(xmax, states, 0);
+      // The upper bound uses a strict inequality,
+      // make sure the maximum is included
+      gsl_vector_add_constant(xmax, 1.e-12);
+    }
+  
   // Allocate and build uniform rectangular grid
   getRegularGrid(xmin, xmax);
 
   // Free
   gsl_vector_free(xmin);
   gsl_vector_free(xmax);
-  gsl_vector_free(statesMean);
-  gsl_vector_free(statesSTD);
 }
 
 /**

@@ -6,20 +6,17 @@
 #include <gsl/gsl_sf_log.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_matrix.h>
-#include <gsl/gsl_rng.h>
-#include <gsl/gsl_randist.h>
 #include <libconfig.h++>
-#include <SDESolvers.hpp>
 #include <ODESolvers.hpp>
 
 using namespace libconfig;
 
 
-/** \file simOU.cpp 
+/** \file simLorenz63.cpp 
  *  \ingroup examples
- *  \brief Simulate a multi-dimensional Ornstein-Uhlenbeck process.
+ *  \brief Simulate Lorenz (1963) deterministic flow.
  *
- *  Simulate a multi-dimensional Ornstein-Uhlenbeck process.
+ *  Simulate Lorenz (1963) deterministic flow.
  */
 
 
@@ -35,8 +32,9 @@ char caseName[256];       //!< Name of the case to simulate
 char file_format[256];    //!< File format of output ("txt" or "bin")
 char resDir[256];         //!< Root directory in which results are written
 int dim;                  //!< Dimension of the phase space
-gsl_matrix *A;            //!< Matrix of the linear drift
-gsl_matrix *Q;            //!< Diffusion matrix
+double rho;               //!< Rayleigh number
+double sigma;             //!< \f$ \sigma \f$ parameter
+double beta;             //!< \f$ \beta \f$ parameter
 gsl_vector *initState;    //!< Initial state
 double LCut;              //!< Length of the time series without spinup
 double spinup;            //!< Length of initial spinup period to remove
@@ -48,12 +46,11 @@ char postfix[256];        //!< Postfix of destination files
 char dstFileName[256];    //!< Destination file name
 
 
-/** \brief Simulation of an Ornstein-Uhlenbeck process.
+/** \brief Simulation of Lorenz (1963) deterministic flow.
  *
- *  Simulation of an Ornstein-Uhlenbeck process.
+ *  Simulation of Lorenz (1963) deterministic flow.
  *  After parsing the configuration file,
- *  a linear vector field for the drift, a diffusion matrix
- *  and an Euler-Maruyama stochastic numerical scheme are defined.
+ *  the vector field of the Lorenz 1963 flow and the Runge-Kutta numerical scheme of order 4 are defined.
  *  The model is then integrated forward and the results saved.
  */
 int main(int argc, char * argv[])
@@ -80,29 +77,17 @@ int main(int argc, char * argv[])
       return EXIT_FAILURE;
     }
 
-  // Configure random number generator
-  gsl_rng_env_setup(); // Get GSL_RNG_TYPE [=gsl_rng_mt19937] and GSL_RNG_SEED [=0]
-  gsl_rng * r = gsl_rng_alloc(gsl_rng_ranlxs1);
-  std::cout << "---Random number generator---" << std::endl;
-  std::cout << "Generator type: " << gsl_rng_name (r) << std::endl;
-  std::cout << "Seed = " <<  gsl_rng_default_seed << std::endl;
-  std::cout << std::endl;
-
-  
   // Define field
   std::cout << "Defining deterministic vector field..." << std::endl;
-  vectorField *field = new linearField(A);
-
-  // Define stochastic vector field
-  vectorFieldStochastic *stocField = new additiveWiener(Q, r);
+  vectorField *field = new Lorenz63(rho, sigma, beta);
 
   // Define numerical scheme
-  std::cout << "Defining stochastic numerical scheme..." << std::endl;
-  numericalSchemeStochastic *scheme = new EulerMaruyama(dim, dt);
+  std::cout << "Defining deterministic numerical scheme..." << std::endl;
+  numericalScheme *scheme = new RungeKutta4(dim, dt);
 
   // Define model
-  std::cout << "Defining stochastic model..." << std::endl;
-  modelStochastic *mod = new modelStochastic(field, stocField, scheme, initState);
+  std::cout << "Defining deterministic model..." << std::endl;
+  model *mod = new model(field, scheme, initState);
   
   // Numerical integration
   printf("Integrating simulation...\n");
@@ -119,8 +104,6 @@ int main(int argc, char * argv[])
   // Free
   gsl_matrix_free(X);
   gsl_vector_free(initState);
-  gsl_matrix_free(A);
-  gsl_matrix_free(Q);
 
   return 0;
 }
@@ -134,6 +117,7 @@ void
 readConfig(const char *cfgFileName)
 {
   Config cfg;
+  char cpyBuffer[256];
   
   // Read the file. If there is an error, report it and exit.
   try {
@@ -159,38 +143,18 @@ readConfig(const char *cfgFileName)
     dim = cfg.lookup("model.dim");
     std::cout << "dim = " << dim << std::endl;
     
-    // Get name of linear drift of OU and its read matrix from file
-    A = gsl_matrix_alloc(dim, dim);
-    const Setting &driftSetting = cfg.lookup("model.drift");
-    std::cout << "Linear drift matrix A = [";
-    for (size_t i = 0; i < (size_t) dim; i++)
-      {
-	std::cout << "[";
-	for (size_t j = 0; j < (size_t) dim; j++)
-	  {
-	    gsl_matrix_set(A, i, j, driftSetting[j + i * dim]);
-	    std::cout << gsl_matrix_get(A, i, j) << " ";
-	  }
-	std::cout << "]";
-      }
-    std::cout << "]" << std::endl;
-
-    // Get name of diffusion and its read matrix from file
-    Q = gsl_matrix_alloc(dim, dim);
-    const Setting &diffusionSetting = cfg.lookup("model.diffusion");
-    std::cout << "Diffusion matrix Q = [";
-    for (size_t i = 0; i < (size_t) dim; i++)
-      {
-	std::cout << "[";
-	for (size_t j = 0; j < (size_t) dim; j++)
-	  {
-	    gsl_matrix_set(Q, i, j, diffusionSetting[j + i * dim]);
-	    std::cout << gsl_matrix_get(Q, i, j) << " ";
-	  }
-	std::cout << "]";
-      }
-    std::cout << "]" << std::endl;
-
+    // Get Lorenz63 parameters and update case name
+    rho = cfg.lookup("model.rho");
+    std::cout << "rho = " << rho << std::endl;
+    sigma = cfg.lookup("model.sigma");
+    std::cout << "sigma = " << sigma << std::endl;
+    beta = cfg.lookup("model.beta");
+    std::cout << "beta = " << beta << std::endl;
+    strcpy(cpyBuffer, caseName);
+    sprintf(caseName, "%s_rho%d_sigma%d_beta%d", cpyBuffer,
+	    (int) (rho * 1000), (int) (sigma * 1000), (int) (beta * 1000));
+    
+    
     /** Get simulation settings */
     std::cout << "\n" << "---simulation---" << std::endl;
 

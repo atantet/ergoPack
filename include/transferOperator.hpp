@@ -10,8 +10,8 @@
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_spmatrix.h>
-#include <ergoPack/gsl_extension.h>
-#include <ergoPack/ergoGrid.hpp>
+#include <gsl_extension.h>
+#include <ergoGrid.hpp>
 
 
 /** \addtogroup transfer
@@ -78,8 +78,8 @@ class transferOperator {
 public:
   gsl_spmatrix *P;       //!< Forward transition matrix (CRS)
   gsl_spmatrix *Q;       //!< Backward transition matrix (CRS)
-  gsl_vector *rho0;      //!< Initial distribution
-  gsl_vector *rhof;      //!< Final distribution
+  gsl_vector *initDist;      //!< Initial distribution
+  gsl_vector *finalDist;      //!< Final distribution
 
   
   /** \brief Empty constructor allocating for grid size*/
@@ -136,6 +136,13 @@ public:
   int scanFinalDist(const char *path);
 
 
+  // Manual modifications
+  /** \brief Manually change the initial distribution. */
+  void setInitDist(const gsl_vector *initDist_) { gsl_vector_memcpy(initDist, initDist_); return; }
+
+  /** \brief Manually change the finalial distribution. */
+  void setFinalDist(const gsl_vector *finalDist_) { gsl_vector_memcpy(finalDist, finalDist_); return; }
+
   /** \brief Filtering of weak Markov states. */
   int filter(double tol);
 };
@@ -148,7 +155,7 @@ public:
 
 /** \brief Get triplet vector from membership matrix. */
 void getTransitionCountTriplet(const gsl_matrix_uint *gridMem, size_t N,
-			       gsl_spmatrix *T, gsl_vector *rho0, gsl_vector *rhof);
+			       gsl_spmatrix *T, gsl_vector *initDist, gsl_vector *finalDist);
 /** \brief Remove weak nodes from a transition matrix. */
 int filterStochasticMatrix(gsl_spmatrix *M, gsl_vector *rowCut, gsl_vector *colCut,
 			   double tol, int norm);
@@ -232,13 +239,13 @@ transferOperator::~transferOperator()
 {
   if (P)
     gsl_spmatrix_free(P);
-  gsl_vector_free(rho0);
+  gsl_vector_free(initDist);
 
   if (Q)
     gsl_spmatrix_free(Q);
   if (!stationary)
     {
-      gsl_vector_free(rhof);
+      gsl_vector_free(finalDist);
     }
 }
 
@@ -255,18 +262,18 @@ int
 transferOperator::allocate()
 {
   P = NULL;
-  rho0 = gsl_vector_alloc(N);
+  initDist = gsl_vector_alloc(N);
   
-  /** If stationary problem, rho0 = rhof = stationary distribution
+  /** If stationary problem, initDist = finalDist = stationary distribution
    *  and the backward transition matrix need not be calculated */
   Q = NULL;
   if (!stationary)
     {    
-      rhof = gsl_vector_alloc(N);
+      finalDist = gsl_vector_alloc(N);
     }
   else
     {
-      rhof = rho0;
+      finalDist = initDist;
     }
   
   return 0;
@@ -298,9 +305,9 @@ triplet count matrix.\n");
     }
 
   if (stationary)
-    getTransitionCountTriplet(gridMem, N, T, rho0, NULL);
+    getTransitionCountTriplet(gridMem, N, T, initDist, NULL);
   else
-    getTransitionCountTriplet(gridMem, N, T, rho0, rhof);
+    getTransitionCountTriplet(gridMem, N, T, initDist, finalDist);
 
   
   /** Convert to CRS summing duplicates */
@@ -330,13 +337,13 @@ forward transition matrix to backward.\n");
 	}
   
       /** Make the backward transition matrix left stochastic */
-      gsl_spmatrix_div_cols(Q, rho0, tol);
-      gsl_vector_normalize(rho0);
+      gsl_spmatrix_div_cols(Q, initDist, tol);
+      gsl_vector_normalize(initDist);
     }
   
   /** Make the forward transition matrix left stochastic */
-  gsl_spmatrix_div_cols(P, rhof, tol);
-  gsl_vector_normalize(rhof);
+  gsl_spmatrix_div_cols(P, finalDist, tol);
+  gsl_vector_normalize(finalDist);
   
   /** Free */
   gsl_spmatrix_free(T);
@@ -357,7 +364,7 @@ transferOperator::filter(double tol)
   int status;
   
   /** Filter forward transition matrix */
-  if (status = filterStochasticMatrix(P, rho0, rhof, tol, 2))
+  if (status = filterStochasticMatrix(P, initDist, finalDist, tol, 2))
     {
       fprintf(stderr, "transferOperator::filter: error filtering\
 forward transition matrix.\n");
@@ -367,7 +374,7 @@ forward transition matrix.\n");
   /** Filter forward transition matrix */
   if (Q)
     {
-      if (status = filterStochasticMatrix(Q, rhof, rho0, tol, 2))
+      if (status = filterStochasticMatrix(Q, finalDist, initDist, tol, 2))
 	{
 	  fprintf(stderr, "transferOperator::filter: error filtering\
 backward transition matrix.\n");
@@ -472,7 +479,7 @@ opening stream to write");
     }
 
   // Print
-  gsl_vector_fprintf(fp, rho0, dataFormat);
+  gsl_vector_fprintf(fp, initDist, dataFormat);
 
   // Close
   fclose(fp);
@@ -499,7 +506,7 @@ opening stream to write");
     }
   
   // Print
-  gsl_vector_fprintf(fp, rhof, dataFormat);
+  gsl_vector_fprintf(fp, finalDist, dataFormat);
   
   // Close
   fclose(fp);
@@ -639,7 +646,7 @@ opening stream to read");
     }
 
   /** Scan after preallocating */
-  gsl_vector_fscanf(fp, rho0);
+  gsl_vector_fscanf(fp, initDist);
   
   //Close
   fclose(fp);
@@ -669,7 +676,7 @@ opening stream to read");
 	}
 
       /** Scan after preallocating */
-      gsl_vector_fscanf(fp, rhof);
+      gsl_vector_fscanf(fp, finalDist);
   
       //Close
       fclose(fp);
@@ -694,12 +701,12 @@ final distribution not scanned because problem is stationary");
  * \param[in]  gridMem Grid membership matrix.
  * \param[in]  N       Size of the grid.
  * \param[out] T       Triplet matrix counting the transitions.
- * \param[out] rho0    Initial states count
- * \param[out] rhof    Final states count
+ * \param[out] initDist    Initial states count
+ * \param[out] finalDist    Final states count
  */
 void
 getTransitionCountTriplet(const gsl_matrix_uint *gridMem, size_t N,
-			  gsl_spmatrix *T, gsl_vector *rho0=NULL, gsl_vector *rhof=NULL)
+			  gsl_spmatrix *T, gsl_vector *initDist=NULL, gsl_vector *finalDist=NULL)
 {
   const size_t nTraj = gridMem->size1;
   size_t box0, boxf;
@@ -707,10 +714,10 @@ getTransitionCountTriplet(const gsl_matrix_uint *gridMem, size_t N,
   double *ptr;
 
   /** Record transitions */
-  if (rho0)
-    gsl_vector_set_zero(rho0);
-  if (rhof)
-    gsl_vector_set_zero(rhof);
+  if (initDist)
+    gsl_vector_set_zero(initDist);
+  if (finalDist)
+    gsl_vector_set_zero(finalDist);
   for (size_t traj = 0; traj < nTraj; traj++)
     {
       box0 = gsl_matrix_uint_get(gridMem, traj, 0);
@@ -726,10 +733,10 @@ getTransitionCountTriplet(const gsl_matrix_uint *gridMem, size_t N,
 	    gsl_spmatrix_set(T, box0, boxf, 1.);   /* initalize to x */
 
 	  // Add initial and final boxes to initial and final distributions, respectively
-	  if (rho0)
-	    gsl_vector_set(rho0, box0, gsl_vector_get(rho0, box0) + 1.);
-	  if (rhof)
-	    gsl_vector_set(rhof, boxf, gsl_vector_get(rhof, boxf) + 1.);
+	  if (initDist)
+	    gsl_vector_set(initDist, box0, gsl_vector_get(initDist, box0) + 1.);
+	  if (finalDist)
+	    gsl_vector_set(finalDist, boxf, gsl_vector_get(finalDist, boxf) + 1.);
 	}
       else
 	nOut++;

@@ -16,8 +16,13 @@ if hasattr(cfg.model, 'delaysDays'):
 
 L = cfg.simulation.LCut + cfg.simulation.spinup
 printStepNum = int(cfg.simulation.printStep / cfg.simulation.dt)
+caseName = cfg.model.caseName
+if (hasattr(cfg.model, 'rho') & hasattr(cfg.model, 'sigma') & hasattr(cfg.model, 'beta')):
+    caseName = "%s_rho%d_sigma%d_beta%d" \
+               % (caseName, (int) (cfg.model.rho * 1000),
+                  (int) (cfg.model.sigma * 1000), (int) (cfg.model.beta * 1000))
 srcPostfix = "_%s%s_L%d_spinup%d_dt%d_samp%d" \
-             % (cfg.model.caseName, delayName, L, cfg.simulation.spinup,
+             % (caseName, delayName, L, cfg.simulation.spinup,
                 -np.round(np.log10(cfg.simulation.dt)), printStepNum)
 
 sampFreq = 1. / cfg.simulation.printStep
@@ -30,10 +35,12 @@ powerName = 'S%d%d' % (cfg.stat.idxf, cfg.stat.idxg)
 simFile = '%s/simulation/sim%s.%s' % (cfg.general.resDir, srcPostfix, cfg.simulation.file_format)
 print 'Reading time series from ' + simFile
 if cfg.simulation.file_format == 'bin':
-    X = np.fromfile(simFile, dtype=float)
+    X = np.fromfile(simFile, dtype=float,
+                    count=int(np.round(cfg.model.dim * cfg.simulation.LCut\
+                                       / cfg.simulation.printStep / 100)))
 else:
     X = np.loadtxt(simFile, dtype=float)
-X = X.reshape(np.prod(X.shape) / cfg.model.dim, cfg.model.dim)
+X = X.reshape(-1, cfg.model.dim)
 
 # Read datasets
 observable1 = X[:, cfg.stat.idxf]
