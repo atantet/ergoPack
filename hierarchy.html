@@ -1,4 +1,3 @@
-<!-- HTML header for doxygen 1.8.12-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,14 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -51,6 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="install.html"><span>Installation</span></a></li>
       <li><a href="tutorial.html"><span>Tutorial</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -80,20 +72,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     </ul>
   </div>
 </div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('hierarchy.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -134,26 +112,28 @@ $(document).ready(function(){initNavTree('hierarchy.html','');});
 <tr id="row_9_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classtransfer_operator.html" target="_self">transferOperator</a></td><td class="desc">Transfer operator class </td></tr>
 <tr id="row_10_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classtransfer_spectrum.html" target="_self">transferSpectrum</a></td><td class="desc">Transfer operator spectrum </td></tr>
 <tr id="row_11_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_11_" class="arrow" onclick="toggleFolder('11_')">&#9660;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classvector_field.html" target="_self">vectorField</a></td><td class="desc">Abstract class defining a vector field </td></tr>
-<tr id="row_11_0_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classcusp_field.html" target="_self">cuspField</a></td><td class="desc">Vector field for the normal form of the cusp bifurcation </td></tr>
-<tr id="row_11_1_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classlinear_field.html" target="_self">linearField</a></td><td class="desc">Vector field defined by a linear operator </td></tr>
-<tr id="row_11_2_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="class_lorenz63.html" target="_self">Lorenz63</a></td><td class="desc">Vector field for the Lorenz 63 model </td></tr>
-<tr id="row_11_3_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classpolynomial1_d.html" target="_self">polynomial1D</a></td><td class="desc">One-dimensional polynomial vector field </td></tr>
-<tr id="row_11_4_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span id="arr_11_4_" class="arrow" onclick="toggleFolder('11_4_')">&#9660;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classvector_field_stochastic.html" target="_self">vectorFieldStochastic</a></td><td class="desc">Abstract stochastic vector field class </td></tr>
-<tr id="row_11_4_0_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classadditive_wiener.html" target="_self">additiveWiener</a></td><td class="desc">Additive Wiener process </td></tr>
-<tr id="row_11_4_1_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classmultiplicative_linear_wiener.html" target="_self">multiplicativeLinearWiener</a></td><td class="desc">Linear multiplicative Wiener process </td></tr>
+<tr id="row_11_0_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span id="arr_11_0_" class="arrow" onclick="toggleFolder('11_0_')">&#9660;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classcodim1_field.html" target="_self">codim1Field</a></td><td class="desc">Abstract class for codimension one bifurcations of equilibria </td></tr>
+<tr id="row_11_0_0_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="class_hopf_field.html" target="_self">HopfField</a></td><td class="desc">Vector field for the normal form of the Hopf bifurcation </td></tr>
+<tr id="row_11_0_1_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classpitchfork_field.html" target="_self">pitchforkField</a></td><td class="desc">Vector field for the normal form of the supercritical pitchfork bifurcation </td></tr>
+<tr id="row_11_0_2_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classpitchfork_sub_field.html" target="_self">pitchforkSubField</a></td><td class="desc">Vector field for the normal form of the subcritical pitchfork bifurcation </td></tr>
+<tr id="row_11_0_3_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classsaddle_node_field.html" target="_self">saddleNodeField</a></td><td class="desc">Vector field for the normal form of the saddle-node bifurcation </td></tr>
+<tr id="row_11_0_4_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classtranscritical_field.html" target="_self">transcriticalField</a></td><td class="desc">Vector field for the normal form of the transcritical bifurcation </td></tr>
+<tr id="row_11_1_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classcusp_field.html" target="_self">cuspField</a></td><td class="desc">Vector field for the normal form of the cusp bifurcation </td></tr>
+<tr id="row_11_2_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classlinear_field.html" target="_self">linearField</a></td><td class="desc">Vector field defined by a linear operator </td></tr>
+<tr id="row_11_3_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="class_lorenz63.html" target="_self">Lorenz63</a></td><td class="desc">Vector field for the Lorenz 63 model </td></tr>
+<tr id="row_11_4_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classpolynomial1_d.html" target="_self">polynomial1D</a></td><td class="desc">One-dimensional polynomial vector field </td></tr>
+<tr id="row_11_5_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span id="arr_11_5_" class="arrow" onclick="toggleFolder('11_5_')">&#9660;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classvector_field_stochastic.html" target="_self">vectorFieldStochastic</a></td><td class="desc">Abstract stochastic vector field class </td></tr>
+<tr id="row_11_5_0_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classadditive_wiener.html" target="_self">additiveWiener</a></td><td class="desc">Additive Wiener process </td></tr>
+<tr id="row_11_5_1_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classmultiplicative_linear_wiener.html" target="_self">multiplicativeLinearWiener</a></td><td class="desc">Linear multiplicative Wiener process </td></tr>
 <tr id="row_12_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classvector_field_delay.html" target="_self">vectorFieldDelay</a></td><td class="desc">Abstract delayed vector field class </td></tr>
 </table>
 </div><!-- directory -->
 </div><!-- contents -->
-</div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.12-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated on Mon Feb 8 2016 12:14:16 for ergoPack by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.12
+</small></address>
 </body>
 </html>

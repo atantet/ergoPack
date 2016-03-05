@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['polargrid',['PolarGrid',['../class_polar_grid.html',1,'']]],
-  ['polynomial1d',['polynomial1D',['../classpolynomial1_d.html',1,'']]]
+  ['numericalscheme',['numericalScheme',['../classnumerical_scheme.html',1,'']]],
+  ['numericalschemesdde',['numericalSchemeSDDE',['../classnumerical_scheme_s_d_d_e.html',1,'']]],
+  ['numericalschemestochastic',['numericalSchemeStochastic',['../classnumerical_scheme_stochastic.html',1,'']]]
 ];

@@ -7,7 +7,7 @@ var classnumerical_scheme_s_d_d_e =
     [ "getTimeStep", "classnumerical_scheme_s_d_d_e.html#a460f5d864fa2a2b54ee7895c76535c37", null ],
     [ "setTimeStep", "classnumerical_scheme_s_d_d_e.html#adf272c1b8e12d5055c6c731b57d65a27", null ],
     [ "stepForward", "classnumerical_scheme_s_d_d_e.html#a7e7c14c73c716d0155830be610d2e66e", null ],
-    [ "updateHistoric", "classnumerical_scheme_s_d_d_e.html#a9de5dfe3c7b822ed8866cad64f440fa0", null ],
+    [ "updateHistoric", "group__simulation.html#ga9de5dfe3c7b822ed8866cad64f440fa0", null ],
     [ "dim", "classnumerical_scheme_s_d_d_e.html#ae99499c153ff312e9f505b0315013500", null ],
     [ "dimWork", "classnumerical_scheme_s_d_d_e.html#a9f7e7967dbff290c7a1729277ccde8eb", null ],
     [ "dt", "classnumerical_scheme_s_d_d_e.html#a3dbb1f37a6560343cc8e9e9458d4785e", null ],

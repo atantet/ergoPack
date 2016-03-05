@@ -1,4 +1,3 @@
-<!-- HTML header for doxygen 1.8.12-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,14 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -51,6 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="install.html"><span>Installation</span></a></li>
       <li><a href="tutorial.html"><span>Tutorial</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -77,21 +69,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('transfer_8cpp.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -106,12 +83,17 @@ $(document).ready(function(){initNavTree('transfer_8cpp.html','');});
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_7691df0c72187f74efb57d126bcca3a8.html">transfer</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">transfer.cpp File Reference</div>  </div>
+<div class="title">transfer.cpp File Reference<div class="ingroups"><a class="el" href="group__examples.html">Examples</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -120,23 +102,19 @@ $(document).ready(function(){initNavTree('transfer_8cpp.html','');});
 <div class="textblock"><code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;cstdio&gt;</code><br />
 <code>#include &lt;cstring&gt;</code><br />
-<code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;stdexcept&gt;</code><br />
 <code>#include &lt;gsl/gsl_vector.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_matrix.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_math.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_sf_log.h&gt;</code><br />
-<code>#include &lt;libconfig.h++&gt;</code><br />
-<code>#include &lt;ergoPack/transferOperator.hpp&gt;</code><br />
-<code>#include &lt;ergoPack/gsl_extension.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>&gt;</code><br />
+<code>#include &quot;../cfg/readConfig.hpp&quot;</code><br />
 </div>
 <p><a href="transfer_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa010785ea3444039793b472da019f4d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#aa010785ea3444039793b472da019f4d6">readConfig</a> (const char *cfgFileName)</td></tr>
-<tr class="memdesc:aa010785ea3444039793b472da019f4d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">User defined function to get parameters from a cfg file using libconfig.  <a href="#aa010785ea3444039793b472da019f4d6">More...</a><br /></td></tr>
-<tr class="separator:aa010785ea3444039793b472da019f4d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ddf1224851353fc92bfbff6f499fa97"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main</a> (int argc, char *argv[])</td></tr>
 <tr class="memdesc:a0ddf1224851353fc92bfbff6f499fa97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate transfer operators from time series.  <a href="#a0ddf1224851353fc92bfbff6f499fa97">More...</a><br /></td></tr>
 <tr class="separator:a0ddf1224851353fc92bfbff6f499fa97"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,14 +133,14 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tran
 char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#acc4307d5b95f6df9e57717b1a1efb89b">file_format</a> [256]</td></tr>
 <tr class="memdesc:acc4307d5b95f6df9e57717b1a1efb89b"><td class="mdescLeft">&#160;</td><td class="mdescRight">File format of output ("txt" or "bin") <br /></td></tr>
 <tr class="separator:acc4307d5b95f6df9e57717b1a1efb89b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70b5e28b5bc3d1b63a7435c5fe50b837"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70b5e28b5bc3d1b63a7435c5fe50b837"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></td></tr>
-<tr class="memdesc:a70b5e28b5bc3d1b63a7435c5fe50b837"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dimension of the phase space. <br /></td></tr>
-<tr class="separator:a70b5e28b5bc3d1b63a7435c5fe50b837"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af76fd8dcdbd416c42428d108acbf2343"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af76fd8dcdbd416c42428d108acbf2343"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#af76fd8dcdbd416c42428d108acbf2343">delayName</a> [256]</td></tr>
 <tr class="memdesc:af76fd8dcdbd416c42428d108acbf2343"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name associated with the number and values of the delays. <br /></td></tr>
 <tr class="separator:af76fd8dcdbd416c42428d108acbf2343"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70b5e28b5bc3d1b63a7435c5fe50b837"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70b5e28b5bc3d1b63a7435c5fe50b837"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></td></tr>
+<tr class="memdesc:a70b5e28b5bc3d1b63a7435c5fe50b837"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dimension of the phase space. <br /></td></tr>
+<tr class="separator:a70b5e28b5bc3d1b63a7435c5fe50b837"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89543d44945ce4a57fc160f958c59d8d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a89543d44945ce4a57fc160f958c59d8d"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a89543d44945ce4a57fc160f958c59d8d">LCut</a></td></tr>
 <tr class="memdesc:a89543d44945ce4a57fc160f958c59d8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Length of the time series without spinup. <br /></td></tr>
@@ -187,6 +165,18 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tr
 size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a6ad2ca9c5c5d75a79dc5fb17cbe57631">printStepNum</a></td></tr>
 <tr class="memdesc:a6ad2ca9c5c5d75a79dc5fb17cbe57631"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time step of output in number of time steps of integration. <br /></td></tr>
 <tr class="separator:a6ad2ca9c5c5d75a79dc5fb17cbe57631"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bbe0f3d8db56710bd15dd46f72e784b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7bbe0f3d8db56710bd15dd46f72e784b"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a7bbe0f3d8db56710bd15dd46f72e784b">srcPostfix</a> [256]</td></tr>
+<tr class="memdesc:a7bbe0f3d8db56710bd15dd46f72e784b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postfix of simulation file. <br /></td></tr>
+<tr class="separator:a7bbe0f3d8db56710bd15dd46f72e784b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d0857d5619c5b660d9c7508354d32f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d0857d5619c5b660d9c7508354d32f1"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a4d0857d5619c5b660d9c7508354d32f1">srcFileName</a> [256]</td></tr>
+<tr class="memdesc:a4d0857d5619c5b660d9c7508354d32f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the source simulation file. <br /></td></tr>
+<tr class="separator:a4d0857d5619c5b660d9c7508354d32f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e5eb2aee191c8a249a6c2765e0191d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e5eb2aee191c8a249a6c2765e0191d8"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a1e5eb2aee191c8a249a6c2765e0191d8">dstFileName</a> [256]</td></tr>
+<tr class="memdesc:a1e5eb2aee191c8a249a6c2765e0191d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destination file name. <br /></td></tr>
+<tr class="separator:a1e5eb2aee191c8a249a6c2765e0191d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae37fba20525dfb2f284941d993a4168a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae37fba20525dfb2f284941d993a4168a"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#ae37fba20525dfb2f284941d993a4168a">nt0</a></td></tr>
 <tr class="memdesc:ae37fba20525dfb2f284941d993a4168a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of time steps of the source time series. <br /></td></tr>
@@ -211,6 +201,14 @@ gsl_vector_uint *&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 gsl_vector_uint *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a9ead67f01769704e369385aa9c86bf89">embedding</a></td></tr>
 <tr class="memdesc:a9ead67f01769704e369385aa9c86bf89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Embedding lags for each component. <br /></td></tr>
 <tr class="separator:a9ead67f01769704e369385aa9c86bf89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae485c8dfa36ef87f9d52dee969ad007d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae485c8dfa36ef87f9d52dee969ad007d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#ae485c8dfa36ef87f9d52dee969ad007d">readGridMem</a></td></tr>
+<tr class="memdesc:ae485c8dfa36ef87f9d52dee969ad007d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to read the grid membership vector. <br /></td></tr>
+<tr class="separator:ae485c8dfa36ef87f9d52dee969ad007d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6d2142329b3b553ce8a778f8239db33"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa6d2142329b3b553ce8a778f8239db33"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#aa6d2142329b3b553ce8a778f8239db33">N</a></td></tr>
+<tr class="memdesc:aa6d2142329b3b553ce8a778f8239db33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dimension of the grid. <br /></td></tr>
+<tr class="separator:aa6d2142329b3b553ce8a778f8239db33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac49b4571282666b93dfa78c0cdd5862d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac49b4571282666b93dfa78c0cdd5862d"></a>
 gsl_vector_uint *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#ac49b4571282666b93dfa78c0cdd5862d">nx</a></td></tr>
 <tr class="memdesc:ac49b4571282666b93dfa78c0cdd5862d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of grid boxes per dimension. <br /></td></tr>
@@ -231,14 +229,10 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tr
 gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a5556767aabd2d0b7b52309f76eb7b5f5">tauRng</a></td></tr>
 <tr class="memdesc:a5556767aabd2d0b7b52309f76eb7b5f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lags for which to calculate the spectrum. <br /></td></tr>
 <tr class="separator:a5556767aabd2d0b7b52309f76eb7b5f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7bbe0f3d8db56710bd15dd46f72e784b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7bbe0f3d8db56710bd15dd46f72e784b"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a7bbe0f3d8db56710bd15dd46f72e784b">srcPostfix</a> [256]</td></tr>
-<tr class="memdesc:a7bbe0f3d8db56710bd15dd46f72e784b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postfix of simulation file. <br /></td></tr>
-<tr class="separator:a7bbe0f3d8db56710bd15dd46f72e784b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d0857d5619c5b660d9c7508354d32f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d0857d5619c5b660d9c7508354d32f1"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a4d0857d5619c5b660d9c7508354d32f1">srcFileName</a> [256]</td></tr>
-<tr class="memdesc:a4d0857d5619c5b660d9c7508354d32f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the source simulation file. <br /></td></tr>
-<tr class="separator:a4d0857d5619c5b660d9c7508354d32f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a015e64d999600a1ac5f5bdb700cd17b6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a015e64d999600a1ac5f5bdb700cd17b6"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a015e64d999600a1ac5f5bdb700cd17b6">nev</a></td></tr>
+<tr class="memdesc:a015e64d999600a1ac5f5bdb700cd17b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of eigenvectors to calculate. <br /></td></tr>
+<tr class="separator:a015e64d999600a1ac5f5bdb700cd17b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8c3d151981844b976f68530e9320bc1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab8c3d151981844b976f68530e9320bc1"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#ab8c3d151981844b976f68530e9320bc1">obsName</a> [256]</td></tr>
 <tr class="memdesc:ab8c3d151981844b976f68530e9320bc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name associated with the observable. <br /></td></tr>
@@ -251,6 +245,10 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tran
 char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a1032fb0a33f27ee6158712b4f650ecbd">gridFileName</a> [256]</td></tr>
 <tr class="memdesc:a1032fb0a33f27ee6158712b4f650ecbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">File name for the grid file. <br /></td></tr>
 <tr class="separator:a1032fb0a33f27ee6158712b4f650ecbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3be8d930694ec109c799534056975d56"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3be8d930694ec109c799534056975d56"></a>
+<a class="el" href="structconfig_a_r.html">configAR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a3be8d930694ec109c799534056975d56">config</a></td></tr>
+<tr class="memdesc:a3be8d930694ec109c799534056975d56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration data for the eigen problem. <br /></td></tr>
+<tr class="separator:a3be8d930694ec109c799534056975d56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8f7d4e57ff12610ba2500706df80754"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab8f7d4e57ff12610ba2500706df80754"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#ab8f7d4e57ff12610ba2500706df80754">configFileName</a> [256]</td></tr>
 <tr class="memdesc:ab8f7d4e57ff12610ba2500706df80754"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the configuration file. <br /></td></tr>
@@ -259,6 +257,18 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tran
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a545e6f510b6127e8466e2cecdc837803">stationary</a></td></tr>
 <tr class="memdesc:a545e6f510b6127e8466e2cecdc837803"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the problem is stationary or not. <br /></td></tr>
 <tr class="separator:a545e6f510b6127e8466e2cecdc837803"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac93dc7ea660861d54764a0922aa4fb42"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac93dc7ea660861d54764a0922aa4fb42"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#ac93dc7ea660861d54764a0922aa4fb42">getForwardEigenvectors</a></td></tr>
+<tr class="memdesc:ac93dc7ea660861d54764a0922aa4fb42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to get forward eigenvectors. <br /></td></tr>
+<tr class="separator:ac93dc7ea660861d54764a0922aa4fb42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b3feb5125bce352938bcaf68e3e9fc7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b3feb5125bce352938bcaf68e3e9fc7"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a0b3feb5125bce352938bcaf68e3e9fc7">getBackwardEigenvectors</a></td></tr>
+<tr class="memdesc:a0b3feb5125bce352938bcaf68e3e9fc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to get backward eigenvectors. <br /></td></tr>
+<tr class="separator:a0b3feb5125bce352938bcaf68e3e9fc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f85a6a4912163cf2dc0d8ec4e57b3cb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8f85a6a4912163cf2dc0d8ec4e57b3cb"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_8cpp.html#a8f85a6a4912163cf2dc0d8ec4e57b3cb">makeBiorthonormal</a></td></tr>
+<tr class="memdesc:a8f85a6a4912163cf2dc0d8ec4e57b3cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to make eigenvectors biorthonormal. <br /></td></tr>
+<tr class="separator:a8f85a6a4912163cf2dc0d8ec4e57b3cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Get transition matrices and distributions from a long time series (e.g. simulation output). Takes as first a configuration file to be parsed with libconfig C++ library. First read the observable and get its mean and standard deviation used to adapt the grid. A rectangular grid is used here. A grid membership vector is calculated for each time series assigning to each realization a grid box. Then, the membership matrix is calculated for a given lag. The forward transition matrices as well as the initial distributions are calculated from the membership matrix. Note that, since the transitions are calculated from long time series, the problem must be autonomous and ergodic (stationary) so that the backward transition matrix and final distribution need not be calculated. Finally, the results are printed. </p>
@@ -290,49 +300,18 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tran
 </div><div class="memdoc">
 <p>After parsing the configuration file, the time series is read and an observable is designed selecting components with a given embedding lag. A membership vector is then built from the observable, attaching the box they belong to to every realization. The membership vector is then converted to a membership matrix for different lags and the transfer operators built. The results are then written to file. </p>
 
-<p>Definition at line <a class="el" href="transfer_8cpp_source.html#l00085">85</a> of file <a class="el" href="transfer_8cpp_source.html">transfer.cpp</a>.</p>
+<p>Definition at line <a class="el" href="transfer_8cpp_source.html#l00087">87</a> of file <a class="el" href="transfer_8cpp_source.html">transfer.cpp</a>.</p>
 
-<p>References <a class="el" href="transfer_8cpp.html#aecad9ca0f37bee172f18c2d6ec53cb9c">components</a>, <a class="el" href="transfer_8cpp.html#ab8f7d4e57ff12610ba2500706df80754">configFileName</a>, <a class="el" href="transfer_8cpp.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>, <a class="el" href="transfer_8cpp.html#a1cf9453e5e4a8f00fdb1bddd5b307ba0">dimObs</a>, <a class="el" href="transfer_8cpp.html#a9ead67f01769704e369385aa9c86bf89">embedding</a>, <a class="el" href="transfer_8cpp.html#a57a652dd57700e48f86e531afbcb3020">embedMax</a>, <a class="el" href="ergo_grid_8hpp.html#ae84084d6ac9b8f8f68f49625ed441e96">getGridMemVector()</a>, <a class="el" href="class_grid.html#a69f37cefc2c51d73a902e96eaeecc3f0">Grid::getN()</a>, <a class="el" href="transfer_8cpp.html#a1032fb0a33f27ee6158712b4f650ecbd">gridFileName</a>, <a class="el" href="transfer_8cpp.html#aa55bc3bac1b0344a916116a1d56ae17c">gridPostfix</a>, <a class="el" href="ergo_grid_8hpp.html#a16e31c83e10ee645b1defa1e39a7bd4e">memVector2memMatrix()</a>, <a class="el" href="transfer_8cpp.html#afc207ecfbf04e30774e0dd94922e279f">nLags</a>, <a class="el" href="transfer_8cpp.html#ae5db0b6d0459d65e845f911b2cf63388">nSTDHigh</a>, <a class="el" href="transfer_8cpp.html#a4b439d11830cf16b990bb49aff958b43">nSTDLow</a>, <a class="el" href="transfer_8cpp.html#a52d59418c1fd6f77402b8db150d7767a">nt</a>, <a class="el" href="transfer_8cpp.html#ae37fba20525dfb2f284941d993a4168a">nt0</a>, <a class="el" href="transfer_8cpp.html#ac49b4571282666b93dfa78c0cdd5862d">nx</a>, <a class="el" href="sim_o_u_8cpp.html#a785e9b399cbdadbf415bcd0a1b6743b0">postfix</a>, <a class="el" href="classtransfer_operator.html#a173617beb7c5bcb62ffe9943b14276f2">transferOperator::printForwardTransition()</a>, <a class="el" href="class_grid.html#a0ef5b89c66cf315b880111ec9d1bf1bf">Grid::printGrid()</a>, <a class="el" href="classtransfer_operator.html#af3779539a641ec390db5964e832927f0">transferOperator::printInitDist()</a>, <a class="el" href="transfer_8cpp.html#a486227dec7330314efec86fbd9b0f6a2">printStep</a>, <a class="el" href="transfer_8cpp.html#aa010785ea3444039793b472da019f4d6">readConfig()</a>, <a class="el" href="transfer_8cpp.html#ab1844aa717fc79812fae9c199d1ef1dd">resDir</a>, <a class="el" href="transfer_8cpp.html#a4d0857d5619c5b660d9c7508354d32f1">srcFileName</a>, <a class="el" href="transfer_8cpp.html#a545e6f510b6127e8466e2cecdc837803">stationary</a>, and <a class="el" href="transfer_8cpp.html#a5556767aabd2d0b7b52309f76eb7b5f5">tauRng</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa010785ea3444039793b472da019f4d6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void readConfig </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>cfgFileName</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Sparse configuration file using libconfig++ to define all parameters of the case. </p>
-<p>Get paths</p>
-<p>Get model settings</p>
-<p>Get simulation settings </p>
-
-<p>Definition at line <a class="el" href="transfer_8cpp_source.html#l00237">237</a> of file <a class="el" href="transfer_8cpp_source.html">transfer.cpp</a>.</p>
-
-<p>References <a class="el" href="transfer_8cpp.html#abcb17cfffce5ecde9b06e71e77d227a3">caseName</a>, <a class="el" href="transfer_8cpp.html#aecad9ca0f37bee172f18c2d6ec53cb9c">components</a>, <a class="el" href="transfer_8cpp.html#af76fd8dcdbd416c42428d108acbf2343">delayName</a>, <a class="el" href="transfer_8cpp.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>, <a class="el" href="transfer_8cpp.html#a1cf9453e5e4a8f00fdb1bddd5b307ba0">dimObs</a>, <a class="el" href="transfer_8cpp.html#a03e28be41881b703c836edbfe9b51b17">dt</a>, <a class="el" href="transfer_8cpp.html#a9ead67f01769704e369385aa9c86bf89">embedding</a>, <a class="el" href="transfer_8cpp.html#a57a652dd57700e48f86e531afbcb3020">embedMax</a>, <a class="el" href="transfer_8cpp.html#acc4307d5b95f6df9e57717b1a1efb89b">file_format</a>, <a class="el" href="transfer_8cpp.html#a1032fb0a33f27ee6158712b4f650ecbd">gridFileName</a>, <a class="el" href="transfer_8cpp.html#aa55bc3bac1b0344a916116a1d56ae17c">gridPostfix</a>, <a class="el" href="transfer_8cpp.html#a2442c8274ae11905a74c1bf95501af09">L</a>, <a class="el" href="transfer_8cpp.html#a89543d44945ce4a57fc160f958c59d8d">LCut</a>, <a class="el" href="transfer_8cpp.html#afc207ecfbf04e30774e0dd94922e279f">nLags</a>, <a class="el" href="transfer_8cpp.html#ae5db0b6d0459d65e845f911b2cf63388">nSTDHigh</a>, <a class="el" href="transfer_8cpp.html#a4b439d11830cf16b990bb49aff958b43">nSTDLow</a>, <a class="el" href="transfer_8cpp.html#a52d59418c1fd6f77402b8db150d7767a">nt</a>, <a class="el" href="transfer_8cpp.html#ae37fba20525dfb2f284941d993a4168a">nt0</a>, <a class="el" href="transfer_8cpp.html#ac49b4571282666b93dfa78c0cdd5862d">nx</a>, <a class="el" href="transfer_8cpp.html#ab8c3d151981844b976f68530e9320bc1">obsName</a>, <a class="el" href="transfer_8cpp.html#a486227dec7330314efec86fbd9b0f6a2">printStep</a>, <a class="el" href="transfer_8cpp.html#a6ad2ca9c5c5d75a79dc5fb17cbe57631">printStepNum</a>, <a class="el" href="transfer_8cpp.html#ab1844aa717fc79812fae9c199d1ef1dd">resDir</a>, <a class="el" href="transfer_8cpp.html#a028c8dc840d3db4dfe62398e3f50c758">spinup</a>, <a class="el" href="transfer_8cpp.html#a4d0857d5619c5b660d9c7508354d32f1">srcFileName</a>, <a class="el" href="transfer_8cpp.html#a7bbe0f3d8db56710bd15dd46f72e784b">srcPostfix</a>, <a class="el" href="transfer_8cpp.html#a545e6f510b6127e8466e2cecdc837803">stationary</a>, and <a class="el" href="transfer_8cpp.html#a5556767aabd2d0b7b52309f76eb7b5f5">tauRng</a>.</p>
-
-<p>Referenced by <a class="el" href="transfer_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>.</p>
+<p>References <a class="el" href="transfer_8cpp.html#aecad9ca0f37bee172f18c2d6ec53cb9c">components</a>, <a class="el" href="transfer_8cpp.html#ab8f7d4e57ff12610ba2500706df80754">configFileName</a>, <a class="el" href="transfer_8cpp.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>, <a class="el" href="transfer_8cpp.html#a1cf9453e5e4a8f00fdb1bddd5b307ba0">dimObs</a>, <a class="el" href="transfer_8cpp.html#a9ead67f01769704e369385aa9c86bf89">embedding</a>, <a class="el" href="transfer_8cpp.html#a57a652dd57700e48f86e531afbcb3020">embedMax</a>, <a class="el" href="group__grid.html#gae84084d6ac9b8f8f68f49625ed441e96">getGridMemVector()</a>, <a class="el" href="transfer_8cpp.html#a1032fb0a33f27ee6158712b4f650ecbd">gridFileName</a>, <a class="el" href="transfer_8cpp.html#aa55bc3bac1b0344a916116a1d56ae17c">gridPostfix</a>, <a class="el" href="group__grid.html#ga16e31c83e10ee645b1defa1e39a7bd4e">memVector2memMatrix()</a>, <a class="el" href="transfer_8cpp.html#aa6d2142329b3b553ce8a778f8239db33">N</a>, <a class="el" href="transfer_8cpp.html#afc207ecfbf04e30774e0dd94922e279f">nLags</a>, <a class="el" href="transfer_8cpp.html#ae5db0b6d0459d65e845f911b2cf63388">nSTDHigh</a>, <a class="el" href="transfer_8cpp.html#a4b439d11830cf16b990bb49aff958b43">nSTDLow</a>, <a class="el" href="transfer_8cpp.html#a52d59418c1fd6f77402b8db150d7767a">nt</a>, <a class="el" href="transfer_8cpp.html#ae37fba20525dfb2f284941d993a4168a">nt0</a>, <a class="el" href="transfer_8cpp.html#ac49b4571282666b93dfa78c0cdd5862d">nx</a>, <a class="el" href="sim_lorenz63_8cpp.html#a785e9b399cbdadbf415bcd0a1b6743b0">postfix</a>, <a class="el" href="group__transfer.html#gaeaeed81e7809e9fe646286355d327838">transferOperator::printBackwardTransition()</a>, <a class="el" href="group__transfer.html#ga84af92252d7b32167ad76b41a4a504f3">transferOperator::printFinalDist()</a>, <a class="el" href="group__transfer.html#ga173617beb7c5bcb62ffe9943b14276f2">transferOperator::printForwardTransition()</a>, <a class="el" href="class_grid.html#a0ef5b89c66cf315b880111ec9d1bf1bf">Grid::printGrid()</a>, <a class="el" href="group__transfer.html#gaf3779539a641ec390db5964e832927f0">transferOperator::printInitDist()</a>, <a class="el" href="transfer_8cpp.html#a486227dec7330314efec86fbd9b0f6a2">printStep</a>, <a class="el" href="sim_lorenz63_8cpp.html#aa010785ea3444039793b472da019f4d6">readConfig()</a>, <a class="el" href="transfer_8cpp.html#ae485c8dfa36ef87f9d52dee969ad007d">readGridMem</a>, <a class="el" href="transfer_8cpp.html#ab1844aa717fc79812fae9c199d1ef1dd">resDir</a>, <a class="el" href="transfer_8cpp.html#a4d0857d5619c5b660d9c7508354d32f1">srcFileName</a>, <a class="el" href="transfer_8cpp.html#a545e6f510b6127e8466e2cecdc837803">stationary</a>, and <a class="el" href="transfer_8cpp.html#a5556767aabd2d0b7b52309f76eb7b5f5">tauRng</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
-</div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.12-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="dir_7691df0c72187f74efb57d126bcca3a8.html">transfer</a></li><li class="navelem"><a class="el" href="transfer_8cpp.html">transfer.cpp</a></li>
-    <li class="footer">Generated on Mon Feb 8 2016 12:14:12 for ergoPack by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.12
+</small></address>
 </body>
 </html>

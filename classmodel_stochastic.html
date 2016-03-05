@@ -1,4 +1,3 @@
-<!-- HTML header for doxygen 1.8.12-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,14 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -51,6 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="install.html"><span>Installation</span></a></li>
       <li><a href="tutorial.html"><span>Tutorial</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -79,21 +71,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('classmodel_stochastic.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -108,13 +85,14 @@ $(document).ready(function(){initNavTree('classmodel_stochastic.html','');});
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classmodel_stochastic-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">modelStochastic Class Reference</div>  </div>
+<div class="title">modelStochastic Class Reference<div class="ingroups"><a class="el" href="group__simulation.html">Simulating</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -137,12 +115,12 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_stochastic.html#a3dcd73e0eb97142b655c436398e40d21">~modelStochastic</a> ()</td></tr>
 <tr class="memdesc:a3dcd73e0eb97142b655c436398e40d21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor freeing memory. <br /></td></tr>
 <tr class="separator:a3dcd73e0eb97142b655c436398e40d21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8afd0492fb134109e19845dc1bb5e7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_stochastic.html#ab8afd0492fb134109e19845dc1bb5e7f">stepForward</a> ()</td></tr>
-<tr class="memdesc:ab8afd0492fb134109e19845dc1bb5e7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">One time-step forward integration of the <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a>.  <a href="#ab8afd0492fb134109e19845dc1bb5e7f">More...</a><br /></td></tr>
-<tr class="separator:ab8afd0492fb134109e19845dc1bb5e7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d4921c04263da8bfaf00d654fc01d2b"><td class="memItemLeft" align="right" valign="top">gsl_matrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_stochastic.html#a2d4921c04263da8bfaf00d654fc01d2b">integrateForward</a> (const double length, const double <a class="el" href="spectrum_8cpp.html#a028c8dc840d3db4dfe62398e3f50c758">spinup</a>, const size_t sampling)</td></tr>
-<tr class="memdesc:a2d4921c04263da8bfaf00d654fc01d2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a> forward for a given period.  <a href="#a2d4921c04263da8bfaf00d654fc01d2b">More...</a><br /></td></tr>
-<tr class="separator:a2d4921c04263da8bfaf00d654fc01d2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab8afd0492fb134109e19845dc1bb5e7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__simulation.html#gab8afd0492fb134109e19845dc1bb5e7f">stepForward</a> ()</td></tr>
+<tr class="memdesc:gab8afd0492fb134109e19845dc1bb5e7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">One time-step forward integration of the <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a>.  <a href="group__simulation.html#gab8afd0492fb134109e19845dc1bb5e7f">More...</a><br /></td></tr>
+<tr class="separator:gab8afd0492fb134109e19845dc1bb5e7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2d4921c04263da8bfaf00d654fc01d2b"><td class="memItemLeft" align="right" valign="top">gsl_matrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__simulation.html#ga2d4921c04263da8bfaf00d654fc01d2b">integrateForward</a> (const double length, const double <a class="el" href="spectrum_8cpp.html#a028c8dc840d3db4dfe62398e3f50c758">spinup</a>, const size_t sampling)</td></tr>
+<tr class="memdesc:ga2d4921c04263da8bfaf00d654fc01d2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a> forward for a given period.  <a href="group__simulation.html#ga2d4921c04263da8bfaf00d654fc01d2b">More...</a><br /></td></tr>
+<tr class="separator:ga2d4921c04263da8bfaf00d654fc01d2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -170,87 +148,16 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Numerical stochastic model class. A <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a> is defined by a vector field, a stochastic vector field and a numerical scheme. The current state of the <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a> is also recorded. Attention: the constructors do not copy the vector field and the numerical scheme given to them, so that any modification or freeing will affect the <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a>. </p>
 
-<p>Definition at line <a class="el" href="_s_d_e_solvers_8hpp_source.html#l00188">188</a> of file <a class="el" href="_s_d_e_solvers_8hpp_source.html">SDESolvers.hpp</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a2d4921c04263da8bfaf00d654fc01d2b"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">gsl_matrix * modelStochastic::integrateForward </td>
-          <td>(</td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>length</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>spinup</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>sampling</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Integrate the stochastic model forward for a given period. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>Duration of the integration. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">spinup</td><td>Initial integration period to remove. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">sampling</td><td>Time step at which to save states. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Matrix to record the states. </dd></dl>
-
-<p>Definition at line <a class="el" href="_s_d_e_solvers_8hpp_source.html#l00315">315</a> of file <a class="el" href="_s_d_e_solvers_8hpp_source.html">SDESolvers.hpp</a>.</p>
-
-<p>References <a class="el" href="classvector_field.html#ac0854b28a4ff6ab764710eff1cb820b4">vectorField::dim</a>, and <a class="el" href="transfer_8cpp.html#a52d59418c1fd6f77402b8db150d7767a">nt</a>.</p>
-
-<p>Referenced by <a class="el" href="sim_o_u_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab8afd0492fb134109e19845dc1bb5e7f"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void modelStochastic::stepForward </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Integrate one step forward the stochastic model with the numerical scheme. </p>
-
-<p>Definition at line <a class="el" href="_s_d_e_solvers_8hpp_source.html#l00298">298</a> of file <a class="el" href="_s_d_e_solvers_8hpp_source.html">SDESolvers.hpp</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<p>Definition at line <a class="el" href="_s_d_e_solvers_8hpp_source.html#l00191">191</a> of file <a class="el" href="_s_d_e_solvers_8hpp_source.html">SDESolvers.hpp</a>.</p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/<a class="el" href="_s_d_e_solvers_8hpp_source.html">SDESolvers.hpp</a></li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.12-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="classmodel_stochastic.html">modelStochastic</a></li>
-    <li class="footer">Generated on Mon Feb 8 2016 12:14:12 for ergoPack by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.12
+</small></address>
 </body>
 </html>

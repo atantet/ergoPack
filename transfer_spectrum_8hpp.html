@@ -1,4 +1,3 @@
-<!-- HTML header for doxygen 1.8.12-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,14 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -51,6 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="install.html"><span>Installation</span></a></li>
       <li><a href="tutorial.html"><span>Tutorial</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -77,21 +69,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('transfer_spectrum_8hpp.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -106,13 +83,18 @@ $(document).ready(function(){initNavTree('transfer_spectrum_8hpp.html','');});
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">transferSpectrum.hpp File Reference</div>  </div>
+<div class="title">transferSpectrum.hpp File Reference<div class="ingroups"><a class="el" href="group__transfer.html">Transfer operators</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -131,7 +113,7 @@ $(document).ready(function(){initNavTree('transfer_spectrum_8hpp.html','');});
 <code>#include &lt;gsl/gsl_permute_vector.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_sort_vector.h&gt;</code><br />
 <code>#include &lt;arpack++/arsnsym.h&gt;</code><br />
-<code>#include &lt;ergoPack/transferOperator.hpp&gt;</code><br />
+<code>#include &lt;<a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>&gt;</code><br />
 </div>
 <p><a href="transfer_spectrum_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -149,175 +131,28 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac44fa6008ee2eacc221875f38595d736"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_spectrum_8hpp.html#ac44fa6008ee2eacc221875f38595d736">getSpectrumAR</a> (const int <a class="el" href="spectrum_8cpp.html#a015e64d999600a1ac5f5bdb700cd17b6">nev</a>, ARNonSymStdEig&lt; double, <a class="el" href="classgsl__spmatrix2_a_r.html">gsl_spmatrix2AR</a> &gt; *EigProb, <a class="el" href="classgsl__spmatrix2_a_r.html">gsl_spmatrix2AR</a> *gsl2AR, <a class="el" href="structconfig_a_r.html">configAR</a> cfgAR, gsl_vector_complex *EigVal, gsl_matrix_complex *EigVec)</td></tr>
-<tr class="memdesc:ac44fa6008ee2eacc221875f38595d736"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get spectrum of a nonsymmetric matrix using ARPACK++.  <a href="#ac44fa6008ee2eacc221875f38595d736">More...</a><br /></td></tr>
-<tr class="separator:ac44fa6008ee2eacc221875f38595d736"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3708500b43775789ac011b9cd0998b49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_spectrum_8hpp.html#a3708500b43775789ac011b9cd0998b49">writeSpectrumAR</a> (FILE *fEigVal, FILE *fEigVec, const gsl_vector_complex *EigVal, const gsl_matrix_complex *EigVec)</td></tr>
-<tr class="memdesc:a3708500b43775789ac011b9cd0998b49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write spectrum of a nonsymmetric matrix using ARPACK++.  <a href="#a3708500b43775789ac011b9cd0998b49">More...</a><br /></td></tr>
-<tr class="separator:a3708500b43775789ac011b9cd0998b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac44fa6008ee2eacc221875f38595d736"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#gac44fa6008ee2eacc221875f38595d736">getSpectrumAR</a> (const int <a class="el" href="spectrum_8cpp.html#a015e64d999600a1ac5f5bdb700cd17b6">nev</a>, ARNonSymStdEig&lt; double, <a class="el" href="classgsl__spmatrix2_a_r.html">gsl_spmatrix2AR</a> &gt; *EigProb, <a class="el" href="classgsl__spmatrix2_a_r.html">gsl_spmatrix2AR</a> *gsl2AR, <a class="el" href="structconfig_a_r.html">configAR</a> cfgAR, gsl_vector_complex *EigVal, gsl_matrix_complex *EigVec)</td></tr>
+<tr class="memdesc:gac44fa6008ee2eacc221875f38595d736"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get spectrum of a nonsymmetric matrix using ARPACK++.  <a href="group__transfer.html#gac44fa6008ee2eacc221875f38595d736">More...</a><br /></td></tr>
+<tr class="separator:gac44fa6008ee2eacc221875f38595d736"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3708500b43775789ac011b9cd0998b49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#ga3708500b43775789ac011b9cd0998b49">writeSpectrumAR</a> (FILE *fEigVal, FILE *fEigVec, const gsl_vector_complex *EigVal, const gsl_matrix_complex *EigVec)</td></tr>
+<tr class="memdesc:ga3708500b43775789ac011b9cd0998b49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write spectrum of a nonsymmetric matrix using ARPACK++.  <a href="group__transfer.html#ga3708500b43775789ac011b9cd0998b49">More...</a><br /></td></tr>
+<tr class="separator:ga3708500b43775789ac011b9cd0998b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:abc666053cbcac657d58ac314dbdad286"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structconfig_a_r.html">configAR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_spectrum_8hpp.html#abc666053cbcac657d58ac314dbdad286">defaultCfgAR</a> = {&quot;LM&quot;, 0, 0., 0, NULL, true}</td></tr>
-<tr class="separator:abc666053cbcac657d58ac314dbdad286"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabc666053cbcac657d58ac314dbdad286"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structconfig_a_r.html">configAR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#gabc666053cbcac657d58ac314dbdad286">defaultCfgAR</a> = {&quot;LM&quot;, 0, 0., 0, NULL, true}</td></tr>
+<tr class="separator:gabc666053cbcac657d58ac314dbdad286"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Analyse the spectrum of the forward and backward transition matrices of a <a class="el" href="classtransfer_operator.html" title="Transfer operator class. ">transferOperator</a> object using ARPACK++. </p>
 
 <p>Definition in file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="ac44fa6008ee2eacc221875f38595d736"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void getSpectrumAR </td>
-          <td>(</td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>nev</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ARNonSymStdEig&lt; double, <a class="el" href="classgsl__spmatrix2_a_r.html">gsl_spmatrix2AR</a> &gt; *&#160;</td>
-          <td class="paramname"><em>EigProb</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classgsl__spmatrix2_a_r.html">gsl_spmatrix2AR</a> *&#160;</td>
-          <td class="paramname"><em>gsl2AR</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structconfig_a_r.html">configAR</a>&#160;</td>
-          <td class="paramname"><em>cfgAR</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">gsl_vector_complex *&#160;</td>
-          <td class="paramname"><em>EigVal</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">gsl_matrix_complex *&#160;</td>
-          <td class="paramname"><em>EigVec</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Get spectrum of a nonsymmetric matrix using ARPACK++. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">nev</td><td>Number of eigenvalues and eigenvectors to find. </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">EigProb</td><td>Eigen problem to use. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">gsl2AR</td><td>Object interfacing the GSL sparse matrix to ARPACK++. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">cfgAR</td><td>Configuration options passed as a <a class="el" href="structconfig_a_r.html" title="Utility structure used to give configuration options to ARPACK++. ">configAR</a> object. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">EigVal</td><td>Found eigenvalues. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">EigVec</td><td>Found eigenvectors. </td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Define non-hermitian eigenvalue problem</p>
-<p>Find eigenvalues and left eigenvectors with ARPACK++</p>
-<p>Save eigenvalues and eigenvectors and their complex conjugate </p>
-
-<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00710">710</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
-
-<p>References <a class="el" href="structconfig_a_r.html#aa4b85aaaa8a932fa3e237d14465e2218">configAR::AutoShift</a>, <a class="el" href="classgsl__spmatrix2_a_r.html#a56c87e27482e26f8b28352af1d4f08e8">gsl_spmatrix2AR::M</a>, <a class="el" href="structconfig_a_r.html#aff3e5b364dbdca23154a2f6f7e7075c0">configAR::maxit</a>, <a class="el" href="classgsl__spmatrix2_a_r.html#a295ae2404c9871c3eab2ce88362a3127">gsl_spmatrix2AR::MultMv()</a>, <a class="el" href="structconfig_a_r.html#a7f8fce3a9be2698970ba119521dc0839">configAR::ncv</a>, <a class="el" href="structconfig_a_r.html#a9db2bd87ca22ed9389015f73df2b57d0">configAR::resid</a>, <a class="el" href="structconfig_a_r.html#a38aeb2e5d4c60397600a454a7b5a229e">configAR::tol</a>, and <a class="el" href="structconfig_a_r.html#abe4df1c367084ec3b4365fd56e83ab00">configAR::which</a>.</p>
-
-<p>Referenced by <a class="el" href="classtransfer_spectrum.html#aab9e26ff58d2a5e839dfeb0072473310">transferSpectrum::getSpectrumBackward()</a>, <a class="el" href="classtransfer_spectrum.html#a132e795e62e4cfe8768f72856c1c683e">transferSpectrum::getSpectrumForward()</a>, and <a class="el" href="classtransfer_spectrum.html#ae2f099f800db54d2549a20e2c7a4b9ca">transferSpectrum::setConfig()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a3708500b43775789ac011b9cd0998b49"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void writeSpectrumAR </td>
-          <td>(</td>
-          <td class="paramtype">FILE *&#160;</td>
-          <td class="paramname"><em>fEigVal</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FILE *&#160;</td>
-          <td class="paramname"><em>fEigVec</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const gsl_vector_complex *&#160;</td>
-          <td class="paramname"><em>EigVal</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const gsl_matrix_complex *&#160;</td>
-          <td class="paramname"><em>EigVec</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Write complex eigenvalues and eigenvectors obtained as arrays from ARPACK++. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">fEigVal</td><td>File descriptor for eigenvalues. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">fEigVec</td><td>File descriptor for eigenvectors. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">EigVal</td><td>Array of eigenvalues real parts. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">EigVec</td><td>Array of eigenvectors. </td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Check for printing errors</p>
-<p>Check for printing errors </p>
-
-<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00788">788</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
-
-<p>Referenced by <a class="el" href="classtransfer_spectrum.html#ae2f099f800db54d2549a20e2c7a4b9ca">transferSpectrum::setConfig()</a>, <a class="el" href="classtransfer_spectrum.html#a6e365f3fb8d4b2ee55be7586dbd4b9a5">transferSpectrum::writeSpectrumBackward()</a>, and <a class="el" href="classtransfer_spectrum.html#a41bca8920670389a3caa3ae5f1724643">transferSpectrum::writeSpectrumForward()</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a class="anchor" id="abc666053cbcac657d58ac314dbdad286"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structconfig_a_r.html">configAR</a> defaultCfgAR = {&quot;LM&quot;, 0, 0., 0, NULL, true}</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Declare default structure looking for largest magnitude eigenvalues </p>
-
-<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00047">47</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
-
-<p>Referenced by <a class="el" href="spectrum_8cpp.html#aa010785ea3444039793b472da019f4d6">readConfig()</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
-</div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.12-->
+</div></div><!-- contents -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="transfer_spectrum_8hpp.html">transferSpectrum.hpp</a></li>
-    <li class="footer">Generated on Mon Feb 8 2016 12:14:12 for ergoPack by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.12
+</small></address>
 </body>
 </html>

@@ -7,5 +7,5 @@ var searchData=
   ['eigvecbackward',['EigVecBackward',['../classtransfer_spectrum.html#a2203ce5e405c87bc870a32823eb3502e',1,'transferSpectrum']]],
   ['eigvecforward',['EigVecForward',['../classtransfer_spectrum.html#a0887e784d845dcd5a11e98ee7273abc6',1,'transferSpectrum']]],
   ['embedding',['embedding',['../transfer_8cpp.html#a9ead67f01769704e369385aa9c86bf89',1,'embedding():&#160;transfer.cpp'],['../spectrum_8cpp.html#a9ead67f01769704e369385aa9c86bf89',1,'embedding():&#160;spectrum.cpp']]],
-  ['embedmax',['embedMax',['../transfer_8cpp.html#a57a652dd57700e48f86e531afbcb3020',1,'transfer.cpp']]]
+  ['embedmax',['embedMax',['../transfer_8cpp.html#a57a652dd57700e48f86e531afbcb3020',1,'embedMax():&#160;transfer.cpp'],['../spectrum_8cpp.html#a57a652dd57700e48f86e531afbcb3020',1,'embedMax():&#160;spectrum.cpp']]]
 ];

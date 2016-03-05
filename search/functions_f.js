@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['writespectrum',['writeSpectrum',['../classtransfer_spectrum.html#a38a5135c326ba505d7c83a7c46813e53',1,'transferSpectrum']]],
-  ['writespectrumar',['writeSpectrumAR',['../transfer_spectrum_8hpp.html#a3708500b43775789ac011b9cd0998b49',1,'transferSpectrum.hpp']]],
-  ['writespectrumbackward',['writeSpectrumBackward',['../classtransfer_spectrum.html#a6e365f3fb8d4b2ee55be7586dbd4b9a5',1,'transferSpectrum']]],
-  ['writespectrumforward',['writeSpectrumForward',['../classtransfer_spectrum.html#a41bca8920670389a3caa3ae5f1724643',1,'transferSpectrum']]]
+  ['vectorfield',['vectorField',['../classvector_field.html#a80bdee9b5069d98fd2f36a4865679957',1,'vectorField']]],
+  ['vectorfielddelay',['vectorFieldDelay',['../group__simulation.html#gac2f4347c84ffdd3258225a3c186aace7',1,'vectorFieldDelay']]],
+  ['vectorfieldstochastic',['vectorFieldStochastic',['../classvector_field_stochastic.html#ab08dc58230c52b9f3ae886b275837889',1,'vectorFieldStochastic::vectorFieldStochastic(const size_t dim_)'],['../classvector_field_stochastic.html#a9ecac7c2ee7b839ce4b3bccbf68904aa',1,'vectorFieldStochastic::vectorFieldStochastic(const size_t dim_, gsl_rng *rng_)']]]
 ];

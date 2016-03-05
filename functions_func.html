@@ -1,4 +1,3 @@
-<!-- HTML header for doxygen 1.8.12-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,14 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -51,6 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="install.html"><span>Installation</span></a></li>
       <li><a href="tutorial.html"><span>Tutorial</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -93,6 +85,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="#index_e"><span>e</span></a></li>
       <li><a href="#index_f"><span>f</span></a></li>
       <li><a href="#index_g"><span>g</span></a></li>
+      <li><a href="#index_h"><span>h</span></a></li>
       <li><a href="#index_i"><span>i</span></a></li>
       <li><a href="#index_l"><span>l</span></a></li>
       <li><a href="#index_m"><span>m</span></a></li>
@@ -108,20 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     </ul>
   </div>
 </div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('functions_func.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -147,6 +126,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 
 <h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
+<li>codim1Field()
+: <a class="el" href="classcodim1_field.html#acc821be2a2ea061e8b77ecc913ec7df4">codim1Field</a>
+</li>
 <li>CurvilinearGrid()
 : <a class="el" href="class_curvilinear_grid.html#ac6a2a34b695bb601cadec28469e2b15b">CurvilinearGrid</a>
 </li>
@@ -167,14 +149,20 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="class_euler_maruyama_s_d_d_e.html#a64b504d09ac452fe0f47691f45e89ae4">EulerMaruyamaSDDE</a>
 </li>
 <li>evalField()
-: <a class="el" href="classadditive_wiener.html#aac5efb73d602db70991953a839cf20ee">additiveWiener</a>
+: <a class="el" href="group__simulation.html#gaac5efb73d602db70991953a839cf20ee">additiveWiener</a>
+, <a class="el" href="classcodim1_field.html#aa7517aa99da30c4bc30f834e06e5a51b">codim1Field</a>
 , <a class="el" href="classcusp_field.html#aa536a4c465dac507e4dd6ffcb47da325">cuspField</a>
+, <a class="el" href="class_hopf_field.html#a4e7bb022e92c3aacac61b40e7f0204b6">HopfField</a>
 , <a class="el" href="classlinear_field.html#a041c1036e114db536441ceaafd147362">linearField</a>
 , <a class="el" href="class_lorenz63.html#a2640d4b67d8a5ba8f50aa383ebcb3c81">Lorenz63</a>
-, <a class="el" href="classmultiplicative_linear_wiener.html#ab0bc15d1caf9afb87beb115b61fdbc59">multiplicativeLinearWiener</a>
+, <a class="el" href="group__simulation.html#gab0bc15d1caf9afb87beb115b61fdbc59">multiplicativeLinearWiener</a>
+, <a class="el" href="classpitchfork_field.html#a3f5aaa38c18ffaa1b700b840f54c4fe5">pitchforkField</a>
+, <a class="el" href="classpitchfork_sub_field.html#a893a629de593d1cde2bb13e9f0593b23">pitchforkSubField</a>
 , <a class="el" href="classpolynomial1_d.html#a7aff2bbfad00462fa6fd0c2c0b90eea1">polynomial1D</a>
+, <a class="el" href="classsaddle_node_field.html#a44e40add167e8707f501411998a4a0ca">saddleNodeField</a>
+, <a class="el" href="classtranscritical_field.html#ae52cac9b5c116ac899eec5cec930a20f">transcriticalField</a>
 , <a class="el" href="classvector_field.html#ac1473ca59715bf55e14eae6b45a13816">vectorField</a>
-, <a class="el" href="classvector_field_delay.html#a952b6f0f0fc8acfc0aec74c31b9481fe">vectorFieldDelay</a>
+, <a class="el" href="group__simulation.html#ga952b6f0f0fc8acfc0aec74c31b9481fe">vectorFieldDelay</a>
 , <a class="el" href="classvector_field_stochastic.html#a83aa997bd0a4344db39e95873c3a9fd7">vectorFieldStochastic</a>
 </li>
 </ul>
@@ -182,7 +170,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 <h3><a class="anchor" id="index_f"></a>- f -</h3><ul>
 <li>filter()
-: <a class="el" href="classtransfer_operator.html#a397957b2d6c8c869e48a3ee0d4701488">transferOperator</a>
+: <a class="el" href="group__transfer.html#ga397957b2d6c8c869e48a3ee0d4701488">transferOperator</a>
 </li>
 </ul>
 
@@ -190,14 +178,14 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <h3><a class="anchor" id="index_g"></a>- g -</h3><ul>
 <li>getBoxMembership()
 : <a class="el" href="class_grid.html#acafcdeae25178119327fb9b94c985a5d">Grid</a>
-, <a class="el" href="class_regular_grid.html#a04c041ede92c8290760b428fc180e440">RegularGrid</a>
+, <a class="el" href="group__grid.html#ga04c041ede92c8290760b428fc180e440">RegularGrid</a>
 </li>
 <li>getBoxPosition()
 : <a class="el" href="class_grid.html#af58cb8c7330355a397b53abf802ccec0">Grid</a>
-, <a class="el" href="class_regular_grid.html#a3abdb212ec201784057e654009dea856">RegularGrid</a>
+, <a class="el" href="group__grid.html#ga3abdb212ec201784057e654009dea856">RegularGrid</a>
 </li>
 <li>getConditionNumbers()
-: <a class="el" href="classtransfer_spectrum.html#a7f18e82adbbf1b392990a323dbd1b55f">transferSpectrum</a>
+: <a class="el" href="group__transfer.html#ga7f18e82adbbf1b392990a323dbd1b55f">transferSpectrum</a>
 </li>
 <li>getConfig()
 : <a class="el" href="classtransfer_spectrum.html#aa07f19878e14663a5f6818cd0a8a542f">transferSpectrum</a>
@@ -233,6 +221,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 </li>
 <li>getParameters()
 : <a class="el" href="classadditive_wiener.html#a4746f38510cf38fc82e5f8fc3055b00f">additiveWiener</a>
+, <a class="el" href="classcodim1_field.html#a62d05aae6adcb6726830d5165f25b61c">codim1Field</a>
 , <a class="el" href="classcusp_field.html#afd2586ebfd575caf5f18d9cb36faaa85">cuspField</a>
 , <a class="el" href="classlinear_field.html#a356be200d1f11578ccd00651d43ff56b">linearField</a>
 , <a class="el" href="class_lorenz63.html#a2f8e6e5566129c4eda7b9e34c5cb2736">Lorenz63</a>
@@ -240,13 +229,13 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 , <a class="el" href="classpolynomial1_d.html#a2ce8d2d7f865a2780c5bf89b7dad5a66">polynomial1D</a>
 </li>
 <li>getSpectrum()
-: <a class="el" href="classtransfer_spectrum.html#ad730eba97c6849286d07ea7f206182f6">transferSpectrum</a>
+: <a class="el" href="group__transfer.html#gad730eba97c6849286d07ea7f206182f6">transferSpectrum</a>
 </li>
 <li>getSpectrumBackward()
-: <a class="el" href="classtransfer_spectrum.html#aab9e26ff58d2a5e839dfeb0072473310">transferSpectrum</a>
+: <a class="el" href="group__transfer.html#gaab9e26ff58d2a5e839dfeb0072473310">transferSpectrum</a>
 </li>
 <li>getSpectrumForward()
-: <a class="el" href="classtransfer_spectrum.html#a132e795e62e4cfe8768f72856c1c683e">transferSpectrum</a>
+: <a class="el" href="group__transfer.html#ga132e795e62e4cfe8768f72856c1c683e">transferSpectrum</a>
 </li>
 <li>getTimeStep()
 : <a class="el" href="classnumerical_scheme.html#a63b7813d7775f5ffd4bd6359406fca49">numericalScheme</a>
@@ -254,13 +243,20 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 , <a class="el" href="classnumerical_scheme_stochastic.html#a34e04d510e427218d7ce06735ecfc10b">numericalSchemeStochastic</a>
 </li>
 <li>getWeights()
-: <a class="el" href="classtransfer_spectrum.html#ae317b279490355a8562c4af742320740">transferSpectrum</a>
+: <a class="el" href="group__transfer.html#gae317b279490355a8562c4af742320740">transferSpectrum</a>
 </li>
 <li>Grid()
-: <a class="el" href="class_grid.html#afc67af2723d2ef8e19f57dd1a0abc8ee">Grid</a>
+: <a class="el" href="class_grid.html#ae7f1df4b4188a4c2ca65c5259fe98fd3">Grid</a>
 </li>
 <li>gsl_spmatrix2AR()
-: <a class="el" href="classgsl__spmatrix2_a_r.html#a3863103b890e9db5add298c4a087abbc">gsl_spmatrix2AR</a>
+: <a class="el" href="classgsl__spmatrix2_a_r.html#a7f2ba0f57d49ebdcca87a6426763c6b9">gsl_spmatrix2AR</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_h"></a>- h -</h3><ul>
+<li>HopfField()
+: <a class="el" href="class_hopf_field.html#a322c8a3b1e54ca1c1960506f5d526bee">HopfField</a>
 </li>
 </ul>
 
@@ -268,8 +264,8 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <h3><a class="anchor" id="index_i"></a>- i -</h3><ul>
 <li>integrateForward()
 : <a class="el" href="classmodel.html#a62853debbe0c9a8fc2b24e43a529c913">model</a>
-, <a class="el" href="classmodel_s_d_d_e.html#a47bb4419346ea560fc21d9194fe5cd4e">modelSDDE</a>
-, <a class="el" href="classmodel_stochastic.html#a2d4921c04263da8bfaf00d654fc01d2b">modelStochastic</a>
+, <a class="el" href="group__simulation.html#ga47bb4419346ea560fc21d9194fe5cd4e">modelSDDE</a>
+, <a class="el" href="group__simulation.html#ga2d4921c04263da8bfaf00d654fc01d2b">modelStochastic</a>
 </li>
 <li>isSorted()
 : <a class="el" href="classtransfer_spectrum.html#a313252653fd0d2ac53b6374b7064540b">transferSpectrum</a>
@@ -293,7 +289,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 <h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
 <li>makeBiorthonormal()
-: <a class="el" href="classtransfer_spectrum.html#a2f842bdef9c421af44aa2202111a728c">transferSpectrum</a>
+: <a class="el" href="group__transfer.html#ga2f842bdef9c421af44aa2202111a728c">transferSpectrum</a>
 </li>
 <li>model()
 : <a class="el" href="classmodel.html#a1a9463870c66c88037a07ce392cbe61b">model</a>
@@ -308,7 +304,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="classmultiplicative_linear_wiener.html#a4f3f01c440dce9b14d7cad0b4c8d9765">multiplicativeLinearWiener</a>
 </li>
 <li>MultMv()
-: <a class="el" href="classgsl__spmatrix2_a_r.html#a295ae2404c9871c3eab2ce88362a3127">gsl_spmatrix2AR</a>
+: <a class="el" href="group__transfer.html#ga295ae2404c9871c3eab2ce88362a3127">gsl_spmatrix2AR</a>
 </li>
 </ul>
 
@@ -327,35 +323,41 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 
 <h3><a class="anchor" id="index_p"></a>- p -</h3><ul>
+<li>pitchforkField()
+: <a class="el" href="classpitchfork_field.html#acb957754a9f04a898ca4df416ecb5065">pitchforkField</a>
+</li>
+<li>pitchforkSubField()
+: <a class="el" href="classpitchfork_sub_field.html#ad226bfe08f631a89946902b6497cb909">pitchforkSubField</a>
+</li>
 <li>PolarGrid()
-: <a class="el" href="class_polar_grid.html#a02b23fe13c45d346bf4ead00b0b737a1">PolarGrid</a>
+: <a class="el" href="group__grid.html#ga02b23fe13c45d346bf4ead00b0b737a1">PolarGrid</a>
 </li>
 <li>polynomial1D()
 : <a class="el" href="classpolynomial1_d.html#a48c89af43316274ec445d143ee11753f">polynomial1D</a>
 </li>
 <li>printBackwardTransition()
-: <a class="el" href="classtransfer_operator.html#aeaeed81e7809e9fe646286355d327838">transferOperator</a>
+: <a class="el" href="group__transfer.html#gaeaeed81e7809e9fe646286355d327838">transferOperator</a>
 </li>
 <li>printFinalDist()
-: <a class="el" href="classtransfer_operator.html#a84af92252d7b32167ad76b41a4a504f3">transferOperator</a>
+: <a class="el" href="group__transfer.html#ga84af92252d7b32167ad76b41a4a504f3">transferOperator</a>
 </li>
 <li>printForwardTransition()
-: <a class="el" href="classtransfer_operator.html#a173617beb7c5bcb62ffe9943b14276f2">transferOperator</a>
+: <a class="el" href="group__transfer.html#ga173617beb7c5bcb62ffe9943b14276f2">transferOperator</a>
 </li>
 <li>printGrid()
 : <a class="el" href="class_grid.html#a0ef5b89c66cf315b880111ec9d1bf1bf">Grid</a>
 , <a class="el" href="class_polar_grid.html#a7514f8883ebf4d3644dec716dddfa85b">PolarGrid</a>
-, <a class="el" href="class_regular_grid.html#a45a6a64234333f421008876748c4dcdc">RegularGrid</a>
+, <a class="el" href="group__grid.html#ga45a6a64234333f421008876748c4dcdc">RegularGrid</a>
 </li>
 <li>printInitDist()
-: <a class="el" href="classtransfer_operator.html#af3779539a641ec390db5964e832927f0">transferOperator</a>
+: <a class="el" href="group__transfer.html#gaf3779539a641ec390db5964e832927f0">transferOperator</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
 <li>RegularGrid()
-: <a class="el" href="class_regular_grid.html#a68db89b6233d2125a3202b2a778e46bd">RegularGrid</a>
+: <a class="el" href="group__grid.html#ga68db89b6233d2125a3202b2a778e46bd">RegularGrid</a>
 </li>
 <li>RungeKutta4()
 : <a class="el" href="class_runge_kutta4.html#ae3512b8274a01373b75f347666c99afb">RungeKutta4</a>
@@ -364,23 +366,33 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
+<li>saddleNodeField()
+: <a class="el" href="classsaddle_node_field.html#a41d4201539eaa4303aeb7b7c80c06d51">saddleNodeField</a>
+</li>
 <li>scanBackwardTransition()
-: <a class="el" href="classtransfer_operator.html#a6e0f4e9bc66712005223a7552b48a65b">transferOperator</a>
+: <a class="el" href="group__transfer.html#ga6e0f4e9bc66712005223a7552b48a65b">transferOperator</a>
 </li>
 <li>scanFinalDist()
-: <a class="el" href="classtransfer_operator.html#ae52210446e911d51472f9484366ab969">transferOperator</a>
+: <a class="el" href="group__transfer.html#gae52210446e911d51472f9484366ab969">transferOperator</a>
 </li>
 <li>scanForwardTransition()
-: <a class="el" href="classtransfer_operator.html#a0b8172a8cb2fd91510213c3ba77d8cf3">transferOperator</a>
+: <a class="el" href="group__transfer.html#ga0b8172a8cb2fd91510213c3ba77d8cf3">transferOperator</a>
 </li>
 <li>scanInitDist()
-: <a class="el" href="classtransfer_operator.html#a965312898f9dd896016587bcfe2af524">transferOperator</a>
+: <a class="el" href="group__transfer.html#ga965312898f9dd896016587bcfe2af524">transferOperator</a>
 </li>
 <li>setConfig()
 : <a class="el" href="classtransfer_spectrum.html#ae2f099f800db54d2549a20e2c7a4b9ca">transferSpectrum</a>
 </li>
+<li>setFinalDist()
+: <a class="el" href="classtransfer_operator.html#a1abee85be9b71c7cab5cd405c91e4ec2">transferOperator</a>
+</li>
+<li>setInitDist()
+: <a class="el" href="classtransfer_operator.html#a99579a7612dae74dfd160bf9ac640fc9">transferOperator</a>
+</li>
 <li>setParameters()
 : <a class="el" href="classadditive_wiener.html#a06db8ee505f3ffa5de87bea797e14b3f">additiveWiener</a>
+, <a class="el" href="classcodim1_field.html#afc3d3d5a6018cf337047c9ced4902f01">codim1Field</a>
 , <a class="el" href="classcusp_field.html#aab4c0e58f73867407f8c216c36203c73">cuspField</a>
 , <a class="el" href="classlinear_field.html#ac5a10c89080d019844d40822bce0f65c">linearField</a>
 , <a class="el" href="class_lorenz63.html#a4e0fbd45992f7a08b4beb15ebce64dfd">Lorenz63</a>
@@ -393,15 +405,15 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 , <a class="el" href="classnumerical_scheme_stochastic.html#a66be2e45b2aa6e191f9b522a9f4f2c6c">numericalSchemeStochastic</a>
 </li>
 <li>sort()
-: <a class="el" href="classtransfer_spectrum.html#a2e816ffd6ac5e3d52c7ba25256b937b8">transferSpectrum</a>
+: <a class="el" href="group__transfer.html#ga2e816ffd6ac5e3d52c7ba25256b937b8">transferSpectrum</a>
 </li>
 <li>stepForward()
 : <a class="el" href="class_euler.html#a544ad99b80fae2e3656ffbff19d8cfb6">Euler</a>
-, <a class="el" href="class_euler_maruyama.html#a55668d9ba170c33f8edc8ef291126f31">EulerMaruyama</a>
-, <a class="el" href="class_euler_maruyama_s_d_d_e.html#a41cc0de22cdac65a4c8672fb3134dfce">EulerMaruyamaSDDE</a>
+, <a class="el" href="group__simulation.html#ga55668d9ba170c33f8edc8ef291126f31">EulerMaruyama</a>
+, <a class="el" href="group__simulation.html#ga41cc0de22cdac65a4c8672fb3134dfce">EulerMaruyamaSDDE</a>
 , <a class="el" href="classmodel.html#a87ed4727415ebd1d1a1771176ec07d57">model</a>
-, <a class="el" href="classmodel_s_d_d_e.html#a897c893f662fc7a7ffcb408331786624">modelSDDE</a>
-, <a class="el" href="classmodel_stochastic.html#ab8afd0492fb134109e19845dc1bb5e7f">modelStochastic</a>
+, <a class="el" href="group__simulation.html#ga897c893f662fc7a7ffcb408331786624">modelSDDE</a>
+, <a class="el" href="group__simulation.html#gab8afd0492fb134109e19845dc1bb5e7f">modelStochastic</a>
 , <a class="el" href="classnumerical_scheme.html#ab1066cc10cb637752ce4597b6a59edf4">numericalScheme</a>
 , <a class="el" href="classnumerical_scheme_s_d_d_e.html#a7e7c14c73c716d0155830be610d2e66e">numericalSchemeSDDE</a>
 , <a class="el" href="classnumerical_scheme_stochastic.html#ab336e6d858c7f1d9aecccfa95c206f83">numericalSchemeStochastic</a>
@@ -414,18 +426,21 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 
 <h3><a class="anchor" id="index_t"></a>- t -</h3><ul>
+<li>transcriticalField()
+: <a class="el" href="classtranscritical_field.html#a8a79d63f1893f6ca7853f2a655b7b15f">transcriticalField</a>
+</li>
 <li>transferOperator()
 : <a class="el" href="classtransfer_operator.html#a756036c76da87ff3d267a7a03bb501be">transferOperator</a>
 </li>
 <li>transferSpectrum()
-: <a class="el" href="classtransfer_spectrum.html#a71e47fd8292c69a1aa416c57077d72ba">transferSpectrum</a>
+: <a class="el" href="group__transfer.html#ga71e47fd8292c69a1aa416c57077d72ba">transferSpectrum</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_u"></a>- u -</h3><ul>
 <li>updateHistoric()
-: <a class="el" href="classnumerical_scheme_s_d_d_e.html#a9de5dfe3c7b822ed8866cad64f440fa0">numericalSchemeSDDE</a>
+: <a class="el" href="group__simulation.html#ga9de5dfe3c7b822ed8866cad64f440fa0">numericalSchemeSDDE</a>
 </li>
 </ul>
 
@@ -435,7 +450,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="classvector_field.html#a80bdee9b5069d98fd2f36a4865679957">vectorField</a>
 </li>
 <li>vectorFieldDelay()
-: <a class="el" href="classvector_field_delay.html#ac2f4347c84ffdd3258225a3c186aace7">vectorFieldDelay</a>
+: <a class="el" href="group__simulation.html#gac2f4347c84ffdd3258225a3c186aace7">vectorFieldDelay</a>
 </li>
 <li>vectorFieldStochastic()
 : <a class="el" href="classvector_field_stochastic.html#ab08dc58230c52b9f3ae886b275837889">vectorFieldStochastic</a>
@@ -445,13 +460,13 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 <h3><a class="anchor" id="index_w"></a>- w -</h3><ul>
 <li>writeSpectrum()
-: <a class="el" href="classtransfer_spectrum.html#a38a5135c326ba505d7c83a7c46813e53">transferSpectrum</a>
+: <a class="el" href="group__transfer.html#ga38a5135c326ba505d7c83a7c46813e53">transferSpectrum</a>
 </li>
 <li>writeSpectrumBackward()
-: <a class="el" href="classtransfer_spectrum.html#a6e365f3fb8d4b2ee55be7586dbd4b9a5">transferSpectrum</a>
+: <a class="el" href="group__transfer.html#ga6e365f3fb8d4b2ee55be7586dbd4b9a5">transferSpectrum</a>
 </li>
 <li>writeSpectrumForward()
-: <a class="el" href="classtransfer_spectrum.html#a41bca8920670389a3caa3ae5f1724643">transferSpectrum</a>
+: <a class="el" href="group__transfer.html#ga41bca8920670389a3caa3ae5f1724643">transferSpectrum</a>
 </li>
 </ul>
 
@@ -459,6 +474,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <h3><a class="anchor" id="index_0x7e"></a>- ~ -</h3><ul>
 <li>~additiveWiener()
 : <a class="el" href="classadditive_wiener.html#ad7acc18bdbb1f35cc98a1d4df66b3a51">additiveWiener</a>
+</li>
+<li>~codim1Field()
+: <a class="el" href="classcodim1_field.html#ac590c2beedcc49f16d9e26f8b7f1cc57">codim1Field</a>
 </li>
 <li>~CurvilinearGrid()
 : <a class="el" href="class_curvilinear_grid.html#ab3e32ac4de956bebafc30247477732f1">CurvilinearGrid</a>
@@ -506,7 +524,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="classnumerical_scheme_stochastic.html#a62a9fe91c0dc56ba99e2fc7b1de60ab2">numericalSchemeStochastic</a>
 </li>
 <li>~PolarGrid()
-: <a class="el" href="class_polar_grid.html#ab6f38c41aef2df4a5f7c4c07fbaa8093">PolarGrid</a>
+: <a class="el" href="group__grid.html#gab6f38c41aef2df4a5f7c4c07fbaa8093">PolarGrid</a>
 </li>
 <li>~polynomial1D()
 : <a class="el" href="classpolynomial1_d.html#ab03a0f5208896980b03e7ccef614370b">polynomial1D</a>
@@ -515,31 +533,27 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="class_regular_grid.html#a982cc3f6fc2a086d27f224b53117775b">RegularGrid</a>
 </li>
 <li>~transferOperator()
-: <a class="el" href="classtransfer_operator.html#ab439c74c7b875253c4dd86c95b88aeda">transferOperator</a>
+: <a class="el" href="group__transfer.html#gab439c74c7b875253c4dd86c95b88aeda">transferOperator</a>
 </li>
 <li>~transferSpectrum()
-: <a class="el" href="classtransfer_spectrum.html#a883a1f9c8045f4e7f20fec6a6954b06f">transferSpectrum</a>
+: <a class="el" href="group__transfer.html#ga883a1f9c8045f4e7f20fec6a6954b06f">transferSpectrum</a>
 </li>
 <li>~vectorField()
 : <a class="el" href="classvector_field.html#a792eda0e2d57b1b07ade8876f918c1ac">vectorField</a>
 </li>
 <li>~vectorFieldDelay()
-: <a class="el" href="classvector_field_delay.html#a9ca3519c56e0da1672ccf50f96dc9245">vectorFieldDelay</a>
+: <a class="el" href="group__simulation.html#ga9ca3519c56e0da1672ccf50f96dc9245">vectorFieldDelay</a>
 </li>
 <li>~vectorFieldStochastic()
 : <a class="el" href="classvector_field_stochastic.html#aea045e673f4f258dd8dae2131cfe54f8">vectorFieldStochastic</a>
 </li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.12-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated on Mon Feb 8 2016 12:14:16 for ergoPack by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.12
+</small></address>
 </body>
 </html>

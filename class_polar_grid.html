@@ -1,4 +1,3 @@
-<!-- HTML header for doxygen 1.8.12-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,14 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -51,6 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="install.html"><span>Installation</span></a></li>
       <li><a href="tutorial.html"><span>Tutorial</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -79,21 +71,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('class_polar_grid.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -108,12 +85,13 @@ $(document).ready(function(){initNavTree('class_polar_grid.html','');});
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="class_polar_grid-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">PolarGrid Class Reference</div>  </div>
+<div class="title">PolarGrid Class Reference<div class="ingroups"><a class="el" href="group__grid.html">Gridding</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -133,12 +111,12 @@ Inheritance diagram for PolarGrid:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a02b23fe13c45d346bf4ead00b0b737a1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_polar_grid.html#a02b23fe13c45d346bf4ead00b0b737a1">PolarGrid</a> (const size_t nLevels, const size_t nSectors, const <a class="el" href="class_grid.html">Grid</a> *support, const gsl_matrix *states)</td></tr>
-<tr class="memdesc:a02b23fe13c45d346bf4ead00b0b737a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a polar grid adapted to the time series.  <a href="#a02b23fe13c45d346bf4ead00b0b737a1">More...</a><br /></td></tr>
-<tr class="separator:a02b23fe13c45d346bf4ead00b0b737a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6f38c41aef2df4a5f7c4c07fbaa8093"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_polar_grid.html#ab6f38c41aef2df4a5f7c4c07fbaa8093">~PolarGrid</a> ()</td></tr>
-<tr class="memdesc:ab6f38c41aef2df4a5f7c4c07fbaa8093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor desallocating memory.  <a href="#ab6f38c41aef2df4a5f7c4c07fbaa8093">More...</a><br /></td></tr>
-<tr class="separator:ab6f38c41aef2df4a5f7c4c07fbaa8093"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga02b23fe13c45d346bf4ead00b0b737a1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grid.html#ga02b23fe13c45d346bf4ead00b0b737a1">PolarGrid</a> (const size_t nLevels, const size_t nSectors, const <a class="el" href="class_grid.html">Grid</a> *support, const gsl_matrix *states)</td></tr>
+<tr class="memdesc:ga02b23fe13c45d346bf4ead00b0b737a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a polar grid adapted to the time series.  <a href="group__grid.html#ga02b23fe13c45d346bf4ead00b0b737a1">More...</a><br /></td></tr>
+<tr class="separator:ga02b23fe13c45d346bf4ead00b0b737a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab6f38c41aef2df4a5f7c4c07fbaa8093"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grid.html#gab6f38c41aef2df4a5f7c4c07fbaa8093">~PolarGrid</a> ()</td></tr>
+<tr class="memdesc:gab6f38c41aef2df4a5f7c4c07fbaa8093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor desallocating memory.  <a href="group__grid.html#gab6f38c41aef2df4a5f7c4c07fbaa8093">More...</a><br /></td></tr>
+<tr class="separator:gab6f38c41aef2df4a5f7c4c07fbaa8093"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7514f8883ebf4d3644dec716dddfa85b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7514f8883ebf4d3644dec716dddfa85b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_polar_grid.html#a7514f8883ebf4d3644dec716dddfa85b">printGrid</a> (const char *path, const char *dataFormat, const bool verbose) const </td></tr>
 <tr class="memdesc:a7514f8883ebf4d3644dec716dddfa85b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print the grid to file. <br /></td></tr>
@@ -187,94 +165,16 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="ergo_grid_8hpp_source.html#l00155">155</a> of file <a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a02b23fe13c45d346bf4ead00b0b737a1"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">PolarGrid::PolarGrid </td>
-          <td>(</td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>nLevels_</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>nSectors_</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="class_grid.html">Grid</a> *&#160;</td>
-          <td class="paramname"><em>support</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const gsl_matrix *&#160;</td>
-          <td class="paramname"><em>states</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Construct a polar grid adapted to the time series (yet, only for 2D). </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">nLevels_</td><td>Number of levels for the grid </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nSectors_</td><td>Number of sectors for the grid </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">support</td><td>Rectangular grid used to calculate the density. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">states</td><td>Trajectory to which to adapt the grid. </td></tr>
-  </table>
-  </dd>
-</dl>
-<p>The state is outside the support grid, mark it outside the polar grid </p>
-
-<p>Definition at line <a class="el" href="ergo_grid_8hpp_source.html#l00321">321</a> of file <a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>.</p>
-
-<p>References <a class="el" href="class_grid.html#abb945e93838a6746a715a083f172be04">Grid::dim</a>, <a class="el" href="ergo_grid_8hpp.html#aa6a8b9fa195bfac7baca6efac5155a40">getDensityMLE()</a>, <a class="el" href="ergo_grid_8hpp.html#ae84084d6ac9b8f8f68f49625ed441e96">getGridMemVector()</a>, <a class="el" href="class_grid.html#a69f37cefc2c51d73a902e96eaeecc3f0">Grid::getN()</a>, <a class="el" href="gsl__extension_8h.html#af732cbdb62af230ba5297994c9e4cdc2">gsl_matrix_get_mean()</a>, <a class="el" href="gsl__extension_8h.html#a38642e8787dd23e023301df79852f0f6">gsl_matrix_get_std()</a>, <a class="el" href="class_grid.html#a48dfe2bbf7ad988bd3cce872dce8a738">Grid::N</a>, <a class="el" href="transfer_8cpp.html#ae5db0b6d0459d65e845f911b2cf63388">nSTDHigh</a>, <a class="el" href="transfer_8cpp.html#a4b439d11830cf16b990bb49aff958b43">nSTDLow</a>, and <a class="el" href="transfer_8cpp.html#ac49b4571282666b93dfa78c0cdd5862d">nx</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab6f38c41aef2df4a5f7c4c07fbaa8093"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">PolarGrid::~PolarGrid </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Destructor desallocating memory. </p>
-
-<p>Definition at line <a class="el" href="ergo_grid_8hpp_source.html#l00581">581</a> of file <a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>.</p>
-
-<p>References <a class="el" href="sim_o_u_8cpp.html#a507bede4b0c41eb052cfe335cf8d4dba">A</a>, <a class="el" href="class_grid.html#abb945e93838a6746a715a083f172be04">Grid::dim</a>, <a class="el" href="class_grid.html#af58cb8c7330355a397b53abf802ccec0">Grid::getBoxPosition()</a>, <a class="el" href="ergo_stat_8hpp.html#a05a4eff778c943bec3f710b23b36f642">getEOF()</a>, <a class="el" href="class_grid.html#a69f37cefc2c51d73a902e96eaeecc3f0">Grid::getN()</a>, and <a class="el" href="gsl__extension_8h.html#aeaf46636a578b8f07471901e23e99bc6">gsl_vector_max_index_among()</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<p>Definition at line <a class="el" href="ergo_grid_8hpp_source.html#l00160">160</a> of file <a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>.</p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/<a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a></li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.12-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="class_polar_grid.html">PolarGrid</a></li>
-    <li class="footer">Generated on Mon Feb 8 2016 12:14:12 for ergoPack by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.12
+</small></address>
 </body>
 </html>

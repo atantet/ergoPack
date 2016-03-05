@@ -1,4 +1,3 @@
-<!-- HTML header for doxygen 1.8.12-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,14 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -51,6 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="install.html"><span>Installation</span></a></li>
       <li><a href="tutorial.html"><span>Tutorial</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -79,21 +71,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('class_euler_maruyama_s_d_d_e.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -108,6 +85,7 @@ $(document).ready(function(){initNavTree('class_euler_maruyama_s_d_d_e.html','')
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">EulerMaruyamaSDDE Member List</div>  </div>
@@ -126,21 +104,17 @@ $(document).ready(function(){initNavTree('class_euler_maruyama_s_d_d_e.html','')
   <tr><td class="entry"><a class="el" href="classnumerical_scheme_s_d_d_e.html#a19ee286947dbb1541e3028cd302d4e56">nDelays</a></td><td class="entry"><a class="el" href="classnumerical_scheme_s_d_d_e.html">numericalSchemeSDDE</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classnumerical_scheme_s_d_d_e.html#a5e8641d03492e7b527bfa541c6f6f379">numericalSchemeSDDE</a>(const size_t dim_, const size_t nDelays_, const size_t dimWork_, const double dt_)</td><td class="entry"><a class="el" href="classnumerical_scheme_s_d_d_e.html">numericalSchemeSDDE</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="classnumerical_scheme_s_d_d_e.html#adf272c1b8e12d5055c6c731b57d65a27">setTimeStep</a>(const double dt_)</td><td class="entry"><a class="el" href="classnumerical_scheme_s_d_d_e.html">numericalSchemeSDDE</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_euler_maruyama_s_d_d_e.html#a41cc0de22cdac65a4c8672fb3134dfce">stepForward</a>(vectorFieldDelay *delayedField, vectorFieldStochastic *stocField, gsl_matrix *currentState)</td><td class="entry"><a class="el" href="class_euler_maruyama_s_d_d_e.html">EulerMaruyamaSDDE</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classnumerical_scheme_s_d_d_e.html#a9de5dfe3c7b822ed8866cad64f440fa0">updateHistoric</a>(gsl_matrix *currentState)</td><td class="entry"><a class="el" href="classnumerical_scheme_s_d_d_e.html">numericalSchemeSDDE</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="group__simulation.html#ga41cc0de22cdac65a4c8672fb3134dfce">stepForward</a>(vectorFieldDelay *delayedField, vectorFieldStochastic *stocField, gsl_matrix *currentState)</td><td class="entry"><a class="el" href="class_euler_maruyama_s_d_d_e.html">EulerMaruyamaSDDE</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="group__simulation.html#ga9de5dfe3c7b822ed8866cad64f440fa0">updateHistoric</a>(gsl_matrix *currentState)</td><td class="entry"><a class="el" href="classnumerical_scheme_s_d_d_e.html">numericalSchemeSDDE</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classnumerical_scheme_s_d_d_e.html#a9bf5a05d28e216bff0409059b9d52b12">work</a></td><td class="entry"><a class="el" href="classnumerical_scheme_s_d_d_e.html">numericalSchemeSDDE</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr><td class="entry"><a class="el" href="class_euler_maruyama_s_d_d_e.html#ad040be4e244618caf588f5ac04e5e7af">~EulerMaruyamaSDDE</a>()</td><td class="entry"><a class="el" href="class_euler_maruyama_s_d_d_e.html">EulerMaruyamaSDDE</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classnumerical_scheme_s_d_d_e.html#aabb60044ee711950b6b87fb35bb2a161">~numericalSchemeSDDE</a>()</td><td class="entry"><a class="el" href="classnumerical_scheme_s_d_d_e.html">numericalSchemeSDDE</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
-</div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.12-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated on Mon Feb 8 2016 12:14:12 for ergoPack by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.12
+</small></address>
 </body>
 </html>

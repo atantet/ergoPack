@@ -1,4 +1,3 @@
-<!-- HTML header for doxygen 1.8.12-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,14 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -51,6 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="install.html"><span>Installation</span></a></li>
       <li><a href="tutorial.html"><span>Tutorial</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -79,21 +71,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('class_regular_grid.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -108,13 +85,14 @@ $(document).ready(function(){initNavTree('class_regular_grid.html','');});
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="class_regular_grid-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">RegularGrid Class Reference</div>  </div>
+<div class="title">RegularGrid Class Reference<div class="ingroups"><a class="el" href="group__grid.html">Gridding</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -135,31 +113,31 @@ Inheritance diagram for RegularGrid:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a68db89b6233d2125a3202b2a778e46bd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_regular_grid.html#a68db89b6233d2125a3202b2a778e46bd">RegularGrid</a> (const gsl_vector_uint *nx_, const gsl_vector *xmin, const gsl_vector *xmax)</td></tr>
-<tr class="memdesc:a68db89b6233d2125a3202b2a778e46bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a uniform rectangular grid with different dimensions.  <a href="#a68db89b6233d2125a3202b2a778e46bd">More...</a><br /></td></tr>
-<tr class="separator:a68db89b6233d2125a3202b2a778e46bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa74f926a6dbedeeafc7f953053ddd735"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_regular_grid.html#aa74f926a6dbedeeafc7f953053ddd735">RegularGrid</a> (const size_t dim_, const size_t inx, const double xmin, const double xmax)</td></tr>
-<tr class="memdesc:aa74f926a6dbedeeafc7f953053ddd735"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a uniform rectangular grid with same dimensions.  <a href="#aa74f926a6dbedeeafc7f953053ddd735">More...</a><br /></td></tr>
-<tr class="separator:aa74f926a6dbedeeafc7f953053ddd735"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2eaa535c40fb80427cebb42ca08795cf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_regular_grid.html#a2eaa535c40fb80427cebb42ca08795cf">RegularGrid</a> (const gsl_vector_uint *nx_, const gsl_vector *<a class="el" href="spectrum_8cpp.html#a4b439d11830cf16b990bb49aff958b43">nSTDLow</a>, const gsl_vector *<a class="el" href="spectrum_8cpp.html#ae5db0b6d0459d65e845f911b2cf63388">nSTDHigh</a>, const gsl_matrix *states)</td></tr>
-<tr class="memdesc:a2eaa535c40fb80427cebb42ca08795cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a uniform rectangular grid adapted to time series.  <a href="#a2eaa535c40fb80427cebb42ca08795cf">More...</a><br /></td></tr>
-<tr class="separator:a2eaa535c40fb80427cebb42ca08795cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78e83c1a8c072e2311570cfcec5c86fe"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_regular_grid.html#a78e83c1a8c072e2311570cfcec5c86fe">RegularGrid</a> (const size_t inx, const double <a class="el" href="spectrum_8cpp.html#a4b439d11830cf16b990bb49aff958b43">nSTDLow</a>, const double <a class="el" href="spectrum_8cpp.html#ae5db0b6d0459d65e845f911b2cf63388">nSTDHigh</a>, const gsl_matrix *states)</td></tr>
-<tr class="memdesc:a78e83c1a8c072e2311570cfcec5c86fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a uniform rectangular grid with same dimensions adapted to time series.  <a href="#a78e83c1a8c072e2311570cfcec5c86fe">More...</a><br /></td></tr>
-<tr class="separator:a78e83c1a8c072e2311570cfcec5c86fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga68db89b6233d2125a3202b2a778e46bd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grid.html#ga68db89b6233d2125a3202b2a778e46bd">RegularGrid</a> (const gsl_vector_uint *nx_, const gsl_vector *xmin, const gsl_vector *xmax)</td></tr>
+<tr class="memdesc:ga68db89b6233d2125a3202b2a778e46bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a uniform rectangular grid with different dimensions.  <a href="group__grid.html#ga68db89b6233d2125a3202b2a778e46bd">More...</a><br /></td></tr>
+<tr class="separator:ga68db89b6233d2125a3202b2a778e46bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa74f926a6dbedeeafc7f953053ddd735"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grid.html#gaa74f926a6dbedeeafc7f953053ddd735">RegularGrid</a> (const size_t dim_, const size_t inx, const double xmin, const double xmax)</td></tr>
+<tr class="memdesc:gaa74f926a6dbedeeafc7f953053ddd735"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a uniform rectangular grid with same dimensions.  <a href="group__grid.html#gaa74f926a6dbedeeafc7f953053ddd735">More...</a><br /></td></tr>
+<tr class="separator:gaa74f926a6dbedeeafc7f953053ddd735"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2eaa535c40fb80427cebb42ca08795cf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grid.html#ga2eaa535c40fb80427cebb42ca08795cf">RegularGrid</a> (const gsl_vector_uint *nx_, const gsl_vector *<a class="el" href="spectrum_8cpp.html#a4b439d11830cf16b990bb49aff958b43">nSTDLow</a>, const gsl_vector *<a class="el" href="spectrum_8cpp.html#ae5db0b6d0459d65e845f911b2cf63388">nSTDHigh</a>, const gsl_matrix *states)</td></tr>
+<tr class="memdesc:ga2eaa535c40fb80427cebb42ca08795cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a uniform rectangular grid adapted to time series.  <a href="group__grid.html#ga2eaa535c40fb80427cebb42ca08795cf">More...</a><br /></td></tr>
+<tr class="separator:ga2eaa535c40fb80427cebb42ca08795cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga78e83c1a8c072e2311570cfcec5c86fe"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grid.html#ga78e83c1a8c072e2311570cfcec5c86fe">RegularGrid</a> (const size_t inx, const double <a class="el" href="spectrum_8cpp.html#a4b439d11830cf16b990bb49aff958b43">nSTDLow</a>, const double <a class="el" href="spectrum_8cpp.html#ae5db0b6d0459d65e845f911b2cf63388">nSTDHigh</a>, const gsl_matrix *states)</td></tr>
+<tr class="memdesc:ga78e83c1a8c072e2311570cfcec5c86fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a uniform rectangular grid with same dimensions adapted to time series.  <a href="group__grid.html#ga78e83c1a8c072e2311570cfcec5c86fe">More...</a><br /></td></tr>
+<tr class="separator:ga78e83c1a8c072e2311570cfcec5c86fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a982cc3f6fc2a086d27f224b53117775b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a982cc3f6fc2a086d27f224b53117775b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_regular_grid.html#a982cc3f6fc2a086d27f224b53117775b">~RegularGrid</a> ()</td></tr>
 <tr class="memdesc:a982cc3f6fc2a086d27f224b53117775b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor desallocates memory for the grid boundaries. <br /></td></tr>
 <tr class="separator:a982cc3f6fc2a086d27f224b53117775b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45a6a64234333f421008876748c4dcdc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_regular_grid.html#a45a6a64234333f421008876748c4dcdc">printGrid</a> (const char *path, const char *dataFormat, const bool verbose) const </td></tr>
-<tr class="memdesc:a45a6a64234333f421008876748c4dcdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print regular grid to file.  <a href="#a45a6a64234333f421008876748c4dcdc">More...</a><br /></td></tr>
-<tr class="separator:a45a6a64234333f421008876748c4dcdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04c041ede92c8290760b428fc180e440"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_regular_grid.html#a04c041ede92c8290760b428fc180e440">getBoxMembership</a> (const gsl_vector *state) const </td></tr>
-<tr class="memdesc:a04c041ede92c8290760b428fc180e440"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get membership of a state to a box.  <a href="#a04c041ede92c8290760b428fc180e440">More...</a><br /></td></tr>
-<tr class="separator:a04c041ede92c8290760b428fc180e440"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3abdb212ec201784057e654009dea856"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_regular_grid.html#a3abdb212ec201784057e654009dea856">getBoxPosition</a> (const size_t index, gsl_vector *position) const </td></tr>
-<tr class="memdesc:a3abdb212ec201784057e654009dea856"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get center of position of grid box.  <a href="#a3abdb212ec201784057e654009dea856">More...</a><br /></td></tr>
-<tr class="separator:a3abdb212ec201784057e654009dea856"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga45a6a64234333f421008876748c4dcdc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grid.html#ga45a6a64234333f421008876748c4dcdc">printGrid</a> (const char *path, const char *dataFormat, const bool verbose) const </td></tr>
+<tr class="memdesc:ga45a6a64234333f421008876748c4dcdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print regular grid to file.  <a href="group__grid.html#ga45a6a64234333f421008876748c4dcdc">More...</a><br /></td></tr>
+<tr class="separator:ga45a6a64234333f421008876748c4dcdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga04c041ede92c8290760b428fc180e440"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grid.html#ga04c041ede92c8290760b428fc180e440">getBoxMembership</a> (const gsl_vector *state) const </td></tr>
+<tr class="memdesc:ga04c041ede92c8290760b428fc180e440"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get membership of a state to a box.  <a href="group__grid.html#ga04c041ede92c8290760b428fc180e440">More...</a><br /></td></tr>
+<tr class="separator:ga04c041ede92c8290760b428fc180e440"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3abdb212ec201784057e654009dea856"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grid.html#ga3abdb212ec201784057e654009dea856">getBoxPosition</a> (const size_t index, gsl_vector *position) const </td></tr>
+<tr class="memdesc:ga3abdb212ec201784057e654009dea856"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get center of position of grid box.  <a href="group__grid.html#ga3abdb212ec201784057e654009dea856">More...</a><br /></td></tr>
+<tr class="separator:ga3abdb212ec201784057e654009dea856"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_curvilinear_grid"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_curvilinear_grid')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_curvilinear_grid.html">CurvilinearGrid</a></td></tr>
 <tr class="memitem:ac6a2a34b695bb601cadec28469e2b15b inherit pub_methods_class_curvilinear_grid"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac6a2a34b695bb601cadec28469e2b15b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_curvilinear_grid.html#ac6a2a34b695bb601cadec28469e2b15b">CurvilinearGrid</a> (const gsl_vector_uint *nx_)</td></tr>
@@ -219,354 +197,16 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="ergo_grid_8hpp_source.html#l00098">98</a> of file <a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a68db89b6233d2125a3202b2a778e46bd"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">RegularGrid::RegularGrid </td>
-          <td>(</td>
-          <td class="paramtype">const gsl_vector_uint *&#160;</td>
-          <td class="paramname"><em>nx_</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const gsl_vector *&#160;</td>
-          <td class="paramname"><em>xmin</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const gsl_vector *&#160;</td>
-          <td class="paramname"><em>xmax</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Construct a uniform rectangular grid with specific bounds for each dimension. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">nx_</td><td>Vector giving the number of boxes for each dimension. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">xmin</td><td>Vector giving the minimum box limit for each dimension. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">xmax</td><td>Vector giving the maximum box limit for each dimension. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="ergo_grid_8hpp_source.html#l00254">254</a> of file <a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa74f926a6dbedeeafc7f953053ddd735"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">RegularGrid::RegularGrid </td>
-          <td>(</td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>dim_</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>inx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>dxmin</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>dxmax</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Construct a uniform rectangular grid with same bounds for each dimension. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">dim_</td><td>Number of dimensions. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">inx</td><td>Number of boxes, identically for each dimension. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">dxmin</td><td>Minimum box limit, identically for each dimension. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">dxmax</td><td>Maximum box limit, identically for each dimension. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="ergo_grid_8hpp_source.html#l00272">272</a> of file <a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a2eaa535c40fb80427cebb42ca08795cf"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">RegularGrid::RegularGrid </td>
-          <td>(</td>
-          <td class="paramtype">const gsl_vector_uint *&#160;</td>
-          <td class="paramname"><em>nx_</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const gsl_vector *&#160;</td>
-          <td class="paramname"><em>nSTDLow</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const gsl_vector *&#160;</td>
-          <td class="paramname"><em>nSTDHigh</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const gsl_matrix *&#160;</td>
-          <td class="paramname"><em>states</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Construct a uniform rectangular grid adapted to the time series. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">nx_</td><td>Vector giving the number of boxes for each dimension. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nSTDLow</td><td>Vector giving the number of standard deviations to span away from the mean state from below. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nSTDHigh</td><td>Vector giving the number of standard deviations to span away from the mean state from above. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">states</td><td>Time series. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="ergo_grid_8hpp_source.html#l00302">302</a> of file <a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a78e83c1a8c072e2311570cfcec5c86fe"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">RegularGrid::RegularGrid </td>
-          <td>(</td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>inx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>nSTDLow</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>nSTDHigh</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const gsl_matrix *&#160;</td>
-          <td class="paramname"><em>states</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Construct a uniform rectangular grid with same dimensions adapted to the time series. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">inx</td><td>Number of boxes for each dimension. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nSTDLow</td><td>Number of standard deviations to span away from the mean state from below. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nSTDHigh</td><td>Number of standard deviations to span away from the mean state from above. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">states</td><td>Time series. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="ergo_grid_8hpp_source.html#l00226">226</a> of file <a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>.</p>
-
-<p>References <a class="el" href="class_grid.html#abb945e93838a6746a715a083f172be04">Grid::dim</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a04c041ede92c8290760b428fc180e440"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t RegularGrid::getBoxMembership </td>
-          <td>(</td>
-          <td class="paramtype">const gsl_vector *&#160;</td>
-          <td class="paramname"><em>state</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Get membership to a grid box of a single realization. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>Vector of a single state. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Box index to which the state belongs. </dd></dl>
-
-<p>Implements <a class="el" href="class_grid.html#acafcdeae25178119327fb9b94c985a5d">Grid</a>.</p>
-
-<p>Definition at line <a class="el" href="ergo_grid_8hpp_source.html#l00504">504</a> of file <a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>.</p>
-
-<p>References <a class="el" href="class_grid.html#abb945e93838a6746a715a083f172be04">Grid::dim</a>, and <a class="el" href="class_grid.html#a48dfe2bbf7ad988bd3cce872dce8a738">Grid::N</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a3abdb212ec201784057e654009dea856"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void RegularGrid::getBoxPosition </td>
-          <td>(</td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">gsl_vector *&#160;</td>
-          <td class="paramname"><em>position</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Get position of grid box. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Index of box for which to get the position. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">position</td><td>Position of the box. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implements <a class="el" href="class_grid.html#af58cb8c7330355a397b53abf802ccec0">Grid</a>.</p>
-
-<p>Definition at line <a class="el" href="ergo_grid_8hpp_source.html#l00547">547</a> of file <a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>.</p>
-
-<p>References <a class="el" href="class_grid.html#abb945e93838a6746a715a083f172be04">Grid::dim</a>, and <a class="el" href="class_grid.html#a69f37cefc2c51d73a902e96eaeecc3f0">Grid::getN()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a45a6a64234333f421008876748c4dcdc"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int RegularGrid::printGrid </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>path</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>dataFormat</em> = <code>&quot;%lf&quot;</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const bool&#160;</td>
-          <td class="paramname"><em>verbose</em> = <code>false</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Print the grid to file. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>Path to the file in which to print. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">dataFormat</td><td>Format in which to print each element. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">verbose</td><td>If true, also print to the standard output. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Status. </dd></dl>
-<p>Check for printing errors </p>
-
-<p>Implements <a class="el" href="class_grid.html#a0ef5b89c66cf315b880111ec9d1bf1bf">Grid</a>.</p>
-
-<p>Definition at line <a class="el" href="ergo_grid_8hpp_source.html#l00451">451</a> of file <a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>.</p>
-
-<p>References <a class="el" href="class_grid.html#abb945e93838a6746a715a083f172be04">Grid::dim</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<p>Definition at line <a class="el" href="ergo_grid_8hpp_source.html#l00103">103</a> of file <a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>.</p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/<a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a></li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.12-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="class_regular_grid.html">RegularGrid</a></li>
-    <li class="footer">Generated on Mon Feb 8 2016 12:14:12 for ergoPack by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.12
+</small></address>
 </body>
 </html>

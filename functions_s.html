@@ -1,4 +1,3 @@
-<!-- HTML header for doxygen 1.8.12-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,14 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -51,6 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="install.html"><span>Installation</span></a></li>
       <li><a href="tutorial.html"><span>Tutorial</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -95,6 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_e.html#index_e"><span>e</span></a></li>
       <li><a href="functions_f.html#index_f"><span>f</span></a></li>
       <li><a href="functions_g.html#index_g"><span>g</span></a></li>
+      <li><a href="functions_h.html#index_h"><span>h</span></a></li>
       <li><a href="functions_i.html#index_i"><span>i</span></a></li>
       <li><a href="functions_l.html#index_l"><span>l</span></a></li>
       <li><a href="functions_m.html#index_m"><span>m</span></a></li>
@@ -111,20 +104,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     </ul>
   </div>
 </div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('functions_s.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -143,17 +122,20 @@ $(document).ready(function(){initNavTree('functions_s.html','');});
 <div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
 
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
+<li>saddleNodeField()
+: <a class="el" href="classsaddle_node_field.html#a41d4201539eaa4303aeb7b7c80c06d51">saddleNodeField</a>
+</li>
 <li>scanBackwardTransition()
-: <a class="el" href="classtransfer_operator.html#a6e0f4e9bc66712005223a7552b48a65b">transferOperator</a>
+: <a class="el" href="group__transfer.html#ga6e0f4e9bc66712005223a7552b48a65b">transferOperator</a>
 </li>
 <li>scanFinalDist()
-: <a class="el" href="classtransfer_operator.html#ae52210446e911d51472f9484366ab969">transferOperator</a>
+: <a class="el" href="group__transfer.html#gae52210446e911d51472f9484366ab969">transferOperator</a>
 </li>
 <li>scanForwardTransition()
-: <a class="el" href="classtransfer_operator.html#a0b8172a8cb2fd91510213c3ba77d8cf3">transferOperator</a>
+: <a class="el" href="group__transfer.html#ga0b8172a8cb2fd91510213c3ba77d8cf3">transferOperator</a>
 </li>
 <li>scanInitDist()
-: <a class="el" href="classtransfer_operator.html#a965312898f9dd896016587bcfe2af524">transferOperator</a>
+: <a class="el" href="group__transfer.html#ga965312898f9dd896016587bcfe2af524">transferOperator</a>
 </li>
 <li>scheme
 : <a class="el" href="classmodel.html#a7a3dc04960bd269a974a3d00533c7d73">model</a>
@@ -163,8 +145,15 @@ $(document).ready(function(){initNavTree('functions_s.html','');});
 <li>setConfig()
 : <a class="el" href="classtransfer_spectrum.html#ae2f099f800db54d2549a20e2c7a4b9ca">transferSpectrum</a>
 </li>
+<li>setFinalDist()
+: <a class="el" href="classtransfer_operator.html#a1abee85be9b71c7cab5cd405c91e4ec2">transferOperator</a>
+</li>
+<li>setInitDist()
+: <a class="el" href="classtransfer_operator.html#a99579a7612dae74dfd160bf9ac640fc9">transferOperator</a>
+</li>
 <li>setParameters()
 : <a class="el" href="classadditive_wiener.html#a06db8ee505f3ffa5de87bea797e14b3f">additiveWiener</a>
+, <a class="el" href="classcodim1_field.html#afc3d3d5a6018cf337047c9ced4902f01">codim1Field</a>
 , <a class="el" href="classcusp_field.html#aab4c0e58f73867407f8c216c36203c73">cuspField</a>
 , <a class="el" href="classlinear_field.html#ac5a10c89080d019844d40822bce0f65c">linearField</a>
 , <a class="el" href="class_lorenz63.html#a4e0fbd45992f7a08b4beb15ebce64dfd">Lorenz63</a>
@@ -177,15 +166,15 @@ $(document).ready(function(){initNavTree('functions_s.html','');});
 , <a class="el" href="classnumerical_scheme_stochastic.html#a66be2e45b2aa6e191f9b522a9f4f2c6c">numericalSchemeStochastic</a>
 </li>
 <li>sort()
-: <a class="el" href="classtransfer_spectrum.html#a2e816ffd6ac5e3d52c7ba25256b937b8">transferSpectrum</a>
+: <a class="el" href="group__transfer.html#ga2e816ffd6ac5e3d52c7ba25256b937b8">transferSpectrum</a>
 </li>
 <li>stepForward()
 : <a class="el" href="class_euler.html#a544ad99b80fae2e3656ffbff19d8cfb6">Euler</a>
-, <a class="el" href="class_euler_maruyama.html#a55668d9ba170c33f8edc8ef291126f31">EulerMaruyama</a>
-, <a class="el" href="class_euler_maruyama_s_d_d_e.html#a41cc0de22cdac65a4c8672fb3134dfce">EulerMaruyamaSDDE</a>
+, <a class="el" href="group__simulation.html#ga55668d9ba170c33f8edc8ef291126f31">EulerMaruyama</a>
+, <a class="el" href="group__simulation.html#ga41cc0de22cdac65a4c8672fb3134dfce">EulerMaruyamaSDDE</a>
 , <a class="el" href="classmodel.html#a87ed4727415ebd1d1a1771176ec07d57">model</a>
-, <a class="el" href="classmodel_s_d_d_e.html#a897c893f662fc7a7ffcb408331786624">modelSDDE</a>
-, <a class="el" href="classmodel_stochastic.html#ab8afd0492fb134109e19845dc1bb5e7f">modelStochastic</a>
+, <a class="el" href="group__simulation.html#ga897c893f662fc7a7ffcb408331786624">modelSDDE</a>
+, <a class="el" href="group__simulation.html#gab8afd0492fb134109e19845dc1bb5e7f">modelStochastic</a>
 , <a class="el" href="classnumerical_scheme.html#ab1066cc10cb637752ce4597b6a59edf4">numericalScheme</a>
 , <a class="el" href="classnumerical_scheme_s_d_d_e.html#a7e7c14c73c716d0155830be610d2e66e">numericalSchemeSDDE</a>
 , <a class="el" href="classnumerical_scheme_stochastic.html#ab336e6d858c7f1d9aecccfa95c206f83">numericalSchemeStochastic</a>
@@ -200,15 +189,11 @@ $(document).ready(function(){initNavTree('functions_s.html','');});
 </li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.12-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated on Mon Feb 8 2016 12:14:16 for ergoPack by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.12
+</small></address>
 </body>
 </html>

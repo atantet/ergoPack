@@ -1,4 +1,3 @@
-<!-- HTML header for doxygen 1.8.12-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,14 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -51,6 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="install.html"><span>Installation</span></a></li>
       <li><a href="tutorial.html"><span>Tutorial</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -77,21 +69,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('transfer_operator_8hpp.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -106,12 +83,17 @@ $(document).ready(function(){initNavTree('transfer_operator_8hpp.html','');});
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">transferOperator.hpp File Reference</div>  </div>
+<div class="title">transferOperator.hpp File Reference<div class="ingroups"><a class="el" href="group__transfer.html">Transfer operators</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -121,12 +103,13 @@ $(document).ready(function(){initNavTree('transfer_operator_8hpp.html','');});
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;stdexcept&gt;</code><br />
 <code>#include &lt;ios&gt;</code><br />
+<code>#include &lt;limits&gt;</code><br />
 <code>#include &lt;gsl/gsl_math.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_vector.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_matrix.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_spmatrix.h&gt;</code><br />
-<code>#include &lt;ergoPack/gsl_extension.h&gt;</code><br />
-<code>#include &lt;ergoPack/ergoGrid.hpp&gt;</code><br />
+<code>#include &lt;<a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="ergo_grid_8hpp_source.html">ergoGrid.hpp</a>&gt;</code><br />
 </div>
 <p><a href="transfer_operator_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -138,140 +121,24 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab6396239b16cd3266654ccabce30a30c"><td class="memItemLeft" align="right" valign="top">gsl_spmatrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_operator_8hpp.html#ab6396239b16cd3266654ccabce30a30c">getTransitionCountTriplet</a> (const gsl_matrix_uint *gridMem, size_t <a class="el" href="spectrum_8cpp.html#aa6d2142329b3b553ce8a778f8239db33">N</a>)</td></tr>
-<tr class="memdesc:ab6396239b16cd3266654ccabce30a30c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get triplet vector from membership matrix.  <a href="#ab6396239b16cd3266654ccabce30a30c">More...</a><br /></td></tr>
-<tr class="separator:ab6396239b16cd3266654ccabce30a30c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae52b88b4e00ae0e45818fc4dd3b50255"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transfer_operator_8hpp.html#ae52b88b4e00ae0e45818fc4dd3b50255">filterStochasticMatrix</a> (gsl_spmatrix *M, gsl_vector *rowCut, gsl_vector *colCut, double tol, int norm)</td></tr>
-<tr class="memdesc:ae52b88b4e00ae0e45818fc4dd3b50255"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove weak nodes from a transition matrix.  <a href="#ae52b88b4e00ae0e45818fc4dd3b50255">More...</a><br /></td></tr>
-<tr class="separator:ae52b88b4e00ae0e45818fc4dd3b50255"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga51d373cfa99bcd1b23042fa326928ae9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#ga51d373cfa99bcd1b23042fa326928ae9">getTransitionCountTriplet</a> (const gsl_matrix_uint *gridMem, size_t <a class="el" href="spectrum_8cpp.html#aa6d2142329b3b553ce8a778f8239db33">N</a>, gsl_spmatrix *T, gsl_vector *initDist, gsl_vector *finalDist)</td></tr>
+<tr class="memdesc:ga51d373cfa99bcd1b23042fa326928ae9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get triplet vector from membership matrix.  <a href="group__transfer.html#ga51d373cfa99bcd1b23042fa326928ae9">More...</a><br /></td></tr>
+<tr class="separator:ga51d373cfa99bcd1b23042fa326928ae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae52b88b4e00ae0e45818fc4dd3b50255"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#gae52b88b4e00ae0e45818fc4dd3b50255">filterStochasticMatrix</a> (gsl_spmatrix *M, gsl_vector *rowCut, gsl_vector *colCut, double tol, int norm)</td></tr>
+<tr class="memdesc:gae52b88b4e00ae0e45818fc4dd3b50255"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove weak nodes from a transition matrix.  <a href="group__transfer.html#gae52b88b4e00ae0e45818fc4dd3b50255">More...</a><br /></td></tr>
+<tr class="separator:gae52b88b4e00ae0e45818fc4dd3b50255"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Calculate Galerkin approximation of transfer/Koopman operators from time series. The result is given as forward and backward Markov transition matrices approximating the transfer and Koopman operator, respectively, as well as the initial and final distrtutions associated to them.</p>
 <p>Coordinate format with a one line header is followed for printing and scanning of the sparse transition matrices. The first line is a header giving the number of rows, columns and non-zero elements: M N nnz Each following line gives the coordinate of one matrix element as its row, column and value: i j d </p>
 
 <p>Definition in file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="ae52b88b4e00ae0e45818fc4dd3b50255"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int filterStochasticMatrix </td>
-          <td>(</td>
-          <td class="paramtype">gsl_spmatrix *&#160;</td>
-          <td class="paramname"><em>M</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">gsl_vector *&#160;</td>
-          <td class="paramname"><em>rowCut</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">gsl_vector *&#160;</td>
-          <td class="paramname"><em>colCut</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>tol</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>norm</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Set weak states to 0 from a stochastic matrix and its distributions based on initial and final probability of each Markov state. Attention: elements are not actually removed from sparse matrix. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">M</td><td>Compressed transition matrix to filter. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rowCut</td><td>The probability distribution associated with each row. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">colCut</td><td>The probability distribution associated with each column. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">tol</td><td>Probability under which Markov states are removed. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">norm</td><td>Choice of normalization,<ul>
-<li>norm = 0: normalize over all elements,</li>
-<li>norm = 1: to right stochastic,</li>
-<li>norm = 2: to left stochastic,</li>
-<li>no normalization for any other choice. </li>
-</ul>
-</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Check which nodes should be filtered and set distribution to 0</p>
-<p>Make matrix and vectors stochastic again</p>
-<p>Free </p>
-
-<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00728">728</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-
-<p>References <a class="el" href="gsl__extension_8h.html#a6d71910f1fb03add1ee3804625ada99c">gsl_vector_normalize()</a>.</p>
-
-<p>Referenced by <a class="el" href="classtransfer_operator.html#a397957b2d6c8c869e48a3ee0d4701488">transferOperator::filter()</a>, and <a class="el" href="classtransfer_operator.html#aa536e1cc89e7dd28a07f560d591597d0">transferOperator::isStationary()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab6396239b16cd3266654ccabce30a30c"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">gsl_spmatrix * getTransitionCountTriplet </td>
-          <td>(</td>
-          <td class="paramtype">const gsl_matrix_uint *&#160;</td>
-          <td class="paramname"><em>gridMem</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>N</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Get the triplet vector counting the transitions from pairs of grid boxes from the grid membership matrix. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">gridMem</td><td><a class="el" href="class_grid.html" title="Grid class. ">Grid</a> membership matrix. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">N</td><td>Size of the grid. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Triplet vector counting the transitions. </dd></dl>
-<p>Allocate triplet sparse matrix</p>
-<p>Record transitions</p>
-<p>Add transition triplet, summing if duplicate </p>
-
-<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00682">682</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-
-<p>Referenced by <a class="el" href="classtransfer_operator.html#aa536e1cc89e7dd28a07f560d591597d0">transferOperator::isStationary()</a>, and <a class="el" href="classtransfer_operator.html#ab439c74c7b875253c4dd86c95b88aeda">transferOperator::~transferOperator()</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
-</div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.12-->
+</div></div><!-- contents -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="transfer_operator_8hpp.html">transferOperator.hpp</a></li>
-    <li class="footer">Generated on Mon Feb 8 2016 12:14:12 for ergoPack by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.12
+</small></address>
 </body>
 </html>

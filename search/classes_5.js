@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['model',['model',['../classmodel.html',1,'']]],
-  ['modelsdde',['modelSDDE',['../classmodel_s_d_d_e.html',1,'']]],
-  ['modelstochastic',['modelStochastic',['../classmodel_stochastic.html',1,'']]],
-  ['multiplicativelinearwiener',['multiplicativeLinearWiener',['../classmultiplicative_linear_wiener.html',1,'']]]
+  ['linearfield',['linearField',['../classlinear_field.html',1,'']]],
+  ['lorenz63',['Lorenz63',['../class_lorenz63.html',1,'']]]
 ];

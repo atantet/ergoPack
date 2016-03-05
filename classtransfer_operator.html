@@ -1,4 +1,3 @@
-<!-- HTML header for doxygen 1.8.12-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,14 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -51,6 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="install.html"><span>Installation</span></a></li>
       <li><a href="tutorial.html"><span>Tutorial</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -79,21 +71,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('classtransfer_operator.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -108,13 +85,14 @@ $(document).ready(function(){initNavTree('classtransfer_operator.html','');});
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classtransfer_operator-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">transferOperator Class Reference</div>  </div>
+<div class="title">transferOperator Class Reference<div class="ingroups"><a class="el" href="group__transfer.html">Transfer operators</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -129,18 +107,18 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#a756036c76da87ff3d267a7a03bb501be">transferOperator</a> (const size_t N_, const bool stationary_=false)</td></tr>
 <tr class="memdesc:a756036c76da87ff3d267a7a03bb501be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty constructor allocating for grid size. <br /></td></tr>
 <tr class="separator:a756036c76da87ff3d267a7a03bb501be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa23cf30fc8426e182ca2a8ba8a39f6f1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#aa23cf30fc8426e182ca2a8ba8a39f6f1">transferOperator</a> (const gsl_matrix_uint *gridMem, const size_t N_, const bool stationary_)</td></tr>
-<tr class="memdesc:aa23cf30fc8426e182ca2a8ba8a39f6f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor from the membership matrix.  <a href="#aa23cf30fc8426e182ca2a8ba8a39f6f1">More...</a><br /></td></tr>
-<tr class="separator:aa23cf30fc8426e182ca2a8ba8a39f6f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fe924ea1b1fcd75308a0778f86cfbc4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#a4fe924ea1b1fcd75308a0778f86cfbc4">transferOperator</a> (const gsl_matrix *initStates, const gsl_matrix *finalStates, const <a class="el" href="class_grid.html">Grid</a> *grid, const bool stationary_)</td></tr>
-<tr class="memdesc:a4fe924ea1b1fcd75308a0778f86cfbc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor from initial and final states for a given grid.  <a href="#a4fe924ea1b1fcd75308a0778f86cfbc4">More...</a><br /></td></tr>
-<tr class="separator:a4fe924ea1b1fcd75308a0778f86cfbc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ff27bf98cdc9e6897d3a4c886e24dd8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#a1ff27bf98cdc9e6897d3a4c886e24dd8">transferOperator</a> (const gsl_matrix *states, const <a class="el" href="class_grid.html">Grid</a> *grid, size_t tauStep)</td></tr>
-<tr class="memdesc:a1ff27bf98cdc9e6897d3a4c886e24dd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor from a long trajectory for a given grid and lag.  <a href="#a1ff27bf98cdc9e6897d3a4c886e24dd8">More...</a><br /></td></tr>
-<tr class="separator:a1ff27bf98cdc9e6897d3a4c886e24dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab439c74c7b875253c4dd86c95b88aeda"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#ab439c74c7b875253c4dd86c95b88aeda">~transferOperator</a> ()</td></tr>
-<tr class="memdesc:ab439c74c7b875253c4dd86c95b88aeda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#ab439c74c7b875253c4dd86c95b88aeda">More...</a><br /></td></tr>
-<tr class="separator:ab439c74c7b875253c4dd86c95b88aeda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa23cf30fc8426e182ca2a8ba8a39f6f1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#gaa23cf30fc8426e182ca2a8ba8a39f6f1">transferOperator</a> (const gsl_matrix_uint *gridMem, const size_t N_, const bool stationary_)</td></tr>
+<tr class="memdesc:gaa23cf30fc8426e182ca2a8ba8a39f6f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor from the membership matrix.  <a href="group__transfer.html#gaa23cf30fc8426e182ca2a8ba8a39f6f1">More...</a><br /></td></tr>
+<tr class="separator:gaa23cf30fc8426e182ca2a8ba8a39f6f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4fe924ea1b1fcd75308a0778f86cfbc4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#ga4fe924ea1b1fcd75308a0778f86cfbc4">transferOperator</a> (const gsl_matrix *initStates, const gsl_matrix *finalStates, const <a class="el" href="class_grid.html">Grid</a> *grid, const bool stationary_)</td></tr>
+<tr class="memdesc:ga4fe924ea1b1fcd75308a0778f86cfbc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor from initial and final states for a given grid.  <a href="group__transfer.html#ga4fe924ea1b1fcd75308a0778f86cfbc4">More...</a><br /></td></tr>
+<tr class="separator:ga4fe924ea1b1fcd75308a0778f86cfbc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1ff27bf98cdc9e6897d3a4c886e24dd8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#ga1ff27bf98cdc9e6897d3a4c886e24dd8">transferOperator</a> (const gsl_matrix *states, const <a class="el" href="class_grid.html">Grid</a> *grid, size_t tauStep)</td></tr>
+<tr class="memdesc:ga1ff27bf98cdc9e6897d3a4c886e24dd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor from a long trajectory for a given grid and lag.  <a href="group__transfer.html#ga1ff27bf98cdc9e6897d3a4c886e24dd8">More...</a><br /></td></tr>
+<tr class="separator:ga1ff27bf98cdc9e6897d3a4c886e24dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab439c74c7b875253c4dd86c95b88aeda"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#gab439c74c7b875253c4dd86c95b88aeda">~transferOperator</a> ()</td></tr>
+<tr class="memdesc:gab439c74c7b875253c4dd86c95b88aeda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="group__transfer.html#gab439c74c7b875253c4dd86c95b88aeda">More...</a><br /></td></tr>
+<tr class="separator:gab439c74c7b875253c4dd86c95b88aeda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f6cfbdf70f1f0d952b4c92d294a0945"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f6cfbdf70f1f0d952b4c92d294a0945"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#a2f6cfbdf70f1f0d952b4c92d294a0945">getN</a> () const </td></tr>
 <tr class="memdesc:a2f6cfbdf70f1f0d952b4c92d294a0945"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of grid boxes. <br /></td></tr>
@@ -149,33 +127,41 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#aa536e1cc89e7dd28a07f560d591597d0">isStationary</a> () const </td></tr>
 <tr class="memdesc:aa536e1cc89e7dd28a07f560d591597d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get whether stationary. <br /></td></tr>
 <tr class="separator:aa536e1cc89e7dd28a07f560d591597d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a173617beb7c5bcb62ffe9943b14276f2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#a173617beb7c5bcb62ffe9943b14276f2">printForwardTransition</a> (const char *path, const char *dataFormat)</td></tr>
-<tr class="memdesc:a173617beb7c5bcb62ffe9943b14276f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print forward transition matrix to file in coordinate format.  <a href="#a173617beb7c5bcb62ffe9943b14276f2">More...</a><br /></td></tr>
-<tr class="separator:a173617beb7c5bcb62ffe9943b14276f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeaeed81e7809e9fe646286355d327838"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#aeaeed81e7809e9fe646286355d327838">printBackwardTransition</a> (const char *path, const char *dataFormat)</td></tr>
-<tr class="memdesc:aeaeed81e7809e9fe646286355d327838"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print backward transition matrix to file in coordinate format.  <a href="#aeaeed81e7809e9fe646286355d327838">More...</a><br /></td></tr>
-<tr class="separator:aeaeed81e7809e9fe646286355d327838"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3779539a641ec390db5964e832927f0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#af3779539a641ec390db5964e832927f0">printInitDist</a> (const char *path, const char *dataFormat)</td></tr>
-<tr class="memdesc:af3779539a641ec390db5964e832927f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print initial distribution to file.  <a href="#af3779539a641ec390db5964e832927f0">More...</a><br /></td></tr>
-<tr class="separator:af3779539a641ec390db5964e832927f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84af92252d7b32167ad76b41a4a504f3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#a84af92252d7b32167ad76b41a4a504f3">printFinalDist</a> (const char *path, const char *dataFormat)</td></tr>
-<tr class="memdesc:a84af92252d7b32167ad76b41a4a504f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print final distribution to file.  <a href="#a84af92252d7b32167ad76b41a4a504f3">More...</a><br /></td></tr>
-<tr class="separator:a84af92252d7b32167ad76b41a4a504f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b8172a8cb2fd91510213c3ba77d8cf3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#a0b8172a8cb2fd91510213c3ba77d8cf3">scanForwardTransition</a> (const char *path)</td></tr>
-<tr class="memdesc:a0b8172a8cb2fd91510213c3ba77d8cf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scan forward transition matrix to file in coordinate format.  <a href="#a0b8172a8cb2fd91510213c3ba77d8cf3">More...</a><br /></td></tr>
-<tr class="separator:a0b8172a8cb2fd91510213c3ba77d8cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e0f4e9bc66712005223a7552b48a65b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#a6e0f4e9bc66712005223a7552b48a65b">scanBackwardTransition</a> (const char *path)</td></tr>
-<tr class="memdesc:a6e0f4e9bc66712005223a7552b48a65b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scan backward transition matrix to file in coordinate format.  <a href="#a6e0f4e9bc66712005223a7552b48a65b">More...</a><br /></td></tr>
-<tr class="separator:a6e0f4e9bc66712005223a7552b48a65b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a965312898f9dd896016587bcfe2af524"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#a965312898f9dd896016587bcfe2af524">scanInitDist</a> (const char *path)</td></tr>
-<tr class="memdesc:a965312898f9dd896016587bcfe2af524"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scan initial distribution to file.  <a href="#a965312898f9dd896016587bcfe2af524">More...</a><br /></td></tr>
-<tr class="separator:a965312898f9dd896016587bcfe2af524"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae52210446e911d51472f9484366ab969"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#ae52210446e911d51472f9484366ab969">scanFinalDist</a> (const char *path)</td></tr>
-<tr class="memdesc:ae52210446e911d51472f9484366ab969"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scan final distribution to file.  <a href="#ae52210446e911d51472f9484366ab969">More...</a><br /></td></tr>
-<tr class="separator:ae52210446e911d51472f9484366ab969"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a397957b2d6c8c869e48a3ee0d4701488"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#a397957b2d6c8c869e48a3ee0d4701488">filter</a> (double tol)</td></tr>
-<tr class="memdesc:a397957b2d6c8c869e48a3ee0d4701488"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filtering of weak Markov states.  <a href="#a397957b2d6c8c869e48a3ee0d4701488">More...</a><br /></td></tr>
-<tr class="separator:a397957b2d6c8c869e48a3ee0d4701488"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga173617beb7c5bcb62ffe9943b14276f2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#ga173617beb7c5bcb62ffe9943b14276f2">printForwardTransition</a> (const char *path, const char *dataFormat)</td></tr>
+<tr class="memdesc:ga173617beb7c5bcb62ffe9943b14276f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print forward transition matrix to file in coordinate format.  <a href="group__transfer.html#ga173617beb7c5bcb62ffe9943b14276f2">More...</a><br /></td></tr>
+<tr class="separator:ga173617beb7c5bcb62ffe9943b14276f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaeaeed81e7809e9fe646286355d327838"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#gaeaeed81e7809e9fe646286355d327838">printBackwardTransition</a> (const char *path, const char *dataFormat)</td></tr>
+<tr class="memdesc:gaeaeed81e7809e9fe646286355d327838"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print backward transition matrix to file in coordinate format.  <a href="group__transfer.html#gaeaeed81e7809e9fe646286355d327838">More...</a><br /></td></tr>
+<tr class="separator:gaeaeed81e7809e9fe646286355d327838"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf3779539a641ec390db5964e832927f0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#gaf3779539a641ec390db5964e832927f0">printInitDist</a> (const char *path, const char *dataFormat)</td></tr>
+<tr class="memdesc:gaf3779539a641ec390db5964e832927f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print initial distribution to file.  <a href="group__transfer.html#gaf3779539a641ec390db5964e832927f0">More...</a><br /></td></tr>
+<tr class="separator:gaf3779539a641ec390db5964e832927f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga84af92252d7b32167ad76b41a4a504f3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#ga84af92252d7b32167ad76b41a4a504f3">printFinalDist</a> (const char *path, const char *dataFormat)</td></tr>
+<tr class="memdesc:ga84af92252d7b32167ad76b41a4a504f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print final distribution to file.  <a href="group__transfer.html#ga84af92252d7b32167ad76b41a4a504f3">More...</a><br /></td></tr>
+<tr class="separator:ga84af92252d7b32167ad76b41a4a504f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0b8172a8cb2fd91510213c3ba77d8cf3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#ga0b8172a8cb2fd91510213c3ba77d8cf3">scanForwardTransition</a> (const char *path)</td></tr>
+<tr class="memdesc:ga0b8172a8cb2fd91510213c3ba77d8cf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scan forward transition matrix to file in coordinate format.  <a href="group__transfer.html#ga0b8172a8cb2fd91510213c3ba77d8cf3">More...</a><br /></td></tr>
+<tr class="separator:ga0b8172a8cb2fd91510213c3ba77d8cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6e0f4e9bc66712005223a7552b48a65b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#ga6e0f4e9bc66712005223a7552b48a65b">scanBackwardTransition</a> (const char *path)</td></tr>
+<tr class="memdesc:ga6e0f4e9bc66712005223a7552b48a65b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scan backward transition matrix to file in coordinate format.  <a href="group__transfer.html#ga6e0f4e9bc66712005223a7552b48a65b">More...</a><br /></td></tr>
+<tr class="separator:ga6e0f4e9bc66712005223a7552b48a65b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga965312898f9dd896016587bcfe2af524"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#ga965312898f9dd896016587bcfe2af524">scanInitDist</a> (const char *path)</td></tr>
+<tr class="memdesc:ga965312898f9dd896016587bcfe2af524"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scan initial distribution to file.  <a href="group__transfer.html#ga965312898f9dd896016587bcfe2af524">More...</a><br /></td></tr>
+<tr class="separator:ga965312898f9dd896016587bcfe2af524"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae52210446e911d51472f9484366ab969"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#gae52210446e911d51472f9484366ab969">scanFinalDist</a> (const char *path)</td></tr>
+<tr class="memdesc:gae52210446e911d51472f9484366ab969"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scan final distribution to file.  <a href="group__transfer.html#gae52210446e911d51472f9484366ab969">More...</a><br /></td></tr>
+<tr class="separator:gae52210446e911d51472f9484366ab969"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99579a7612dae74dfd160bf9ac640fc9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99579a7612dae74dfd160bf9ac640fc9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#a99579a7612dae74dfd160bf9ac640fc9">setInitDist</a> (const gsl_vector *initDist_)</td></tr>
+<tr class="memdesc:a99579a7612dae74dfd160bf9ac640fc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manually change the initial distribution. <br /></td></tr>
+<tr class="separator:a99579a7612dae74dfd160bf9ac640fc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1abee85be9b71c7cab5cd405c91e4ec2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1abee85be9b71c7cab5cd405c91e4ec2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#a1abee85be9b71c7cab5cd405c91e4ec2">setFinalDist</a> (const gsl_vector *finalDist_)</td></tr>
+<tr class="memdesc:a1abee85be9b71c7cab5cd405c91e4ec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manually change the finalial distribution. <br /></td></tr>
+<tr class="separator:a1abee85be9b71c7cab5cd405c91e4ec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga397957b2d6c8c869e48a3ee0d4701488"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#ga397957b2d6c8c869e48a3ee0d4701488">filter</a> (double tol)</td></tr>
+<tr class="memdesc:ga397957b2d6c8c869e48a3ee0d4701488"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filtering of weak Markov states.  <a href="group__transfer.html#ga397957b2d6c8c869e48a3ee0d4701488">More...</a><br /></td></tr>
+<tr class="separator:ga397957b2d6c8c869e48a3ee0d4701488"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -187,510 +173,29 @@ gsl_spmatrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 gsl_spmatrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#abd3165954b7eac0105c77698ca222f8f">Q</a></td></tr>
 <tr class="memdesc:abd3165954b7eac0105c77698ca222f8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backward transition matrix (CRS) <br /></td></tr>
 <tr class="separator:abd3165954b7eac0105c77698ca222f8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a799afe0ca307f678874a98082dae02ae"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a799afe0ca307f678874a98082dae02ae"></a>
-gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#a799afe0ca307f678874a98082dae02ae">rho0</a></td></tr>
-<tr class="memdesc:a799afe0ca307f678874a98082dae02ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial distribution. <br /></td></tr>
-<tr class="separator:a799afe0ca307f678874a98082dae02ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae56b642c3d56e1f74e6cbf60eb6a7088"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae56b642c3d56e1f74e6cbf60eb6a7088"></a>
-gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#ae56b642c3d56e1f74e6cbf60eb6a7088">rhof</a></td></tr>
-<tr class="memdesc:ae56b642c3d56e1f74e6cbf60eb6a7088"><td class="mdescLeft">&#160;</td><td class="mdescRight">Final distribution. <br /></td></tr>
-<tr class="separator:ae56b642c3d56e1f74e6cbf60eb6a7088"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86eb7b598f3d7402077a0b51cfb017be"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a86eb7b598f3d7402077a0b51cfb017be"></a>
+gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#a86eb7b598f3d7402077a0b51cfb017be">initDist</a></td></tr>
+<tr class="memdesc:a86eb7b598f3d7402077a0b51cfb017be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial distribution. <br /></td></tr>
+<tr class="separator:a86eb7b598f3d7402077a0b51cfb017be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f00f7090bf211ced99e16605df435c7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9f00f7090bf211ced99e16605df435c7"></a>
+gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtransfer_operator.html#a9f00f7090bf211ced99e16605df435c7">finalDist</a></td></tr>
+<tr class="memdesc:a9f00f7090bf211ced99e16605df435c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Final distribution. <br /></td></tr>
+<tr class="separator:a9f00f7090bf211ced99e16605df435c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Transfer operator class including the forward and backward transition matrices and the initial and final distributions calculated from data. The constructors are based on membership matrices with the first column giving the box to which belong the initial state of trajectories and the second column the box to which belong the final state of trajectories. The initial and final states can also be directly given as to matrices with each row giving a state. Finally, <a class="el" href="classtransfer_operator.html" title="Transfer operator class. ">transferOperator</a> can also be constructed from a single long trajectory and a given lag. Then, a membership vector is first calculated, assigning each realization to a box, from which the membership matrix can be calculated for the lag given.</p>
 <p>The transition matrices are in CRS format, allowing for instant transpose to CCS for eigen problem using ARPACK++. </p>
 
-<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00058">58</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aa23cf30fc8426e182ca2a8ba8a39f6f1"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">transferOperator::transferOperator </td>
-          <td>(</td>
-          <td class="paramtype">const gsl_matrix_uint *&#160;</td>
-          <td class="paramname"><em>gridMem</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>N_</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const bool&#160;</td>
-          <td class="paramname"><em>stationary_</em> = <code>false</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Construct <a class="el" href="classtransfer_operator.html" title="Transfer operator class. ">transferOperator</a> by calculating the forward and backward transition matrices and distributions from the grid membership matrix. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">gridMem</td><td>GSL grid membership matrix. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">N_</td><td>Number of grid boxes. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">stationary_</td><td>Whether the system is stationary (in which case <img class="formulaInl" alt="$\rho_0 = \rho_f$" src="form_19.png"/> and no need to calculate the backward transition matrix). </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00164">164</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a4fe924ea1b1fcd75308a0778f86cfbc4"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">transferOperator::transferOperator </td>
-          <td>(</td>
-          <td class="paramtype">const gsl_matrix *&#160;</td>
-          <td class="paramname"><em>initStates</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const gsl_matrix *&#160;</td>
-          <td class="paramname"><em>finalStates</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="class_grid.html">Grid</a> *&#160;</td>
-          <td class="paramname"><em>grid</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const bool&#160;</td>
-          <td class="paramname"><em>stationary_</em> = <code>false</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Construct <a class="el" href="classtransfer_operator.html" title="Transfer operator class. ">transferOperator</a> by calculating the forward and backward transition matrices and distributions from the initial and final states of trajectories. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">initStates</td><td>GSL matrix of initial states. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">finalStates</td><td>GSL matrix of final states. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">grid</td><td>Pointer to <a class="el" href="class_grid.html" title="Grid class. ">Grid</a> object. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">stationary_</td><td>Whether the system is stationary (in which case <img class="formulaInl" alt="$\rho_0 = \rho_f$" src="form_19.png"/> and no need to calculate the backward transition matrix). </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00183">183</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-
-<p>References <a class="el" href="ergo_grid_8hpp.html#a728d69c22967e670ba0abdfec49cbc8e">getGridMemMatrix()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a1ff27bf98cdc9e6897d3a4c886e24dd8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">transferOperator::transferOperator </td>
-          <td>(</td>
-          <td class="paramtype">const gsl_matrix *&#160;</td>
-          <td class="paramname"><em>states</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="class_grid.html">Grid</a> *&#160;</td>
-          <td class="paramname"><em>grid</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>tauStep</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Construct <a class="el" href="classtransfer_operator.html" title="Transfer operator class. ">transferOperator</a> calculating the forward and backward transition matrices and distributions from a single long trajectory, for a given grid and lag. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">states</td><td>GSL matrix of states for each time step. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">grid</td><td>Pointer to <a class="el" href="class_grid.html" title="Grid class. ">Grid</a> object. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">tauStep</td><td>Lag used to calculate the transitions. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00207">207</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-
-<p>References <a class="el" href="ergo_grid_8hpp.html#a728d69c22967e670ba0abdfec49cbc8e">getGridMemMatrix()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab439c74c7b875253c4dd86c95b88aeda"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">transferOperator::~transferOperator </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Destructor of <a class="el" href="classtransfer_operator.html" title="Transfer operator class. ">transferOperator</a>: desallocate all pointers. </p>
-
-<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00224">224</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-
-<p>References <a class="el" href="transfer_operator_8hpp.html#ab6396239b16cd3266654ccabce30a30c">getTransitionCountTriplet()</a>, <a class="el" href="gsl__extension_8h.html#a6d71910f1fb03add1ee3804625ada99c">gsl_vector_normalize()</a>, <a class="el" href="classtransfer_operator.html#a7ca4ff8ffecfd6cc0e468bfc86c58959">P</a>, <a class="el" href="classtransfer_operator.html#abd3165954b7eac0105c77698ca222f8f">Q</a>, <a class="el" href="classtransfer_operator.html#a799afe0ca307f678874a98082dae02ae">rho0</a>, and <a class="el" href="classtransfer_operator.html#ae56b642c3d56e1f74e6cbf60eb6a7088">rhof</a>.</p>
-
-<p>Referenced by <a class="el" href="classtransfer_operator.html#a756036c76da87ff3d267a7a03bb501be">transferOperator()</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a397957b2d6c8c869e48a3ee0d4701488"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int transferOperator::filter </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>tol</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Filter weak Markov states (boxes) of forward and backward transition matrices based on their distributions. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">tol</td><td>Weight under which a state is filtered out. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
-<p>Filter forward transition matrix</p>
-<p>Filter forward transition matrix </p>
-
-<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00340">340</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-
-<p>References <a class="el" href="transfer_operator_8hpp.html#ae52b88b4e00ae0e45818fc4dd3b50255">filterStochasticMatrix()</a>, <a class="el" href="classtransfer_operator.html#a7ca4ff8ffecfd6cc0e468bfc86c58959">P</a>, <a class="el" href="classtransfer_operator.html#abd3165954b7eac0105c77698ca222f8f">Q</a>, <a class="el" href="classtransfer_operator.html#a799afe0ca307f678874a98082dae02ae">rho0</a>, and <a class="el" href="classtransfer_operator.html#ae56b642c3d56e1f74e6cbf60eb6a7088">rhof</a>.</p>
-
-<p>Referenced by <a class="el" href="classtransfer_operator.html#aa536e1cc89e7dd28a07f560d591597d0">isStationary()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aeaeed81e7809e9fe646286355d327838"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int transferOperator::printBackwardTransition </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>path</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>dataFormat</em> = <code>&quot;%lf&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Print backward transition matrix to file in coordinate format with header (see <a class="el" href="transfer_operator_8hpp.html" title="Calculate discretized approximation of transfer/Koopman operators from time series. ">transferOperator.hpp</a>) </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>Path to the file in which to print. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">dataFormat</td><td>Format in which to print each element. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Status. </dd></dl>
-
-<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00401">401</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-
-<p>References <a class="el" href="classtransfer_operator.html#abd3165954b7eac0105c77698ca222f8f">Q</a>.</p>
-
-<p>Referenced by <a class="el" href="classtransfer_operator.html#aa536e1cc89e7dd28a07f560d591597d0">isStationary()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a84af92252d7b32167ad76b41a4a504f3"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int transferOperator::printFinalDist </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>path</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>dataFormat</em> = <code>&quot;%lf&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Print final distribution to file. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>Path to the file in which to print. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">dataFormat</td><td>Format in which to print each element. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Status. </dd></dl>
-
-<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00468">468</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-
-<p>References <a class="el" href="classtransfer_operator.html#ae56b642c3d56e1f74e6cbf60eb6a7088">rhof</a>.</p>
-
-<p>Referenced by <a class="el" href="classtransfer_operator.html#aa536e1cc89e7dd28a07f560d591597d0">isStationary()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a173617beb7c5bcb62ffe9943b14276f2"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int transferOperator::printForwardTransition </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>path</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>dataFormat</em> = <code>&quot;%lf&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Print forward transition matrix to file in coordinate format with header (see <a class="el" href="transfer_operator_8hpp.html" title="Calculate discretized approximation of transfer/Koopman operators from time series. ">transferOperator.hpp</a>) </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>Path to the file in which to print. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">dataFormat</td><td>Format in which to print each element. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Status. </dd></dl>
-
-<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00368">368</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-
-<p>References <a class="el" href="classtransfer_operator.html#a7ca4ff8ffecfd6cc0e468bfc86c58959">P</a>.</p>
-
-<p>Referenced by <a class="el" href="classtransfer_operator.html#aa536e1cc89e7dd28a07f560d591597d0">isStationary()</a>, and <a class="el" href="transfer_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="af3779539a641ec390db5964e832927f0"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int transferOperator::printInitDist </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>path</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>dataFormat</em> = <code>&quot;%lf&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Print initial distribution to file. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>Path to the file in which to print. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">dataFormat</td><td>Format in which to print each element. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Status. </dd></dl>
-
-<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00441">441</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-
-<p>References <a class="el" href="classtransfer_operator.html#a799afe0ca307f678874a98082dae02ae">rho0</a>.</p>
-
-<p>Referenced by <a class="el" href="classtransfer_operator.html#aa536e1cc89e7dd28a07f560d591597d0">isStationary()</a>, and <a class="el" href="transfer_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a6e0f4e9bc66712005223a7552b48a65b"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int transferOperator::scanBackwardTransition </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Scan backward transition matrix from file in coordinate format with header. (see <a class="el" href="transfer_operator_8hpp.html" title="Calculate discretized approximation of transfer/Koopman operators from time series. ">transferOperator.hpp</a>). No preliminary memory allocation needed but the grid size should be set. Previously allocated memory should first be freed to avoid memory leak. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>Path to the file in which to scan. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>0 in success, EXIT_FAILURE otherwise. </dd></dl>
-<p>Scan, summing if duplicate</p>
-<p>Check if matrix dimension consistent with grid size</p>
-<p>Compress </p>
-
-<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00555">555</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-
-<p>References <a class="el" href="classtransfer_operator.html#abd3165954b7eac0105c77698ca222f8f">Q</a>.</p>
-
-<p>Referenced by <a class="el" href="classtransfer_operator.html#aa536e1cc89e7dd28a07f560d591597d0">isStationary()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae52210446e911d51472f9484366ab969"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int transferOperator::scanFinalDist </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Scan final distribution from file. No preliminary memory allocation needed but the grid size should be set. Previously allocated memory should first be freed to avoid memory leak. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>Path to the file in which to scan. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>0 in success, EXIT_FAILURE otherwise. </dd></dl>
-<p>Scan after preallocating </p>
-
-<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00641">641</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-
-<p>References <a class="el" href="classtransfer_operator.html#ae56b642c3d56e1f74e6cbf60eb6a7088">rhof</a>.</p>
-
-<p>Referenced by <a class="el" href="classtransfer_operator.html#aa536e1cc89e7dd28a07f560d591597d0">isStationary()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a0b8172a8cb2fd91510213c3ba77d8cf3"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int transferOperator::scanForwardTransition </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Scan forward transition matrix from file in coordinate format with header. (see <a class="el" href="transfer_operator_8hpp.html" title="Calculate discretized approximation of transfer/Koopman operators from time series. ">transferOperator.hpp</a>). No preliminary memory allocation needed but the grid size should be set. Previously allocated memory should first be freed to avoid memory leak. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>Path to the file in which to scan. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>0 in success, EXIT_FAILURE otherwise. </dd></dl>
-<p>Scan, summing if duplicate</p>
-<p>Check if matrix dimension consistent with grid size</p>
-<p>Compress </p>
-
-<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00506">506</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-
-<p>References <a class="el" href="classtransfer_operator.html#a7ca4ff8ffecfd6cc0e468bfc86c58959">P</a>.</p>
-
-<p>Referenced by <a class="el" href="classtransfer_operator.html#aa536e1cc89e7dd28a07f560d591597d0">isStationary()</a>, and <a class="el" href="spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a965312898f9dd896016587bcfe2af524"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int transferOperator::scanInitDist </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Scan initial distribution from file. No preliminary memory allocation needed but the grid size should be set. Previously allocated memory should first be freed to avoid memory leak. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>Path to the file in which to scan. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>0 in success, EXIT_FAILURE otherwise. </dd></dl>
-<p>Scan after preallocating </p>
-
-<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00613">613</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
-
-<p>References <a class="el" href="classtransfer_operator.html#a799afe0ca307f678874a98082dae02ae">rho0</a>.</p>
-
-<p>Referenced by <a class="el" href="classtransfer_operator.html#aa536e1cc89e7dd28a07f560d591597d0">isStationary()</a>, and <a class="el" href="spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<p>Definition at line <a class="el" href="transfer_operator_8hpp_source.html#l00064">64</a> of file <a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>.</p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/<a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a></li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.12-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="classtransfer_operator.html">transferOperator</a></li>
-    <li class="footer">Generated on Mon Feb 8 2016 12:14:12 for ergoPack by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.12
+</small></address>
 </body>
 </html>

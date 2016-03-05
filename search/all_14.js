@@ -1,27 +1,9 @@
 var searchData=
 [
-  ['_7eadditivewiener',['~additiveWiener',['../classadditive_wiener.html#ad7acc18bdbb1f35cc98a1d4df66b3a51',1,'additiveWiener']]],
-  ['_7ecurvilineargrid',['~CurvilinearGrid',['../class_curvilinear_grid.html#ab3e32ac4de956bebafc30247477732f1',1,'CurvilinearGrid']]],
-  ['_7ecuspfield',['~cuspField',['../classcusp_field.html#a953bb14b57b617c576189afdd9f0fbea',1,'cuspField']]],
-  ['_7eeuler',['~Euler',['../class_euler.html#afb4b1de4e7735cef3237340a589da6fe',1,'Euler']]],
-  ['_7eeulermaruyama',['~EulerMaruyama',['../class_euler_maruyama.html#a5479f7255531d10bcded3efb7e572d2c',1,'EulerMaruyama']]],
-  ['_7eeulermaruyamasdde',['~EulerMaruyamaSDDE',['../class_euler_maruyama_s_d_d_e.html#ad040be4e244618caf588f5ac04e5e7af',1,'EulerMaruyamaSDDE']]],
-  ['_7egrid',['~Grid',['../class_grid.html#a241c623291936ddbf4f670a796523a91',1,'Grid']]],
-  ['_7elinearfield',['~linearField',['../classlinear_field.html#aabcc9ee4d69e25d1d82460fdc21e6b8e',1,'linearField']]],
-  ['_7elorenz63',['~Lorenz63',['../class_lorenz63.html#a598959cfc79572c3cb6e914bda4f09c9',1,'Lorenz63']]],
-  ['_7emodel',['~model',['../classmodel.html#a23a7dbff52aedc7c5fbd1c81d419688f',1,'model']]],
-  ['_7emodelsdde',['~modelSDDE',['../classmodel_s_d_d_e.html#ad4c4b5d93ed0b5b6708253651239ea47',1,'modelSDDE']]],
-  ['_7emodelstochastic',['~modelStochastic',['../classmodel_stochastic.html#a3dcd73e0eb97142b655c436398e40d21',1,'modelStochastic']]],
-  ['_7emultiplicativelinearwiener',['~multiplicativeLinearWiener',['../classmultiplicative_linear_wiener.html#ac8e656216656a0d4a0de9470ef8d259f',1,'multiplicativeLinearWiener']]],
-  ['_7enumericalscheme',['~numericalScheme',['../classnumerical_scheme.html#a9971b661ae09e7711898863aba079f5c',1,'numericalScheme']]],
-  ['_7enumericalschemesdde',['~numericalSchemeSDDE',['../classnumerical_scheme_s_d_d_e.html#aabb60044ee711950b6b87fb35bb2a161',1,'numericalSchemeSDDE']]],
-  ['_7enumericalschemestochastic',['~numericalSchemeStochastic',['../classnumerical_scheme_stochastic.html#a62a9fe91c0dc56ba99e2fc7b1de60ab2',1,'numericalSchemeStochastic']]],
-  ['_7epolargrid',['~PolarGrid',['../class_polar_grid.html#ab6f38c41aef2df4a5f7c4c07fbaa8093',1,'PolarGrid']]],
-  ['_7epolynomial1d',['~polynomial1D',['../classpolynomial1_d.html#ab03a0f5208896980b03e7ccef614370b',1,'polynomial1D']]],
-  ['_7eregulargrid',['~RegularGrid',['../class_regular_grid.html#a982cc3f6fc2a086d27f224b53117775b',1,'RegularGrid']]],
-  ['_7etransferoperator',['~transferOperator',['../classtransfer_operator.html#ab439c74c7b875253c4dd86c95b88aeda',1,'transferOperator']]],
-  ['_7etransferspectrum',['~transferSpectrum',['../classtransfer_spectrum.html#a883a1f9c8045f4e7f20fec6a6954b06f',1,'transferSpectrum']]],
-  ['_7evectorfield',['~vectorField',['../classvector_field.html#a792eda0e2d57b1b07ade8876f918c1ac',1,'vectorField']]],
-  ['_7evectorfielddelay',['~vectorFieldDelay',['../classvector_field_delay.html#a9ca3519c56e0da1672ccf50f96dc9245',1,'vectorFieldDelay']]],
-  ['_7evectorfieldstochastic',['~vectorFieldStochastic',['../classvector_field_stochastic.html#aea045e673f4f258dd8dae2131cfe54f8',1,'vectorFieldStochastic']]]
+  ['which',['which',['../structconfig_a_r.html#abe4df1c367084ec3b4365fd56e83ab00',1,'configAR']]],
+  ['work',['work',['../classnumerical_scheme.html#aa270d702e264a2114ca58bd86414df7a',1,'numericalScheme::work()'],['../classvector_field_delay.html#ab22473dc564e899cee5274dbc2c392fe',1,'vectorFieldDelay::work()'],['../classnumerical_scheme_s_d_d_e.html#a9bf5a05d28e216bff0409059b9d52b12',1,'numericalSchemeSDDE::work()'],['../classnumerical_scheme_stochastic.html#a7af0d29969519479ef0822305870de51',1,'numericalSchemeStochastic::work()']]],
+  ['writespectrum',['writeSpectrum',['../group__transfer.html#ga38a5135c326ba505d7c83a7c46813e53',1,'transferSpectrum']]],
+  ['writespectrumar',['writeSpectrumAR',['../group__transfer.html#ga3708500b43775789ac011b9cd0998b49',1,'transferSpectrum.hpp']]],
+  ['writespectrumbackward',['writeSpectrumBackward',['../group__transfer.html#ga6e365f3fb8d4b2ee55be7586dbd4b9a5',1,'transferSpectrum']]],
+  ['writespectrumforward',['writeSpectrumForward',['../group__transfer.html#ga41bca8920670389a3caa3ae5f1724643',1,'transferSpectrum']]]
 ];

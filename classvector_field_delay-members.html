@@ -1,4 +1,3 @@
-<!-- HTML header for doxygen 1.8.12-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,14 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -51,6 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="install.html"><span>Installation</span></a></li>
       <li><a href="tutorial.html"><span>Tutorial</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -79,21 +71,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('classvector_field_delay.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -108,6 +85,7 @@ $(document).ready(function(){initNavTree('classvector_field_delay.html','');});
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">vectorFieldDelay Member List</div>  </div>
@@ -119,26 +97,22 @@ $(document).ready(function(){initNavTree('classvector_field_delay.html','');});
   <tr class="even"><td class="entry"><a class="el" href="classvector_field_delay.html#aacd68dd7a26b845d8f3aef0e0f5f980d">delayMax</a></td><td class="entry"><a class="el" href="classvector_field_delay.html">vectorFieldDelay</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr><td class="entry"><a class="el" href="classvector_field_delay.html#a0e03c80aa74afa2f8629aff7f2cef753">delays</a></td><td class="entry"><a class="el" href="classvector_field_delay.html">vectorFieldDelay</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classvector_field_delay.html#a7d97f6f3475c401f35c9f976434d2e7c">dim</a></td><td class="entry"><a class="el" href="classvector_field_delay.html">vectorFieldDelay</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classvector_field_delay.html#a952b6f0f0fc8acfc0aec74c31b9481fe">evalField</a>(gsl_matrix *state, gsl_vector *field)</td><td class="entry"><a class="el" href="classvector_field_delay.html">vectorFieldDelay</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="group__simulation.html#ga952b6f0f0fc8acfc0aec74c31b9481fe">evalField</a>(gsl_matrix *state, gsl_vector *field)</td><td class="entry"><a class="el" href="classvector_field_delay.html">vectorFieldDelay</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classvector_field_delay.html#aaf106c4daa2eb9f08f9470002ef4a525">fields</a></td><td class="entry"><a class="el" href="classvector_field_delay.html">vectorFieldDelay</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr><td class="entry"><a class="el" href="classvector_field_delay.html#ae4ecb8fdec7896efbc90143349827d58">getDelayMax</a>()</td><td class="entry"><a class="el" href="classvector_field_delay.html">vectorFieldDelay</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classvector_field_delay.html#a4b74d6c5d1aab41b365dc469114696d8">getDelays</a>(gsl_vector_uint *delays_)</td><td class="entry"><a class="el" href="classvector_field_delay.html">vectorFieldDelay</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="classvector_field_delay.html#aeaee72ada37e515fe7f04579b9c98a7f">getDim</a>()</td><td class="entry"><a class="el" href="classvector_field_delay.html">vectorFieldDelay</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classvector_field_delay.html#a49e5d0bbf319eff714edf5d145566653">getNDelays</a>()</td><td class="entry"><a class="el" href="classvector_field_delay.html">vectorFieldDelay</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="classvector_field_delay.html#af1050cb66b3ac3963d39c21e225258ba">nDelays</a></td><td class="entry"><a class="el" href="classvector_field_delay.html">vectorFieldDelay</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classvector_field_delay.html#ac2f4347c84ffdd3258225a3c186aace7">vectorFieldDelay</a>(std::vector&lt; vectorField * &gt; *fields_, const gsl_vector_uint *delays_)</td><td class="entry"><a class="el" href="classvector_field_delay.html">vectorFieldDelay</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="group__simulation.html#gac2f4347c84ffdd3258225a3c186aace7">vectorFieldDelay</a>(std::vector&lt; vectorField * &gt; *fields_, const gsl_vector_uint *delays_)</td><td class="entry"><a class="el" href="classvector_field_delay.html">vectorFieldDelay</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classvector_field_delay.html#ab22473dc564e899cee5274dbc2c392fe">work</a></td><td class="entry"><a class="el" href="classvector_field_delay.html">vectorFieldDelay</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classvector_field_delay.html#a9ca3519c56e0da1672ccf50f96dc9245">~vectorFieldDelay</a>()</td><td class="entry"><a class="el" href="classvector_field_delay.html">vectorFieldDelay</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="group__simulation.html#ga9ca3519c56e0da1672ccf50f96dc9245">~vectorFieldDelay</a>()</td><td class="entry"><a class="el" href="classvector_field_delay.html">vectorFieldDelay</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
-</div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.12-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated on Mon Feb 8 2016 12:14:12 for ergoPack by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.12
+</small></address>
 </body>
 </html>

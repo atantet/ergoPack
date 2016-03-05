@@ -1,4 +1,3 @@
-<!-- HTML header for doxygen 1.8.12-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,14 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -51,6 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="install.html"><span>Installation</span></a></li>
       <li><a href="tutorial.html"><span>Tutorial</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -77,21 +69,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('spectrum_8cpp.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -106,12 +83,17 @@ $(document).ready(function(){initNavTree('spectrum_8cpp.html','');});
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_c19d007986ffc274eb62f612ee197778.html">spectrum</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">spectrum.cpp File Reference</div>  </div>
+<div class="title">spectrum.cpp File Reference<div class="ingroups"><a class="el" href="group__examples.html">Examples</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -119,25 +101,20 @@ $(document).ready(function(){initNavTree('spectrum_8cpp.html','');});
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;cstdio&gt;</code><br />
+<code>#include &lt;cstring&gt;</code><br />
 <code>#include &lt;stdexcept&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
-<code>#include &lt;cstring&gt;</code><br />
-<code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;gsl/gsl_vector.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_matrix.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_math.h&gt;</code><br />
-<code>#include &lt;gsl/gsl_sf_log.h&gt;</code><br />
-<code>#include &lt;libconfig.h++&gt;</code><br />
-<code>#include &lt;ergoPack/transferOperator.hpp&gt;</code><br />
-<code>#include &lt;ergoPack/transferSpectrum.hpp&gt;</code><br />
+<code>#include &lt;<a class="el" href="transfer_operator_8hpp_source.html">transferOperator.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>&gt;</code><br />
+<code>#include &quot;../cfg/readConfig.hpp&quot;</code><br />
 </div>
 <p><a href="spectrum_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa010785ea3444039793b472da019f4d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#aa010785ea3444039793b472da019f4d6">readConfig</a> (const char *cfgFileName)</td></tr>
-<tr class="memdesc:aa010785ea3444039793b472da019f4d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sparse configuration file using libconfig++.  <a href="#aa010785ea3444039793b472da019f4d6">More...</a><br /></td></tr>
-<tr class="separator:aa010785ea3444039793b472da019f4d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ddf1224851353fc92bfbff6f499fa97"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main</a> (int argc, char *argv[])</td></tr>
 <tr class="memdesc:a0ddf1224851353fc92bfbff6f499fa97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the spectrum of a transfer operator.  <a href="#a0ddf1224851353fc92bfbff6f499fa97">More...</a><br /></td></tr>
 <tr class="separator:a0ddf1224851353fc92bfbff6f499fa97"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,10 +129,18 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spec
 char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#abcb17cfffce5ecde9b06e71e77d227a3">caseName</a> [256]</td></tr>
 <tr class="memdesc:abcb17cfffce5ecde9b06e71e77d227a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the case to simulate. <br /></td></tr>
 <tr class="separator:abcb17cfffce5ecde9b06e71e77d227a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc4307d5b95f6df9e57717b1a1efb89b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc4307d5b95f6df9e57717b1a1efb89b"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#acc4307d5b95f6df9e57717b1a1efb89b">file_format</a> [256]</td></tr>
+<tr class="memdesc:acc4307d5b95f6df9e57717b1a1efb89b"><td class="mdescLeft">&#160;</td><td class="mdescRight">File format of output ("txt" or "bin") <br /></td></tr>
+<tr class="separator:acc4307d5b95f6df9e57717b1a1efb89b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af76fd8dcdbd416c42428d108acbf2343"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af76fd8dcdbd416c42428d108acbf2343"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#af76fd8dcdbd416c42428d108acbf2343">delayName</a> [256]</td></tr>
 <tr class="memdesc:af76fd8dcdbd416c42428d108acbf2343"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name associated with the number and values of the delays. <br /></td></tr>
 <tr class="separator:af76fd8dcdbd416c42428d108acbf2343"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70b5e28b5bc3d1b63a7435c5fe50b837"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70b5e28b5bc3d1b63a7435c5fe50b837"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></td></tr>
+<tr class="memdesc:a70b5e28b5bc3d1b63a7435c5fe50b837"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dimension of the phase space. <br /></td></tr>
+<tr class="separator:a70b5e28b5bc3d1b63a7435c5fe50b837"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89543d44945ce4a57fc160f958c59d8d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a89543d44945ce4a57fc160f958c59d8d"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#a89543d44945ce4a57fc160f958c59d8d">LCut</a></td></tr>
 <tr class="memdesc:a89543d44945ce4a57fc160f958c59d8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Length of the time series without spinup. <br /></td></tr>
@@ -184,14 +169,30 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sp
 char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#a7bbe0f3d8db56710bd15dd46f72e784b">srcPostfix</a> [256]</td></tr>
 <tr class="memdesc:a7bbe0f3d8db56710bd15dd46f72e784b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postfix of simulation file. <br /></td></tr>
 <tr class="separator:a7bbe0f3d8db56710bd15dd46f72e784b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d0857d5619c5b660d9c7508354d32f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d0857d5619c5b660d9c7508354d32f1"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#a4d0857d5619c5b660d9c7508354d32f1">srcFileName</a> [256]</td></tr>
+<tr class="memdesc:a4d0857d5619c5b660d9c7508354d32f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the source simulation file. <br /></td></tr>
+<tr class="separator:a4d0857d5619c5b660d9c7508354d32f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e5eb2aee191c8a249a6c2765e0191d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e5eb2aee191c8a249a6c2765e0191d8"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#a1e5eb2aee191c8a249a6c2765e0191d8">dstFileName</a> [256]</td></tr>
 <tr class="memdesc:a1e5eb2aee191c8a249a6c2765e0191d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destination file name. <br /></td></tr>
 <tr class="separator:a1e5eb2aee191c8a249a6c2765e0191d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae37fba20525dfb2f284941d993a4168a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae37fba20525dfb2f284941d993a4168a"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#ae37fba20525dfb2f284941d993a4168a">nt0</a></td></tr>
+<tr class="memdesc:ae37fba20525dfb2f284941d993a4168a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of time steps of the source time series. <br /></td></tr>
+<tr class="separator:ae37fba20525dfb2f284941d993a4168a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52d59418c1fd6f77402b8db150d7767a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52d59418c1fd6f77402b8db150d7767a"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#a52d59418c1fd6f77402b8db150d7767a">nt</a></td></tr>
+<tr class="memdesc:a52d59418c1fd6f77402b8db150d7767a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of time steps of the observable. <br /></td></tr>
+<tr class="separator:a52d59418c1fd6f77402b8db150d7767a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cf9453e5e4a8f00fdb1bddd5b307ba0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1cf9453e5e4a8f00fdb1bddd5b307ba0"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#a1cf9453e5e4a8f00fdb1bddd5b307ba0">dimObs</a></td></tr>
 <tr class="memdesc:a1cf9453e5e4a8f00fdb1bddd5b307ba0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dimension of the observable. <br /></td></tr>
 <tr class="separator:a1cf9453e5e4a8f00fdb1bddd5b307ba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57a652dd57700e48f86e531afbcb3020"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a57a652dd57700e48f86e531afbcb3020"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#a57a652dd57700e48f86e531afbcb3020">embedMax</a></td></tr>
+<tr class="memdesc:a57a652dd57700e48f86e531afbcb3020"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum lag for the embedding. <br /></td></tr>
+<tr class="separator:a57a652dd57700e48f86e531afbcb3020"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecad9ca0f37bee172f18c2d6ec53cb9c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aecad9ca0f37bee172f18c2d6ec53cb9c"></a>
 gsl_vector_uint *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#aecad9ca0f37bee172f18c2d6ec53cb9c">components</a></td></tr>
 <tr class="memdesc:aecad9ca0f37bee172f18c2d6ec53cb9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Components in the time series used by the observable. <br /></td></tr>
@@ -200,6 +201,10 @@ gsl_vector_uint *&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 gsl_vector_uint *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#a9ead67f01769704e369385aa9c86bf89">embedding</a></td></tr>
 <tr class="memdesc:a9ead67f01769704e369385aa9c86bf89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Embedding lags for each component. <br /></td></tr>
 <tr class="separator:a9ead67f01769704e369385aa9c86bf89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae485c8dfa36ef87f9d52dee969ad007d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae485c8dfa36ef87f9d52dee969ad007d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#ae485c8dfa36ef87f9d52dee969ad007d">readGridMem</a></td></tr>
+<tr class="memdesc:ae485c8dfa36ef87f9d52dee969ad007d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to read the grid membership vector. <br /></td></tr>
+<tr class="separator:ae485c8dfa36ef87f9d52dee969ad007d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6d2142329b3b553ce8a778f8239db33"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa6d2142329b3b553ce8a778f8239db33"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#aa6d2142329b3b553ce8a778f8239db33">N</a></td></tr>
 <tr class="memdesc:aa6d2142329b3b553ce8a778f8239db33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dimension of the grid. <br /></td></tr>
@@ -236,6 +241,10 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spec
 char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#aa55bc3bac1b0344a916116a1d56ae17c">gridPostfix</a> [256]</td></tr>
 <tr class="memdesc:aa55bc3bac1b0344a916116a1d56ae17c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postfix associated with the grid. <br /></td></tr>
 <tr class="separator:aa55bc3bac1b0344a916116a1d56ae17c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1032fb0a33f27ee6158712b4f650ecbd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1032fb0a33f27ee6158712b4f650ecbd"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#a1032fb0a33f27ee6158712b4f650ecbd">gridFileName</a> [256]</td></tr>
+<tr class="memdesc:a1032fb0a33f27ee6158712b4f650ecbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">File name for the grid file. <br /></td></tr>
+<tr class="separator:a1032fb0a33f27ee6158712b4f650ecbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3be8d930694ec109c799534056975d56"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3be8d930694ec109c799534056975d56"></a>
 <a class="el" href="structconfig_a_r.html">configAR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spectrum_8cpp.html#a3be8d930694ec109c799534056975d56">config</a></td></tr>
 <tr class="memdesc:a3be8d930694ec109c799534056975d56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration data for the eigen problem. <br /></td></tr>
@@ -293,47 +302,16 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spec
 
 <p>Definition at line <a class="el" href="spectrum_8cpp_source.html#l00069">69</a> of file <a class="el" href="spectrum_8cpp_source.html">spectrum.cpp</a>.</p>
 
-<p>References <a class="el" href="spectrum_8cpp.html#aecad9ca0f37bee172f18c2d6ec53cb9c">components</a>, <a class="el" href="spectrum_8cpp.html#ab8f7d4e57ff12610ba2500706df80754">configFileName</a>, <a class="el" href="classtransfer_spectrum.html#a9103f0b106a39f9e595827f8dfe10a42">transferSpectrum::EigProbBackward</a>, <a class="el" href="classtransfer_spectrum.html#a54fe22c2604a99f4523c87cebfec5b30">transferSpectrum::EigProbForward</a>, <a class="el" href="spectrum_8cpp.html#a9ead67f01769704e369385aa9c86bf89">embedding</a>, <a class="el" href="spectrum_8cpp.html#a0b3feb5125bce352938bcaf68e3e9fc7">getBackwardEigenvectors</a>, <a class="el" href="spectrum_8cpp.html#ac93dc7ea660861d54764a0922aa4fb42">getForwardEigenvectors</a>, <a class="el" href="classtransfer_spectrum.html#aab9e26ff58d2a5e839dfeb0072473310">transferSpectrum::getSpectrumBackward()</a>, <a class="el" href="classtransfer_spectrum.html#a132e795e62e4cfe8768f72856c1c683e">transferSpectrum::getSpectrumForward()</a>, <a class="el" href="spectrum_8cpp.html#aa55bc3bac1b0344a916116a1d56ae17c">gridPostfix</a>, <a class="el" href="spectrum_8cpp.html#a8f85a6a4912163cf2dc0d8ec4e57b3cb">makeBiorthonormal</a>, <a class="el" href="classtransfer_spectrum.html#a2f842bdef9c421af44aa2202111a728c">transferSpectrum::makeBiorthonormal()</a>, <a class="el" href="spectrum_8cpp.html#aa6d2142329b3b553ce8a778f8239db33">N</a>, <a class="el" href="spectrum_8cpp.html#a015e64d999600a1ac5f5bdb700cd17b6">nev</a>, <a class="el" href="spectrum_8cpp.html#afc207ecfbf04e30774e0dd94922e279f">nLags</a>, <a class="el" href="spectrum_8cpp.html#ae5db0b6d0459d65e845f911b2cf63388">nSTDHigh</a>, <a class="el" href="spectrum_8cpp.html#a4b439d11830cf16b990bb49aff958b43">nSTDLow</a>, <a class="el" href="spectrum_8cpp.html#ac49b4571282666b93dfa78c0cdd5862d">nx</a>, <a class="el" href="sim_o_u_8cpp.html#a785e9b399cbdadbf415bcd0a1b6743b0">postfix</a>, <a class="el" href="spectrum_8cpp.html#aa010785ea3444039793b472da019f4d6">readConfig()</a>, <a class="el" href="spectrum_8cpp.html#ab1844aa717fc79812fae9c199d1ef1dd">resDir</a>, <a class="el" href="classtransfer_operator.html#a0b8172a8cb2fd91510213c3ba77d8cf3">transferOperator::scanForwardTransition()</a>, <a class="el" href="classtransfer_operator.html#a965312898f9dd896016587bcfe2af524">transferOperator::scanInitDist()</a>, <a class="el" href="spectrum_8cpp.html#a545e6f510b6127e8466e2cecdc837803">stationary</a>, <a class="el" href="spectrum_8cpp.html#a5556767aabd2d0b7b52309f76eb7b5f5">tauRng</a>, <a class="el" href="classtransfer_spectrum.html#a6e365f3fb8d4b2ee55be7586dbd4b9a5">transferSpectrum::writeSpectrumBackward()</a>, and <a class="el" href="classtransfer_spectrum.html#a41bca8920670389a3caa3ae5f1724643">transferSpectrum::writeSpectrumForward()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa010785ea3444039793b472da019f4d6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void readConfig </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>cfgFileName</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Sparse configuration file using libconfig++ to define all parameters of the case. </p>
-<p>Get paths</p>
-<p>Get model settings</p>
-<p>Get simulation settings </p>
-
-<p>Definition at line <a class="el" href="spectrum_8cpp_source.html#l00217">217</a> of file <a class="el" href="spectrum_8cpp_source.html">spectrum.cpp</a>.</p>
-
-<p>References <a class="el" href="structconfig_a_r.html#aa4b85aaaa8a932fa3e237d14465e2218">configAR::AutoShift</a>, <a class="el" href="spectrum_8cpp.html#abcb17cfffce5ecde9b06e71e77d227a3">caseName</a>, <a class="el" href="spectrum_8cpp.html#aecad9ca0f37bee172f18c2d6ec53cb9c">components</a>, <a class="el" href="transfer_spectrum_8hpp.html#abc666053cbcac657d58ac314dbdad286">defaultCfgAR</a>, <a class="el" href="spectrum_8cpp.html#af76fd8dcdbd416c42428d108acbf2343">delayName</a>, <a class="el" href="spectrum_8cpp.html#a1cf9453e5e4a8f00fdb1bddd5b307ba0">dimObs</a>, <a class="el" href="spectrum_8cpp.html#a03e28be41881b703c836edbfe9b51b17">dt</a>, <a class="el" href="spectrum_8cpp.html#a9ead67f01769704e369385aa9c86bf89">embedding</a>, <a class="el" href="spectrum_8cpp.html#a0b3feb5125bce352938bcaf68e3e9fc7">getBackwardEigenvectors</a>, <a class="el" href="spectrum_8cpp.html#ac93dc7ea660861d54764a0922aa4fb42">getForwardEigenvectors</a>, <a class="el" href="spectrum_8cpp.html#aa55bc3bac1b0344a916116a1d56ae17c">gridPostfix</a>, <a class="el" href="spectrum_8cpp.html#a2442c8274ae11905a74c1bf95501af09">L</a>, <a class="el" href="spectrum_8cpp.html#a89543d44945ce4a57fc160f958c59d8d">LCut</a>, <a class="el" href="spectrum_8cpp.html#a8f85a6a4912163cf2dc0d8ec4e57b3cb">makeBiorthonormal</a>, <a class="el" href="structconfig_a_r.html#aff3e5b364dbdca23154a2f6f7e7075c0">configAR::maxit</a>, <a class="el" href="spectrum_8cpp.html#aa6d2142329b3b553ce8a778f8239db33">N</a>, <a class="el" href="structconfig_a_r.html#a7f8fce3a9be2698970ba119521dc0839">configAR::ncv</a>, <a class="el" href="spectrum_8cpp.html#a015e64d999600a1ac5f5bdb700cd17b6">nev</a>, <a class="el" href="spectrum_8cpp.html#afc207ecfbf04e30774e0dd94922e279f">nLags</a>, <a class="el" href="spectrum_8cpp.html#ae5db0b6d0459d65e845f911b2cf63388">nSTDHigh</a>, <a class="el" href="spectrum_8cpp.html#a4b439d11830cf16b990bb49aff958b43">nSTDLow</a>, <a class="el" href="spectrum_8cpp.html#ac49b4571282666b93dfa78c0cdd5862d">nx</a>, <a class="el" href="spectrum_8cpp.html#ab8c3d151981844b976f68530e9320bc1">obsName</a>, <a class="el" href="spectrum_8cpp.html#a486227dec7330314efec86fbd9b0f6a2">printStep</a>, <a class="el" href="spectrum_8cpp.html#a6ad2ca9c5c5d75a79dc5fb17cbe57631">printStepNum</a>, <a class="el" href="spectrum_8cpp.html#ab1844aa717fc79812fae9c199d1ef1dd">resDir</a>, <a class="el" href="spectrum_8cpp.html#a028c8dc840d3db4dfe62398e3f50c758">spinup</a>, <a class="el" href="spectrum_8cpp.html#a7bbe0f3d8db56710bd15dd46f72e784b">srcPostfix</a>, <a class="el" href="spectrum_8cpp.html#a545e6f510b6127e8466e2cecdc837803">stationary</a>, <a class="el" href="spectrum_8cpp.html#a5556767aabd2d0b7b52309f76eb7b5f5">tauRng</a>, <a class="el" href="structconfig_a_r.html#a38aeb2e5d4c60397600a454a7b5a229e">configAR::tol</a>, and <a class="el" href="structconfig_a_r.html#abe4df1c367084ec3b4365fd56e83ab00">configAR::which</a>.</p>
-
-<p>Referenced by <a class="el" href="spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>.</p>
+<p>References <a class="el" href="spectrum_8cpp.html#ab8f7d4e57ff12610ba2500706df80754">configFileName</a>, <a class="el" href="classtransfer_spectrum.html#a9103f0b106a39f9e595827f8dfe10a42">transferSpectrum::EigProbBackward</a>, <a class="el" href="classtransfer_spectrum.html#a54fe22c2604a99f4523c87cebfec5b30">transferSpectrum::EigProbForward</a>, <a class="el" href="classtransfer_operator.html#a9f00f7090bf211ced99e16605df435c7">transferOperator::finalDist</a>, <a class="el" href="spectrum_8cpp.html#a0b3feb5125bce352938bcaf68e3e9fc7">getBackwardEigenvectors</a>, <a class="el" href="spectrum_8cpp.html#ac93dc7ea660861d54764a0922aa4fb42">getForwardEigenvectors</a>, <a class="el" href="group__transfer.html#gaab9e26ff58d2a5e839dfeb0072473310">transferSpectrum::getSpectrumBackward()</a>, <a class="el" href="group__transfer.html#ga132e795e62e4cfe8768f72856c1c683e">transferSpectrum::getSpectrumForward()</a>, <a class="el" href="spectrum_8cpp.html#aa55bc3bac1b0344a916116a1d56ae17c">gridPostfix</a>, <a class="el" href="classtransfer_operator.html#a86eb7b598f3d7402077a0b51cfb017be">transferOperator::initDist</a>, <a class="el" href="spectrum_8cpp.html#a8f85a6a4912163cf2dc0d8ec4e57b3cb">makeBiorthonormal</a>, <a class="el" href="group__transfer.html#ga2f842bdef9c421af44aa2202111a728c">transferSpectrum::makeBiorthonormal()</a>, <a class="el" href="spectrum_8cpp.html#aa6d2142329b3b553ce8a778f8239db33">N</a>, <a class="el" href="spectrum_8cpp.html#a015e64d999600a1ac5f5bdb700cd17b6">nev</a>, <a class="el" href="spectrum_8cpp.html#afc207ecfbf04e30774e0dd94922e279f">nLags</a>, <a class="el" href="sim_lorenz63_8cpp.html#a785e9b399cbdadbf415bcd0a1b6743b0">postfix</a>, <a class="el" href="sim_lorenz63_8cpp.html#aa010785ea3444039793b472da019f4d6">readConfig()</a>, <a class="el" href="spectrum_8cpp.html#ab1844aa717fc79812fae9c199d1ef1dd">resDir</a>, <a class="el" href="group__transfer.html#ga6e0f4e9bc66712005223a7552b48a65b">transferOperator::scanBackwardTransition()</a>, <a class="el" href="group__transfer.html#gae52210446e911d51472f9484366ab969">transferOperator::scanFinalDist()</a>, <a class="el" href="group__transfer.html#ga0b8172a8cb2fd91510213c3ba77d8cf3">transferOperator::scanForwardTransition()</a>, <a class="el" href="group__transfer.html#ga965312898f9dd896016587bcfe2af524">transferOperator::scanInitDist()</a>, <a class="el" href="classtransfer_operator.html#a1abee85be9b71c7cab5cd405c91e4ec2">transferOperator::setFinalDist()</a>, <a class="el" href="classtransfer_operator.html#a99579a7612dae74dfd160bf9ac640fc9">transferOperator::setInitDist()</a>, <a class="el" href="spectrum_8cpp.html#a545e6f510b6127e8466e2cecdc837803">stationary</a>, <a class="el" href="spectrum_8cpp.html#a5556767aabd2d0b7b52309f76eb7b5f5">tauRng</a>, <a class="el" href="group__transfer.html#ga6e365f3fb8d4b2ee55be7586dbd4b9a5">transferSpectrum::writeSpectrumBackward()</a>, and <a class="el" href="group__transfer.html#ga41bca8920670389a3caa3ae5f1724643">transferSpectrum::writeSpectrumForward()</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
-</div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.12-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="dir_c19d007986ffc274eb62f612ee197778.html">spectrum</a></li><li class="navelem"><a class="el" href="spectrum_8cpp.html">spectrum.cpp</a></li>
-    <li class="footer">Generated on Mon Feb 8 2016 12:14:12 for ergoPack by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.12
+</small></address>
 </body>
 </html>

@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['numericalscheme',['numericalScheme',['../classnumerical_scheme.html',1,'']]],
-  ['numericalschemesdde',['numericalSchemeSDDE',['../classnumerical_scheme_s_d_d_e.html',1,'']]],
-  ['numericalschemestochastic',['numericalSchemeStochastic',['../classnumerical_scheme_stochastic.html',1,'']]]
+  ['model',['model',['../classmodel.html',1,'']]],
+  ['modelsdde',['modelSDDE',['../classmodel_s_d_d_e.html',1,'']]],
+  ['modelstochastic',['modelStochastic',['../classmodel_stochastic.html',1,'']]],
+  ['multiplicativelinearwiener',['multiplicativeLinearWiener',['../classmultiplicative_linear_wiener.html',1,'']]]
 ];

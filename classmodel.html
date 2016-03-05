@@ -1,4 +1,3 @@
-<!-- HTML header for doxygen 1.8.12-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,14 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -51,6 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="install.html"><span>Installation</span></a></li>
       <li><a href="tutorial.html"><span>Tutorial</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -79,21 +71,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('classmodel.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -108,6 +85,7 @@ $(document).ready(function(){initNavTree('classmodel.html','');});
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
@@ -137,6 +115,7 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel.html#a23a7dbff52aedc7c5fbd1c81d419688f">~model</a> ()</td></tr>
 <tr class="memdesc:a23a7dbff52aedc7c5fbd1c81d419688f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor freeing memory. <br /></td></tr>
 <tr class="separator:a23a7dbff52aedc7c5fbd1c81d419688f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a87ed4727415ebd1d1a1771176ec07d57"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel.html#a87ed4727415ebd1d1a1771176ec07d57">stepForward</a> ()</td></tr>
 <tr class="memdesc:a87ed4727415ebd1d1a1771176ec07d57"><td class="mdescLeft">&#160;</td><td class="mdescRight">One time-step forward integration of the model.  <a href="#a87ed4727415ebd1d1a1771176ec07d57">More...</a><br /></td></tr>
 <tr class="separator:a87ed4727415ebd1d1a1771176ec07d57"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -166,7 +145,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Numerical model class. A model is defined by a vector field and a numerical scheme. The current state of the model is also recorded. Attention: the constructors do not copy the vector field and the numerical scheme given to them, so that any modification or freeing will affect the model. </p>
 
-<p>Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00269">269</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00399">399</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a62853debbe0c9a8fc2b24e43a529c913"></a>
 <div class="memitem">
@@ -207,9 +186,11 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Matrix to record the states. </dd></dl>
 
-<p>Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00518">518</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00746">746</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
 
 <p>References <a class="el" href="classvector_field.html#ac0854b28a4ff6ab764710eff1cb820b4">vectorField::dim</a>, and <a class="el" href="transfer_8cpp.html#a52d59418c1fd6f77402b8db150d7767a">nt</a>.</p>
+
+<p>Referenced by <a class="el" href="sim_lorenz63_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>.</p>
 
 </div>
 </div>
@@ -227,7 +208,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </div><div class="memdoc">
 <p>Integrate one step forward the model by calling the numerical scheme. </p>
 
-<p>Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00501">501</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00729">729</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
 
 </div>
 </div>
@@ -235,16 +216,11 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <li>include/<a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a></li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.12-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="classmodel.html">model</a></li>
-    <li class="footer">Generated on Mon Feb 8 2016 12:14:12 for ergoPack by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.12
+</small></address>
 </body>
 </html>

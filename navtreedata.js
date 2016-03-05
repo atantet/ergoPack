@@ -6,6 +6,7 @@ var NAVTREE =
       [ "Getting the code", "install.html#getting-the-code", null ]
     ] ],
     [ "Tutorial", "tutorial.html", null ],
+    [ "Modules", "modules.html", "modules" ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -30,7 +31,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_o_d_e_solvers_8hpp.html",
-"ergo_grid_8hpp.html"
+"group__grid.html#ga45a6a64234333f421008876748c4dcdc",
+"transfer_8cpp.html#ab1844aa717fc79812fae9c199d1ef1dd"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

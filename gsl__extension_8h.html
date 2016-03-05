@@ -1,4 +1,3 @@
-<!-- HTML header for doxygen 1.8.12-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,14 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -51,6 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="install.html"><span>Installation</span></a></li>
       <li><a href="tutorial.html"><span>Tutorial</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -77,21 +69,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('gsl__extension_8h.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -106,6 +83,11 @@ $(document).ready(function(){initNavTree('gsl__extension_8h.html','');});
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
@@ -120,6 +102,7 @@ $(document).ready(function(){initNavTree('gsl__extension_8h.html','');});
 <code>#include &lt;gsl/gsl_complex_math.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_vector.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_matrix.h&gt;</code><br />
+<code>#include &lt;gsl/gsl_spmatrix.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_permutation.h&gt;</code><br />
 <code>#include &lt;gsl/gsl_errno.h&gt;</code><br />
 <code>#include &lt;math.h&gt;</code><br />
@@ -197,72 +180,155 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__
 <tr class="memitem:a0608ea649a88fa4c67798e090cf5128f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a0608ea649a88fa4c67798e090cf5128f">gsl_permute_matrix_complex</a> (const gsl_permutation *p, gsl_matrix_complex *m, const size_t axis)</td></tr>
 <tr class="memdesc:a0608ea649a88fa4c67798e090cf5128f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Permute rows or columns of a matrix.  <a href="#a0608ea649a88fa4c67798e090cf5128f">More...</a><br /></td></tr>
 <tr class="separator:a0608ea649a88fa4c67798e090cf5128f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc7db93d02ba90775277b0a4c9c6c178"><td class="memItemLeft" align="right" valign="top">gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#acc7db93d02ba90775277b0a4c9c6c178">gsl_matrix_get_rowsum</a> (const gsl_matrix *m)</td></tr>
-<tr class="memdesc:acc7db93d02ba90775277b0a4c9c6c178"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the sum of the elements of a matrix over each row.  <a href="#acc7db93d02ba90775277b0a4c9c6c178">More...</a><br /></td></tr>
-<tr class="separator:acc7db93d02ba90775277b0a4c9c6c178"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11c8c9184dbb7e862c77302291f45b02"><td class="memItemLeft" align="right" valign="top">gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a11c8c9184dbb7e862c77302291f45b02">gsl_matrix_get_colsum</a> (const gsl_matrix *m)</td></tr>
-<tr class="memdesc:a11c8c9184dbb7e862c77302291f45b02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the sum of the elements of a matrix over each column.  <a href="#a11c8c9184dbb7e862c77302291f45b02">More...</a><br /></td></tr>
-<tr class="separator:a11c8c9184dbb7e862c77302291f45b02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af732cbdb62af230ba5297994c9e4cdc2"><td class="memItemLeft" align="right" valign="top">gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#af732cbdb62af230ba5297994c9e4cdc2">gsl_matrix_get_mean</a> (const gsl_matrix *m, const size_t axis)</td></tr>
-<tr class="memdesc:af732cbdb62af230ba5297994c9e4cdc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mean over the elements of a matrix along a given axis.  <a href="#af732cbdb62af230ba5297994c9e4cdc2">More...</a><br /></td></tr>
-<tr class="separator:af732cbdb62af230ba5297994c9e4cdc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc23733074d1f3d6f257c7d8964cbf57"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adc23733074d1f3d6f257c7d8964cbf57"></a>
-gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#adc23733074d1f3d6f257c7d8964cbf57">gsl_matrix_get_variance</a> (const gsl_matrix *m, const size_t axis)</td></tr>
-<tr class="memdesc:adc23733074d1f3d6f257c7d8964cbf57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the variance over the elements of a matrix along a given axis. <br /></td></tr>
-<tr class="separator:adc23733074d1f3d6f257c7d8964cbf57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38642e8787dd23e023301df79852f0f6"><td class="memItemLeft" align="right" valign="top">gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a38642e8787dd23e023301df79852f0f6">gsl_matrix_get_std</a> (const gsl_matrix *m, const size_t axis)</td></tr>
-<tr class="memdesc:a38642e8787dd23e023301df79852f0f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the standard deviation over the elements of a matrix along a given axis.  <a href="#a38642e8787dd23e023301df79852f0f6">More...</a><br /></td></tr>
-<tr class="separator:a38642e8787dd23e023301df79852f0f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87d59f96045875c583d792b7128bb386"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a87d59f96045875c583d792b7128bb386">gsl_matrix_get_rowsum</a> (gsl_vector *sum, const gsl_matrix *m)</td></tr>
+<tr class="memdesc:a87d59f96045875c583d792b7128bb386"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the sum of the elements of a matrix over each row.  <a href="#a87d59f96045875c583d792b7128bb386">More...</a><br /></td></tr>
+<tr class="separator:a87d59f96045875c583d792b7128bb386"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf8dc5efc5135cae885ffa4617295a22"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#aaf8dc5efc5135cae885ffa4617295a22">gsl_matrix_get_colsum</a> (gsl_vector *sum, const gsl_matrix *m)</td></tr>
+<tr class="memdesc:aaf8dc5efc5135cae885ffa4617295a22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the sum of the elements of a matrix over each column.  <a href="#aaf8dc5efc5135cae885ffa4617295a22">More...</a><br /></td></tr>
+<tr class="separator:aaf8dc5efc5135cae885ffa4617295a22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14330b17d4245e0b040e07ea84d63436"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a14330b17d4245e0b040e07ea84d63436">gsl_matrix_get_mean</a> (gsl_vector *mean, const gsl_matrix *m, const size_t axis)</td></tr>
+<tr class="memdesc:a14330b17d4245e0b040e07ea84d63436"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mean over the elements of a matrix along a given axis.  <a href="#a14330b17d4245e0b040e07ea84d63436">More...</a><br /></td></tr>
+<tr class="separator:a14330b17d4245e0b040e07ea84d63436"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e30612d4aed349500df9b476cfed2c5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e30612d4aed349500df9b476cfed2c5"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a6e30612d4aed349500df9b476cfed2c5">gsl_matrix_get_variance</a> (gsl_vector *var, const gsl_matrix *m, const size_t axis)</td></tr>
+<tr class="memdesc:a6e30612d4aed349500df9b476cfed2c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the variance over the elements of a matrix along a given axis. <br /></td></tr>
+<tr class="separator:a6e30612d4aed349500df9b476cfed2c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad26dd04323e0b60f748bea40e67c0905"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#ad26dd04323e0b60f748bea40e67c0905">gsl_matrix_get_std</a> (gsl_vector *std, const gsl_matrix *m, const size_t axis)</td></tr>
+<tr class="memdesc:ad26dd04323e0b60f748bea40e67c0905"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the standard deviation over the elements of a matrix along a given axis.  <a href="#ad26dd04323e0b60f748bea40e67c0905">More...</a><br /></td></tr>
+<tr class="separator:ad26dd04323e0b60f748bea40e67c0905"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17b9f31c011657a9d75a72a6d30175c1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a17b9f31c011657a9d75a72a6d30175c1">gsl_matrix_get_min</a> (gsl_vector *min, const gsl_matrix *m, const size_t axis)</td></tr>
+<tr class="memdesc:a17b9f31c011657a9d75a72a6d30175c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the min over the elements of a matrix along a given axis.  <a href="#a17b9f31c011657a9d75a72a6d30175c1">More...</a><br /></td></tr>
+<tr class="separator:a17b9f31c011657a9d75a72a6d30175c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6f8a271a516b519b11dc25f849a58c4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#aa6f8a271a516b519b11dc25f849a58c4">gsl_matrix_get_max</a> (gsl_vector *max, const gsl_matrix *m, const size_t axis)</td></tr>
+<tr class="memdesc:aa6f8a271a516b519b11dc25f849a58c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the max over the elements of a matrix along a given axis.  <a href="#aa6f8a271a516b519b11dc25f849a58c4">More...</a><br /></td></tr>
+<tr class="separator:aa6f8a271a516b519b11dc25f849a58c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59c212f70ed987791fd7fc78ef45450b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a59c212f70ed987791fd7fc78ef45450b">gsl_spmatrix_get_rowsum</a> (gsl_vector *sum, const gsl_spmatrix *m)</td></tr>
+<tr class="memdesc:a59c212f70ed987791fd7fc78ef45450b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the sum of the elements of a compressed matrix over each row.  <a href="#a59c212f70ed987791fd7fc78ef45450b">More...</a><br /></td></tr>
+<tr class="separator:a59c212f70ed987791fd7fc78ef45450b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac373efc347af3f540d3a03762af737c4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#ac373efc347af3f540d3a03762af737c4">gsl_spmatrix_get_colsum</a> (gsl_vector *sum, const gsl_spmatrix *m)</td></tr>
+<tr class="memdesc:ac373efc347af3f540d3a03762af737c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the sum of the elements of a compressed matrix over each column.  <a href="#ac373efc347af3f540d3a03762af737c4">More...</a><br /></td></tr>
+<tr class="separator:ac373efc347af3f540d3a03762af737c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a144ce2e1e49d4df29a3677d6d13d3123"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a144ce2e1e49d4df29a3677d6d13d3123">gsl_spmatrix_get_sum</a> (const gsl_spmatrix *m)</td></tr>
+<tr class="memdesc:a144ce2e1e49d4df29a3677d6d13d3123"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the sum of the elements of a sparse matrix.  <a href="#a144ce2e1e49d4df29a3677d6d13d3123">More...</a><br /></td></tr>
+<tr class="separator:a144ce2e1e49d4df29a3677d6d13d3123"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2091add84b62a50ee147f53c41af387"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#ab2091add84b62a50ee147f53c41af387">gsl_spmatrix_div_rows</a> (gsl_spmatrix *m, const gsl_vector *v, const double tol)</td></tr>
+<tr class="memdesc:ab2091add84b62a50ee147f53c41af387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Divide each row of a compressed matrix by a vector.  <a href="#ab2091add84b62a50ee147f53c41af387">More...</a><br /></td></tr>
+<tr class="separator:ab2091add84b62a50ee147f53c41af387"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa896e7e7eab775116aaa94de31a5968f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#aa896e7e7eab775116aaa94de31a5968f">gsl_spmatrix_div_cols</a> (gsl_spmatrix *m, const gsl_vector *v, const double tol)</td></tr>
+<tr class="memdesc:aa896e7e7eab775116aaa94de31a5968f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Divide each column of a compressed matrix by a vector.  <a href="#aa896e7e7eab775116aaa94de31a5968f">More...</a><br /></td></tr>
+<tr class="separator:aa896e7e7eab775116aaa94de31a5968f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a926db00bfba5796f036ab13f89ea0a64"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a926db00bfba5796f036ab13f89ea0a64">gsl_vector_get_inner_product</a> (const gsl_vector *v, const gsl_vector *w, const gsl_vector *mu)</td></tr>
 <tr class="separator:a926db00bfba5796f036ab13f89ea0a64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32d2d33f467231ec046bea63b623a762"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a32d2d33f467231ec046bea63b623a762">gsl_vector_max_index_among</a> (const gsl_vector *v, const gsl_vector_uint *marker)</td></tr>
 <tr class="separator:a32d2d33f467231ec046bea63b623a762"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95d940106bc333e84cc719a33c62cfa9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a95d940106bc333e84cc719a33c62cfa9">gsl_vector_linspace</a> (gsl_vector *v, const double lower, const double upper)</td></tr>
 <tr class="separator:a95d940106bc333e84cc719a33c62cfa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac99d76cdfdb5bd2b172823aa55323ca4"><td class="memItemLeft" align="right" valign="top">gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#ac99d76cdfdb5bd2b172823aa55323ca4">gsl_matrix_get_var</a> (const gsl_matrix *m, const size_t axis)</td></tr>
-<tr class="separator:ac99d76cdfdb5bd2b172823aa55323ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93aff4cd931af62f8381ac5369ea464c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gsl__extension_8h.html#a93aff4cd931af62f8381ac5369ea464c">gsl_matrix_get_var</a> (gsl_vector *var, const gsl_matrix *m, const size_t axis)</td></tr>
+<tr class="separator:a93aff4cd931af62f8381ac5369ea464c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Extend GSL with utility functions. </p>
 
 <p>Definition in file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a11c8c9184dbb7e862c77302291f45b02"></a>
+<a class="anchor" id="aaf8dc5efc5135cae885ffa4617295a22"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">gsl_vector * gsl_matrix_get_colsum </td>
+          <td class="memname">int gsl_matrix_get_colsum </td>
           <td>(</td>
-          <td class="paramtype">const gsl_matrix *&#160;</td>
-          <td class="paramname"><em>m</em></td><td>)</td>
+          <td class="paramtype">gsl_vector *&#160;</td>
+          <td class="paramname"><em>sum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const gsl_matrix *&#160;</td>
+          <td class="paramname"><em>m</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Get the sum of the elements of a matrix over each column. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">sum</td><td>Vector of the sum of the columns. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>Matrix over which to sum. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Vector of the sum of the columns. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00682">682</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00698">698</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#ae7e80dbf57c33d4f61ab0bf1eea9829e">gsl_vector_get_sum()</a>.</p>
 
-<p>Referenced by <a class="el" href="gsl__extension_8h.html#af732cbdb62af230ba5297994c9e4cdc2">gsl_matrix_get_mean()</a>.</p>
+<p>Referenced by <a class="el" href="gsl__extension_8h.html#a14330b17d4245e0b040e07ea84d63436">gsl_matrix_get_mean()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="af732cbdb62af230ba5297994c9e4cdc2"></a>
+<a class="anchor" id="aa6f8a271a516b519b11dc25f849a58c4"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">gsl_vector * gsl_matrix_get_mean </td>
+          <td class="memname">int gsl_matrix_get_max </td>
           <td>(</td>
+          <td class="paramtype">gsl_vector *&#160;</td>
+          <td class="paramname"><em>max</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_matrix *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>axis</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the max of the elements of a matrix along a given axis. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">max</td><td>Vector of the max. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>Matrix over which to calculate the max. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">axis</td><td>Axis over which to calculate the max (0: along columns, 1: along rows). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00898">898</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+<p>Referenced by <a class="el" href="group__grid.html#ga02b23fe13c45d346bf4ead00b0b737a1">PolarGrid::PolarGrid()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a14330b17d4245e0b040e07ea84d63436"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int gsl_matrix_get_mean </td>
+          <td>(</td>
+          <td class="paramtype">gsl_vector *&#160;</td>
+          <td class="paramname"><em>mean</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const gsl_matrix *&#160;</td>
           <td class="paramname"><em>m</em>, </td>
         </tr>
@@ -281,57 +347,120 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </div><div class="memdoc">
 <p>Get the mean of the elements of a matrix along a given axis. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">mean</td><td>Vector of the means. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>Matrix over which to calculate the mean. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">axis</td><td>Axis over which to calculate the mean (0: along columns, 1: along rows). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Vector of with the means. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00705">705</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00721">721</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
-<p>References <a class="el" href="gsl__extension_8h.html#a11c8c9184dbb7e862c77302291f45b02">gsl_matrix_get_colsum()</a>, and <a class="el" href="gsl__extension_8h.html#acc7db93d02ba90775277b0a4c9c6c178">gsl_matrix_get_rowsum()</a>.</p>
+<p>References <a class="el" href="gsl__extension_8h.html#aaf8dc5efc5135cae885ffa4617295a22">gsl_matrix_get_colsum()</a>, and <a class="el" href="gsl__extension_8h.html#a87d59f96045875c583d792b7128bb386">gsl_matrix_get_rowsum()</a>.</p>
 
-<p>Referenced by <a class="el" href="ergo_stat_8hpp.html#a05a4eff778c943bec3f710b23b36f642">getEOF()</a>, <a class="el" href="gsl__extension_8h.html#ac99d76cdfdb5bd2b172823aa55323ca4">gsl_matrix_get_var()</a>, and <a class="el" href="class_polar_grid.html#a02b23fe13c45d346bf4ead00b0b737a1">PolarGrid::PolarGrid()</a>.</p>
+<p>Referenced by <a class="el" href="ergo_stat_8hpp.html#a05a4eff778c943bec3f710b23b36f642">getEOF()</a>, <a class="el" href="gsl__extension_8h.html#a93aff4cd931af62f8381ac5369ea464c">gsl_matrix_get_var()</a>, and <a class="el" href="group__grid.html#ga02b23fe13c45d346bf4ead00b0b737a1">PolarGrid::PolarGrid()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="acc7db93d02ba90775277b0a4c9c6c178"></a>
+<a class="anchor" id="a17b9f31c011657a9d75a72a6d30175c1"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">gsl_vector * gsl_matrix_get_rowsum </td>
+          <td class="memname">int gsl_matrix_get_min </td>
           <td>(</td>
-          <td class="paramtype">const gsl_matrix *&#160;</td>
-          <td class="paramname"><em>m</em></td><td>)</td>
+          <td class="paramtype">gsl_vector *&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const gsl_matrix *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>axis</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the min of the elements of a matrix along a given axis. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">min</td><td>Vector of the min. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>Matrix over which to calculate the min. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">axis</td><td>Axis over which to calculate the min (0: along columns, 1: along rows). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00848">848</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+<p>Referenced by <a class="el" href="group__grid.html#ga02b23fe13c45d346bf4ead00b0b737a1">PolarGrid::PolarGrid()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a87d59f96045875c583d792b7128bb386"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int gsl_matrix_get_rowsum </td>
+          <td>(</td>
+          <td class="paramtype">gsl_vector *&#160;</td>
+          <td class="paramname"><em>sum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_matrix *&#160;</td>
+          <td class="paramname"><em>m</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Get the sum of the elements of a matrix over each row. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">sum</td><td>Vector of the sum of the rows. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>Matrix over which to sum. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Vector of the sum of the rows. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00661">661</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00677">677</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#ae7e80dbf57c33d4f61ab0bf1eea9829e">gsl_vector_get_sum()</a>.</p>
 
-<p>Referenced by <a class="el" href="gsl__extension_8h.html#af732cbdb62af230ba5297994c9e4cdc2">gsl_matrix_get_mean()</a>.</p>
+<p>Referenced by <a class="el" href="gsl__extension_8h.html#a14330b17d4245e0b040e07ea84d63436">gsl_matrix_get_mean()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a38642e8787dd23e023301df79852f0f6"></a>
+<a class="anchor" id="ad26dd04323e0b60f748bea40e67c0905"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">gsl_vector * gsl_matrix_get_std </td>
+          <td class="memname">int gsl_matrix_get_std </td>
           <td>(</td>
+          <td class="paramtype">gsl_vector *&#160;</td>
+          <td class="paramname"><em>std</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const gsl_matrix *&#160;</td>
           <td class="paramname"><em>m</em>, </td>
         </tr>
@@ -350,28 +479,35 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </div><div class="memdoc">
 <p>Get the standard deviation of the elements of a matrix along a given axis. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">std</td><td>Vector of the standard deviations. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>Matrix over which to calculate the standard deviation. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">axis</td><td>Axis over which to calculate the standard deviation (0: along columns, 1: along rows). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Vector of with the standard deviation. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00767">767</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00807">807</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
-<p>References <a class="el" href="gsl__extension_8h.html#ac99d76cdfdb5bd2b172823aa55323ca4">gsl_matrix_get_var()</a>, and <a class="el" href="gsl__extension_8h.html#a382311a4708768dbbee4a5dd12617122">gsl_vector_sqrt()</a>.</p>
+<p>References <a class="el" href="gsl__extension_8h.html#a93aff4cd931af62f8381ac5369ea464c">gsl_matrix_get_var()</a>, and <a class="el" href="gsl__extension_8h.html#a382311a4708768dbbee4a5dd12617122">gsl_vector_sqrt()</a>.</p>
 
-<p>Referenced by <a class="el" href="class_polar_grid.html#a02b23fe13c45d346bf4ead00b0b737a1">PolarGrid::PolarGrid()</a>.</p>
+<p>Referenced by <a class="el" href="group__grid.html#ga02b23fe13c45d346bf4ead00b0b737a1">PolarGrid::PolarGrid()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac99d76cdfdb5bd2b172823aa55323ca4"></a>
+<a class="anchor" id="a93aff4cd931af62f8381ac5369ea464c"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">gsl_vector* gsl_matrix_get_var </td>
+          <td class="memname">int gsl_matrix_get_var </td>
           <td>(</td>
+          <td class="paramtype">gsl_vector *&#160;</td>
+          <td class="paramname"><em>var</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const gsl_matrix *&#160;</td>
           <td class="paramname"><em>m</em>, </td>
         </tr>
@@ -390,18 +526,20 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </div><div class="memdoc">
 <p>Get the variance of the elements of a matrix along a given axis. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">var</td><td>Vector of the variances. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>Matrix over which to calculate the variance. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">axis</td><td>Axis over which to calculate the variance (0: along columns, 1: along rows). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Vector of with the variance. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
+<p>Allocate </p>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00735">735</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00750">750</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
-<p>References <a class="el" href="gsl__extension_8h.html#af732cbdb62af230ba5297994c9e4cdc2">gsl_matrix_get_mean()</a>.</p>
+<p>References <a class="el" href="gsl__extension_8h.html#a14330b17d4245e0b040e07ea84d63436">gsl_matrix_get_mean()</a>.</p>
 
-<p>Referenced by <a class="el" href="gsl__extension_8h.html#a38642e8787dd23e023301df79852f0f6">gsl_matrix_get_std()</a>.</p>
+<p>Referenced by <a class="el" href="gsl__extension_8h.html#ad26dd04323e0b60f748bea40e67c0905">gsl_matrix_get_std()</a>.</p>
 
 </div>
 </div>
@@ -447,9 +585,202 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Save matrix</p>
 <p>Permute </p>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00614">614</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00629">629</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
-<p>Referenced by <a class="el" href="classtransfer_spectrum.html#a2e816ffd6ac5e3d52c7ba25256b937b8">transferSpectrum::sort()</a>.</p>
+<p>Referenced by <a class="el" href="group__transfer.html#ga2e816ffd6ac5e3d52c7ba25256b937b8">transferSpectrum::sort()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa896e7e7eab775116aaa94de31a5968f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int gsl_spmatrix_div_cols </td>
+          <td>(</td>
+          <td class="paramtype">gsl_spmatrix *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>tol</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Divide each column of a compressed matrix by the corresponding vector element. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>compressed matrix to divide. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>vector to divide the columns of the sparse matrix. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tol</td><td>threshold under which to avoid division by zero. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l01114">1114</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+<p>Referenced by <a class="el" href="group__transfer.html#gae52b88b4e00ae0e45818fc4dd3b50255">filterStochasticMatrix()</a>, and <a class="el" href="group__transfer.html#gab439c74c7b875253c4dd86c95b88aeda">transferOperator::~transferOperator()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab2091add84b62a50ee147f53c41af387"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int gsl_spmatrix_div_rows </td>
+          <td>(</td>
+          <td class="paramtype">gsl_spmatrix *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>tol</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Divide each row of a compressed matrix by the corresponding vector element. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>compressed matrix to divide. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>vector to divide the rows of the sparse matrix. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tol</td><td>threshold under which to avoid division by zero. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l01058">1058</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+<p>Referenced by <a class="el" href="group__transfer.html#gae52b88b4e00ae0e45818fc4dd3b50255">filterStochasticMatrix()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac373efc347af3f540d3a03762af737c4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int gsl_spmatrix_get_colsum </td>
+          <td>(</td>
+          <td class="paramtype">gsl_vector *&#160;</td>
+          <td class="paramname"><em>sum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_spmatrix *&#160;</td>
+          <td class="paramname"><em>m</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the sum of the elements of a compressed matrix over each column. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">sum</td><td>Resulting vector of the sum of the columns. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>Compressed matrix over which to sum. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00992">992</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+<p>Referenced by <a class="el" href="group__transfer.html#gae52b88b4e00ae0e45818fc4dd3b50255">filterStochasticMatrix()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a59c212f70ed987791fd7fc78ef45450b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int gsl_spmatrix_get_rowsum </td>
+          <td>(</td>
+          <td class="paramtype">gsl_vector *&#160;</td>
+          <td class="paramname"><em>sum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_spmatrix *&#160;</td>
+          <td class="paramname"><em>m</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the sum of the elements of a compressed matrix over each row. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">sum</td><td>Resulting vector of the sum of the rows. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>Compressed matrix over which to sum. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00946">946</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+<p>Referenced by <a class="el" href="group__transfer.html#gae52b88b4e00ae0e45818fc4dd3b50255">filterStochasticMatrix()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a144ce2e1e49d4df29a3677d6d13d3123"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double gsl_spmatrix_get_sum </td>
+          <td>(</td>
+          <td class="paramtype">const gsl_spmatrix *&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the sum of the elements of a sparse matrix. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>Sparse matrix over which to sum. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Sum over all the elements of the sparse matrix. </dd></dl>
+
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l01037">1037</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+
+<p>Referenced by <a class="el" href="group__transfer.html#gae52b88b4e00ae0e45818fc4dd3b50255">filterStochasticMatrix()</a>.</p>
 
 </div>
 </div>
@@ -474,9 +805,9 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Real vector of absolute values. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00400">400</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00415">415</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
-<p>Referenced by <a class="el" href="classtransfer_spectrum.html#a2e816ffd6ac5e3d52c7ba25256b937b8">transferSpectrum::sort()</a>.</p>
+<p>Referenced by <a class="el" href="group__transfer.html#ga2e816ffd6ac5e3d52c7ba25256b937b8">transferSpectrum::sort()</a>.</p>
 
 </div>
 </div>
@@ -521,9 +852,9 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Get product i</p>
 <p>Add product i </p>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00549">549</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00564">564</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
-<p>Referenced by <a class="el" href="classtransfer_spectrum.html#a7f18e82adbbf1b392990a323dbd1b55f">transferSpectrum::getConditionNumbers()</a>, <a class="el" href="classtransfer_spectrum.html#ae317b279490355a8562c4af742320740">transferSpectrum::getWeights()</a>, <a class="el" href="gsl__extension_8h.html#a1cfa32e99eac294c5ee1f3695a3246f3">gsl_vector_complex_get_norm()</a>, and <a class="el" href="classtransfer_spectrum.html#a2f842bdef9c421af44aa2202111a728c">transferSpectrum::makeBiorthonormal()</a>.</p>
+<p>Referenced by <a class="el" href="group__transfer.html#ga7f18e82adbbf1b392990a323dbd1b55f">transferSpectrum::getConditionNumbers()</a>, <a class="el" href="group__transfer.html#gae317b279490355a8562c4af742320740">transferSpectrum::getWeights()</a>, <a class="el" href="gsl__extension_8h.html#a1cfa32e99eac294c5ee1f3695a3246f3">gsl_vector_complex_get_norm()</a>, and <a class="el" href="group__transfer.html#ga2f842bdef9c421af44aa2202111a728c">transferSpectrum::makeBiorthonormal()</a>.</p>
 
 </div>
 </div>
@@ -562,11 +893,11 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Get norm</p>
 <p>Free </p>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00585">585</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00600">600</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#a8e65bdf8c39851aa48e507875ecce049">gsl_vector_complex_get_inner_product()</a>.</p>
 
-<p>Referenced by <a class="el" href="classtransfer_spectrum.html#a7f18e82adbbf1b392990a323dbd1b55f">transferSpectrum::getConditionNumbers()</a>.</p>
+<p>Referenced by <a class="el" href="group__transfer.html#ga7f18e82adbbf1b392990a323dbd1b55f">transferSpectrum::getConditionNumbers()</a>.</p>
 
 </div>
 </div>
@@ -591,7 +922,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <p>Find maximum </p>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00419">419</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00434">434</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 </div>
 </div>
@@ -616,7 +947,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <p>Find maximum </p>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00449">449</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00464">464</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 </div>
 </div>
@@ -652,7 +983,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <p>Copy source vector to imaginary part of complex destination vector </p>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00380">380</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00395">395</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 </div>
 </div>
@@ -688,9 +1019,9 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <p>Copy source vector to real part of complex destination vector </p>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00359">359</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00374">374</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
-<p>Referenced by <a class="el" href="classtransfer_spectrum.html#ae317b279490355a8562c4af742320740">transferSpectrum::getWeights()</a>.</p>
+<p>Referenced by <a class="el" href="group__transfer.html#gae317b279490355a8562c4af742320740">transferSpectrum::getWeights()</a>.</p>
 
 </div>
 </div>
@@ -715,7 +1046,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <p>Find minimum </p>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00482">482</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00497">497</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 </div>
 </div>
@@ -740,9 +1071,9 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <p>Find minimum </p>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00512">512</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00527">527</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
-<p>Referenced by <a class="el" href="classtransfer_spectrum.html#a2e816ffd6ac5e3d52c7ba25256b937b8">transferSpectrum::sort()</a>.</p>
+<p>Referenced by <a class="el" href="group__transfer.html#ga2e816ffd6ac5e3d52c7ba25256b937b8">transferSpectrum::sort()</a>.</p>
 
 </div>
 </div>
@@ -785,7 +1116,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Inner product. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00152">152</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00167">167</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#ae7e80dbf57c33d4f61ab0bf1eea9829e">gsl_vector_get_sum()</a>.</p>
 
@@ -814,7 +1145,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Mean of the vector. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00246">246</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00261">261</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#ae7e80dbf57c33d4f61ab0bf1eea9829e">gsl_vector_get_sum()</a>.</p>
 
@@ -854,7 +1185,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Norm of the vector. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00184">184</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00199">199</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#a926db00bfba5796f036ab13f89ea0a64">gsl_vector_get_inner_product()</a>.</p>
 
@@ -881,7 +1212,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Product of vector elements. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00212">212</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00227">227</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 </div>
 </div>
@@ -906,7 +1237,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Standard Deviation of the vector. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00287">287</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00302">302</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#a1977d7583003756777e469632dfec69d">gsl_vector_get_var()</a>.</p>
 
@@ -933,9 +1264,9 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Sum of vector elements. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00131">131</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00146">146</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
-<p>Referenced by <a class="el" href="gsl__extension_8h.html#a11c8c9184dbb7e862c77302291f45b02">gsl_matrix_get_colsum()</a>, <a class="el" href="gsl__extension_8h.html#acc7db93d02ba90775277b0a4c9c6c178">gsl_matrix_get_rowsum()</a>, <a class="el" href="gsl__extension_8h.html#a926db00bfba5796f036ab13f89ea0a64">gsl_vector_get_inner_product()</a>, <a class="el" href="gsl__extension_8h.html#af1130ab234ac6a334fc5175d317aed47">gsl_vector_get_mean()</a>, and <a class="el" href="gsl__extension_8h.html#a6d71910f1fb03add1ee3804625ada99c">gsl_vector_normalize()</a>.</p>
+<p>Referenced by <a class="el" href="gsl__extension_8h.html#aaf8dc5efc5135cae885ffa4617295a22">gsl_matrix_get_colsum()</a>, <a class="el" href="gsl__extension_8h.html#a87d59f96045875c583d792b7128bb386">gsl_matrix_get_rowsum()</a>, <a class="el" href="gsl__extension_8h.html#a926db00bfba5796f036ab13f89ea0a64">gsl_vector_get_inner_product()</a>, <a class="el" href="gsl__extension_8h.html#af1130ab234ac6a334fc5175d317aed47">gsl_vector_get_mean()</a>, and <a class="el" href="gsl__extension_8h.html#a6d71910f1fb03add1ee3804625ada99c">gsl_vector_normalize()</a>.</p>
 
 </div>
 </div>
@@ -960,7 +1291,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Variance of the vector. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00258">258</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00273">273</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#af1130ab234ac6a334fc5175d317aed47">gsl_vector_get_mean()</a>.</p>
 
@@ -1006,7 +1337,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00338">338</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00353">353</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 </div>
 </div>
@@ -1042,7 +1373,7 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Index of the maximum. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00301">301</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00316">316</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 </div>
 </div>
@@ -1066,11 +1397,11 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00114">114</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00129">129</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 <p>References <a class="el" href="gsl__extension_8h.html#ae7e80dbf57c33d4f61ab0bf1eea9829e">gsl_vector_get_sum()</a>.</p>
 
-<p>Referenced by <a class="el" href="transfer_operator_8hpp.html#ae52b88b4e00ae0e45818fc4dd3b50255">filterStochasticMatrix()</a>, and <a class="el" href="classtransfer_operator.html#ab439c74c7b875253c4dd86c95b88aeda">transferOperator::~transferOperator()</a>.</p>
+<p>Referenced by <a class="el" href="group__transfer.html#gae52b88b4e00ae0e45818fc4dd3b50255">filterStochasticMatrix()</a>, and <a class="el" href="group__transfer.html#gab439c74c7b875253c4dd86c95b88aeda">transferOperator::~transferOperator()</a>.</p>
 
 </div>
 </div>
@@ -1095,9 +1426,9 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Exit status. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00099">99</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00114">114</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
-<p>Referenced by <a class="el" href="gsl__extension_8h.html#a38642e8787dd23e023301df79852f0f6">gsl_matrix_get_std()</a>.</p>
+<p>Referenced by <a class="el" href="gsl__extension_8h.html#ad26dd04323e0b60f748bea40e67c0905">gsl_matrix_get_std()</a>.</p>
 
 </div>
 </div>
@@ -1122,21 +1453,16 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Product of vector elements. </dd></dl>
 
-<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00229">229</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
+<p>Definition at line <a class="el" href="gsl__extension_8h_source.html#l00244">244</a> of file <a class="el" href="gsl__extension_8h_source.html">gsl_extension.h</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
-</div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.12-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="gsl__extension_8h.html">gsl_extension.h</a></li>
-    <li class="footer">Generated on Mon Feb 8 2016 12:14:12 for ergoPack by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.12
+</small></address>
 </body>
 </html>

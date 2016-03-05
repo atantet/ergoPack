@@ -1,4 +1,3 @@
-<!-- HTML header for doxygen 1.8.12-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,14 +8,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -51,6 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="install.html"><span>Installation</span></a></li>
       <li><a href="tutorial.html"><span>Tutorial</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -94,20 +86,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     </ul>
   </div>
 </div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('globals_func.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -127,50 +105,71 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 
 <h3><a class="anchor" id="index_f"></a>- f -</h3><ul>
 <li>filterStochasticMatrix()
-: <a class="el" href="transfer_operator_8hpp.html#ae52b88b4e00ae0e45818fc4dd3b50255">transferOperator.hpp</a>
+: <a class="el" href="group__transfer.html#gae52b88b4e00ae0e45818fc4dd3b50255">transferOperator.hpp</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_g"></a>- g -</h3><ul>
 <li>getDensityMLE()
-: <a class="el" href="ergo_grid_8hpp.html#aa6a8b9fa195bfac7baca6efac5155a40">ergoGrid.hpp</a>
+: <a class="el" href="group__grid.html#gaa6a8b9fa195bfac7baca6efac5155a40">ergoGrid.hpp</a>
 </li>
 <li>getEOF()
 : <a class="el" href="ergo_stat_8hpp.html#a05a4eff778c943bec3f710b23b36f642">ergoStat.hpp</a>
 </li>
 <li>getGridMemMatrix()
-: <a class="el" href="ergo_grid_8hpp.html#a39086f8409e8ae97e5e703f3becc5d14">ergoGrid.hpp</a>
+: <a class="el" href="group__grid.html#ga39086f8409e8ae97e5e703f3becc5d14">ergoGrid.hpp</a>
 </li>
 <li>getGridMemVector()
-: <a class="el" href="ergo_grid_8hpp.html#ae84084d6ac9b8f8f68f49625ed441e96">ergoGrid.hpp</a>
+: <a class="el" href="group__grid.html#gae84084d6ac9b8f8f68f49625ed441e96">ergoGrid.hpp</a>
 </li>
 <li>getSpectrumAR()
-: <a class="el" href="transfer_spectrum_8hpp.html#ac44fa6008ee2eacc221875f38595d736">transferSpectrum.hpp</a>
+: <a class="el" href="group__transfer.html#gac44fa6008ee2eacc221875f38595d736">transferSpectrum.hpp</a>
 </li>
 <li>getTransitionCountTriplet()
-: <a class="el" href="transfer_operator_8hpp.html#ab6396239b16cd3266654ccabce30a30c">transferOperator.hpp</a>
+: <a class="el" href="group__transfer.html#ga51d373cfa99bcd1b23042fa326928ae9">transferOperator.hpp</a>
 </li>
 <li>gsl_matrix_get_colsum()
-: <a class="el" href="gsl__extension_8h.html#a11c8c9184dbb7e862c77302291f45b02">gsl_extension.h</a>
+: <a class="el" href="gsl__extension_8h.html#aaf8dc5efc5135cae885ffa4617295a22">gsl_extension.h</a>
+</li>
+<li>gsl_matrix_get_max()
+: <a class="el" href="gsl__extension_8h.html#aa6f8a271a516b519b11dc25f849a58c4">gsl_extension.h</a>
 </li>
 <li>gsl_matrix_get_mean()
-: <a class="el" href="gsl__extension_8h.html#af732cbdb62af230ba5297994c9e4cdc2">gsl_extension.h</a>
+: <a class="el" href="gsl__extension_8h.html#a14330b17d4245e0b040e07ea84d63436">gsl_extension.h</a>
+</li>
+<li>gsl_matrix_get_min()
+: <a class="el" href="gsl__extension_8h.html#a17b9f31c011657a9d75a72a6d30175c1">gsl_extension.h</a>
 </li>
 <li>gsl_matrix_get_rowsum()
-: <a class="el" href="gsl__extension_8h.html#acc7db93d02ba90775277b0a4c9c6c178">gsl_extension.h</a>
+: <a class="el" href="gsl__extension_8h.html#a87d59f96045875c583d792b7128bb386">gsl_extension.h</a>
 </li>
 <li>gsl_matrix_get_std()
-: <a class="el" href="gsl__extension_8h.html#a38642e8787dd23e023301df79852f0f6">gsl_extension.h</a>
+: <a class="el" href="gsl__extension_8h.html#ad26dd04323e0b60f748bea40e67c0905">gsl_extension.h</a>
 </li>
 <li>gsl_matrix_get_var()
-: <a class="el" href="gsl__extension_8h.html#ac99d76cdfdb5bd2b172823aa55323ca4">gsl_extension.h</a>
+: <a class="el" href="gsl__extension_8h.html#a93aff4cd931af62f8381ac5369ea464c">gsl_extension.h</a>
 </li>
 <li>gsl_matrix_get_variance()
-: <a class="el" href="gsl__extension_8h.html#adc23733074d1f3d6f257c7d8964cbf57">gsl_extension.h</a>
+: <a class="el" href="gsl__extension_8h.html#a6e30612d4aed349500df9b476cfed2c5">gsl_extension.h</a>
 </li>
 <li>gsl_permute_matrix_complex()
 : <a class="el" href="gsl__extension_8h.html#a0608ea649a88fa4c67798e090cf5128f">gsl_extension.h</a>
+</li>
+<li>gsl_spmatrix_div_cols()
+: <a class="el" href="gsl__extension_8h.html#aa896e7e7eab775116aaa94de31a5968f">gsl_extension.h</a>
+</li>
+<li>gsl_spmatrix_div_rows()
+: <a class="el" href="gsl__extension_8h.html#ab2091add84b62a50ee147f53c41af387">gsl_extension.h</a>
+</li>
+<li>gsl_spmatrix_get_colsum()
+: <a class="el" href="gsl__extension_8h.html#ac373efc347af3f540d3a03762af737c4">gsl_extension.h</a>
+</li>
+<li>gsl_spmatrix_get_rowsum()
+: <a class="el" href="gsl__extension_8h.html#a59c212f70ed987791fd7fc78ef45450b">gsl_extension.h</a>
+</li>
+<li>gsl_spmatrix_get_sum()
+: <a class="el" href="gsl__extension_8h.html#a144ce2e1e49d4df29a3677d6d13d3123">gsl_extension.h</a>
 </li>
 <li>gsl_vector_complex_abs()
 : <a class="el" href="gsl__extension_8h.html#a33e404c4cade90c4fe140d3b1e763e5b">gsl_extension.h</a>
@@ -224,7 +223,7 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 : <a class="el" href="gsl__extension_8h.html#a1977d7583003756777e469632dfec69d">gsl_extension.h</a>
 </li>
 <li>gsl_vector_linspace()
-: <a class="el" href="gsl__extension_8h.html#a1f83311e66817cec1e222f1bcd270441">gsl_extension.h</a>
+: <a class="el" href="gsl__extension_8h.html#a95d940106bc333e84cc719a33c62cfa9">gsl_extension.h</a>
 </li>
 <li>gsl_vector_max_index_among()
 : <a class="el" href="gsl__extension_8h.html#aeaf46636a578b8f07471901e23e99bc6">gsl_extension.h</a>
@@ -243,45 +242,41 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 
 <h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
 <li>main()
-: <a class="el" href="sim_o_u_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">simOU.cpp</a>
-, <a class="el" href="sim_s_d_d_e_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">simSDDE.cpp</a>
+: <a class="el" href="sim_lorenz63_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">simLorenz63.cpp</a>
+, <a class="el" href="sim_o_u_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">simOU.cpp</a>
 , <a class="el" href="spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">spectrum.cpp</a>
+, <a class="el" href="sim_s_d_d_e_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">simSDDE.cpp</a>
 , <a class="el" href="transfer_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">transfer.cpp</a>
 </li>
 <li>memVector2memMatrix()
-: <a class="el" href="ergo_grid_8hpp.html#a4eb64905c4eb48a156abaf29cda24020">ergoGrid.hpp</a>
+: <a class="el" href="group__grid.html#ga16e31c83e10ee645b1defa1e39a7bd4e">ergoGrid.hpp</a>
 </li>
 <li>memVectorList2memMatrix()
-: <a class="el" href="ergo_grid_8hpp.html#a5df106ff4b681c4f8930e59ae1f607c9">ergoGrid.hpp</a>
+: <a class="el" href="group__grid.html#ga5df106ff4b681c4f8930e59ae1f607c9">ergoGrid.hpp</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
 <li>readConfig()
-: <a class="el" href="sim_o_u_8cpp.html#aa010785ea3444039793b472da019f4d6">simOU.cpp</a>
-, <a class="el" href="spectrum_8cpp.html#aa010785ea3444039793b472da019f4d6">spectrum.cpp</a>
-, <a class="el" href="transfer_8cpp.html#aa010785ea3444039793b472da019f4d6">transfer.cpp</a>
+: <a class="el" href="sim_lorenz63_8cpp.html#aa010785ea3444039793b472da019f4d6">simLorenz63.cpp</a>
 , <a class="el" href="sim_s_d_d_e_8cpp.html#aa010785ea3444039793b472da019f4d6">simSDDE.cpp</a>
+, <a class="el" href="sim_o_u_8cpp.html#aa010785ea3444039793b472da019f4d6">simOU.cpp</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_w"></a>- w -</h3><ul>
 <li>writeSpectrumAR()
-: <a class="el" href="transfer_spectrum_8hpp.html#a3708500b43775789ac011b9cd0998b49">transferSpectrum.hpp</a>
+: <a class="el" href="group__transfer.html#ga3708500b43775789ac011b9cd0998b49">transferSpectrum.hpp</a>
 </li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.12-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated on Mon Feb 8 2016 12:14:16 for ergoPack by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.12
+</small></address>
 </body>
 </html>
