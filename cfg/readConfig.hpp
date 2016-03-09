@@ -177,11 +177,11 @@ readConfig(const char *cfgFileName)
     const Setting &nxSetting = cfg.lookup("grid.nx");
     nx = gsl_vector_uint_alloc(dimObs);
     N = 1;
+    std::cout << "Number of grid boxes per dimension:" << std::endl;
     for (size_t d = 0; d < (size_t) (dimObs); d++)
       {
 	gsl_vector_uint_set(nx, d, nxSetting[d]);
 	N *= gsl_vector_uint_get(nx, d);
-	std::cout << "Number of grid boxes per dimension:" << std::endl;
 	std::cout << "dim " << d+1 << ": "
 		  << gsl_vector_uint_get(nx, d) << std::endl;
     }
@@ -191,15 +191,14 @@ readConfig(const char *cfgFileName)
 	const Setting &nSTDHighSetting = cfg.lookup("grid.nSTDHigh");
 	nSTDLow = gsl_vector_alloc(dimObs);
 	nSTDHigh = gsl_vector_alloc(dimObs);
+	std::cout << "Grid limits (nSTDLow, nSTDHigh):" << std::endl;
 	for (size_t d = 0; d < (size_t) (dimObs); d++)
 	  {
 	    gsl_vector_uint_set(nx, d, nxSetting[d]);
 	    N *= gsl_vector_uint_get(nx, d);
 	    gsl_vector_set(nSTDLow, d, nSTDLowSetting[d]);
 	    gsl_vector_set(nSTDHigh, d, nSTDHighSetting[d]);
-	    std::cout << "Grid limits (nSTDLow, nSTDHigh):" << std::endl;
 	    std::cout << "dim " << d+1 << ": ("
-		      << gsl_vector_get(nSTDLow, d) << ", "
 		      << gsl_vector_get(nSTDHigh, d) << ", "
 		      << gsl_vector_uint_get(nx, d) << ")" << std::endl;
 	  }
