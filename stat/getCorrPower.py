@@ -37,7 +37,7 @@ print 'Reading time series from ' + simFile
 if cfg.simulation.file_format == 'bin':
     X = np.fromfile(simFile, dtype=float,
                     count=int(np.round(cfg.model.dim * cfg.simulation.LCut\
-                                       / cfg.simulation.printStep / 100)))
+                                       / cfg.simulation.printStep)))
 else:
     X = np.loadtxt(simFile, dtype=float)
 X = X.reshape(-1, cfg.model.dim)

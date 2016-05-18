@@ -4,87 +4,10 @@ from scipy import sparse
 from scipy.sparse import linalg
 import matplotlib.pyplot as plt
 from matplotlib import cm
+from ergoNumAna import ChangCooper
 
-#readEigVal = False
-readEigVal = True
-
-def ChangCooper(points, idx, nx, dx, drift, Q):
-    """For a constant diagonal diffusion"""
-    (dim, N) = points.shape
-    rows = []
-    cols = []
-    data = []
-
-    for k in np.arange(N):
-        j = idx[:, k]
-        pj = points[:, k]
-
-        for d in np.arange(dim):
-            # Get step for this dimension
-            h = dx[d]
-            # Get indices +1 and -1
-            jp1 = j.copy()
-            jp1[d] += 1
-            jm1 = j.copy()
-            jm1[d] -= 1
-                
-            # Get points +1/2 and -1/2
-            pjp = pj.copy()
-            pjp[d] += h / 2
-            pjm = pj.copy()
-            pjm[d] -= h / 2
-
-            # Get fields
-            Bjp = - drift(pjp)[d]
-            Bjm = - drift(pjm)[d]
-            Cjp = Q[d, d] / 2
-            Cjm = Q[d, d] / 2
-            
-            # Get convex combination weights
-            wj = h * Bjp / Cjp
-            wjm1 = h * Bjm / Cjm
-            try:
-                deltaj = 1. / wj - 1. / (np.exp(wj) - 1)
-            except:
-                deltaj = 0.
-            try:
-                deltajm1 = 1. / wjm1 - 1. / (np.exp(wjm1) - 1)
-            except:
-                deltajm1 = 0.
-            
-            # Do not devide by step since we directly do the matrix product
-            if j[d] == 0:
-                kp1 = np.ravel_multi_index(jp1, nx)
-                rows.append(k)
-                cols.append(k)
-                data.append(-(Cjp / h - deltaj * Bjp) / h)
-                rows.append(k)
-                cols.append(kp1)
-                data.append(((1. - deltaj) * Bjp + Cjp / h) / h)
-            elif j[d] + 1 == nx[d]:
-                km1 = np.ravel_multi_index(jm1, nx)
-                rows.append(k)
-                cols.append(km1)
-                data.append((Cjm / h - deltajm1 * Bjm) / h)
-                rows.append(k)
-                cols.append(k)
-                data.append(-(Cjm / h + (1 - deltajm1) * Bjm))
-            else:
-                km1 = np.ravel_multi_index(jm1, nx)
-                kp1 = np.ravel_multi_index(jp1, nx)
-                rows.append(k)
-                cols.append(km1)
-                data.append((Cjm / h - deltajm1 * Bjm) / h)
-                rows.append(k)
-                cols.append(k)
-                data.append(-((Cjp + Cjm) / h + (1 - deltajm1) * Bjm - deltaj * Bjp) / h)
-                rows.append(k)
-                cols.append(kp1)
-                data.append(((1. - deltaj) * Bjp + Cjp / h) / h)
-
-    # Get CRS matrix
-    FPO = sparse.csr_matrix((data, (rows, cols)), shape=(N, N))
-    return FPO
+readEigVal = False
+#readEigVal = True
 
 def hopf(x, mu, omega):
     f = np.empty((2,))
@@ -94,11 +17,23 @@ def hopf(x, mu, omega):
 
 # Get model
 omega = 1.
-q = 0.5
+#q = 0.5
+#q = 0.75
 #q = 1.
+#q = 1.25
+#q = 1.5
+#q = 1.75
 #q = 2.
-#muRng = np.arange(-10, 15., 0.1)
-#k0 = 0
+#q = 2.25
+#q = 2.5
+#q = 2.75
+#q = 3.
+#q = 3.25
+#q = 3.5
+#q = 3.75
+q = 4.
+muRng = np.arange(-10, 15., 0.1)
+k0 = 0
 #muRng = np.arange(6.6, 15., 0.1)
 #k0 = 166
 #muRng = np.arange(-4, 2, 0.1)
@@ -109,8 +44,8 @@ q = 0.5
 #k0 = 180
 #muRng = np.arange(5., 10., 0.1)
 #k0 = 150
-muRng = np.array([8.])
-k0 = 180
+#muRng = np.array([8.])
+#k0 = 180
 
 # Grid definition
 dim = 2
@@ -122,7 +57,7 @@ nx0 = 100
 xlim = np.ones((dim,)) * np.sqrt(15) * 2
 
 # Number of eigenvalues
-nev = 200
+nev = 100
 tol = 1.e-6
 
 B = np.eye(dim) * q
@@ -170,8 +105,8 @@ for k in np.arange(muRng.shape[0]):
         signMu = 'm'
     else:
         signMu = 'p'
-    postfix = '_nx%d_k%03d_mu%s%02d_q%02d' \
-              % (nx0, k0 + k, signMu, int(round(np.abs(mu) * 10)), int(round(q * 10)))
+    postfix = '_nx%d_k%03d_mu%s%02d_q%03d' \
+              % (nx0, k0 + k, signMu, int(round(np.abs(mu) * 10)), int(round(q * 100)))
 
     if not readEigVal:
         # Define drift
@@ -180,7 +115,7 @@ for k in np.arange(muRng.shape[0]):
         
         # Get discretized Fokker-Planck operator
         print 'Discretizing Fokker-Planck operator'
-        FPO = ChangCooper(points, idx, nx, dx, drift, Q)
+        FPO = ChangCooper(points, nx, dx, drift, Q)
 
         print 'Solving eigenvalue problem'
         (w, v) = linalg.eigs(FPO, k=nev, which='LR', tol=tol)

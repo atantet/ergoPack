@@ -37,6 +37,7 @@
 
 # OSX
 .DS_Store
+*.dSYM
 
 # Ignore documentation folder
 html/

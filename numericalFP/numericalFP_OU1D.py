@@ -1,7 +1,7 @@
 import numpy as np
-import pylibconfig2
 from scipy import sparse
 from scipy.sparse import linalg
+
 def ChangCooper(points, idx, nx, dx, drift, Q):
     """For a constant diagonal diffusion"""
     (dim, N) = points.shape
@@ -92,24 +92,20 @@ def ChangCooper(points, idx, nx, dx, drift, Q):
     FPO = sparse.csr_matrix((data, (rows, cols)), shape=(N, N))
     return FPO
 
-# Get configuration
-configFile = '../cfg/OU2d.cfg'
-cfg = pylibconfig2.Config()
-cfg.read_file(configFile)
-
 # Grid definition
-#nx0 = 400
-nx0 = 50
-nSTD0 = 1
+nx0 = 400
+nSTD0 = 10
 
 # Number of eigenvalues
-nev = 50
-tol = 0.
+nev = 10
+tol = 1.e-6
 
 # Get model
-dim = cfg.model.dim
-A = np.array(cfg.model.drift).reshape(dim, dim)
-B = np.array(cfg.model.diffusion).reshape(dim, dim)
+dim = 1
+A = np.empty((1,1))
+B = np.empty((1,1))
+A[0, 0] = -0.5
+B[0, 0] = 1.
 
 # Define drift
 def drift(x):
@@ -143,9 +139,6 @@ FPO = ChangCooper(points, idx, nx, dx, drift, Q)
 
 print 'Solving eigenvalue problem'
 (w, v) = linalg.eigs(FPO, k=nev, which='LR', tol=tol)
-isort = np.argsort(-w.real)
-w = w[isort]
-v = v[:, isort]
 
 print 'Plotting'
 fig = plt.figure()

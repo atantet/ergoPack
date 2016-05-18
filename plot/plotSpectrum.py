@@ -1,11 +1,10 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import cm
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib.collections import PolyCollection
 import pylibconfig2
 import ergoPlot
+
+ergoPlot.dpi = 2000
 
 #configFile = '../cfg/OU2d.cfg'
 #compName1 = 'x_1'
@@ -70,13 +69,13 @@ ev_ylabel = r'$%s$' % compName2
 corrLabel = r'$C_{%s, %s}(t)$' % (compName1, compName1)
 powerLabel = r'$S_{%s, %s}(\omega)$' % (compName1, compName1)
 
-nevPlot = 0
+nevPlot = 4
 xminEigVal = -cfg.stat.rateMax
 yminEigVal = -cfg.stat.angFreqMax
-#plotBackward = False
-plotBackward = True
-#plotImag = False
-plotImag = True
+plotBackward = False
+#plotBackward = True
+plotImag = False
+#plotImag = True
 xlimEig = [xminEigVal, -xminEigVal/100]
 ylimEig = [yminEigVal, -yminEigVal]
 zlimEig = [cfg.stat.powerMin, cfg.stat.powerMax]
@@ -135,14 +134,16 @@ eigValGen = (np.log(np.abs(eigValForward)) + np.angle(eigValForward)*1j) / tau
 alpha = 0.01
 for ev in np.arange(nevPlot):
     print 'Plotting real part of eigenvector %d...' % (ev + 1,)
-    ergoPlot.plot2D(X, Y, eigVecForward[:, ev].real, ev_xlabel, ev_ylabel, alpha)
+    #ergoPlot.plot2D(X, Y, eigVecForward[:, ev].real, ev_xlabel, ev_ylabel, alpha)
+    ergoPlot.plot2D(X, Y, eigVecForward[:, ev].real*statDist, ev_xlabel, ev_ylabel, alpha)
     dstFile = '%s/spectrum/eigvec/eigvecForwardReal_nev%d_ev%03d%s.%s' \
               % (cfg.general.plotDir, cfg.spectrum.nev, ev + 1, postfix, ergoPlot.figFormat)
     plt.savefig(dstFile, bbox_inches=ergoPlot.bbox_inches, dpi=ergoPlot.dpi)
     
     if plotImag & (eigValForward[ev].imag != 0):
         print 'Plotting imaginary  part of eigenvector %d...' % (ev + 1,)
-        ergoPlot.plot2D(X, Y, eigVecForward[:, ev].imag, ev_xlabel, ev_ylabel, alpha)
+#        ergoPlot.plot2D(X, Y, eigVecForward[:, ev].imag, ev_xlabel, ev_ylabel, alpha)
+        ergoPlot.plot2D(X, Y, eigVecForward[:, ev].imag * statDist, ev_xlabel, ev_ylabel, alpha)
         dstFile = '%s/spectrum/eigvec/eigvecForwardImag_nev%d_ev%03d%s.%s' \
                   % (cfg.general.plotDir, cfg.spectrum.nev, ev + 1, postfix, ergoPlot.figFormat)
         plt.savefig(dstFile, bbox_inches=ergoPlot.bbox_inches, dpi=ergoPlot.dpi)

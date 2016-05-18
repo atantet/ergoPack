@@ -132,17 +132,21 @@ int main(int argc, char * argv[])
       try
 	{
 	  transferOp = new transferOperator(N, stationary);
+	    
 	  // Only scan initial distribution for the first lag
 	  if (lag == 0)
 	    {
 	      sprintf(initDistFileName, "%s/transfer/initDist/initDist%s.txt",
 		      resDir, gridPostfix);
+	      std::cout << "Scanning initial distribution from " << initDistFileName << std::endl;
 	      transferOp->scanInitDist(initDistFileName);
 	      gsl_vector_memcpy(initDist, transferOp->initDist);
 	    }
 	  else
 	    transferOp->setInitDist(initDist);
 	  // Scan forward transition matrix
+	  std::cout << "Scanning forward transition matrix from "
+		    << forwardTransitionFileName << std::endl;
 	  transferOp->scanForwardTransition(forwardTransitionFileName);
 
 	  if (!stationary)
@@ -152,12 +156,16 @@ int main(int argc, char * argv[])
 		{
 		  sprintf(finalDistFileName, "%s/transfer/finalDist/finalDist%s.txt",
 			  resDir, gridPostfix);
+		  std::cout << "Scanning final distribution from "
+			    << finalDistFileName << std::endl;
 		  transferOp->scanFinalDist(finalDistFileName);
 		  gsl_vector_memcpy(finalDist, transferOp->finalDist);
 		}
 	      else
 		transferOp->setFinalDist(finalDist);
 	      // Scan backward transition matrix
+	      std::cout << "Scanning backward transition matrix from "
+			<< backwardTransitionFileName << std::endl;
 	      transferOp->scanBackwardTransition(backwardTransitionFileName);
 	    }
 	}

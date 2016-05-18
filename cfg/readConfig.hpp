@@ -194,13 +194,11 @@ readConfig(const char *cfgFileName)
 	std::cout << "Grid limits (nSTDLow, nSTDHigh):" << std::endl;
 	for (size_t d = 0; d < (size_t) (dimObs); d++)
 	  {
-	    gsl_vector_uint_set(nx, d, nxSetting[d]);
-	    N *= gsl_vector_uint_get(nx, d);
 	    gsl_vector_set(nSTDLow, d, nSTDLowSetting[d]);
 	    gsl_vector_set(nSTDHigh, d, nSTDHighSetting[d]);
 	    std::cout << "dim " << d+1 << ": ("
-		      << gsl_vector_get(nSTDHigh, d) << ", "
-		      << gsl_vector_uint_get(nx, d) << ")" << std::endl;
+		      << gsl_vector_get(nSTDLow, d) << ", "
+		      << gsl_vector_get(nSTDHigh, d) << ")" << std::endl;
 	  }
       }
     else
