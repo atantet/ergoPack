@@ -37,7 +37,6 @@ char gridPostfix[256];          //!< Postfix associated with the grid
 char gridFileName[256];         //!< File name for the grid file
 configAR config;                //!< Configuration data for the eigen problem
 /** Declare default structure looking for largest magnitude eigenvalues */
-configAR defaultCfgAR = {"LM", 0, 0., 0, NULL, true};
 char configFileName[256];       //!< Name of the configuration file
 bool stationary;                //!< Whether the problem is stationary or not
 bool getForwardEigenvectors;    //!< Whether to get forward eigenvectors
@@ -54,6 +53,7 @@ readConfig(const char *cfgFileName)
 {
   Config cfg;
   char cpyBuffer[256];
+  configAR defaultCfgAR = {"LM", 0, 0., 0, NULL, true};
   
   // Read the file. If there is an error, report it and exit.
   try {

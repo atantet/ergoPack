@@ -24,7 +24,7 @@ $(SRCDIR)/%.o:$(SRCDIR)/%.cpp
 	$(CC) -c $(CFLAGS) -I$(INCDIR) -o $@ $<
 
 $(EXE).a:$(OBJ_CPP_FILES)
-	ar rcs $(EXE).a $^
+	ar -r $(EXE).a $^
 
 clean:
 	rm -f $(OBJ_CPP_FILES) $(EXE).a

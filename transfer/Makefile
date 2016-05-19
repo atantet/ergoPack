@@ -1,4 +1,3 @@
-INCDIR=
 LIBDIR=$(HOME)/PhD/dev/lib/
 LIBS=-lgsl -lconfig++ -lergopack -lgomp
 CONFIG=../cfg/readConfig
@@ -17,10 +16,10 @@ EXE=transfer
 all:$(EXE).out
 
 $(EXE).o:$(EXE).cpp
-	$(CC) -c $(CFLAGS) $(INCDIR) -o $@ $<
+	$(CC) -c $(CFLAGS) -o $@ $<
 
 $(CONFIG).o:$(CONFIG).cpp
-	$(CC) -c $(CFLAGS) $(INCDIR) -o $@ $<
+	$(CC) -c $(CFLAGS) -o $@ $<
 
 $(EXE).out:$(EXE).o $(CONFIG).o
 	$(CC) $(LDFLAGS) -o $@ $^ -L$(LIBDIR) $(LIBS)
