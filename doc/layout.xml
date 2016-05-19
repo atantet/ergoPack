@@ -5,7 +5,7 @@
     <tab type="mainpage" visible="yes" title=""/>
     <tab type="usergroup" visible="yes" title="Installation" url="@ref install">
     </tab>
-    <tab type="usergroup" visible="yes" title="Tutorial" url="@ref tutorial">
+    <tab type="usergroup" visible="yes" title="Tutorial" url="@ref tuto">
     </tab>
     <tab type="pages" visible="no" title="" intro=""/>
     <tab type="modules" visible="yes" title="" intro=""/>
