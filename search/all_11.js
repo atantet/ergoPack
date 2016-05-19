@@ -12,5 +12,5 @@ var searchData=
   ['transferspectrum',['transferSpectrum',['../classtransfer_spectrum.html',1,'transferSpectrum'],['../classtransfer_spectrum.html#a71e47fd8292c69a1aa416c57077d72ba',1,'transferSpectrum::transferSpectrum()']]],
   ['transferspectrum_2ecpp',['transferSpectrum.cpp',['../transfer_spectrum_8cpp.html',1,'']]],
   ['transferspectrum_2ehpp',['transferSpectrum.hpp',['../transfer_spectrum_8hpp.html',1,'']]],
-  ['tutorial',['Tutorial',['../tutorial.html',1,'']]]
+  ['tutorial',['Tutorial',['../tuto.html',1,'']]]
 ];
