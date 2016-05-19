@@ -17,12 +17,11 @@ var searchData=
   ['_7enumericalscheme',['~numericalScheme',['../classnumerical_scheme.html#a9971b661ae09e7711898863aba079f5c',1,'numericalScheme']]],
   ['_7enumericalschemesdde',['~numericalSchemeSDDE',['../classnumerical_scheme_s_d_d_e.html#aabb60044ee711950b6b87fb35bb2a161',1,'numericalSchemeSDDE']]],
   ['_7enumericalschemestochastic',['~numericalSchemeStochastic',['../classnumerical_scheme_stochastic.html#a62a9fe91c0dc56ba99e2fc7b1de60ab2',1,'numericalSchemeStochastic']]],
-  ['_7epolargrid',['~PolarGrid',['../group__grid.html#gab6f38c41aef2df4a5f7c4c07fbaa8093',1,'PolarGrid']]],
   ['_7epolynomial1d',['~polynomial1D',['../classpolynomial1_d.html#ab03a0f5208896980b03e7ccef614370b',1,'polynomial1D']]],
   ['_7eregulargrid',['~RegularGrid',['../class_regular_grid.html#a982cc3f6fc2a086d27f224b53117775b',1,'RegularGrid']]],
-  ['_7etransferoperator',['~transferOperator',['../group__transfer.html#gab439c74c7b875253c4dd86c95b88aeda',1,'transferOperator']]],
-  ['_7etransferspectrum',['~transferSpectrum',['../group__transfer.html#ga883a1f9c8045f4e7f20fec6a6954b06f',1,'transferSpectrum']]],
+  ['_7etransferoperator',['~transferOperator',['../classtransfer_operator.html#ab439c74c7b875253c4dd86c95b88aeda',1,'transferOperator']]],
+  ['_7etransferspectrum',['~transferSpectrum',['../classtransfer_spectrum.html#a883a1f9c8045f4e7f20fec6a6954b06f',1,'transferSpectrum']]],
   ['_7evectorfield',['~vectorField',['../classvector_field.html#a792eda0e2d57b1b07ade8876f918c1ac',1,'vectorField']]],
-  ['_7evectorfielddelay',['~vectorFieldDelay',['../group__simulation.html#ga9ca3519c56e0da1672ccf50f96dc9245',1,'vectorFieldDelay']]],
+  ['_7evectorfielddelay',['~vectorFieldDelay',['../classvector_field_delay.html#a9ca3519c56e0da1672ccf50f96dc9245',1,'vectorFieldDelay']]],
   ['_7evectorfieldstochastic',['~vectorFieldStochastic',['../classvector_field_stochastic.html#aea045e673f4f258dd8dae2131cfe54f8',1,'vectorFieldStochastic']]]
 ];

@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="todo.html"><span>Todo</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -108,19 +109,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a3e4dcca60c3ed9118289d733996a5874"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor assigning a vector field, a numerical scheme and a stochastic vector field and setting initial state to origin. <br /></td></tr>
 <tr class="separator:a3e4dcca60c3ed9118289d733996a5874"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65353834a89d0c1ad3c9f3a5e3e5771f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65353834a89d0c1ad3c9f3a5e3e5771f"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_stochastic.html#a65353834a89d0c1ad3c9f3a5e3e5771f">modelStochastic</a> (<a class="el" href="classvector_field.html">vectorField</a> *field_, <a class="el" href="classvector_field_stochastic.html">vectorFieldStochastic</a> *stocField_, <a class="el" href="classnumerical_scheme_stochastic.html">numericalSchemeStochastic</a> *scheme_, gsl_vector *<a class="el" href="sim_o_u_8cpp.html#a7f33a7974f883d7f9f30bc3cc8b788fc">initState</a>)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_stochastic.html#a65353834a89d0c1ad3c9f3a5e3e5771f">modelStochastic</a> (<a class="el" href="classvector_field.html">vectorField</a> *field_, <a class="el" href="classvector_field_stochastic.html">vectorFieldStochastic</a> *stocField_, <a class="el" href="classnumerical_scheme_stochastic.html">numericalSchemeStochastic</a> *scheme_, gsl_vector *<a class="el" href="read_config_8hpp.html#a7f33a7974f883d7f9f30bc3cc8b788fc">initState</a>)</td></tr>
 <tr class="memdesc:a65353834a89d0c1ad3c9f3a5e3e5771f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor assigning a vector field, a numerical scheme and a stochastic vector field and setting initial state. <br /></td></tr>
 <tr class="separator:a65353834a89d0c1ad3c9f3a5e3e5771f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3dcd73e0eb97142b655c436398e40d21"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3dcd73e0eb97142b655c436398e40d21"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_stochastic.html#a3dcd73e0eb97142b655c436398e40d21">~modelStochastic</a> ()</td></tr>
 <tr class="memdesc:a3dcd73e0eb97142b655c436398e40d21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor freeing memory. <br /></td></tr>
 <tr class="separator:a3dcd73e0eb97142b655c436398e40d21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab8afd0492fb134109e19845dc1bb5e7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__simulation.html#gab8afd0492fb134109e19845dc1bb5e7f">stepForward</a> ()</td></tr>
-<tr class="memdesc:gab8afd0492fb134109e19845dc1bb5e7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">One time-step forward integration of the <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a>.  <a href="group__simulation.html#gab8afd0492fb134109e19845dc1bb5e7f">More...</a><br /></td></tr>
-<tr class="separator:gab8afd0492fb134109e19845dc1bb5e7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2d4921c04263da8bfaf00d654fc01d2b"><td class="memItemLeft" align="right" valign="top">gsl_matrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__simulation.html#ga2d4921c04263da8bfaf00d654fc01d2b">integrateForward</a> (const double length, const double <a class="el" href="spectrum_8cpp.html#a028c8dc840d3db4dfe62398e3f50c758">spinup</a>, const size_t sampling)</td></tr>
-<tr class="memdesc:ga2d4921c04263da8bfaf00d654fc01d2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a> forward for a given period.  <a href="group__simulation.html#ga2d4921c04263da8bfaf00d654fc01d2b">More...</a><br /></td></tr>
-<tr class="separator:ga2d4921c04263da8bfaf00d654fc01d2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8afd0492fb134109e19845dc1bb5e7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_stochastic.html#ab8afd0492fb134109e19845dc1bb5e7f">stepForward</a> ()</td></tr>
+<tr class="memdesc:ab8afd0492fb134109e19845dc1bb5e7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">One time-step forward integration of the <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a>.  <a href="#ab8afd0492fb134109e19845dc1bb5e7f">More...</a><br /></td></tr>
+<tr class="separator:ab8afd0492fb134109e19845dc1bb5e7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d4921c04263da8bfaf00d654fc01d2b"><td class="memItemLeft" align="right" valign="top">gsl_matrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_stochastic.html#a2d4921c04263da8bfaf00d654fc01d2b">integrateForward</a> (const double length, const double <a class="el" href="read_config_8hpp.html#a028c8dc840d3db4dfe62398e3f50c758">spinup</a>, const size_t sampling)</td></tr>
+<tr class="memdesc:a2d4921c04263da8bfaf00d654fc01d2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a> forward for a given period.  <a href="#a2d4921c04263da8bfaf00d654fc01d2b">More...</a><br /></td></tr>
+<tr class="separator:a2d4921c04263da8bfaf00d654fc01d2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -148,9 +149,76 @@ gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Numerical stochastic model class. A <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a> is defined by a vector field, a stochastic vector field and a numerical scheme. The current state of the <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a> is also recorded. Attention: the constructors do not copy the vector field and the numerical scheme given to them, so that any modification or freeing will affect the <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a>. </p>
 
-<p>Definition at line <a class="el" href="_s_d_e_solvers_8hpp_source.html#l00191">191</a> of file <a class="el" href="_s_d_e_solvers_8hpp_source.html">SDESolvers.hpp</a>.</p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<p>Definition at line <a class="el" href="_s_d_e_solvers_8hpp_source.html#l00193">193</a> of file <a class="el" href="_s_d_e_solvers_8hpp_source.html">SDESolvers.hpp</a>.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a2d4921c04263da8bfaf00d654fc01d2b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gsl_matrix * modelStochastic::integrateForward </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>spinup</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>sampling</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Integrate the stochastic model forward for a given period. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>Duration of the integration. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">spinup</td><td>Initial integration period to remove. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sampling</td><td>Time step at which to save states. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Matrix to record the states. </dd></dl>
+
+<p>Definition at line <a class="el" href="_s_d_e_solvers_8cpp_source.html#l00096">96</a> of file <a class="el" href="_s_d_e_solvers_8cpp_source.html">SDESolvers.cpp</a>.</p>
+
+<p>References <a class="el" href="classvector_field.html#ac0854b28a4ff6ab764710eff1cb820b4">vectorField::dim</a>, and <a class="el" href="read_config_8hpp.html#a52d59418c1fd6f77402b8db150d7767a">nt</a>.</p>
+
+<p>Referenced by <a class="el" href="sim_o_u_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab8afd0492fb134109e19845dc1bb5e7f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void modelStochastic::stepForward </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Integrate one step forward the stochastic model with the numerical scheme. </p>
+
+<p>Definition at line <a class="el" href="_s_d_e_solvers_8cpp_source.html#l00079">79</a> of file <a class="el" href="_s_d_e_solvers_8cpp_source.html">SDESolvers.cpp</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/<a class="el" href="_s_d_e_solvers_8hpp_source.html">SDESolvers.hpp</a></li>
+<li>src/<a class="el" href="_s_d_e_solvers_8cpp_source.html">SDESolvers.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

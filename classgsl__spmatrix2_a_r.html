@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="todo.html"><span>Todo</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -111,9 +112,9 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgsl__spmatrix2_a_r.html#a7f2ba0f57d49ebdcca87a6426763c6b9">gsl_spmatrix2AR</a> (const gsl_spmatrix *M_)</td></tr>
 <tr class="memdesc:a7f2ba0f57d49ebdcca87a6426763c6b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor from GSL sparse matrix. <br /></td></tr>
 <tr class="separator:a7f2ba0f57d49ebdcca87a6426763c6b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga295ae2404c9871c3eab2ce88362a3127"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__transfer.html#ga295ae2404c9871c3eab2ce88362a3127">MultMv</a> (double *v, double *w)</td></tr>
-<tr class="memdesc:ga295ae2404c9871c3eab2ce88362a3127"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix-vector product required by ARPACK.  <a href="group__transfer.html#ga295ae2404c9871c3eab2ce88362a3127">More...</a><br /></td></tr>
-<tr class="separator:ga295ae2404c9871c3eab2ce88362a3127"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a295ae2404c9871c3eab2ce88362a3127"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgsl__spmatrix2_a_r.html#a295ae2404c9871c3eab2ce88362a3127">MultMv</a> (double *v, double *w)</td></tr>
+<tr class="memdesc:a295ae2404c9871c3eab2ce88362a3127"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix-vector product required by ARPACK.  <a href="#a295ae2404c9871c3eab2ce88362a3127">More...</a><br /></td></tr>
+<tr class="separator:a295ae2404c9871c3eab2ce88362a3127"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -125,9 +126,56 @@ const gsl_spmatrix *&#160;</td><td class="memItemRight" valign="bottom"><a class
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface from GSL sparse matrices to ARPACK++. </p>
 
-<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00059">59</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<p>Definition at line <a class="el" href="transfer_spectrum_8hpp_source.html#l00045">45</a> of file <a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a>.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a295ae2404c9871c3eab2ce88362a3127"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void gsl_spmatrix2AR::MultMv </td>
+          <td>(</td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>w</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Matrix-vector product required by ARPACK++ when using user-defined matrices (GSL sparse matrices). Modified version of gsl_spblas_dgemv in gsl_spmatrix.h . </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>Vector to multiply. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">w</td><td>Vector storing the result of multiplication. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="transfer_spectrum_8cpp_source.html#l00481">481</a> of file <a class="el" href="transfer_spectrum_8cpp_source.html">transferSpectrum.cpp</a>.</p>
+
+<p>Referenced by <a class="el" href="group__transfer.html#gac44fa6008ee2eacc221875f38595d736">getSpectrumAR()</a>, and <a class="el" href="classgsl__spmatrix2_a_r.html#a7f2ba0f57d49ebdcca87a6426763c6b9">gsl_spmatrix2AR()</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/<a class="el" href="transfer_spectrum_8hpp_source.html">transferSpectrum.hpp</a></li>
+<li>src/<a class="el" href="transfer_spectrum_8cpp_source.html">transferSpectrum.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

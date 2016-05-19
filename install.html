@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="todo.html"><span>Todo</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -87,16 +88,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Downloading and installing ergoPack</h1>
 <p>First the ergoPack repository should be cloned using <a href="https://git-scm.com/" title="git">git</a>. To do so, clone the ergoPack repository to some directory $GITDIR (git should be installed using your favorite package manager): </p><pre class="fragment">cd $GITDIR
 git clone https://github.com/atantet/ergoPack
-</pre><p> Then, copy the source files to your include directory $INCLUDE/: </p><pre class="fragment">cp ergoPack/include/*.hpp $INCLUDE/
-</pre><h1><a class="anchor" id="updating-the-code"></a>
+</pre><p>Then, compile the library: </p><pre class="fragment">make
+</pre><p>Finally, install the include files and library in directories $PREFIX/include and $PREFIX/lib: </p><pre class="fragment">make install
+</pre><p>One can set the variable PREFIX in the Makefile.</p>
+<h1><a class="anchor" id="updating-the-code"></a>
 Updating the code</h1>
-<ol type="1">
-<li>Pull the ergoPack repository: <pre class="fragment">cd $GITDIR/ergoPack     
+<p>Pull the ergoPack repository: </p><pre class="fragment">cd $GITDIR/ergoPack     
 git pull
-</pre></li>
-<li>Copy the source files to your favorite include directory $INCLUDE: <pre class="fragment">cp include/*.hpp $INCLUDE/
-</pre></li>
-</ol>
+</pre><p>Then, make and make install as in <a class="el" href="install.html#installing-the-code">Downloading and installing ergoPack</a>.</p>
 <h1><a class="anchor" id="dependencies"></a>
 Dependencies</h1>
 <ul>
@@ -107,14 +106,16 @@ git clone git://git.savannah.gnu.org/gsl.git
 make
 make install
 </pre></li>
-<li><a href="http://www.caam.rice.edu/software/ARPACK/arpack++.html" title="ARPACK++">ARPACK++</a> is an object-oriented version of the ARPACK package used to calculate the spectrum of sparse matrices in <a class="el" href="transfer_spectrum_8hpp.html" title="Get spectrum of transferOperator using ARPACK++. ">transferSpectrum.hpp</a>. It can be downloaded from the maintained repository arpackpp and installed by copying the source files to your include directory $INCLUDE: <pre class="fragment">cd $GITDIR
+<li><a href="http://www.caam.rice.edu/software/ARPACK/arpack++.html" title="ARPACK++">ARPACK++</a> is an object-oriented version of the ARPACK package used to calculate the spectrum of sparse matrices in <a class="el" href="transfer_spectrum_8hpp.html" title="Get spectrum of transferOperator using ARPACK++. ">transferSpectrum.hpp</a>. It can be downloaded from the maintained repository <a href="https://github.com/m-reuter/arpackpp" title="arpackpp">arpackpp</a> and installed by copying the source files to your include directory $INCLUDE: <pre class="fragment">cd $GITDIR
 git clone https://github.com/m-reuter/arpackpp
 cp arpackpp/include/* $INCLUDE/
-</pre> ARPACK++ depends at least on BLAS and ARPACK. If not installed yet, they can be compiled from the arpackpp directory and installed to your library directory $LIB: <pre class="fragment">cd $GITDIR/arpackpp/
+</pre></li>
+</ul>
+<p><a href="http://www.caam.rice.edu/software/ARPACK/arpack++.html" title="ARPACK++">ARPACK++</a> depends at least on <a href="http://www.netlib.org/blas/" title="BLAS">BLAS</a> and <a href="http://www.caam.rice.edu/software/ARPACK/" title="ARPACK">ARPACK</a>. If not installed yet, they can be compiled from the <a href="https://github.com/m-reuter/arpackpp" title="arpackpp">arpackpp</a> directory and installed to your library directory $LIB: </p><pre class="fragment">cd $GITDIR/arpackpp/
 ./install-openblas.sh
 ./install-arpack-ng.sh
 cp external/*.a $LIB/
-</pre></li>
+</pre><ul>
 <li><a href="http://www.hyperrealm.com/libconfig/" title="Libconfig">libconfig</a> is used in the examples to parse configuration files playing the role of Fortran's namelists. It is not required if the user uses her/his own configuration strategy. To download from the git repository and install: <pre class="fragment">cd $GITDIR
 git clone https://github.com/hyperrealm/libconfig
 cd $GITDIR/libconfig
@@ -129,8 +130,10 @@ Compiling</h1>
 <h2><a class="anchor" id="without-omp"></a>
 Without OpenMP</h2>
 <p>Include the ergoPack headers in your C++ codes. For example, in order to include the transfer operator header <a class="el" href="transfer_operator_8hpp.html" title="Calculate discretized approximation of transfer/Koopman operators from time series. ">transferOperator.hpp</a>, add in your C++ file: </p><pre class="fragment">#include &lt;transferOperator.hpp&gt;
-</pre><p> If $INCLUDE is not a system directory such as /usr/include/ or /usr/local/include/ then either it should be added to CPLUS_INCLUDE_PATH or at compilation using -I$INCLUDE. E.g. </p><pre class="fragment">g++ -c -I$INCLUDE source.cpp
-</pre><p>When linking, GSL should always be linked by added -lgsl. If GSL's directory is not a system one or in LIBRARY_PATH then -L$GSLDIR should be added. BLAS and ARPACK should be linked when using ARPACK++ in <a class="el" href="transfer_spectrum_8hpp.html" title="Get spectrum of transferOperator using ARPACK++. ">transferSpectrum.hpp</a> by adding -lopenblas -larpack. If <a href="http://www.hyperrealm.com/libconfig/" title="Libconfig">libconfig</a> is used for parsing, it should also be linked by adding -lconfig++. For example: </p><pre class="fragment">g++ -L$GSLDIR source.o -lgsl -lconfig++ -lopenblas -larpack
+</pre><p>If $INCLUDE is not a system directory such as /usr/include/ or /usr/local/include/ then either it should be added to CPLUS_INCLUDE_PATH or at compilation using -I$INCLUDE. E.g. </p><pre class="fragment">g++ -c -I$INCLUDE source.cpp
+</pre><p>When linking, the ergoPack library libergopack.a should be linked together <a href="http://www.gnu.org/software/gsl/" title="GSL - GNU Scientific Library">GSL</a> library. This is done by adding -lergopack -lgsl to the linking command. If ergoPack and <a href="http://www.gnu.org/software/gsl/" title="GSL - GNU Scientific Library">GSL</a>'s directories are not a system one or in LIBRARY_PATH then -L$ERGOPACK -L$GSLDIR should be added with ERGOPACK="/path/to/libergopack.a" and GSLDIR="/path/to/gsl/libgsl.a.
+&lt;a href="<a href="http://www.netlib.org/blas/">http://www.netlib.org/blas/</a>" title="BLAS"&gt;BLAS&lt;/a&gt; and &lt;a href="<a href="http://www.caam.rice.edu/software/ARPACK/">http://www.caam.rice.edu/software/ARPACK/</a>" title="ARPACK"&gt;ARPACK&lt;/a&gt; should be linked when using ARPACK++ in transferSpectrum.hpp by adding -lopenblas -larpack.
+If &lt;a href="<a href="http://www.hyperrealm.com/libconfig/">http://www.hyperrealm.com/libconfig/</a>" title="Libconfig"&gt;libconfig is used for parsing, it should also be linked by adding -lconfig++. For example: </p><pre class="fragment">g++ -L$GSLDIR source.o -lgsl -lconfig++ -lopenblas -larpack
 </pre><p> Note that an appropriate Makefile is provided in each example directory.</p>
 <h2><a class="anchor" id="with-omp"></a>
 With OpenMP</h2>
