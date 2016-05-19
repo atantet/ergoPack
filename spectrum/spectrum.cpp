@@ -19,46 +19,6 @@
  */
 
 
-// Configuration variables
-char resDir[256];               //!< Root directory in which results are written
-char caseName[256];             //!< Name of the case to simulate 
-char file_format[256];          //!< File format of output ("txt" or "bin")
-char delayName[256];            //!< Name associated with the number and values of the delays
-int dim;                        //!< Dimension of the phase space
-double LCut;                    //!< Length of the time series without spinup
-double spinup;                  //!< Length of initial spinup period to remove
-double L;                       //!< Total length of integration
-double dt;                      //!< Time step of integration
-double printStep;               //!< Time step of output
-size_t printStepNum;            //!< Time step of output in number of time steps of integration
-char srcPostfix[256];           //!< Postfix of simulation file.
-char srcFileName[256];          //!< Name of the source simulation file
-char dstFileName[256];          //!< Destination file name
-size_t nt0;                     //!< Number of time steps of the source time series
-size_t nt;                      //!< Number of time steps of the observable
-int dimObs;                     //!< Dimension of the observable
-size_t embedMax;                //!< Maximum lag for the embedding
-gsl_vector_uint *components;    //!< Components in the time series used by the observable
-gsl_vector_uint *embedding;     //!< Embedding lags for each component
-bool readGridMem;               //!< Whether to read the grid membership vector
-size_t N;                       //!< Dimension of the grid
-gsl_vector_uint *nx;            //!< Number of grid boxes per dimension
-gsl_vector *nSTDLow;            //!< Number of standard deviations below mean to span by the grid 
-gsl_vector *nSTDHigh;           //!< Number of standard deviations above mean to span by the grid 
-size_t nLags;                   //!< Number of transition lags for which to calculate the spectrum
-gsl_vector *tauRng;             //!< Lags for which to calculate the spectrum
-int nev;                        //!< Number of eigenvectors to calculate
-char obsName[256];              //!< Name associated with the observable
-char gridPostfix[256];          //!< Postfix associated with the grid
-char gridFileName[256];         //!< File name for the grid file
-configAR config;                //!< Configuration data for the eigen problem
-char configFileName[256];       //!< Name of the configuration file
-bool stationary;                //!< Whether the problem is stationary or not
-bool getForwardEigenvectors;    //!< Whether to get forward eigenvectors
-bool getBackwardEigenvectors;   //!< Whether to get backward eigenvectors
-bool makeBiorthonormal;         //!< Whether to make eigenvectors biorthonormal
-
-
 /** \brief Calculate the spectrum of a transfer operator.
  * 
  * After parsing the configuration file,

@@ -9,22 +9,25 @@ To do so, clone the ergoPack repository to some directory $GITDIR
 
     cd $GITDIR
     git clone https://github.com/atantet/ergoPack
-Then, copy the source files to your include directory $INCLUDE/:
-
-    cp ergoPack/include/*.hpp $INCLUDE/
     
+Then, compile the library:
+
+    make
+
+Finally, install the include files and library in directories $PREFIX/include and $PREFIX/lib:
+
+    make install
+ 
+One can set the variable PREFIX in the Makefile.
 
 \section updating-the-code Updating the code              
 
-1. Pull the ergoPack repository:
+Pull the ergoPack repository:
 
-       cd $GITDIR/ergoPack     
-       git pull
-     
-2. Copy the source files to your favorite include directory $INCLUDE:
+    cd $GITDIR/ergoPack     
+    git pull
 
-       cp include/*.hpp $INCLUDE/
-
+Then, make and make install as in \ref installing-the-code.
 
 \section dependencies Dependencies          
 
@@ -44,14 +47,15 @@ The library can then be installed using the usual Unix tools:
     
 - [ARPACK++] is an object-oriented version of the ARPACK package
 used to calculate the spectrum of sparse matrices in transferSpectrum.hpp.
-It can be downloaded from the maintained repository arpackpp and installed
+It can be downloaded from the maintained repository [arpackpp] and installed
 by copying the source files to your include directory $INCLUDE:
 
     cd $GITDIR
     git clone https://github.com/m-reuter/arpackpp
     cp arpackpp/include/* $INCLUDE/
-ARPACK++ depends at least on BLAS and ARPACK. If not installed yet,
-they can be compiled from the arpackpp directory
+    
+[ARPACK++] depends at least on [BLAS] and [ARPACK]. If not installed yet,
+they can be compiled from the [arpackpp] directory
 and installed to your library directory $LIB:
 
     cd $GITDIR/arpackpp/
@@ -83,14 +87,17 @@ Include the ergoPack headers in your C++ codes. For example,
 in order to include the transfer operator header transferOperator.hpp, add in your C++ file:
 
     #include <transferOperator.hpp>
+    
 If $INCLUDE is not a system directory such as /usr/include/ or /usr/local/include/
 then either it should be added to CPLUS_INCLUDE_PATH or at compilation using -I$INCLUDE. E.g.
 
     g++ -c -I$INCLUDE source.cpp
 
-When linking, GSL should always be linked by added -lgsl.
-If GSL's directory is not a system one or in LIBRARY_PATH then -L$GSLDIR should be added.
-BLAS and ARPACK should be linked when using ARPACK++ in transferSpectrum.hpp by adding -lopenblas -larpack.
+When linking, the ergoPack library libergopack.a should be linked
+together [GSL] library. This is done by adding -lergopack -lgsl to the linking command. 
+If ergoPack and [GSL]'s directories are not a system one or in LIBRARY_PATH then -L$ERGOPACK -L$GSLDIR should be added
+with ERGOPACK="/path/to/libergopack.a" and GSLDIR="/path/to/gsl/libgsl.a.
+[BLAS] and [ARPACK] should be linked when using ARPACK++ in transferSpectrum.hpp by adding -lopenblas -larpack.
 If [libconfig] is used for parsing, it should also be linked by adding -lconfig++.
 For example:
 
@@ -111,5 +118,8 @@ and -lgomp when linking.
 [ARPACK++]: http://www.caam.rice.edu/software/ARPACK/arpack++.html "ARPACK++"
 [libconfig]: http://www.hyperrealm.com/libconfig/ "Libconfig"
 [OMP]: http://www.openmp.org/ "OpenMP"
+[BLAS]: http://www.netlib.org/blas/ "BLAS"
+[ARPACK]: http://www.caam.rice.edu/software/ARPACK/ "ARPACK"
+[arpackpp]: https://github.com/m-reuter/arpackpp "arpackpp"
 
 */

@@ -9,6 +9,10 @@ low-dimensional chaotic flows, stochastic processes and delayed systems.
 These time series can then be used to estimate tranfer operators
 as in the present tutorial.
 
+\todo
+Give references to formulas in articles for a precise definition
+of the transition matrices.
+
 \section tutoSimulating Simulating
 
 ergoPack includes three headers to generate time series
@@ -23,17 +27,290 @@ To integrate a given system, one defines a model with a vector field for the dri
 (possibly including delays), a stochastic vector field for the diffusion
 and a finite-difference numerical scheme.
 
+Examples of simulations to be found in the "simulation/" folder will now be presented.
+
+    cd ergoPack/simulation/
+	 
+
 \subsection tutoODE ODE example: the Lorenz flow (Lorenz 1963)
+
+The code simLorenz63.cpp simulates time series of a Runge-Kutta 4 approximation
+of the Lorenz 1963 flow.
+Simulations of ODEs in ergoPack are performed by constructing a \ref model object
+with a vectorField, a numericalScheme and an initial state.
+Classes to design an ODE are found ODESolvers.hpp, which should be included as such:
+
+    #include <ODESolvers.hpp>
+
+First, the configuration file is parsed (see \ref tutoConfig).
+Then, the object corresponding to the Lorenz vector field is created:
+
+    vectorField *field = new Lorenz63(rho, sigma, beta);
+
+Here, the constructor of a Lorenz63 object with standard parameters is called
+and assigned to an object of the abstract class vectorField.
+The implementation of such abstract class allows to build a model in a very flexible way
+as every vectorField defines a member vectorField::evalField allowing to evaluate
+the vector field at a given state.
+Several classical vector fields have been developped in ODESolvers.hpp, SDESolvers.hpp and SDDESolvers.hpp.
+
+The next step is to set a numerical scheme with the object numericalScheme:
+
+    numericalScheme *scheme = new RungeKutta4(dim, dt);
+
+There, we are setting the Runge-Kutta 4 numerical scheme by calling the constructor of the RungeKutta4 object with the problem dimension (3 here) and the time step of integration.
+Every numerical scheme implements a method numericalScheme::stepForward
+which uses the vector field method vectorField::evalField to iterate
+the integration one step forward.
+Several numerical schemes, deterministic and stochastic, have been developed in ODESolvers.hpp, SDESolvers.hpp and SDDESolvers.hpp.
+
+Then, the \ref model can be defined from the vector field, the numerical scheme and some initial state:
+
+    model *mod = new model(field, scheme, initState);
+
+The initial state should be a pointer to a [GSL] vector of the dimension of the vector field.
+See the [GSL] documentation for more information.
+
+The model having been designed, we are now all set to perform the numerical integration,
+which is launched by simply calling the model::integrateForward() method of our model mod:
+
+    X = mod->integrateForward(L, spinup, printStepNum);
+
+This method takes as argument the length of the time series (in time units and not in number of steps),
+an eventual spinup period to remove from the beginning of the time series
+and the number of time steps between each record.
+It integrates the model forward by iteratively calling the numerical scheme method numericalScheme::stepForward
+and returns a pointer to an allocated gsl_matrix of the size of the time series times the dimension of the model.
+
+Once the integration has been done, the resulting matrix can be saved using standard [GSL] functions such as:
+
+    gsl_matrix_fwrite(dstStream, X);
+
+for a binary output, or:
+
+    gsl_matrix_fprintf(dstStream, X, "%f");
+
+for formatted output. We are now ready to build a transfer operator from these time series, in section \ref tutoTransfer.
 
 \subsection tutoSDE SDE example: a two-dimensional Ornstein-Uhlenbeck process
 
+\todo
+Write a tutorial on integrating stochastic differential equations based on the two-dimensional Ornstein-Uhlenbeck
+code simOU.cpp.
+
 \subsection tutoSDDE SDDE example: the nonlinear delayed oscillator (Suarez & Schopf 1988)
 
+\todo
+Write a tutorial on integrating stochastic delay differential equations
+based simSDDE.cpp.
 
-\section tutoTransfer transfer Building transfer operators
+
+\section tutoTransfer Building transfer operators from a single time series
+
+The code in transfer.cpp calculates an estimate of a transition matrix approximating
+a transfer operator from some input time series, thanks to the objects and methods
+implemented in transferOperator.hpp.
+The first step is to define a grid of boxes and to assign each realization of some
+observable to the grid box it belongs to.
+This is done by creating a grid membership matrix and using objects and functions declared in ergoGrid.hpp.
+Then, transition matrices can be estimated for different transition lags from the grid membership matrix.
+If the problem is stationary, only the forward transition matrix is estimated,
+since the backward matrix can be calculated from it.
+Otherwise, the backward transition matrix is also estimated.
+This is done by calling methods from a transferOperator object.
+Let us now explain step-by-step how this procedure is performed in transfer.cpp.
+
+After the usual configuration step (see \ref tutoConfig),
+the time series are read from a stream using the [GSL] functions:
+
+    traj = gsl_matrix_alloc(nt0, dim);
+    gsl_matrix_fread(srcStream, traj);
+
+Then an observable is defined from the time series
+by choosing which components to include and whether
+to delay some of them with respect to the others
+(thus defining an embedding):
+
+    states = gsl_matrix_alloc(nt, (size_t) dimObs);
+    for (size_t d = 0; d < (size_t) dimObs; d++)
+    {
+      gsl_vector_const_view view 
+      = gsl_matrix_const_subcolumn(traj, gsl_vector_uint_get(components, d),
+      				   embedMax - gsl_vector_uint_get(embedding, d), nt);
+      gsl_matrix_set_col(states, d, &view.vector);
+    }
+
+Next, a regular grid is defined as an object RegularGrid
+inheriting from the abstract class Grid:
+
+    grid = new RegularGrid(nx, nSTDLow, nSTDHigh, states);
+
+The constructor used here takes as argument pointers to [GSL] vectors
+with size the number of dimensions and giving
+the number of boxes for each dimension
+as well as the number of standard deviations to span
+(allowing for the grid to adapt to the time series).
+Several constructors have been implemented in ergoGrid.hpp.
+Every grid class deriving from Grid implements a method
+Grid::getBoxMembership giving the index of the box to which
+a given state belongs.
+
+The grid can then be printed, as it will be used when plotting the eigenvectors:
+
+    grid->printGrid(gridFileName, "%.12lf", true);
+
+Once the observable and the grid have been defined,
+a grid membership vector recording indexing the grid box to which each realization belongs:
+
+    gridMemVector = getGridMemVector(states, grid);
+
+Note, that if ergoPack has been compiled with [OMP] support,
+this method will be run on parallel threads.
+One can set the number of threads to be ran by setting the environment variable OMP_NUM_THREADS:
+
+    export OMP_NUM_THREADS=4
+
+Having built a membership vector from a single time series,
+we must now convert it to a membership matrix for a given transition lag
+with the first column giving the initial box of each realization
+and the second column giving the box in which the trajectory ended
+after the lag. This is done by calling the ergoGrid.hpp function:
+
+    gridMemMatrix = memVector2memMatrix(gridMemVector, tauNum);
+
+We are now ready to build the transfer operator object transferOperator:
+
+    transferOp = new transferOperator(gridMemMatrix, N, stationary);
+
+This constructor takes as argument the grid membership matrix,
+the number of grid boxes and a boolean indicating whether the
+problem is stationary or not.
+This object adds a level of abstracting facilitating the
+reading and writting of the transition matrices and the initial and final distributions
+as well as the calculation of their spectrum (see section \ref tutoSpectrum).
+Its members are transferOperator#N and transferOperator#stationary
+give the dimension of the matrix (NxN) and whether the problem is stationary or not.
+The forward and backward transition matrices are declared as [GSL] sparse matrices
+transferOperator#P and transferOperator#Q
+(in compressed column format), while the initial and final distributions
+are declared as pointers to [GSL] vectors transferOperator#initDist and transferOperator#finalDist.
+Several constructors have been implemented in transferOperator.hpp.
+
+Finally, the transition matrices and stationary distributions can be written to file
+by calling printing methods of the transferOperator object:
+
+    transferOp->printForwardTransition(forwardTransitionFileName, "%.12lf");
+    transferOp->printInitDist(initDistFileName, "%.12lf");
+    transferOp->printBackwardTransition(backwardTransitionFileName, "%.12lf");
+    transferOp->printFinalDist(finalDistFileName, "%.12lf");
+
+Note that printing the final distribution and the backward transition matrix
+is only relevant if the problem is nonstationary.
+Once the transition matrices have been estimated,
+we are ready to calculate their spectrum.
+
+\section tutoTransferMulti Building transfer operators from many time series
+
+\todo
+Write a tutorial on the estimation of transfer operators from multiple trajectories
+with different initial conditions using the constructor
+transferOperator::transferOperator(const gsl_matrix *, const gsl_matrix *, const Grid *, const bool).
+
 
 \section tutoSpectrum Calculating the spectrum
 
-//\section Reconstructing the correlation function and power spectrum
+The code in spectrum.cpp calculates the spectrum of previously estimated transition matrices
+(e.g. using transfer.cpp, section \ref tutoTransfer) using objects and methods implemented in
+transferSpectrum.hpp and calling the implicitely restarted Arnoldi method implemented in [ARPACK++].
+For a given transition lag, a transfer operator is constructed by reading
+transition matrices and distributions from file.
+Then a given number of eigenvalues and eigenvectors are calculated for each transition matrix
+and the results are written to files.
+
+After the usual configuration step (see \ref tutoConfig),
+a pointer to a transferOperator object is allocated:
+
+    transferOp = new transferOperator(N, stationary);
+
+Previously estimated distributions and transition matrices
+are then read from file:
+
+    transferOp->scanInitDist(initDistFileName);
+    transferOp->scanForwardTransition(forwardTransitionFileName);
+    transferOp->scanFinalDist(finalDistFileName);
+    transferOp->scanBackwardTransition(backwardTransitionFileName);
+
+If the problem is stationary, the last to lines are not necessary.
+Then a pointer to an object from the transferSpectrum class is declared:
+
+    transferSpec = new transferSpectrum(nev, transferOp, config);
+
+This constructor takes as argument the number of eigenvalues and eigenvectors to calculate,
+the transferOperator object in which are encapsulated the transition matrices and distributions
+and a configAR structure to configure [ARPACK++].
+If no configuration structure is given, the default one:
+
+    configAR defaultCfgAR = {"LM", 0, 0., 0, NULL, true};
+
+defined in transferSpectrum.hpp is used.
+The transferSpectrum class adds a level of abstraction, allowing to easily use [ARPACK++]
+to specifically calculate the spectrum of transition matrices.
+
+Once the transferSpectrum object has been constructed,
+the spectrum of the forward and backward transition matrices
+can be calculated:
+
+    transferSpec->getSpectrumForward();
+    transferSpec->getSpectrumBackward();
+
+These two methods call [ARPACK++] methods to calculate the
+leading eigenvalues and eigenvectors of the transition matrices.
+It is then possible to call the transferSpectrum::makeBiorthonormal method
+in order to scale and order the eigenvectors of the forward
+and backward transition matrices as a biorthonormal family:
+
+    transferSpec->makeBiorthonormal();
+
+Finally, the eigenvalues and eigenvectors can be saved to file:
+
+    transferSpec->writeSpectrumForward(EigValForwardFileName,
+     				       EigVecForwardFileName);
+    transferSpec->writeSpectrumBackward(EigValBackwardFileName,
+				        EigVecBackwardFileName);
+
+The hard part of the job is now done and it only remains to
+analyse the spectrum and eventually reconstruct correlation functions
+and power spectra from it (section \ref reconstruct).
+
+\section reconstruct Reconstructing the correlation function and power spectrum
+
+\todo
+Write a tutorial on the reconstruction of correlation functions and power spectra
+from the spectrum of transition matrices.
+
+\section tutoConfig Using libconfig to parse configuration files
+
+All the programs in this tutorial use [libconfig] to parse configuration files.
+The users can of course choose to discard any [libconfig] reference and
+configure themselves the programs.
+Here is how [libconfig] is used in the codes such as transfer.cpp:
+The user calls the program with as argument a configuration script
+
+     ./transfer.out ../cfg/OU2d.cfg
+
+In the main function of the code transfer.cpp,
+the function readConfig() from readConfig.hpp is called:
+
+     readConfig(configFileName);
+
+This is the main function using libconfig to parse a configuration file.
+This routine has been tailored for the scripts of the examples considered here.
+The user may develop his own parsing codes instead.
+The calls to [libconfig] used in readConfig.hpp are documented in [libconfig].
+
+[libconfig]: http://www.hyperrealm.com/libconfig/ "Libconfig"
+[GSL]: http://www.gnu.org/software/gsl/ "GSL - GNU Scientific Library"
+[ARPACK++]: http://www.caam.rice.edu/software/ARPACK/arpack++.html "ARPACK++"
+[OMP]: http://www.openmp.org/ "OpenMP"
 
 */
