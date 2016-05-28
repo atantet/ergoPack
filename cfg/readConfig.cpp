@@ -166,7 +166,7 @@ readConfig(const char *cfgFileName)
 	double embd = embedSetting[d];
 	gsl_vector_uint_set(embedding, d,
 			    (int) nearbyint(embd / 365 / printStep));
-	std::cout << gsl_vector_uint_get(embedding, d) << " ";
+	std::cout << embd << " ";
 	sprintf(cpyBuffer, obsName);
 	sprintf(obsName, "%s_c%zu_e%d", cpyBuffer,
 		gsl_vector_uint_get(components, d), (int) embd);

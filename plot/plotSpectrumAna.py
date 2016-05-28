@@ -11,8 +11,8 @@ ergoPlot.dpi = 2000
 #compName2 = 'x_2'
 #configFile = '../cfg/Battisti1989.cfg'
 configFile = '../cfg/Suarez1988.cfg'
-compName1 = r'y(t)'
-compName2 = r'y(t - \tau)'
+compName1 = r'y'
+compName2 = r'y'
 #configFile = '../cfg/Lorenz63.cfg'
 #compName1 = 'x'
 #compName2 = 'y'
@@ -20,6 +20,11 @@ compName2 = r'y(t - \tau)'
 
 cfg = pylibconfig2.Config()
 cfg.read_file(configFile)
+
+readSpectrum = ergoPlot.readSpectrum
+makeBiorthonormal = ~cfg.spectrum.makeBiorthonormal
+#readSpectrum = ergoPlot.readSpectrumCompressed
+#makeBiorthonormal = True
 
 # Transition lag
 if (hasattr(cfg.stat, 'tauPlot')):
@@ -65,19 +70,19 @@ gridFile = '%s/grid/grid%s.txt' % (cfg.general.resDir, gridPostfix)
 nLags = len(cfg.transfer.tauRng)
 ev_xlabel = r'$%s$' % compName1
 ev_ylabel = r'$%s$' % compName2
-corrLabel = r'$C_{%s, %s}(t)$' % (compName1[0], compName1[0])
-powerLabel = r'$S_{%s, %s}(\omega)$' % (compName1[0], compName1[0])
+corrLabel = r'$C_{%s, %s}(t)$' % (compName1, compName1)
+powerLabel = r'$S_{%s, %s}(\omega)$' % (compName1, compName1)
 xlabelCorr = r'$t$'
 
-nevPlot = 6
-xmineigVal = -cfg.stat.rateMax
-ymineigVal = -cfg.stat.angFreqMax
-#plotBackward = False
-plotBackward = True
+nevPlot = 0
+xminEigVal = -cfg.stat.rateMax
+yminEigVal = -cfg.stat.angFreqMax
+plotBackward = False
+#plotBackward = True
 plotImag = False
 #plotImag = True
-xlimEig = [xmineigVal, -xmineigVal/100]
-ylimEig = [ymineigVal, -ymineigVal]
+xlimEig = [xminEigVal, -xminEigVal/100]
+ylimEig = [yminEigVal, -yminEigVal]
 zlimEig = [cfg.stat.powerMin, cfg.stat.powerMax]
 xticks = None
 yticksPos = np.arange(0, ylimEig[1], 5.)
@@ -88,6 +93,21 @@ zticks = np.logspace(np.log10(zlimEig[0]), np.log10(zlimEig[1]),
 zticks = np.logspace(np.log10(zlimEig[0]), np.log10(zlimEig[1]),
                      int(np.round(np.log10(zlimEig[1]/zlimEig[0])/2 + 1)))
 
+maxCondition = 10
+# maxCondition = 10
+
+Analytical eigenvalues
+if cfg.model.delaysDays[1] == 90:
+    eigAna = []
+    eigDrift = np.empty((2,), dtype=complex)
+    stabFile = '../../Transfer/transferSDDE/results/stability/stabilitySpectrum_Battisti1989_Zero_tau1%d.txt' \
+               % (int(cfg.model.delaysDays[1] * 1. / 365 * 1000),)
+    ergoPlot.loadtxt_complex(stabFile, eigDrift)
+    for ii in np.arange(20):
+        for jj in np.arange(20):
+            eigAna.append(eigDrift[0] * ii + eigDrift[1] * jj)
+    eigAna = np.array(eigAna, dtype=complex)
+    eigAna = eigAna[np.argsort(-np.abs(eigAna))]
 
 # # Read grid
 coord = ergoPlot.readGrid(gridFile, dimObs)
@@ -102,23 +122,26 @@ elif dimObs == 3:
 
 # Define file names
 postfix = "%s_tau%03d" % (gridPostfix, tau * 1000)
-eigValForwardFile = '%s/eigval/eigvalForward_nev%d%s.txt' \
+EigValForwardFile = '%s/eigval/eigvalForward_nev%d%s.txt' \
                     % (cfg.general.specDir, cfg.spectrum.nev, postfix)
-eigVecForwardFile = '%s/eigvec/eigvecForward_nev%d%s.txt' \
+EigVecForwardFile = '%s/eigvec/eigvecForward_nev%d%s.txt' \
                     % (cfg.general.specDir, cfg.spectrum.nev, postfix)
-eigValBackwardFile = '%s/eigval/eigvalBackward_nev%d%s.txt' \
+EigValBackwardFile = '%s/eigval/eigvalBackward_nev%d%s.txt' \
                     % (cfg.general.specDir, cfg.spectrum.nev, postfix)
-eigVecBackwardFile = '%s/eigvec/eigvecBackward_nev%d%s.txt' \
+EigVecBackwardFile = '%s/eigvec/eigvecBackward_nev%d%s.txt' \
                     % (cfg.general.specDir, cfg.spectrum.nev, postfix)
-statDistFile = '%s/transfer/initDist/initDist%s.txt' % (cfg.general.resDir, gridPostfix)
+
+# Read stationary distribution
+statDist = np.loadtxt('%s/transfer/initDist/initDist%s.txt' % (cfg.general.resDir, gridPostfix))
 
 # Read transfer operator spectrum from file and create a bi-orthonormal basis
 # of eigenvectors and backward eigenvectors:
-print 'Readig spectrum for tau = %.3f...' % tau
-(eigValForward, eigValBackward, statDist, eigVecForward, eigVecBackward) \
-    = ergoPlot.readSpectrum(eigValForwardFile, eigValBackwardFile, statDistFile,
-                            eigVecForwardFile, eigVecBackwardFile,
-                            makeBiorthonormal=~cfg.spectrum.makeBiorthonormal)
+print 'Readig spectrum...'
+(eigValForward, eigVecForward, eigValBackward, eigVecBackward) \
+    = readSpectrum(EigValForwardFile, EigVecForwardFile,
+                   EigValBackwardFile, EigVecBackwardFile,
+                   statDist, makeBiorthonormal=makeBiorthonormal)
+
 
 print 'Getting conditionning of eigenvectors...'
 eigenCondition = ergoPlot.getEigenCondition(eigVecForward, eigVecBackward, statDist)
@@ -132,7 +155,7 @@ alpha = 0.01
 for ev in np.arange(nevPlot):
     print 'Plotting real part of eigenvector %d...' % (ev + 1,)
     #ergoPlot.plot2D(X, Y, eigVecForward[:, ev].real, ev_xlabel, ev_ylabel, alpha)
-    ergoPlot.plot2D(X, Y, eigVecForward[:, ev].real, ev_xlabel, ev_ylabel, alpha)
+    ergoPlot.plot2D(X, Y, eigVecForward[:, ev].real*statDist, ev_xlabel, ev_ylabel, alpha)
     dstFile = '%s/spectrum/eigvec/eigvecForwardReal_nev%d_ev%03d%s.%s' \
               % (cfg.general.plotDir, cfg.spectrum.nev, ev + 1, postfix, ergoPlot.figFormat)
     plt.savefig(dstFile, bbox_inches=ergoPlot.bbox_inches, dpi=ergoPlot.dpi)
@@ -140,7 +163,7 @@ for ev in np.arange(nevPlot):
     if plotImag & (eigValForward[ev].imag != 0):
         print 'Plotting imaginary  part of eigenvector %d...' % (ev + 1,)
 #        ergoPlot.plot2D(X, Y, eigVecForward[:, ev].imag, ev_xlabel, ev_ylabel, alpha)
-        ergoPlot.plot2D(X, Y, eigVecForward[:, ev].imag, ev_xlabel, ev_ylabel, alpha)
+        ergoPlot.plot2D(X, Y, eigVecForward[:, ev].imag * statDist, ev_xlabel, ev_ylabel, alpha)
         dstFile = '%s/spectrum/eigvec/eigvecForwardImag_nev%d_ev%03d%s.%s' \
                   % (cfg.general.plotDir, cfg.spectrum.nev, ev + 1, postfix, ergoPlot.figFormat)
         plt.savefig(dstFile, bbox_inches=ergoPlot.bbox_inches, dpi=ergoPlot.dpi)
@@ -175,21 +198,18 @@ imagLabel = r'$\Im(\lambda_k)$'
 
 # Read ccf
 print 'Reading correlation function and periodogram...'
-srcPostfixStat = "_%s%s_L%d_spinup%d_dt%d_samp%d" \
-                 % (caseName, delayName, L, cfg.simulation.spinup,
-                    -np.round(np.log10(cfg.simulation.dt)), int(0.05 / cfg.simulation.dt))
 corrSample = np.loadtxt('%s/correlation/%s_lag%d%s.txt'\
                         % (cfg.general.resDir, corrName,
-                           int(cfg.stat.lagMax), srcPostfixStat))
+                           int(cfg.stat.lagMax), srcPostfix))
 lags = np.loadtxt('%s/correlation/lags_lag%d%s.txt'\
                   % (cfg.general.resDir, int(cfg.stat.lagMax),
-                     srcPostfixStat))
+                     srcPostfix))
 powerSample = np.loadtxt('%s/power/%s_chunk%d%s.txt'\
                          % (cfg.general.resDir, powerName,
-                            int(cfg.stat.chunkWidth), srcPostfixStat))
+                            int(cfg.stat.chunkWidth), srcPostfix))
 freq = np.loadtxt('%s/power/freq_chunk%d%s.txt' \
                   % (cfg.general.resDir, cfg.stat.chunkWidth,
-                     srcPostfixStat))
+                     srcPostfix))
 
 # Convert to angular frequencies and normalize by covariance
 angFreq = freq * 2*np.pi
@@ -202,10 +222,10 @@ powerSample /= 2 * np.pi * cfg0
 weights = ergoPlot.getSpectralWeights(f, g, eigVecForward, eigVecBackward,
                                       statDist, skipMean=True)
 # Remove components with heigh condition number
-weights[eigenCondition > cfg.stat.maxCondition] = 0.
+weights[eigenCondition > maxCondition] = 0.
 condition = np.empty(eigenCondition.shape, dtype='S1')
 condition[:] = 'k'
-condition[eigenCondition > cfg.stat.maxCondition - 0.001] = 'w'
+condition[eigenCondition > maxCondition - 0.001] = 'w'
 (corrRec, compCorrRec) = ergoPlot.spectralRecCorrelation(lags, f, g,
                                                          eigValGen, weights,
                                                          statDist,
@@ -231,6 +251,7 @@ msize[weights.real > 0] = (msize[weights.real > 0] + 8) * 10
 # msize[weights.real > 0] = (msize[weights.real > 0] + 6) * 3
 msize[msize < 0] = 0.
 ergoPlot.plotEigPowerRec(angFreq, eigValGen, powerSample, powerRec,
+                         eigAna=eigAna,
                          markersize=msize, condition=condition,
                          xlabel=realLabel, ylabel=imagLabel,
                          zlabel=powerLabel,

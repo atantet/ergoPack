@@ -176,8 +176,9 @@ int main(int argc, char * argv[])
   for (size_t lag = 0; lag < nLags; lag++)
     {
       tau = gsl_vector_get(tauRng, lag);
-      tauNum = (size_t) (tau / printStep);
+      tauNum = (size_t) round(tau / printStep);
       sprintf(postfix, "%s_tau%03d", gridPostfix, (int) (tau * 1000));
+
       std::cout << "\nConstructing transfer operator for a lag of " << tau << std::endl;
 
 
