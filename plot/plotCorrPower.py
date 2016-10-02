@@ -14,7 +14,7 @@ for d in np.arange(len(cfg.model.delaysDays)):
     delayName = "%s_d%d" % (delayName, cfg.model.delaysDays[d])
 
 L = cfg.simulation.LCut + cfg.simulation.spinup
-printStepNum = int(cfg.simulation.printStep / cfg.simulation.dt)
+printStepNum = int(cfg.simulation.printStep / cfg.simulation.dt + 0.1)
 srcPostfix = "_%s%s_L%d_spinup%d_dt%d_samp%d" \
              % (cfg.model.caseName, delayName, L, cfg.simulation.spinup,
                 -np.round(np.log10(cfg.simulation.dt)), printStepNum)

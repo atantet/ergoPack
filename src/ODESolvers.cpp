@@ -319,14 +319,14 @@ gsl_matrix *
 model::integrateForward(const double length, const double spinup,
 			const size_t sampling)
 {
-  size_t nt = length / scheme->getTimeStep();
-  size_t ntSpinup = spinup / scheme->getTimeStep();
-  gsl_matrix *data = gsl_matrix_alloc((size_t) ((nt - ntSpinup) / sampling), dim);
-
+  size_t nt = (size_t) (length / scheme->getTimeStep() + 0.1);
+  size_t ntSpinup = (size_t) (spinup / scheme->getTimeStep() + 0.1);
+  gsl_matrix *data = gsl_matrix_alloc((size_t) ((nt - ntSpinup) / sampling),
+				      dim);
   // Get spinup
   for (size_t i = 1; i <= ntSpinup; i++)
     stepForward();
-  
+
   // Get record
   for (size_t i = ntSpinup+1; i <= nt; i++)
     {

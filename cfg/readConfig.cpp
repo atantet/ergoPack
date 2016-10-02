@@ -281,8 +281,8 @@ readConfig(const char *cfgFileName)
     // Finish configuration
     // Define time series parameters
     L = LCut + spinup;
-    printStepNum = (size_t) (printStep / dt);
-    nt0 = (size_t) (LCut / printStep);
+    printStepNum = (size_t) (printStep / dt + 0.1);
+    nt0 = (size_t) (LCut / printStep + 0.1);
     embedMax = gsl_vector_uint_max(embedding);
     nt = nt0 - embedMax;
 
@@ -290,7 +290,8 @@ readConfig(const char *cfgFileName)
     sprintf(srcPostfix, "_%s%s_L%d_spinup%d_dt%d_samp%d", caseName, delayName,
 	    (int) L, (int) spinup, (int) round(-gsl_sf_log(dt)/gsl_sf_log(10)),
 	    (int) printStepNum);
-    sprintf(srcFileName, "%s/simulation/sim%s.%s", resDir, srcPostfix, file_format);
+    sprintf(srcFileName, "%s/simulation/sim%s.%s", resDir, srcPostfix,
+	    file_format);
 
     // Define grid name
     sprintf(gridPostfix, "");

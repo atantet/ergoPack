@@ -33,12 +33,14 @@ if (hasattr(cfg.model, 'delaysDays')):
         delayName = "%s_d%d" % (delayName, cfg.model.delaysDays[d])
 
 L = cfg.simulation.LCut + cfg.simulation.spinup
-printStepNum = int(cfg.simulation.printStep / cfg.simulation.dt)
+printStepNum = int(cfg.simulation.printStep / cfg.simulation.dt + 0.1)
 caseName = cfg.model.caseName
-if (hasattr(cfg.model, 'rho') & hasattr(cfg.model, 'sigma') & hasattr(cfg.model, 'beta')):
+if (hasattr(cfg.model, 'rho') & hasattr(cfg.model, 'sigma') \
+    & hasattr(cfg.model, 'beta')):
     caseName = "%s_rho%d_sigma%d_beta%d" \
                % (caseName, (int) (cfg.model.rho * 1000),
-                  (int) (cfg.model.sigma * 1000), (int) (cfg.model.beta * 1000))
+                  (int) (cfg.model.sigma * 1000),
+                  (int) (cfg.model.beta * 1000))
 srcPostfix = "_%s%s_L%d_spinup%d_dt%d_samp%d" \
              % (caseName, delayName, L, cfg.simulation.spinup,
                 -np.round(np.log10(cfg.simulation.dt)), printStepNum)

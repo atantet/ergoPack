@@ -18,15 +18,20 @@ configAR defaultCfgAR = {"LM", 0, 0., 0, NULL, true};
 /**
  * Constructor allocating space for a given number of eigenvalues and vectors
  * for a given transferOperator.
- * \param[in] nev_        Number of eigenvalues and eigenvectors for which to allocate.
- * \param[in] transferOp_ Pointer to the transferOperator on which to solve the eigen problem.
- * \param[in] cfgAR       Configuration data used by ARPACK++ for the eigen problem.
+ * \param[in] nev_        Number of eigenvalues and eigenvectors
+ * for which to allocate.
+ * \param[in] transferOp_ Pointer to the transferOperator on which
+ * to solve the eigen problem.
+ * \param[in] cfgAR       Configuration data used by ARPACK++ for the
+ * eigen problem.
  */
-transferSpectrum::transferSpectrum(const int nev_, const transferOperator *transferOp_,
+transferSpectrum::transferSpectrum(const int nev_,
+				   const transferOperator *transferOp_,
 				   const configAR cfgAR=defaultCfgAR)
   : N(transferOp_->getN()), nev(nev_), transferOp(transferOp_), config(cfgAR),
     stationary(transferOp_->isStationary()), sorted(false),
-    EigValForward(NULL), EigVecForward(NULL), EigValBackward(NULL), EigVecBackward(NULL) {}
+    EigValForward(NULL), EigVecForward(NULL),
+    EigValBackward(NULL), EigVecBackward(NULL) {}
 
 
 /**
@@ -69,7 +74,8 @@ transferSpectrum::getSpectrumForward()
    *  Transposing is trivial since the transition matrix is in CRS format.
    *  However, it is more secure to avoid directly changing the type of
    *  the transition matrix. */
-  cpy = gsl_spmatrix_alloc_nzmax(transferOp->P->size2, transferOp->P->size1, 0, GSL_SPMATRIX_CCS);
+  cpy = gsl_spmatrix_alloc_nzmax(transferOp->P->size2, transferOp->P->size1,
+				 0, GSL_SPMATRIX_CCS);
   cpy->i = transferOp->P->i;
   cpy->data = transferOp->P->data;
   cpy->p = transferOp->P->p;
@@ -78,7 +84,8 @@ transferSpectrum::getSpectrumForward()
   gsl2AR = gsl_spmatrix2AR(cpy);
 
   //! Solve eigen value problem using user-defined ARPACK++
-  getSpectrumAR(nev, &EigProbForward, &gsl2AR, config, EigValForward, EigVecForward);
+  getSpectrumAR(nev, &EigProbForward, &gsl2AR, config, EigValForward,
+		EigVecForward);
 
   return;
 }
@@ -103,7 +110,8 @@ transferSpectrum::getSpectrumBackward()
   if (!stationary)
     {
       /** Get transpose of backward transition matrix in ARPACK CCS format */
-      cpy = gsl_spmatrix_alloc_nzmax(transferOp->Q->size2, transferOp->Q->size1,
+      cpy = gsl_spmatrix_alloc_nzmax(transferOp->Q->size2,
+				     transferOp->Q->size1,
 				     0, GSL_SPMATRIX_CCS);
       cpy->i = transferOp->Q->i;
       cpy->data = transferOp->Q->data;
@@ -121,11 +129,13 @@ transferSpectrum::getSpectrumBackward()
     }
   
   /** Get eigenvalues and vectors of backward transition matrix */
-  getSpectrumAR(nev, &EigProbBackward, &gsl2AR, config, EigValBackward, EigVecBackward);
+  getSpectrumAR(nev, &EigProbBackward, &gsl2AR, config, EigValBackward,
+		EigVecBackward);
 
   if (stationary)
     {
-      /** Divide eigenvectors (real and imaginary parts) by stationary distribution */
+      /** Divide eigenvectors (real and imaginary parts)
+       * by stationary distribution */
       for (size_t i = 0; i < N; i++)
 	{
 	  if (gsl_vector_get(transferOp->initDist, i) > 0)
@@ -166,8 +176,10 @@ transferSpectrum::getSpectrum()
  * The condition number associated with eigenvalue \f$i\f$ is
  * \f$\kappa_i = \frac{\|\psi_i\|_{\rho_s} \|\psi^*_i\|_{\rho_f}}
  * {\left<\psi_i, \psi_i^*\right>_{\rho_t}}\f$,
- * where \f$\psi_i\f$ and \f$\psi_i^*\f$ are the forward and backward (adjoint) eigenvectors,
- * respectively and norm is for \f$L^2\f$ w.r.t the initial or final distributions.
+ * where \f$\psi_i\f$ and \f$\psi_i^*\f$ are the forward
+ * and backward (adjoint) eigenvectors,
+ * respectively and norm is for \f$L^2\f$ w.r.t the initial
+ * or final distributions.
  * The condition number is equal to the inverse of the cosine of the angle
  * between the two vectors and gives a measure of the nonnormality associated
  * with a particular pair of eigenvectors.
@@ -200,7 +212,8 @@ transferSpectrum::getConditionNumbers()
 							    transferOp->finalDist));
 
       //! Set condition number
-      gsl_vector_set(conditionNumbers, ev, normForward * normBackward / inner);
+      gsl_vector_set(conditionNumbers, ev,
+		     normForward * normBackward / inner);
     }
 
   return conditionNumbers;
@@ -210,10 +223,14 @@ transferSpectrum::getConditionNumbers()
 /**
  * Get weights associated with the projection of two observables
  * on the backward and forward eigenvectors, respectively, i.e.
- * \f$ w_i = \left<f, \psi_k^* \right>_{\rho_0} \left<\psi_k, g \right>_{\rho_f} \f$.
- * \param[in] f Vector representing the first observable, projected on the backward eigenvectors.
- * \param[in] g Vector representing the second observable, projected on the forward eigenvectors.
- * \return Weights associated with each pair of eigenvectors for the two observables.
+ * \f$ w_i = \left<f, \psi_k^* \right>_{\rho_0}
+ * \left<\psi_k, g \right>_{\rho_f} \f$.
+ * \param[in] f Vector representing the first observable,
+ * projected on the backward eigenvectors.
+ * \param[in] g Vector representing the second observable,
+ * projected on the forward eigenvectors.
+ * \return Weights associated with each pair of eigenvectors
+ * for the two observables.
  */
 gsl_vector_complex *
 transferSpectrum::getWeights(const gsl_vector *f, const gsl_vector *g)
@@ -241,14 +258,14 @@ must have the same size as the grid." << std::endl;
       // Project on backward eigenvector
       gsl_vector_complex_const_view viewBack
 	= gsl_matrix_complex_const_column(EigVecBackward, ev);
-      weight = gsl_vector_complex_get_inner_product(fc, &viewBack.vector, transferOp->initDist);
+      weight = gsl_vector_complex_get_inner_product(fc, &viewBack.vector,
+						    transferOp->initDist);
 
       // Project on forward eigenvector
       gsl_vector_complex_const_view viewFor
 	= gsl_matrix_complex_const_column(EigVecForward, ev);
       weight = gsl_complex_mul(weight,
-			       gsl_vector_complex_get_inner_product(&viewFor.vector, gc,
-								    transferOp->finalDist));
+			       gsl_vector_complex_get_inner_product(&viewFor.vector, gc, transferOp->finalDist));
 
       // Set weight
       gsl_vector_complex_set(weights, ev, weight);
@@ -351,8 +368,9 @@ must be solved first before to make biorthonormal set" << std::endl;
     }
    else if (!EigValBackward || !EigVecBackward)
      {
-       std::cerr << "transferSpectrum::makeBiorthonormal, backward eigen problem\
-must be solved first before to make biorthonormal set" << std::endl;
+       std::cerr << "transferSpectrum::makeBiorthonormal,\
+backward eigen problem solved first before to make biorthonormal set"
+		 << std::endl;
        throw std::exception();
      }
    else if (!sorted)

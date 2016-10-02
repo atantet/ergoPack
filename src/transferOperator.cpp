@@ -19,7 +19,8 @@
  *                        (in which case \f$\rho_0 = \rho_f\f$ and no need
  *                        to calculate the backward transition matrix).
  */
-transferOperator::transferOperator(const gsl_matrix_uint *gridMem, const size_t N_,
+transferOperator::transferOperator(const gsl_matrix_uint *gridMem,
+				   const size_t N_,
 				   const bool stationary_=false)
   : N(N_), stationary(stationary_)
 {
@@ -40,7 +41,8 @@ transferOperator::transferOperator(const gsl_matrix_uint *gridMem, const size_t 
  */
 transferOperator::transferOperator(const gsl_matrix *initStates,
 				   const gsl_matrix *finalStates,
-				   const Grid *grid, const bool stationary_=false)
+				   const Grid *grid,
+				   const bool stationary_=false)
   : N(grid->getN()), stationary(stationary_)
 {
   gsl_matrix_uint *gridMem;
@@ -56,7 +58,8 @@ transferOperator::transferOperator(const gsl_matrix *initStates,
 }
 
 /**
- * Construct transferOperator calculating the forward and backward transition matrices
+ * Construct transferOperator calculating the forward
+ * and backward transition matrices
  * and distributions from a single long trajectory, for a given grid and lag.
  * \param[in] states         GSL matrix of states for each time step.
  * \param[in] grid           Pointer to Grid object.
@@ -550,7 +553,8 @@ final distribution not scanned because problem is stationary");
  */
 void
 getTransitionCountTriplet(const gsl_matrix_uint *gridMem, size_t N,
-			  gsl_spmatrix *T, gsl_vector *initDist=NULL, gsl_vector *finalDist=NULL)
+			  gsl_spmatrix *T, gsl_vector *initDist=NULL,
+			  gsl_vector *finalDist=NULL)
 {
   const size_t nTraj = gridMem->size1;
   size_t box0, boxf;
@@ -706,5 +710,3 @@ filterStochasticMatrix(gsl_spmatrix *M,
 
   return 0;
 }
-
-

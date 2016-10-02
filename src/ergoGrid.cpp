@@ -10,7 +10,8 @@
  */
 
 /**
- * Construct a uniform rectangular grid with same dimensions adapted to the time series.
+ * Construct a uniform rectangular grid with same dimensions
+ * adapted to the time series.
  * \param[in] inx        Number of boxes for each dimension.
  * \param[in] nSTDLow    Number of standard deviations
  *                       to span away from the mean state from below.
@@ -18,7 +19,8 @@
  *                       to span away from the mean state from above.
  * \param[in] states     Time series.
  */
-RegularGrid::RegularGrid(const size_t inx, const double nSTDLow, const double nSTDHigh,
+RegularGrid::RegularGrid(const size_t inx,
+			 const double nSTDLow, const double nSTDHigh,
 			 const gsl_matrix *states)
   : CurvilinearGrid(states->size2, inx)
 {
@@ -240,18 +242,18 @@ RegularGrid::printGrid(const char *path, const char *dataFormat="%lf",
     {
       dimBounds = bounds->at(d);
       if (verbose)
-	{
-	  std::cout << "dim " << d+1 << ": ("
-		    << gsl_vector_get(dimBounds, 0) << ", "
-		    << gsl_vector_get(dimBounds, dimBounds->size - 1) << ", "
-		    << (dimBounds->size - 1) << ")" << std::endl;
-	}
-      
+      	{
+      	  std::cout << "dim " << d+1 << ": ("
+      		    << gsl_vector_get(dimBounds, 0) << ", "
+      		    << gsl_vector_get(dimBounds, dimBounds->size - 1) << ", "
+      		    << (dimBounds->size - 1) << ")" << std::endl;
+      	}
+
       for (size_t i = 0; i < dimBounds->size; i++)
-	{
-	  fprintf(fp, dataFormat, gsl_vector_get(dimBounds, i));
-	  fprintf(fp, " ");
-	}
+      	{
+      	  fprintf(fp, dataFormat, gsl_vector_get(dimBounds, i));
+      	  fprintf(fp, " ");
+      	}
       fprintf(fp, "\n");
     }
   
@@ -287,18 +289,26 @@ RegularGrid::getBoxMembership(const gsl_vector *state) const
     {
       inBox = 0;
       subbp = box;
-      for (size_t d = 0; d < dim; d++)
+      for (size_t d = 0; d < dim - 1; d++)
 	{
-	  dimBounds = bounds->at(d);
-	  nBoxDir = dimBounds->size - 1;
+	  nBoxDir = gsl_vector_uint_get(nx, d);
 	  subbn = (size_t) (subbp / nBoxDir);
 	  ids = subbp - subbn * nBoxDir;
-	  inBox += (size_t) ((gsl_vector_get(state, d)
+	  dimBounds = bounds->at(dim - 1 - d);
+	  inBox += (size_t) ((gsl_vector_get(state, dim - 1 - d)
 			      >= gsl_vector_get(dimBounds, ids))
-			     & (gsl_vector_get(state, d)
+			     & (gsl_vector_get(state, dim - 1 - d)
 				< gsl_vector_get(dimBounds, ids+1)));
 	  subbp = subbn;
 	}
+      // Last dimension, the index is directly given by subbp
+      ids = subbp;
+      dimBounds = bounds->at(0);
+      inBox += (size_t) ((gsl_vector_get(state, 0)
+			  >= gsl_vector_get(dimBounds, ids))
+			 & (gsl_vector_get(state, 0)
+			    < gsl_vector_get(dimBounds, ids+1)));
+      // Is the state in this box?
       if (inBox == dim)
 	{
 	  foundBox = box;

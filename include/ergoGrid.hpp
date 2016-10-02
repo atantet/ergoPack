@@ -146,7 +146,8 @@ public:
   }
 
   /** \brief Print regular grid to file. */
-  int printGrid(const char *path, const char *dataFormat, const bool verbose) const;
+  int printGrid(const char *path, const char *dataFormat,
+		const bool verbose) const;
 
   /** \brief Get membership of a state to a box. */
   size_t getBoxMembership(const gsl_vector *state) const;

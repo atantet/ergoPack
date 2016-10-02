@@ -1,6 +1,6 @@
 INCDIR=include/
 SRCDIR=src/
-PREFIX=$(HOME)/PhD/dev/
+PREFIX=$(HOME)/Research/dev/
 #PREFIX=/usr/local/
 
 CC=g++
