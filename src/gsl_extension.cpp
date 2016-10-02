@@ -280,7 +280,7 @@ gsl_vector_complex_memcpy_real(gsl_vector_complex *dst, const gsl_vector *src)
   gsl_vector_view view;
   
   if (dst->size != src->size)
-    fprintf(stderr, "Vectors should have the same size.", GSL_EINVAL);
+    GSL_ERROR("Vectors should have the same size.", GSL_EINVAL);
 
   //! Copy source vector to real part of complex destination vector
   view = gsl_vector_complex_real(dst);
