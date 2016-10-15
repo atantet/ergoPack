@@ -278,46 +278,114 @@ size_t
 RegularGrid::getBoxMembership(const gsl_vector *state) const
 {
   const size_t dim = state->size;
-  size_t inBox, nBoxDir;
-  size_t foundBox;
-  size_t subbp, subbn, ids;
-  gsl_vector *dimBounds;
+  size_t nFoundInt, nBoxDir, foundBox, idInt;
+  gsl_vector *boundsDir;
+  gsl_vector_uint *idIntervals = gsl_vector_uint_alloc(dim);
 
   // Get box
   foundBox = N;
-  for (size_t box = 0; box < N; box++)
+  nFoundInt = 0;
+  // Check for each dimension
+  for (size_t d = 0; d < dim; d++)
     {
-      inBox = 0;
-      subbp = box;
-      for (size_t d = 0; d < dim - 1; d++)
+      // Get bounds for each interval of direction d
+      boundsDir = bounds->at(d);
+      // Get the number of intervals
+      nBoxDir = gsl_vector_uint_get(nx, d);
+      
+      // If state outisde domain, no need to continue to test,
+      // the box is not found.
+      // The intervals must not overlap and be ordered increasingly.
+      idInt = 0;
+      if (gsl_vector_get(state, d) < gsl_vector_get(boundsDir, idInt))
+	break;
+
+      // Get interval for direction d
+      while ((idInt < nBoxDir) &&
+	     (gsl_vector_get(state, d) > gsl_vector_get(boundsDir, idInt + 1)))
+	// Not in interval idInt, iterate to next interval
+	idInt++;
+
+      // Check if interval was found.
+      // If yes, save the index for direction d and go to next direction.
+      // Otherwise the box is outside the domain, no need to continue, the box is not found.
+      if (idInt < nBoxDir)
 	{
-	  nBoxDir = gsl_vector_uint_get(nx, d);
-	  subbn = (size_t) (subbp / nBoxDir);
-	  ids = subbp - subbn * nBoxDir;
-	  dimBounds = bounds->at(dim - 1 - d);
-	  inBox += (size_t) ((gsl_vector_get(state, dim - 1 - d)
-			      >= gsl_vector_get(dimBounds, ids))
-			     & (gsl_vector_get(state, dim - 1 - d)
-				< gsl_vector_get(dimBounds, ids+1)));
-	  subbp = subbn;
+	  nFoundInt++;
+	  gsl_vector_uint_set(idIntervals, d, idInt);
+	  continue;
 	}
-      // Last dimension, the index is directly given by subbp
-      ids = subbp;
-      dimBounds = bounds->at(0);
-      inBox += (size_t) ((gsl_vector_get(state, 0)
-			  >= gsl_vector_get(dimBounds, ids))
-			 & (gsl_vector_get(state, 0)
-			    < gsl_vector_get(dimBounds, ids+1)));
-      // Is the state in this box?
-      if (inBox == dim)
-	{
-	  foundBox = box;
-	  break;
-	}
+      else
+	break;
     }
+  
+  // Is the state in this box?
+  if (nFoundInt == dim)
+    {
+      // Convert interval indices to box index, e.g.:
+      // foundBox = iz + nz * (iy + ny * ix)
+      foundBox = gsl_vector_uint_get(idIntervals, 0);
+      for (size_t d = 1; d < dim; d++)
+	foundBox = foundBox * gsl_vector_uint_get(nx, d)
+	  + gsl_vector_uint_get(idIntervals, d);
+    }
+
+  // Free
+  gsl_vector_uint_free(idIntervals);
   
   return foundBox;
 }
+
+
+// /**
+//  * Get membership to a grid box of a single realization.
+//  * \param[in] state          Vector of a single state.
+//  * \return                   Box index to which the state belongs.
+//  */
+// size_t
+// RegularGrid::getBoxMembership(const gsl_vector *state) const
+// {
+//   const size_t dim = state->size;
+//   size_t inBox, nBoxDir;
+//   size_t foundBox;
+//   size_t subbp, subbn, ids;
+//   gsl_vector *boundsDir;
+
+//   // Get box
+//   foundBox = N;
+//   for (size_t box = 0; box < N; box++)
+//     {
+//       inBox = 0;
+//       subbp = box;
+//       for (size_t d = 0; d < dim - 1; d++)
+// 	{
+// 	  nBoxDir = gsl_vector_uint_get(nx, d);
+// 	  subbn = (size_t) (subbp / nBoxDir);
+// 	  ids = subbp - subbn * nBoxDir;
+// 	  boundsDir = bounds->at(dim - 1 - d);
+// 	  inBox += (size_t) ((gsl_vector_get(state, dim - 1 - d)
+// 			      >= gsl_vector_get(boundsDir, ids))
+// 			     & (gsl_vector_get(state, dim - 1 - d)
+// 				< gsl_vector_get(boundsDir, ids+1)));
+// 	  subbp = subbn;
+// 	}
+//       // Last dimension, the index is directly given by subbp
+//       ids = subbp;
+//       boundsDir = bounds->at(0);
+//       inBox += (size_t) ((gsl_vector_get(state, 0)
+// 			  >= gsl_vector_get(boundsDir, ids))
+// 			 & (gsl_vector_get(state, 0)
+// 			    < gsl_vector_get(boundsDir, ids+1)));
+//       // Is the state in this box?
+//       if (inBox == dim)
+// 	{
+// 	  foundBox = box;
+// 	  break;
+// 	}
+//     }
+  
+//   return foundBox;
+// }
 
 
 /** 
@@ -329,13 +397,13 @@ void
 RegularGrid::getBoxPosition(const size_t index, gsl_vector *position) const
 {
   double component;
-  gsl_vector *dimBounds;
+  gsl_vector *boundsDir;
 
   for (size_t d = 0; d < dim; d++)
     {
-      dimBounds = bounds->at(d);
-      component = (gsl_vector_get(dimBounds, index + 1)
-		   + gsl_vector_get(dimBounds, index)) / 2;
+      boundsDir = bounds->at(d);
+      component = (gsl_vector_get(boundsDir, index + 1)
+		   + gsl_vector_get(boundsDir, index)) / 2;
       gsl_vector_set(position, d, component);
     }
 

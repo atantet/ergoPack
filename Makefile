@@ -1,6 +1,7 @@
 INCDIR=include/
 SRCDIR=src/
-PREFIX=$(HOME)/Research/dev/
+INC=-I$(HOME)/local/include/
+PREFIX=$(HOME)/local/
 #PREFIX=/usr/local/
 
 CC=g++
@@ -21,7 +22,7 @@ EXE=libergopack
 all:$(EXE).a
 
 $(SRCDIR)/%.o:$(SRCDIR)/%.cpp
-	$(CC) -c $(CFLAGS) -I$(INCDIR) -o $@ $<
+	$(CC) -c $(CFLAGS) -I$(INCDIR) $(INC) -o $@ $<
 
 $(EXE).a:$(OBJ_CPP_FILES)
 	ar -r $(EXE).a $^

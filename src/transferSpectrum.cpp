@@ -207,9 +207,10 @@ transferSpectrum::getConditionNumbers()
 						 transferOp->finalDist);
 
       //! Divide by their inner product (in case not made biorthonormal)
-      inner = GSL_REAL(gsl_vector_complex_get_inner_product(&viewFor.vector,
-							    &viewBack.vector,
-							    transferOp->finalDist));
+      inner
+	= GSL_REAL(gsl_vector_complex_get_inner_product(&viewFor.vector,
+							&viewBack.vector,
+							transferOp->finalDist));
 
       //! Set condition number
       gsl_vector_set(conditionNumbers, ev,

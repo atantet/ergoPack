@@ -255,11 +255,13 @@ for k in np.arange(muRng.shape[0]):
             Rpo = (eps**2/2)**(1./4)
             # Plot isochron
             THETAIso = THETAXY.copy()
-            THETAIso[RXY > 0] -= beta/2 * np.log((Rpo**2 + RXY[RXY > 0]**2) \
-                                                 / (2*Rpo**4))
+            # THETAIso[RXY > 0] -= beta /2 * np.log((Rpo**2 + RXY[RXY > 0]**2) \
+            #                                      / (2*Rpo**4))
+            THETAIso[RXY > 0] -= beta * np.log(RXY[RXY > 0])
             THETAIso = np.mod(THETAIso, 2*np.pi) - np.pi
             val = 0.
-            idx = np.unravel_index(np.argmin(np.abs(eigVec2Angle - val)), X.shape)
+            idx = np.unravel_index(np.argmin(np.abs(eigVec2Angle - val)),
+                                   X.shape)
             THETAIso += val - THETAIso[idx]
             THETAIso[np.abs(THETAIso - val) > np.pi/2] = None
             ciso = ax.contour(X, Y, THETAIso, [val], linestyles='-', colors='b',
@@ -284,7 +286,8 @@ for k in np.arange(muRng.shape[0]):
             THETAIso[RXY > 0] -= beta/2 * np.log((mu - RXY[RXY > 0]**2) / mu)
             THETAIso = np.mod(THETAIso, 2*np.pi) - np.pi
             val = 0.
-            idx = np.unravel_index(np.argmin(np.abs(eigVec2Angle - val)), X.shape)
+            idx = np.unravel_index(np.argmin(np.abs(eigVec2Angle - val)),
+                                   X.shape)
             THETAIso += val - THETAIso[idx]
             THETAIso[np.abs(THETAIso - val) > np.pi/2] = None
             ciso = ax.contour(X, Y, THETAIso, [val], linestyles='-', colors='b',
@@ -315,6 +318,7 @@ for k in np.arange(muRng.shape[0]):
     ax.text(pxlim[1]*0.55, pylim[1]*1.03, r'$\beta = %.1f$' % beta,
             fontsize='xx-large')
     # Save
-    fig.savefig('%s/vsAnaPlaneEigVec2%s.%s' % (plotDir, postfix, ergoPlot.figFormat),
+    fig.savefig('%s/vsAnaPlaneEigVec2%s.%s' \
+                % (plotDir, postfix, ergoPlot.figFormat),
                 bbox_inches=ergoPlot.bbox_inches, dpi=ergoPlot.dpi)
     plt.show()
