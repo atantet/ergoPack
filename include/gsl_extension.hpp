@@ -1,6 +1,7 @@
 #ifndef GSL_EXTENSION_HPP
 #define GSL_EXTENSION_HPP
 
+#include <cstdio>
 #include <gsl/gsl_complex.h>
 #include <gsl/gsl_complex_math.h>
 #include <gsl/gsl_vector.h>
@@ -100,5 +101,7 @@ double gsl_spmatrix_get_sum(const gsl_spmatrix *m);
 int gsl_spmatrix_div_rows(gsl_spmatrix *m, const gsl_vector *v, const double tol);
 /** \brief Divide each column of a compressed matrix by a vector. */
 int gsl_spmatrix_div_cols(gsl_spmatrix *m, const gsl_vector *v, const double tol);
+/** \brief Pre-allocate a sparse matrix to read from a binary stream. */
+gsl_spmatrix *gsl_spmatrix_alloc2read(FILE *stream, const size_t type);
 
 #endif

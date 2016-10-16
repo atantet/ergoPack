@@ -1,4 +1,5 @@
 #include <transferOperator.hpp>
+#include <cstring>
 
 /** \file transferOperator.cpp
  *  \brief Definitions for transferOperator.hpp
@@ -236,12 +237,15 @@ backward transition matrix.\n");
 /**
  * Print forward transition matrix to file in coordinate format with header
  * (see transferOperator.hpp)
- * \param[in] path Path to the file in which to print.
- * \param[in] dataFormat      Format in which to print each element.
- * \return         Status.
+ * \param[in] path       Path to the file in which to print.
+ * \param[in] fileFormat String "bin" or "txt" for the output type.
+ * \param[in] dataFormat Format in which to print each element.
+ * \return               Status.
  */
 int
-transferOperator::printForwardTransition(const char *path, const char *dataFormat="%lf")
+transferOperator::printForwardTransition(const char *path,
+					 const char *fileFormat="txt",
+					 const char *dataFormat="%lf")
 {
   FILE *fp;
 
@@ -253,7 +257,11 @@ opening stream to write");
     }
 
   // Print
-  gsl_spmatrix_fprintf(fp, P, dataFormat);
+  if (strcmp(fileFormat, "bin") == 0)
+    gsl_spmatrix_fwrite(fp, P);
+  else
+    gsl_spmatrix_fprintf(fp, P, dataFormat);
+  
   if (ferror(fp))
     {
       throw std::ios::failure("transferOperator::printForwardTransition, \
@@ -269,15 +277,19 @@ printing to transition matrix");
 /**
  * Print backward transition matrix to file in coordinate format with header
  * (see transferOperator.hpp)
- * \param[in] path Path to the file in which to print.
- * \param[in] dataFormat      Format in which to print each element.
- * \return         Status.
+ * \param[in] path       Path to the file in which to print.
+ * \param[in] fileFormat String "bin" or "txt" for the output type.
+ * \param[in] dataFormat Format in which to print each element.
+ * \return               Status.
  */
 int
-transferOperator::printBackwardTransition(const char *path, const char *dataFormat="%lf")
+transferOperator::printBackwardTransition(const char *path,
+					  const char *fileFormat="txt",
+					  const char *dataFormat="%lf")
 {
   FILE *fp;
 
+  // Print
   if (Q)
     {
       // Open file
@@ -288,7 +300,11 @@ opening stream to write");
 	}
 
       // Print 
-      gsl_spmatrix_fprintf(fp, Q, dataFormat);
+      if (strcmp(fileFormat, "bin") == 0)
+	gsl_spmatrix_fwrite(fp, Q);
+      else
+	gsl_spmatrix_fprintf(fp, Q, dataFormat);
+      
       if (ferror(fp))
 	{
 	  throw std::ios::failure("transferOperator::printBackwardTransition, \
@@ -309,12 +325,15 @@ backward transition matrix not calculated.");
 
 /**
  * Print initial distribution to file.
- * \param[in] path Path to the file in which to print.
- * \param[in] dataFormat      Format in which to print each element.
- * \return         Status.
+ * \param[in] path       Path to the file in which to print.
+ * \param[in] fileFormat String "bin" or "txt" for the output type.
+ * \param[in] dataFormat Format in which to print each element.
+ * \return               Status.
  */
 int
-transferOperator::printInitDist(const char *path, const char *dataFormat="%lf")
+transferOperator::printInitDist(const char *path,
+				const char *fileFormat="txt",
+				const char *dataFormat="%lf")
 {
   FILE *fp;
 
@@ -326,7 +345,10 @@ opening stream to write");
     }
 
   // Print
-  gsl_vector_fprintf(fp, initDist, dataFormat);
+  if (strcmp(fileFormat, "bin") == 0)
+    gsl_vector_fwrite(fp, initDist);
+  else
+    gsl_vector_fprintf(fp, initDist, dataFormat);
 
   // Close
   fclose(fp);
@@ -337,11 +359,14 @@ opening stream to write");
 /**
  * Print final distribution to file.
  * \param[in] path       Path to the file in which to print.
+ * \param[in] fileFormat String "bin" or "txt" for the output type.
  * \param[in] dataFormat Format in which to print each element.
  * \return               Status.
  */
 int
-transferOperator::printFinalDist(const char *path, const char *dataFormat="%lf")
+transferOperator::printFinalDist(const char *path,
+				 const char *fileFormat="txt",
+				 const char *dataFormat="%lf")
 {
   FILE *fp;
 
@@ -353,7 +378,10 @@ opening stream to write");
     }
   
   // Print
-  gsl_vector_fprintf(fp, finalDist, dataFormat);
+  if (strcmp(fileFormat, "bin") == 0)
+    gsl_vector_fwrite(fp, finalDist);
+  else
+    gsl_vector_fprintf(fp, finalDist, dataFormat);
   
   // Close
   fclose(fp);
@@ -366,16 +394,18 @@ opening stream to write");
  * (see transferOperator.hpp).
  * No preliminary memory allocation needed but the grid size should be set.
  * Previously allocated memory should first be freed to avoid memory leak.
- * \param[in] path Path to the file in which to scan.
- * \return         0 in success, EXIT_FAILURE otherwise.
+ * \param[in] path       Path to the file in which to scan.
+ * \param[in] fileFormat String "bin" or "txt" for the output type.
+ * \return               0 in success, EXIT_FAILURE otherwise.
  */
 int
-transferOperator::scanForwardTransition(const char *path)
+transferOperator::scanForwardTransition(const char *path,
+					const char *fileFormat="txt")
 {
   FILE *fp;
   gsl_spmatrix *T;
   
-  // Open file
+  /** Open file */
   if (!(fp = fopen(path, "r")))
     {
       throw std::ios::failure("transferOperator::scanForwardTransition, \
@@ -383,22 +413,30 @@ opening stream to read");
   }
 
   /** Scan, summing if duplicate */
-  if (!(T = gsl_spmatrix_fscanf(fp)))
+  if (strcmp(fileFormat, "bin") == 0)
     {
-      throw std::ios::failure("transferOperator::scanForwardTransition, \
+      /** Allocate before to read in CRS binary format */
+      P = gsl_spmatrix_alloc2read(fp, GSL_SPMATRIX_CRS);
+      gsl_spmatrix_fread(fp, P);
+    }
+  else
+    {
+      /** Read in Matrix Market format */
+      T = gsl_spmatrix_fscanf(fp);
+      if (!T)
+	{
+	  throw std::ios::failure("transferOperator::scanForwardTransition, \
 scanning transition matrix");
+	}
+
+      /** Compress */
+      P = gsl_spmatrix_crs(T);
+
+      /** Free */
+      gsl_spmatrix_free(T);
     }
 
-  /** Check if matrix dimension consistent with grid size */
-  if ((T->size1 != T->size2) || (T->size1 != N))
-    {
-      throw std::length_error("transferOperator::scanForwardTransition, \
-Triplet matrix size not consistent with this->N");
-    }
-
-  /** Compress */
-  P = gsl_spmatrix_crs(T);
-  gsl_spmatrix_free(T);
+  /** Check if transition matrix has been properly read */
   if (!P)
     {
       fprintf(stderr, "transferOperator::scanForwardTransition: error\
@@ -406,7 +444,7 @@ compressing forward transition matrix.\n");
       throw std::exception();
     }
 
-  //Close
+  /** Close */
   fclose(fp);
   
   return 0;
@@ -417,16 +455,19 @@ compressing forward transition matrix.\n");
  * (see transferOperator.hpp).
  * No preliminary memory allocation needed but the grid size should be set.
  * Previously allocated memory should first be freed to avoid memory leak.
- * \param[in] path Path to the file in which to scan.
- * \return         0 in success, EXIT_FAILURE otherwise.
+ * \param[in] path       Path to the file in which to scan.
+ * \param[in] fileFormat String "bin" or "txt" for the output type.
+ * \return               0 in success, EXIT_FAILURE otherwise.
  */
 int
-transferOperator::scanBackwardTransition(const char *path)
+transferOperator::scanBackwardTransition(const char *path,
+					 const char *fileFormat="txt")
 {
   FILE *fp;
   gsl_spmatrix *T;
   
-  // Open file
+  
+  /** Open file */
   if (!stationary)
     {
       if (!(fp = fopen(path, "r")))
@@ -436,30 +477,38 @@ opening stream to read");
 	}
 
       /** Scan, summing if duplicate */
-      if (!(T = gsl_spmatrix_fscanf(fp)))
+      if (strcmp(fileFormat, "bin") == 0)
 	{
-	  throw std::ios::failure("transferOperator::scanBackwardTransition, \
+	  /** Allocate before to read in CRS binary format */
+	  Q = gsl_spmatrix_alloc2read(fp, GSL_SPMATRIX_CRS);
+	  gsl_spmatrix_fread(fp, Q);
+	}
+      else
+	{
+	  /** Read in Matrix Market format */
+	  T = gsl_spmatrix_fscanf(fp);
+	  if (!T)
+	    {
+	      throw std::ios::failure("transferOperator::scanForwardTransition, \
 scanning transition matrix");
+	    }
+
+	  /** Compress */
+	  Q = gsl_spmatrix_crs(T);
+
+	  /** Free */
+	  gsl_spmatrix_free(T);
 	}
 
-      /** Check if matrix dimension consistent with grid size */
-      if ((T->size1 != T->size2) || (T->size1 != N))
-	{
-	  throw std::length_error("transferOperator::scanBackwardTransition, \
-Triplet matrix size not consistent with this->N");
-	}
-
-      /** Compress */
-      Q = gsl_spmatrix_crs(T);
-      gsl_spmatrix_free(T);
+      /** Check if transition matrix has been properly read */
       if (!Q)
 	{
 	  fprintf(stderr, "transferOperator::scanBackwardTransition: error\
 compressing backward transition matrix.\n");
 	  throw std::exception();
 	}
-
-      //Close
+      
+      /** Close */
       fclose(fp);
     }
   else
@@ -467,7 +516,6 @@ compressing backward transition matrix.\n");
       throw std::ios::failure("transferOperator::scanBackwardTransition:\
 backward transition matrix not scanned because problem is stationary");
     }
-
   
   return 0;
 }
@@ -477,11 +525,13 @@ backward transition matrix not scanned because problem is stationary");
  * Scan initial distribution from file.
  * No preliminary memory allocation needed but the grid size should be set.
  * Previously allocated memory should first be freed to avoid memory leak.
- * \param[in] path Path to the file in which to scan.
- * \return         0 in success, EXIT_FAILURE otherwise.
+ * \param[in] path       Path to the file in which to scan.
+ * \param[in] fileFormat String "bin" or "txt" for the output type.
+ * \return               0 in success, EXIT_FAILURE otherwise.
  */
 int
-transferOperator::scanInitDist(const char *path)
+transferOperator::scanInitDist(const char *path,
+			       const char *fileFormat="txt")
 {
   FILE *fp;
     
@@ -493,7 +543,10 @@ opening stream to read");
     }
 
   /** Scan after preallocating */
-  gsl_vector_fscanf(fp, initDist);
+  if (strcmp(fileFormat, "bin") == 0)
+    gsl_vector_fread(fp, initDist);
+  else
+    gsl_vector_fscanf(fp, initDist);
   
   //Close
   fclose(fp);
@@ -505,11 +558,13 @@ opening stream to read");
  * Scan final distribution from file.
  * No preliminary memory allocation needed but the grid size should be set.
  * Previously allocated memory should first be freed to avoid memory leak.
- * \param[in] path Path to the file in which to scan.
- * \return         0 in success, EXIT_FAILURE otherwise.
+ * \param[in] path       Path to the file in which to scan.
+ * \param[in] fileFormat String "bin" or "txt" for the output type.
+ * \return               0 in success, EXIT_FAILURE otherwise.
  */
 int
-transferOperator::scanFinalDist(const char *path)
+transferOperator::scanFinalDist(const char *path,
+				const char *fileFormat="txt")
 {
   FILE *fp;
 
@@ -523,7 +578,10 @@ opening stream to read");
 	}
 
       /** Scan after preallocating */
-      gsl_vector_fscanf(fp, finalDist);
+      if (strcmp(fileFormat, "bin") == 0)
+	gsl_vector_fread(fp, finalDist);
+      else
+	gsl_vector_fscanf(fp, finalDist);
   
       //Close
       fclose(fp);
@@ -580,7 +638,8 @@ getTransitionCountTriplet(const gsl_matrix_uint *gridMem, size_t N,
 	  else
 	    gsl_spmatrix_set(T, box0, boxf, 1.);   /* initalize to x */
 
-	  // Add initial and final boxes to initial and final distributions, respectively
+	  // Add initial and final boxes to initial and final distributions,
+	  // respectively
 	  if (initDist)
 	    gsl_vector_set(initDist, box0, gsl_vector_get(initDist, box0) + 1.);
 	  if (finalDist)

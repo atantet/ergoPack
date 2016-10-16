@@ -110,30 +110,38 @@ public:
 
   // Output methods
   /** \brief Print forward transition matrix to file in coordinate format.*/
-  int printForwardTransition(const char *path, const char *dataFormat);
+  int printForwardTransition(const char *path,
+			     const char *fileFormat, const char *dataFormat);
   
   /** \brief Print backward transition matrix to file in coordinate format.*/
-  int printBackwardTransition(const char *path, const char *dataFormat);
+  int printBackwardTransition(const char *path,
+			      const char *fileFormat, const char *dataFormat);
   
   /** \brief Print initial distribution to file.*/
-  int printInitDist(const char *path, const char *dataFormat);
+  int printInitDist(const char *path,
+		    const char *fileFormat, const char *dataFormat);
   
   /** \brief Print final distribution to file.*/
-  int printFinalDist(const char *path, const char *dataFormat);
+  int printFinalDist(const char *path,
+		     const char *fileFormat, const char *dataFormat);
 
   
   // Input methods
   /** \brief Scan forward transition matrix to file in coordinate format.*/
-  int scanForwardTransition(const char *path);
+  int scanForwardTransition(const char *path,
+			    const char *fileFormat);
   
   /** \brief Scan backward transition matrix to file in coordinate format.*/
-  int scanBackwardTransition(const char *path);
+  int scanBackwardTransition(const char *path,
+			     const char *fileFormat);
   
   /** \brief Scan initial distribution to file.*/
-  int scanInitDist(const char *path);
+  int scanInitDist(const char *path,
+		   const char *fileFormat);
   
   /** \brief Scan final distribution to file.*/
-  int scanFinalDist(const char *path);
+  int scanFinalDist(const char *path,
+		    const char *fileFormat);
 
 
   // Manual modifications

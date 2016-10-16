@@ -546,7 +546,8 @@ int gsl_permute_matrix_complex(const gsl_permutation * p, gsl_matrix_complex * m
     }
   else
     {
-      GSL_ERROR("Axis must be either 0 (along rows) or 1 (along columns).", GSL_EINVAL);
+      GSL_ERROR("Axis must be either 0 (along rows) or 1 (along columns).",
+		GSL_EINVAL);
     }
 
   if (p->size != sizeAxis)
@@ -562,9 +563,18 @@ to permute", GSL_EINVAL);
   //! Permute
   for (size_t i = 0; i < sizeAxis; i++)
     {
-      gsl_vector_complex_const_view view
-	= gsl_matrix_complex_const_column(tmp, (gsl_permutation_data(p))[i]);
-      gsl_matrix_complex_set_col(m, i, &view.vector);
+      if (axis == 0)
+	{
+	  gsl_vector_complex_const_view view
+	    = gsl_matrix_complex_const_row(tmp, (gsl_permutation_data(p))[i]);
+	  gsl_matrix_complex_set_row(m, i, &view.vector);
+	}
+      else if (axis == 1)
+	{
+	  gsl_vector_complex_const_view view
+	    = gsl_matrix_complex_const_column(tmp, (gsl_permutation_data(p))[i]);
+	  gsl_matrix_complex_set_col(m, i, &view.vector);
+	}
     }
 
   return GSL_SUCCESS;
@@ -1063,3 +1073,48 @@ gsl_spmatrix_div_cols(gsl_spmatrix *m, const gsl_vector *v, const double tol)
   return GSL_SUCCESS;
 }
 
+
+/** 
+ * Pre-allocate a sparse matrix in triplet format to read from a binary stream.
+ * \param[in] stream Stream from which the sparse matrix will be read.
+ * \return    m      The allocated sparse matrix.
+ */
+gsl_spmatrix *
+gsl_spmatrix_alloc2read(FILE *stream, const size_t type)
+{
+  gsl_spmatrix *m;
+  size_t size1, size2, nz;
+  size_t items;
+
+  // 
+  items = fread(&size1, sizeof(size_t), 1, stream);
+  if (items != 1)
+    {
+      GSL_ERROR_NULL("fread failed on size1", GSL_EFAILED);
+    }
+
+  items = fread(&size2, sizeof(size_t), 1, stream);
+  if (items != 1)
+    {
+      GSL_ERROR_NULL("fread failed on size2", GSL_EFAILED);
+    }
+
+  items = fread(&nz, sizeof(size_t), 1, stream);
+  if (items != 1)
+    {
+      GSL_ERROR_NULL("fread failed on nz", GSL_EFAILED);
+    }
+
+  // Allocate
+  m = gsl_spmatrix_alloc_nzmax(size1, size2, nz, type);
+
+  if (!m)
+    {
+      GSL_ERROR_NULL ("error allocating m", GSL_ENOMEM);
+    }
+
+  // Rewind the stream for the true reading
+  rewind(stream);
+
+  return m;
+}

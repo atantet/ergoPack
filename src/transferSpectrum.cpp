@@ -1,4 +1,5 @@
 #include <transferSpectrum.hpp>
+#include <cstring>
 
 /** \file transferSpectrum.cpp
  *  \brief Definitions for transferSpectrum.hpp
@@ -66,9 +67,10 @@ transferSpectrum::getSpectrumForward()
   gsl_spmatrix *cpy;
   gsl_spmatrix2AR gsl2AR;
 
-  // Allocate
+  /** Allocate */
   EigValForward = gsl_vector_complex_alloc(nev);
-  EigVecForward = gsl_matrix_complex_alloc(N, nev);
+  /** Row major */
+  EigVecForward = gsl_matrix_complex_alloc(nev, N);
 
   /** Get transpose of forward transition matrix in CCS 
    *  Transposing is trivial since the transition matrix is in CRS format.
@@ -105,7 +107,7 @@ transferSpectrum::getSpectrumBackward()
   // Allocate
   // Allocate
   EigValBackward = gsl_vector_complex_alloc(nev);
-  EigVecBackward = gsl_matrix_complex_alloc(N, nev);
+  EigVecBackward = gsl_matrix_complex_alloc(nev, N);
 
   if (!stationary)
     {
@@ -140,8 +142,9 @@ transferSpectrum::getSpectrumBackward()
 	{
 	  if (gsl_vector_get(transferOp->initDist, i) > 0)
 	    {
-	      element = gsl_complex_rect(1. / gsl_vector_get(transferOp->initDist, i), 0.);
-	      view = gsl_matrix_complex_row(EigVecBackward, i);
+	      element = gsl_complex_rect(1. / gsl_vector_get(transferOp->initDist, i),
+					 0.);
+	      view = gsl_matrix_complex_column(EigVecBackward, i);
 	      gsl_vector_complex_scale(&view.vector, element);
   	    }
   	}
@@ -196,13 +199,13 @@ transferSpectrum::getConditionNumbers()
     {
       //! Get norm of forward eigenvector
       gsl_vector_complex_const_view viewFor
-	= gsl_matrix_complex_const_column(EigVecForward, ev);
+	= gsl_matrix_complex_const_row(EigVecForward, ev);
       normForward = gsl_vector_complex_get_norm(&viewFor.vector,
 						transferOp->initDist);
 
       //! Get norm of backward eigenvector.
       gsl_vector_complex_const_view viewBack
-	= gsl_matrix_complex_const_column(EigVecBackward, ev);
+	= gsl_matrix_complex_const_row(EigVecBackward, ev);
       normBackward = gsl_vector_complex_get_norm(&viewBack.vector,
 						 transferOp->finalDist);
 
@@ -258,13 +261,13 @@ must have the same size as the grid." << std::endl;
     {
       // Project on backward eigenvector
       gsl_vector_complex_const_view viewBack
-	= gsl_matrix_complex_const_column(EigVecBackward, ev);
+	= gsl_matrix_complex_const_row(EigVecBackward, ev);
       weight = gsl_vector_complex_get_inner_product(fc, &viewBack.vector,
 						    transferOp->initDist);
 
       // Project on forward eigenvector
       gsl_vector_complex_const_view viewFor
-	= gsl_matrix_complex_const_column(EigVecForward, ev);
+	= gsl_matrix_complex_const_row(EigVecForward, ev);
       weight = gsl_complex_mul(weight,
 			       gsl_vector_complex_get_inner_product(&viewFor.vector, gc, transferOp->finalDist));
 
@@ -287,8 +290,8 @@ void
 transferSpectrum::sort()
 {
   gsl_vector_complex *tmpEigValFor = gsl_vector_complex_alloc(nev);
-  gsl_matrix_complex *tmpEigVecFor = gsl_matrix_complex_alloc(N, nev);
-  gsl_matrix_complex *tmpEigVecBack = gsl_matrix_complex_alloc(N, nev);
+  gsl_matrix_complex *tmpEigVecFor = gsl_matrix_complex_alloc(nev, N);
+  gsl_matrix_complex *tmpEigVecBack = gsl_matrix_complex_alloc(nev, N);
   gsl_vector_complex *tmpEigValBack = gsl_vector_complex_alloc(nev);
   gsl_vector *absEigVal;
   gsl_permutation *sort_idx = gsl_permutation_alloc(nev);
@@ -314,7 +317,7 @@ must be solved first before to sort" << std::endl;
   gsl_sort_vector_index(sort_idx, absEigVal);
   gsl_permutation_reverse(sort_idx);
   gsl_permute_vector_complex(sort_idx, EigValForward);
-  gsl_permute_matrix_complex(sort_idx, EigVecForward, 1);
+  gsl_permute_matrix_complex(sort_idx, EigVecForward, 0);
 
   /** Sort backward vectors by correspondance to forward counterparts
    *  (since different eigenvalues may have the same magnitude). */
@@ -332,8 +335,8 @@ must be solved first before to sort" << std::endl;
       gsl_vector_complex_set(EigValBackward, idx,
 			     gsl_vector_complex_get(tmpEigValBack, ev));
       gsl_vector_complex_const_view view =
-	gsl_matrix_complex_const_column(tmpEigVecBack, ev);
-      gsl_matrix_complex_set_col(EigVecBackward, idx, &view.vector);
+	gsl_matrix_complex_const_row(tmpEigVecBack, ev);
+      gsl_matrix_complex_set_row(EigVecBackward, idx, &view.vector);
     }
 
   //! Free
@@ -385,9 +388,9 @@ backward eigen problem solved first before to make biorthonormal set"
      {
        //! Get inner product of forward and backward eigenvectors
        gsl_vector_complex_const_view viewFor
-   	 = gsl_matrix_complex_const_column(EigVecForward, ev);
+   	 = gsl_matrix_complex_const_row(EigVecForward, ev);
        gsl_vector_complex_view viewBack
-   	 = gsl_matrix_complex_column(EigVecBackward, ev);
+   	 = gsl_matrix_complex_row(EigVecBackward, ev);
        inner = gsl_vector_complex_get_inner_product(&viewFor.vector,
    						    &viewBack.vector,
    						    transferOp->finalDist);
@@ -405,11 +408,13 @@ backward eigen problem solved first before to make biorthonormal set"
  * Write eigenvalues and eigenvectors of forward transition matrix.
  * \param[in] EigValForwardFile  File name of the file to print forward eigenvalues.
  * \param[in] EigVecForwardFile  File name of the file to print forward eigenvectors.
+ * \param[in] fileFormat         String "bin" or "txt" for the output type.
  * \return                       Exit status.
  */
 void
 transferSpectrum::writeSpectrumForward(const char *EigValForwardFile,
-				       const char *EigVecForwardFile) const
+				       const char *EigVecForwardFile,
+				       const char *fileFormat="txt") const
 {
   FILE *streamEigVal, *streamEigVec;
   
@@ -426,7 +431,8 @@ opening stream for writing forward eigenvectors");
     }
 
   /** Write forward */
-  writeSpectrumAR(streamEigVal, streamEigVec, EigValForward, EigVecForward);
+  writeSpectrumAR(streamEigVal, streamEigVec, EigValForward, EigVecForward,
+		  fileFormat);
 
   /** Close */
   fclose(streamEigVal);
@@ -440,11 +446,13 @@ opening stream for writing forward eigenvectors");
  * Write eigenvalues and eigenvectors of backward transition matrix.
  * \param[in] EigValBackwardFile  File name of the file to print backward eigenvalues.
  * \param[in] EigVecBackwardFile  File name of the file to print backward eigenvectors.
- * \return                       Exit status.
+ * \param[in] fileFormat          String "bin" or "txt" for the output type.
+ * \return                        Exit status.
  */
 void
 transferSpectrum::writeSpectrumBackward(const char *EigValBackwardFile,
-					const char *EigVecBackwardFile) const
+					const char *EigVecBackwardFile,
+					const char *fileFormat="txt") const
 {
   FILE *streamEigVal, *streamEigVec;
   
@@ -461,7 +469,8 @@ opening stream back writing backward eigenvectors");
     }
 
   /** Write backward */
-  writeSpectrumAR(streamEigVal, streamEigVec, EigValBackward, EigVecBackward);
+  writeSpectrumAR(streamEigVal, streamEigVec, EigValBackward, EigVecBackward,
+		  fileFormat);
 
   /** Close */
   fclose(streamEigVal);
@@ -478,19 +487,23 @@ opening stream back writing backward eigenvectors");
  * \param[in] EigVecForwardFile  File name of the file to print forward eigenvectors.
  * \param[in] EigValBackwardFile File name of the file to print backward eigenvalues.
  * \param[in] EigVecBackwardFile File name of the file to print backward eigenvectors.
+ * \param[in] fileFormat         String "bin" or "txt" for the output type.
  * \return                       Exit status.
  */
 void
 transferSpectrum::writeSpectrum(const char *EigValForwardFile,
 				const char *EigVecForwardFile,
 				const char *EigValBackwardFile,
-				const char *EigVecBackwardFile) const
+				const char *EigVecBackwardFile,
+				const char *fileFormat="txt") const
 {
   //! Write forward eigenvalues and eigenvectors
-  writeSpectrumForward(EigValForwardFile, EigVecForwardFile);
+  writeSpectrumForward(EigValForwardFile, EigVecForwardFile,
+		       fileFormat);
 
   //! Write backward eigenvalues and eigenvectors
-  writeSpectrumBackward(EigValBackwardFile, EigVecBackwardFile);
+  writeSpectrumBackward(EigValBackwardFile, EigVecBackwardFile,
+			fileFormat);
   
   return;
 }
@@ -595,7 +608,7 @@ getSpectrumAR(const int nev, ARNonSymStdEig<double, gsl_spmatrix2AR > *EigProb,
       for (size_t i = 0; i < N; i++)
 	{
 	  element = gsl_complex_rect(EigVecRealImag[ev*N + i], 0.);
-	  gsl_matrix_complex_set(EigVec, i, ev, element);
+	  gsl_matrix_complex_set(EigVec, ev, i, element);
 	}
 
       // If complex pair
@@ -608,16 +621,17 @@ getSpectrumAR(const int nev, ARNonSymStdEig<double, gsl_spmatrix2AR > *EigProb,
 	  // Add imaginary part to eigenvector
 	  for (size_t i = 0; i < N; i++)
 	    {
-	      element = gsl_complex_rect(GSL_REAL(gsl_matrix_complex_get(EigVec, i, ev)),
+	      element = gsl_complex_rect(GSL_REAL(gsl_matrix_complex_get(EigVec,
+									 ev, i)),
 					 EigVecRealImag[(ev + 1)*N + i]);
-	      gsl_matrix_complex_set(EigVec, i, ev, element);
+	      gsl_matrix_complex_set(EigVec, ev, i, element);
 	    }
 
 	  // Add complex conjugate eigenvector
 	  for (size_t i = 0; i < N; i++)
 	    {
-	      element = gsl_complex_conjugate(gsl_matrix_complex_get(EigVec, i, ev));
-	      gsl_matrix_complex_set(EigVec, i, ev + 1, element);
+	      element = gsl_complex_conjugate(gsl_matrix_complex_get(EigVec, ev, i));
+	      gsl_matrix_complex_set(EigVec, ev + 1, i, element);
 	    }
 
 	  // Increment eigenvalue one more time
@@ -640,14 +654,19 @@ getSpectrumAR(const int nev, ARNonSymStdEig<double, gsl_spmatrix2AR > *EigProb,
  * \param[in] fEigVec    File descriptor for eigenvectors.
  * \param[in] EigVal     Array of eigenvalues real parts.
  * \param[in] EigVec     Array of eigenvectors.
+ * \param[in] fileFormat String "bin" or "txt" for the output type.
  */
 void
 writeSpectrumAR(FILE *fEigVal, FILE *fEigVec,
 		const gsl_vector_complex *EigVal,
-		const gsl_matrix_complex *EigVec)
+		const gsl_matrix_complex *EigVec,
+		const char *fileFormat="txt")
 {
   // Print eigenvalues
-  gsl_vector_complex_fprintf(fEigVal, EigVal, "%.12lf");
+  if (strcmp(fileFormat, "bin") == 0)
+    gsl_vector_complex_fwrite(fEigVal, EigVal);
+  else
+    gsl_vector_complex_fprintf(fEigVal, EigVal, "%.12lf");
   
   /** Check for printing errors */
   if (ferror(fEigVal))
@@ -656,7 +675,10 @@ writeSpectrumAR(FILE *fEigVal, FILE *fEigVec,
   }
 
   // Print eigenvectors
-  gsl_matrix_complex_fprintf(fEigVec, EigVec, "%.12lf");
+  if (strcmp(fileFormat, "bin") == 0)
+    gsl_matrix_complex_fwrite(fEigVec, EigVec);
+  else
+    gsl_matrix_complex_fprintf(fEigVec, EigVec, "%.12lf");
   
   /** Check for printing errors */
   if (ferror(fEigVec))
@@ -666,4 +688,3 @@ writeSpectrumAR(FILE *fEigVal, FILE *fEigVec,
 
   return;
 }
-

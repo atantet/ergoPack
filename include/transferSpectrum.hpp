@@ -113,13 +113,16 @@ public:
 
   /** \brief Write forward eigenvalues and eigenvectors. */
   void writeSpectrumForward(const char *EigValForwardFile,
-			    const char *EigVecForwardFile) const;
+			    const char *EigVecForwardFile,
+			    const char *fileFormat) const;
   /** \brief Write backward eigenvalues and eigenvectors. */
   void writeSpectrumBackward(const char *EigValBackwardFile,
-			     const char *EigVecBackwardFile) const;
+			     const char *EigVecBackwardFile,
+			     const char *fileFormat) const;
   /** \brief Write forward and backward eigenvalues and eigenvectors. */
   void writeSpectrum(const char *EigValForwardFile, const char *EigVecForwardFile,
-		     const char *EigValBackwardFile, const char *EigVecBackwardFile) const;
+		     const char *EigValBackwardFile, const char *EigVecBackwardFile,
+		     const char *fileFormat) const;
 
   /** \brief Get number of grid boxes. */
   size_t getN() const { return N; }
@@ -154,7 +157,8 @@ void getSpectrumAR(const int nev, ARNonSymStdEig<double, gsl_spmatrix2AR > *EigP
 /** \brief Write spectrum of a nonsymmetric matrix using ARPACK++. */
 void writeSpectrumAR(FILE *fEigVal, FILE *fEigVec,
 		     const gsl_vector_complex *EigVal,
-		     const gsl_matrix_complex *EigVec);
+		     const gsl_matrix_complex *EigVec,
+		     const char *fileFormat);
 
 
 /**
