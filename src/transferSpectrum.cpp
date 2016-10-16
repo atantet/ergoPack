@@ -581,7 +581,7 @@ getSpectrumAR(const int nev, ARNonSymStdEig<double, gsl_spmatrix2AR > *EigProb,
 	      gsl_spmatrix2AR *gsl2AR, configAR cfgAR,
 	      gsl_vector_complex *EigVal, gsl_matrix_complex *EigVec)
 {
-  size_t N = EigVec->size1;
+  size_t N = EigVec->size2;
   gsl_complex element;
 
   // Allocate vectors given to ARPACK++
