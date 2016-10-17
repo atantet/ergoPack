@@ -63,7 +63,7 @@ public:
 class transferSpectrum {
   const size_t N;  //!< Size of the grid
   const transferOperator *transferOp; //!< Transfer operator of the eigen problem
-  const int nev;                      //!< Number of eigenvalues and vectors to search;
+  int nev;                            //!< Number of eigenvalues and vectors to search;
   configAR config;                    //!< Initial configuration
   /** If true, the problem is stationary and it is no use calculating
    *  the backward transition matrix and final distribution. */
@@ -150,9 +150,9 @@ public:
  */
 
 /** \brief Get spectrum of a nonsymmetric matrix using ARPACK++. */
-void getSpectrumAR(const int nev, ARNonSymStdEig<double, gsl_spmatrix2AR > *EigProb,
+void getSpectrumAR(int *nev, const size_t N, ARNonSymStdEig<double, gsl_spmatrix2AR > *EigProb,
 		   gsl_spmatrix2AR *gsl2AR, configAR cfgAR,
-		   gsl_vector_complex *EigVal, gsl_matrix_complex *EigVec);
+		   gsl_vector_complex **EigVal, gsl_matrix_complex **EigVec);
 
 /** \brief Write spectrum of a nonsymmetric matrix using ARPACK++. */
 void writeSpectrumAR(FILE *fEigVal, FILE *fEigVec,

@@ -67,11 +67,6 @@ transferSpectrum::getSpectrumForward()
   gsl_spmatrix *cpy;
   gsl_spmatrix2AR gsl2AR;
 
-  /** Allocate */
-  EigValForward = gsl_vector_complex_alloc(nev);
-  /** Row major */
-  EigVecForward = gsl_matrix_complex_alloc(nev, N);
-
   /** Get transpose of forward transition matrix in CCS 
    *  Transposing is trivial since the transition matrix is in CRS format.
    *  However, it is more secure to avoid directly changing the type of
@@ -86,8 +81,8 @@ transferSpectrum::getSpectrumForward()
   gsl2AR = gsl_spmatrix2AR(cpy);
 
   //! Solve eigen value problem using user-defined ARPACK++
-  getSpectrumAR(nev, &EigProbForward, &gsl2AR, config, EigValForward,
-		EigVecForward);
+  getSpectrumAR(&nev, N, &EigProbForward, &gsl2AR, config, &EigValForward,
+		&EigVecForward);
 
   return;
 }
@@ -103,11 +98,6 @@ transferSpectrum::getSpectrumBackward()
   gsl_spmatrix2AR gsl2AR;
   gsl_vector_complex_view view;
   gsl_complex element;
-
-  // Allocate
-  // Allocate
-  EigValBackward = gsl_vector_complex_alloc(nev);
-  EigVecBackward = gsl_matrix_complex_alloc(nev, N);
 
   if (!stationary)
     {
@@ -131,8 +121,8 @@ transferSpectrum::getSpectrumBackward()
     }
   
   /** Get eigenvalues and vectors of backward transition matrix */
-  getSpectrumAR(nev, &EigProbBackward, &gsl2AR, config, EigValBackward,
-		EigVecBackward);
+  getSpectrumAR(&nev, N, &EigProbBackward, &gsl2AR, config, &EigValBackward,
+		&EigVecBackward);
 
   if (stationary)
     {
@@ -577,20 +567,19 @@ gsl_spmatrix2AR::MultMv(double *v, double *w)
  * \param[out]    EigVec     Found eigenvectors.
 */
 void
-getSpectrumAR(const int nev, ARNonSymStdEig<double, gsl_spmatrix2AR > *EigProb,
+getSpectrumAR(int *nev, const size_t N, ARNonSymStdEig<double, gsl_spmatrix2AR > *EigProb,
 	      gsl_spmatrix2AR *gsl2AR, configAR cfgAR,
-	      gsl_vector_complex *EigVal, gsl_matrix_complex *EigVec)
+	      gsl_vector_complex **EigVal, gsl_matrix_complex **EigVec)
 {
-  size_t N = EigVec->size2;
   gsl_complex element;
 
   // Allocate vectors given to ARPACK++
-  double *EigValReal = new double [nev+1];
-  double *EigValImag = new double [nev+1];
-  double *EigVecRealImag = new double [(nev+2) * N];
+  double *EigValReal = new double [*nev+1];
+  double *EigValImag = new double [*nev+1];
+  double *EigVecRealImag = new double [(*nev+2) * N];
 
   //! Define non-hermitian eigenvalue problem
-  EigProb->DefineParameters(gsl2AR->M->size1, nev, gsl2AR,
+  EigProb->DefineParameters(gsl2AR->M->size1, *nev, gsl2AR,
 			    &gsl_spmatrix2AR::MultMv,
 			    cfgAR.which, cfgAR.ncv, cfgAR.tol,
 			    cfgAR.maxit, cfgAR.resid, cfgAR.AutoShift);
@@ -598,40 +587,48 @@ getSpectrumAR(const int nev, ARNonSymStdEig<double, gsl_spmatrix2AR > *EigProb,
   //! Find eigenvalues and left eigenvectors with ARPACK++
   EigProb->EigenValVectors(EigVecRealImag, EigValReal, EigValImag);
 
+  /** Update number of eigenvalues */
+  *nev = EigProb->ConvergedEigenvalues();
+  
+  /** Allocate eigenvalues and eigenvectors vectors with updated number */
+  *EigVal = gsl_vector_complex_alloc(*nev);
+  /** Row major */
+  *EigVec = gsl_matrix_complex_alloc(*nev, N);
+
   //! Save eigenvalues and eigenvectors and their complex conjugate
-  for (size_t ev = 0; ev < (size_t) nev; ev++)
+  for (size_t ev = 0; ev < (size_t) *nev; ev++)
     {
       element = gsl_complex_rect(EigValReal[ev], EigValImag[ev]);
-      gsl_vector_complex_set(EigVal, ev, element);
+      gsl_vector_complex_set(*EigVal, ev, element);
       
       // Add real part of  eigenvector
       for (size_t i = 0; i < N; i++)
 	{
 	  element = gsl_complex_rect(EigVecRealImag[ev*N + i], 0.);
-	  gsl_matrix_complex_set(EigVec, ev, i, element);
+	  gsl_matrix_complex_set(*EigVec, ev, i, element);
 	}
 
       // If complex pair
-      if ((gsl_pow_2(EigValImag[ev]) > 1.e-12) && (ev + 1 < nev))
+      if ((gsl_pow_2(EigValImag[ev]) > 1.e-12) && (ev + 1 < *nev))
 	{
 	  // Add complex conjugate eigenvalue
-	  element = gsl_complex_conjugate(gsl_vector_complex_get(EigVal, ev));
-	  gsl_vector_complex_set(EigVal, ev + 1, element);
+	  element = gsl_complex_conjugate(gsl_vector_complex_get(*EigVal, ev));
+	  gsl_vector_complex_set(*EigVal, ev + 1, element);
 
 	  // Add imaginary part to eigenvector
 	  for (size_t i = 0; i < N; i++)
 	    {
-	      element = gsl_complex_rect(GSL_REAL(gsl_matrix_complex_get(EigVec,
+	      element = gsl_complex_rect(GSL_REAL(gsl_matrix_complex_get(*EigVec,
 									 ev, i)),
 					 EigVecRealImag[(ev + 1)*N + i]);
-	      gsl_matrix_complex_set(EigVec, ev, i, element);
+	      gsl_matrix_complex_set(*EigVec, ev, i, element);
 	    }
 
 	  // Add complex conjugate eigenvector
 	  for (size_t i = 0; i < N; i++)
 	    {
-	      element = gsl_complex_conjugate(gsl_matrix_complex_get(EigVec, ev, i));
-	      gsl_matrix_complex_set(EigVec, ev + 1, i, element);
+	      element = gsl_complex_conjugate(gsl_matrix_complex_get(*EigVec, ev, i));
+	      gsl_matrix_complex_set(*EigVec, ev + 1, i, element);
 	    }
 
 	  // Increment eigenvalue one more time
@@ -688,3 +685,54 @@ writeSpectrumAR(FILE *fEigVal, FILE *fEigVec,
 
   return;
 }
+
+// /**
+//  * Write complex eigenvalues and eigenvectors obtained as arrays from ARPACK++.
+//  * For the binary file format, compression is applied:
+//  * - Each eigenvalue is a given by its real part, imaginary part
+//  *   and an integer giving its type:
+//  *   + (0) real
+//  *   + (1) complex conjugate with positive imaginary part
+//  *   + (2) complex conjugate with negative imaginary part
+//  * - Real eigenvectors (0) are written as usual
+//  * - Complex conjugate eigenvectors
+//  * \param[in] fEigVal    File descriptor for eigenvalues.
+//  * \param[in] fEigVec    File descriptor for eigenvectors.
+//  * \param[in] EigVal     Array of eigenvalues real parts.
+//  * \param[in] EigVec     Array of eigenvectors.
+//  * \param[in] fileFormat String "bin" or "txt" for the output type.
+//  */
+// void
+// writeSpectrumAR(FILE *fEigVal, FILE *fEigVec,
+// 		const gsl_vector_complex *EigVal,
+// 		const gsl_matrix_complex *EigVec,
+// 		const char *fileFormat="txt")
+// {
+//   // Print eigenvalues
+//   if (strcmp(fileFormat, "bin") == 0)
+//     for (size_t
+//     gsl_vector_complex_fwrite(fEigVal, EigVal);
+//   else
+//     gsl_vector_complex_fprintf(fEigVal, EigVal, "%.12lf");
+  
+//   /** Check for printing errors */
+//   if (ferror(fEigVal))
+//     {
+//       throw std::ios::failure("writeSpectrumAR, printing eigenvalues");
+//   }
+
+//   // Print eigenvectors
+//   if (strcmp(fileFormat, "bin") == 0)
+//     gsl_matrix_complex_fwrite(fEigVec, EigVec);
+//   else
+//     gsl_matrix_complex_fprintf(fEigVec, EigVec, "%.12lf");
+  
+//   /** Check for printing errors */
+//   if (ferror(fEigVec))
+//     {
+//       throw std::ios::failure("writeSpectrumAR, printing eigenvectors");
+//   }
+
+//   return;
+// }
+
