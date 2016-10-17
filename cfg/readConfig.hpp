@@ -22,7 +22,7 @@ extern char caseName[256];             //!< Name of the case to simulate
 extern double rho;                     //!< Parameters for the Lorenz flow
 extern double sigma;                   //!< Parameters for the Lorenz flow
 extern double beta;                    //!< Parameters for the Lorenz flow
-extern char file_format[256];          //!< File format of output ("txt" or "bin")
+extern char fileFormat[256];          //!< File format of output ("txt" or "bin")
 extern char delayName[256];            //!< Name associated with the number and values of the delays
 extern int dim;                        //!< Dimension of the phase space
 extern gsl_vector *initState;          //!< Initial state for simulation
@@ -33,7 +33,6 @@ extern double dt;                      //!< Time step of integration
 extern double printStep;               //!< Time step of output
 extern size_t printStepNum;            //!< Time step of output in number of time steps of integration
 extern char srcPostfix[256];           //!< Postfix of simulation file.
-extern char srcFileName[256];          //!< Name of the source simulation file
 extern char dstFileName[256];          //!< Destination file name
 extern size_t nt0;                     //!< Number of time steps of the source time series
 extern size_t nt;                      //!< Number of time steps of the observable

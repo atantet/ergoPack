@@ -23,14 +23,14 @@
 transferOperator::transferOperator(const gsl_matrix_uint *gridMem,
 				   const size_t N_,
 				   const bool stationary_=false)
-  : N(N_), stationary(stationary_)
+  : N(N_), stationary(stationary_), P(NULL), Q(NULL)
 {
   // Get mask
   mask = gsl_vector_uint_alloc(N);
   NFilled = getMask(gridMem, mask);
 
   // Allocate distributions and set matrices to NULL pointer
-  allocate();
+  allocateDist();
 
   // Get transition matrices and distributions from grid membership matrix
   buildFromMembership(gridMem);
@@ -51,7 +51,7 @@ transferOperator::transferOperator(const gsl_matrix *initStates,
 				   const gsl_matrix *finalStates,
 				   const Grid *grid,
 				   const bool stationary_=false)
-  : N(grid->getN()), stationary(stationary_)
+  : N(grid->getN()), stationary(stationary_), P(NULL), Q(NULL)
 {
   gsl_matrix_uint *gridMem;
 
@@ -63,7 +63,7 @@ transferOperator::transferOperator(const gsl_matrix *initStates,
   NFilled = getMask(gridMem, mask);
 
   // Allocate distributions and set matrices to NULL pointer
-  allocate();
+  allocateDist();
 
   // Get transition matrices and distributions from grid membership matrix
   buildFromMembership(gridMem);
@@ -82,7 +82,7 @@ transferOperator::transferOperator(const gsl_matrix *initStates,
  */
 transferOperator::transferOperator(const gsl_matrix *states, const Grid *grid,
 				   const size_t tauStep)
-  : N(grid->getN()), stationary(true)
+  : N(grid->getN()), stationary(true), P(NULL), Q(NULL)
 {
   gsl_matrix_uint *gridMem;
 
@@ -94,7 +94,7 @@ transferOperator::transferOperator(const gsl_matrix *states, const Grid *grid,
   NFilled = getMask(gridMem, mask);
 
   // Allocate distributions and set matrices to NULL pointer
-  allocate();
+  allocateDist();
 
   // Get transition matrices and distributions from grid membership matrix
   buildFromMembership(gridMem);
@@ -125,18 +125,16 @@ transferOperator::~transferOperator()
  */
 
 /**
- * Allocate memory for the transition matrices and distributions.
- * \return               Exit status.
+ * Allocate memory for the distributions.
+ * \return Exit status.
  */
 int
-transferOperator::allocate()
+transferOperator::allocateDist()
 {
-  P = NULL;
   initDist = gsl_vector_alloc(NFilled);
   
   /** If stationary problem, initDist = finalDist = stationary distribution
    *  and the backward transition matrix need not be calculated */
-  Q = NULL;
   if (!stationary)
       finalDist = gsl_vector_alloc(NFilled);
   else
@@ -495,6 +493,9 @@ compressing forward transition matrix.\n");
       throw std::exception();
     }
 
+  /** Set number of filled boxes in case not known already */
+  NFilled = P->size1;
+
   /** Close */
   fclose(fp);
   
@@ -559,6 +560,9 @@ compressing backward transition matrix.\n");
 	  throw std::exception();
 	}
       
+      /** Set number of filled boxes in case not known already */
+      NFilled = Q->size1;
+
       /** Close */
       fclose(fp);
     }

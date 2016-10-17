@@ -61,7 +61,7 @@ public:
  *  transition matrices of a transferOperator object.
  */
 class transferSpectrum {
-  const size_t N;  //!< Size of the grid
+  const size_t N;  //!< Size of the reduced grid (after mask) != transferOp->N
   const transferOperator *transferOp; //!< Transfer operator of the eigen problem
   int nev;                            //!< Number of eigenvalues and vectors to search;
   configAR config;                    //!< Initial configuration

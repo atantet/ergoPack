@@ -56,10 +56,7 @@ int main(int argc, char * argv[])
 
   // Open destination ile
   // Define names and open destination file
-  sprintf(postfix, "_%s_L%d_spinup%d_dt%d_samp%d", caseName,
-	  (int) L, (int) spinup, (int) round(-gsl_sf_log(dt)/gsl_sf_log(10)),
-	  (int) printStepNum);
-  sprintf(dstFileName, "%s/simulation/sim%s.%s", resDir, postfix, file_format);
+  sprintf(dstFileName, "%s/simulation/sim%s.%s", resDir, postfix, fileFormat);
   if (!(dstStream = fopen(dstFileName, "w")))
     {
       fprintf(stderr, "Can't open %s for writing simulation: ", dstFileName);
@@ -85,7 +82,7 @@ int main(int argc, char * argv[])
 
   // Write results
   printf("Writing...\n");
-  if (strcmp(file_format, "bin") == 0)
+  if (strcmp(fileFormat, "bin") == 0)
     gsl_matrix_fwrite(dstStream, X);
   else
     gsl_matrix_fprintf(dstStream, X, "%f");

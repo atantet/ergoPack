@@ -6,7 +6,7 @@ char caseName[256];             //!< Name of the case to simulate
 double rho;                     //!< Parameters for the Lorenz flow
 double sigma;                   //!< Parameters for the Lorenz flow
 double beta;                    //!< Parameters for the Lorenz flow
-char file_format[256];          //!< File format of output ("txt" or "bin")
+char fileFormat[256];          //!< File format of output ("txt" or "bin")
 char delayName[256];            //!< Name associated with the number and values of the delays
 int dim;                        //!< Dimension of the phase space
 gsl_vector *initState;          //!< Initial state for simulation
@@ -17,7 +17,6 @@ double dt;                      //!< Time step of integration
 double printStep;               //!< Time step of output
 size_t printStepNum;            //!< Time step of output in number of time steps of integration
 char srcPostfix[256];           //!< Postfix of simulation file.
-char srcFileName[256];          //!< Name of the source simulation file
 size_t nt0;                     //!< Number of time steps of the source time series
 size_t nt;                      //!< Number of time steps of the observable
 int dimObs;                     //!< Dimension of the observable
@@ -137,8 +136,8 @@ readConfig(const char *cfgFileName)
     std::cout << "printStep = " << printStep << std::endl;
 
     // Output format
-    strcpy(file_format, (const char *) cfg.lookup("simulation.file_format"));
-    std::cout << "Output file format: " << file_format << std::endl;
+    strcpy(fileFormat, (const char *) cfg.lookup("general.fileFormat"));
+    std::cout << "Output file format: " << fileFormat << std::endl;
 
     
     // Get observable settings
@@ -290,8 +289,6 @@ readConfig(const char *cfgFileName)
     sprintf(srcPostfix, "_%s%s_L%d_spinup%d_dt%d_samp%d", caseName, delayName,
 	    (int) L, (int) spinup, (int) round(-gsl_sf_log(dt)/gsl_sf_log(10)),
 	    (int) printStepNum);
-    sprintf(srcFileName, "%s/simulation/sim%s.%s", resDir, srcPostfix,
-	    file_format);
 
     // Define grid name
     sprintf(gridPostfix, "");

@@ -29,7 +29,7 @@ configAR defaultCfgAR = {"LM", 0, 0., 0, NULL, true};
 transferSpectrum::transferSpectrum(const int nev_,
 				   const transferOperator *transferOp_,
 				   const configAR cfgAR=defaultCfgAR)
-  : N(transferOp_->getN()), nev(nev_), transferOp(transferOp_), config(cfgAR),
+  : N(transferOp_->getNFilled()), nev(nev_), transferOp(transferOp_), config(cfgAR),
     stationary(transferOp_->isStationary()), sorted(false),
     EigValForward(NULL), EigVecForward(NULL),
     EigValBackward(NULL), EigVecBackward(NULL) {}

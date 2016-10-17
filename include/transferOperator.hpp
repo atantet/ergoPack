@@ -69,9 +69,6 @@ class transferOperator {
    *  the backward transition matrix and final distribution. */
   const bool stationary;
 
-  /** \brief Allocate memory. */
-  int allocate();
-
   /** \brief Get the transition matrices from a grid membership matrix. */
   int buildFromMembership(const gsl_matrix_uint *gridMem);
 
@@ -84,9 +81,9 @@ public:
   gsl_vector_uint *mask; //!< Mask for empty boxes
 
   
-  /** \brief Empty constructor allocating for grid size*/
+  /** \brief Empty constructor allocating for grid size and mask */
   transferOperator(const size_t N_, const bool stationary_=false)
-    : N(N_), stationary(stationary_) { allocate(); }
+    : N(N_), stationary(stationary_), P(NULL), Q(NULL) { mask = gsl_vector_uint_alloc(N); }
   
   /** \brief Constructor from the membership matrix. */
   transferOperator(const gsl_matrix_uint *gridMem, const size_t N_,
@@ -103,6 +100,9 @@ public:
   ~transferOperator();
 
   
+  /** \brief Allocate memory to the distributions. */
+  int allocateDist();
+
   /** \brief Get number of grid boxes. */
   size_t getN() const { return N; }
 

@@ -32,7 +32,7 @@ void readConfig(const char *cfgFileName);
 
 // Configuration
 char caseName[256];       //!< Name of the case to simulate 
-char file_format[256];    //!< File format of output ("txt" or "bin")
+char fileFormat[256];    //!< File format of output ("txt" or "bin")
 char resDir[256];         //!< Root directory in which results are written
 int dim;                  //!< Dimension of the phase space
 gsl_matrix *A;            //!< Matrix of the linear drift
@@ -44,7 +44,6 @@ double L;                 //!< Total length of integration
 double dt;                //!< Time step of integration
 double printStep;         //!< Time step of output
 size_t printStepNum;      //!< Time step of output in number of time steps of integration
-char postfix[256];        //!< Postfix of destination files
 char dstFileName[256];    //!< Destination file name
 
 
@@ -110,7 +109,7 @@ int main(int argc, char * argv[])
 
   // Write results
   printf("Writing...\n");
-  if (strcmp(file_format, "bin") == 0)
+  if (strcmp(fileFormat, "bin") == 0)
     gsl_matrix_fwrite(dstStream, X);
   else
     gsl_matrix_fprintf(dstStream, X, "%f");
@@ -222,8 +221,8 @@ readConfig(const char *cfgFileName)
     std::cout << "printStep = " << printStep << std::endl;
 
     // Output format
-    strcpy(file_format, (const char *) cfg.lookup("simulation.file_format"));
-    std::cout << "Output file format: " << file_format << std::endl;
+    strcpy(fileFormat, (const char *) cfg.lookup("simulation.fileFormat"));
+    std::cout << "Output file format: " << fileFormat << std::endl;
 
   std::cout << std::endl;
 
@@ -232,10 +231,7 @@ readConfig(const char *cfgFileName)
     printStepNum = (size_t) (printStep / dt);
 
     // Define names and open destination file
-    sprintf(postfix, "_%s_L%d_spinup%d_dt%d_samp%d", caseName,
-	    (int) L, (int) spinup, (int) round(-gsl_sf_log(dt)/gsl_sf_log(10)),
-	    (int) printStepNum);
-    sprintf(dstFileName, "%s/simulation/sim%s.%s", resDir, postfix, file_format);
+    sprintf(dstFileName, "%s/simulation/sim%s.%s", resDir, postfix, fileFormat);
 
   }
   catch(const FileIOException &fioex) {
