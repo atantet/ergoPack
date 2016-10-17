@@ -25,6 +25,13 @@ transferOperator::transferOperator(const gsl_matrix_uint *gridMem,
 				   const bool stationary_=false)
   : N(N_), stationary(stationary_)
 {
+  // Get mask
+  mask = gsl_vector_uint_alloc(N);
+  NFilled = getMask(gridMem, mask);
+
+  // Allocate distributions and set matrices to NULL pointer
+  allocate();
+
   // Get transition matrices and distributions from grid membership matrix
   buildFromMembership(gridMem);
 }
@@ -51,6 +58,13 @@ transferOperator::transferOperator(const gsl_matrix *initStates,
   // Get grid membership matrix
   gridMem = getGridMemMatrix(initStates, finalStates, grid);
 
+  // Get mask
+  mask = gsl_vector_uint_alloc(N);
+  NFilled = getMask(gridMem, mask);
+
+  // Allocate distributions and set matrices to NULL pointer
+  allocate();
+
   // Get transition matrices and distributions from grid membership matrix
   buildFromMembership(gridMem);
 
@@ -75,6 +89,13 @@ transferOperator::transferOperator(const gsl_matrix *states, const Grid *grid,
   // Get grid membership matrix from a single long trajectory
   gridMem = getGridMemMatrix(states, grid, tauStep);
 
+  // Get mask
+  mask = gsl_vector_uint_alloc(N);  
+  NFilled = getMask(gridMem, mask);
+
+  // Allocate distributions and set matrices to NULL pointer
+  allocate();
+
   // Get transition matrices and distributions from grid membership matrix
   buildFromMembership(gridMem);
 
@@ -88,6 +109,7 @@ transferOperator::~transferOperator()
   if (P)
     gsl_spmatrix_free(P);
   gsl_vector_free(initDist);
+  gsl_vector_uint_free(mask);
 
   if (Q)
     gsl_spmatrix_free(Q);
@@ -110,19 +132,15 @@ int
 transferOperator::allocate()
 {
   P = NULL;
-  initDist = gsl_vector_alloc(N);
+  initDist = gsl_vector_alloc(NFilled);
   
   /** If stationary problem, initDist = finalDist = stationary distribution
    *  and the backward transition matrix need not be calculated */
   Q = NULL;
   if (!stationary)
-    {    
-      finalDist = gsl_vector_alloc(N);
-    }
+      finalDist = gsl_vector_alloc(NFilled);
   else
-    {
       finalDist = initDist;
-    }
   
   return 0;
 }
@@ -137,25 +155,25 @@ int
 transferOperator::buildFromMembership(const gsl_matrix_uint *gridMem)
 {
   const size_t nTraj = gridMem->size1;
+  const double tol = .9 / nTraj; // The min non-zero dist is 1. / nTraj
+  size_t nIn;
   gsl_spmatrix *T;
-  const double tol = std::numeric_limits<double>::epsilon() * N * 100;
-
-  // Allocate distributions and set matrices to NULL pointer
-  allocate();
-
 
   // Get transition count triplets
-  if (!(T = gsl_spmatrix_alloc_nzmax(N, N, nTraj, GSL_SPMATRIX_TRIPLET)))
+  if (!(T = gsl_spmatrix_alloc_nzmax(NFilled, NFilled, nTraj,
+				     GSL_SPMATRIX_TRIPLET)))
     {
-      fprintf(stderr, "getTransitionCountTriplet: error allocating\
+      fprintf(stderr, "buildFromMembership: error allocating\
 triplet count matrix.\n");
       std::bad_alloc();
     }
 
   if (stationary)
-    getTransitionCountTriplet(gridMem, N, T, initDist, NULL);
+    nIn = getTransitionCountTriplet(gridMem, mask, T, initDist, NULL);
   else
-    getTransitionCountTriplet(gridMem, N, T, initDist, finalDist);
+    nIn = getTransitionCountTriplet(gridMem, mask, T, initDist, finalDist);
+  std::cout <<  nIn * 100. / nTraj
+	    << "% of the trajectories ended up inside the domain." << std::endl;
 
   
   /** Convert to CRS summing duplicates */
@@ -171,7 +189,7 @@ forward transition matrix.\n");
   if (!stationary)
     {
       /** Get transpose copy */
-      if (!(Q = gsl_spmatrix_alloc_nzmax(N, N, P->nz, GSL_SPMATRIX_CRS)))
+      if (!(Q = gsl_spmatrix_alloc_nzmax(NFilled, NFilled, P->nz, GSL_SPMATRIX_CRS)))
 	{
 	  fprintf(stderr, "transferOperator::buildFromMembership: error allocating\
 backward transition matrix.\n");
@@ -239,7 +257,7 @@ backward transition matrix.\n");
  * (see transferOperator.hpp)
  * \param[in] path       Path to the file in which to print.
  * \param[in] fileFormat String "bin" or "txt" for the output type.
- * \param[in] dataFormat Format in which to print each element.
+ * \param[in] dataFormat Format in which to print each element (if formatted output).
  * \return               Status.
  */
 int
@@ -279,7 +297,7 @@ printing to transition matrix");
  * (see transferOperator.hpp)
  * \param[in] path       Path to the file in which to print.
  * \param[in] fileFormat String "bin" or "txt" for the output type.
- * \param[in] dataFormat Format in which to print each element.
+ * \param[in] dataFormat Format in which to print each element (if formatted output).
  * \return               Status.
  */
 int
@@ -327,7 +345,7 @@ backward transition matrix not calculated.");
  * Print initial distribution to file.
  * \param[in] path       Path to the file in which to print.
  * \param[in] fileFormat String "bin" or "txt" for the output type.
- * \param[in] dataFormat Format in which to print each element.
+ * \param[in] dataFormat Format in which to print each element (if formatted output).
  * \return               Status.
  */
 int
@@ -360,7 +378,7 @@ opening stream to write");
  * Print final distribution to file.
  * \param[in] path       Path to the file in which to print.
  * \param[in] fileFormat String "bin" or "txt" for the output type.
- * \param[in] dataFormat Format in which to print each element.
+ * \param[in] dataFormat Format in which to print each element (if formatted output).
  * \return               Status.
  */
 int
@@ -382,6 +400,39 @@ opening stream to write");
     gsl_vector_fwrite(fp, finalDist);
   else
     gsl_vector_fprintf(fp, finalDist, dataFormat);
+  
+  // Close
+  fclose(fp);
+
+  return 0;
+}
+
+/**
+ * Print mask to file.
+ * \param[in] path       Path to the file in which to print.
+ * \param[in] fileFormat String "bin" or "txt" for the output type.
+ * \param[in] dataFormat Format in which to print each element (if formatted output).
+ * \return               Status.
+ */
+int
+transferOperator::printMask(const char *path,
+			    const char *fileFormat="txt",
+			    const char *dataFormat="%lf")
+{
+  FILE *fp;
+
+  // Open file
+  if (!(fp = fopen(path, "w")))
+    {
+      throw std::ios::failure("transferOperator::printMask, \
+opening stream to write");
+    }
+  
+  // Print
+  if (strcmp(fileFormat, "bin") == 0)
+    gsl_vector_uint_fwrite(fp, mask);
+  else
+    gsl_vector_uint_fprintf(fp, mask, dataFormat);
   
   // Close
   fclose(fp);
@@ -554,6 +605,7 @@ opening stream to read");
   return 0;
 }
 
+
 /**
  * Scan final distribution from file.
  * No preliminary memory allocation needed but the grid size should be set.
@@ -596,6 +648,40 @@ final distribution not scanned because problem is stationary");
 }
 
 
+/**
+ * Scan mask from file.
+ * No preliminary memory allocation needed but the grid size should be set.
+ * Previously allocated memory should first be freed to avoid memory leak.
+ * \param[in] path       Path to the file in which to scan.
+ * \param[in] fileFormat String "bin" or "txt" for the output type.
+ * \return               0 in success, EXIT_FAILURE otherwise.
+ */
+int
+transferOperator::scanMask(const char *path,
+			   const char *fileFormat="txt")
+{
+  FILE *fp;
+    
+  // Open file
+  if (!(fp = fopen(path, "r")))
+    {
+      throw std::ios::failure("transferOperator::scanMask, \
+opening stream to read");
+    }
+
+  /** Scan after preallocating */
+  if (strcmp(fileFormat, "bin") == 0)
+    gsl_vector_uint_fread(fp, mask);
+  else
+    gsl_vector_uint_fscanf(fp, mask);
+  
+  //Close
+  fclose(fp);
+  
+  return 0;
+}
+
+
 /*
  * Function definitions
  */
@@ -603,55 +689,105 @@ final distribution not scanned because problem is stationary");
 /** 
  * Get the triplet vector counting the transitions
  * from pairs of grid boxes from the grid membership matrix.
- * \param[in]  gridMem Grid membership matrix.
- * \param[in]  N       Size of the grid.
- * \param[out] T       Triplet matrix counting the transitions.
- * \param[out] initDist    Initial states count
- * \param[out] finalDist    Final states count
+ * \param[in]  gridMem   Grid membership matrix.
+ * \param[in]  mask      Mask.
+ * \param[out] T         Triplet matrix counting the transitions.
+ * \param[out] initDist  Initial states count
+ * \param[out] finalDist Final states count
+ * \return               Number of trajectories inside domain.
  */
-void
-getTransitionCountTriplet(const gsl_matrix_uint *gridMem, size_t N,
+size_t
+getTransitionCountTriplet(const gsl_matrix_uint *gridMem,
+			  const gsl_vector_uint *mask,
 			  gsl_spmatrix *T, gsl_vector *initDist=NULL,
 			  gsl_vector *finalDist=NULL)
 {
   const size_t nTraj = gridMem->size1;
-  size_t box0, boxf;
-  size_t nOut = 0;
+  const size_t N = mask->size;
+  size_t box0, boxf, box0r, boxfr;
+  size_t nIn = 0;
   double *ptr;
 
-  /** Record transitions */
+  /** Initialize distributions to zero */
   if (initDist)
     gsl_vector_set_zero(initDist);
   if (finalDist)
     gsl_vector_set_zero(finalDist);
+
+  /** Record transitions */
   for (size_t traj = 0; traj < nTraj; traj++)
     {
+      /** Get initial and final boxes */
       box0 = gsl_matrix_uint_get(gridMem, traj, 0);
       boxf = gsl_matrix_uint_get(gridMem, traj, 1);
+      
+      /** Convert to reduced indices */
+      box0r = gsl_vector_uint_get(mask, box0);
+      boxfr = gsl_vector_uint_get(mask, boxf);
     
       /** Add transition triplet, summing if duplicate */
       if ((box0 < N) && (boxf < N))
 	{
-	  ptr = gsl_spmatrix_ptr(T, box0, boxf);
+	  ptr = gsl_spmatrix_ptr(T, box0r, boxfr);
 	  if (ptr)
 	    *ptr += 1.; /* sum duplicate values */
 	  else
-	    gsl_spmatrix_set(T, box0, boxf, 1.);   /* initalize to x */
+	    gsl_spmatrix_set(T, box0r, boxfr, 1.);   /* initalize to x */
 
-	  // Add initial and final boxes to initial and final distributions,
-	  // respectively
+	  /** Add initial and final boxes to initial and final distributions,
+	      respectively (not on a reduced grid). */
 	  if (initDist)
-	    gsl_vector_set(initDist, box0, gsl_vector_get(initDist, box0) + 1.);
+	    gsl_vector_set(initDist, box0r, gsl_vector_get(initDist, box0r) + 1.);
 	  if (finalDist)
-	    gsl_vector_set(finalDist, boxf, gsl_vector_get(finalDist, boxf) + 1.);
-	}
-      else
-	nOut++;
-    }
-  std::cout <<  nOut * 100. / nTraj
-	    << "% of the trajectories ended up out of the domain." << std::endl;
+	    gsl_vector_set(finalDist, boxfr, gsl_vector_get(finalDist, boxfr) + 1.);
 
-  return;
+	  nIn++;
+	}
+    }
+
+  return nIn;
+}
+
+
+/** 
+ * Get mask from grid membership matrix.
+ * The mask is an N-dimensional vector giving the indices
+ * of each box in the reduced set non-empty boxes.
+ * \param[in]  gridMem Grid membership matrix.
+ * \param[out] mask    Mask.
+ * \return     NFilled Number of filled boxes.
+ */
+size_t
+getMask(const gsl_matrix_uint *gridMem, gsl_vector_uint *mask)
+{
+  const size_t N = mask->size;
+  const size_t nTraj = gridMem->size1;
+  size_t NFilled;
+
+  // Initialized all boxes as empty (as marked by N)
+  gsl_vector_uint_set_all(mask, N);
+
+  // Loop over the states to check which box is filled
+  for (size_t traj = 0; traj < nTraj; traj++)
+    {
+      // Flag initial box
+      gsl_vector_uint_set(mask, gsl_matrix_uint_get(gridMem, traj, 0), 1);
+      // Flag final box
+      gsl_vector_uint_set(mask, gsl_matrix_uint_get(gridMem, traj, 1), 1);
+    }
+
+  // Loop over the boxes to finish the mask
+  NFilled = 0;
+  for (size_t box = 0; box < N; box++)
+    {
+      if (gsl_vector_uint_get(mask, box) == 1)
+	{
+	  gsl_vector_uint_set(mask, box, NFilled);
+	  NFilled++;
+	}
+    }
+  
+  return NFilled;
 }
 
 

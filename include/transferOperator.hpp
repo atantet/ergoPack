@@ -64,9 +64,10 @@
 class transferOperator {
 
   const size_t N;  //!< Size of the grid
+  size_t NFilled;  //!< Number of filled boxes
   /** If true, the problem is stationary and it is no use calculating
    *  the backward transition matrix and final distribution. */
-  const bool stationary; 
+  const bool stationary;
 
   /** \brief Allocate memory. */
   int allocate();
@@ -78,8 +79,9 @@ class transferOperator {
 public:
   gsl_spmatrix *P;       //!< Forward transition matrix (CRS)
   gsl_spmatrix *Q;       //!< Backward transition matrix (CRS)
-  gsl_vector *initDist;      //!< Initial distribution
-  gsl_vector *finalDist;      //!< Final distribution
+  gsl_vector *initDist;  //!< Initial distribution
+  gsl_vector *finalDist; //!< Final distribution
+  gsl_vector_uint *mask; //!< Mask for empty boxes
 
   
   /** \brief Empty constructor allocating for grid size*/
@@ -104,6 +106,9 @@ public:
   /** \brief Get number of grid boxes. */
   size_t getN() const { return N; }
 
+  /** \brief Get number of filled grid boxes. */
+  size_t getNFilled() const { return NFilled; }
+
   /** \brief Get whether stationary. */
   bool isStationary() const { return stationary; }
   
@@ -125,6 +130,10 @@ public:
   int printFinalDist(const char *path,
 		     const char *fileFormat, const char *dataFormat);
 
+  /** \brief Print mask to file.*/
+  int printMask(const char *path,
+		const char *fileFormat, const char *dataFormat);
+
   
   // Input methods
   /** \brief Scan forward transition matrix to file in coordinate format.*/
@@ -135,13 +144,17 @@ public:
   int scanBackwardTransition(const char *path,
 			     const char *fileFormat);
   
-  /** \brief Scan initial distribution to file.*/
+  /** \brief Scan initial distribution from file.*/
   int scanInitDist(const char *path,
 		   const char *fileFormat);
   
-  /** \brief Scan final distribution to file.*/
+  /** \brief Scan final distribution from file.*/
   int scanFinalDist(const char *path,
 		    const char *fileFormat);
+
+  /** \brief Scan mask from file.*/
+  int scanMask(const char *path,
+	       const char *fileFormat);
 
 
   // Manual modifications
@@ -150,6 +163,9 @@ public:
 
   /** \brief Manually change the finalial distribution. */
   void setFinalDist(const gsl_vector *finalDist_) { gsl_vector_memcpy(finalDist, finalDist_); return; }
+
+  /** \brief Manually change the mask. */
+  void setMask(const gsl_vector_uint *mask_) { gsl_vector_uint_memcpy(mask, mask_); return; }
 
   /** \brief Filtering of weak Markov states. */
   int filter(double tol);
@@ -162,8 +178,12 @@ public:
  */
 
 /** \brief Get triplet vector from membership matrix. */
-void getTransitionCountTriplet(const gsl_matrix_uint *gridMem, size_t N,
-			       gsl_spmatrix *T, gsl_vector *initDist, gsl_vector *finalDist);
+size_t getTransitionCountTriplet(const gsl_matrix_uint *gridMem, const gsl_vector_uint *mask,
+				 gsl_spmatrix *T, gsl_vector *initDist, gsl_vector *finalDist);
+
+/** \brief Get mask from grid membership matrix. */
+size_t getMask(const gsl_matrix_uint *gridMem, gsl_vector_uint *mask);
+
 /** \brief Remove weak nodes from a transition matrix. */
 int filterStochasticMatrix(gsl_spmatrix *M, gsl_vector *rowCut, gsl_vector *colCut,
 			   double tol, int norm);
