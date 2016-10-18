@@ -725,13 +725,14 @@ getTransitionCountTriplet(const gsl_matrix_uint *gridMem,
       box0 = gsl_matrix_uint_get(gridMem, traj, 0);
       boxf = gsl_matrix_uint_get(gridMem, traj, 1);
       
-      /** Convert to reduced indices */
-      box0r = gsl_vector_uint_get(mask, box0);
-      boxfr = gsl_vector_uint_get(mask, boxf);
-    
       /** Add transition triplet, summing if duplicate */
       if ((box0 < N) && (boxf < N))
 	{
+	  /** Convert to reduced indices */
+	  box0r = gsl_vector_uint_get(mask, box0);
+	  boxfr = gsl_vector_uint_get(mask, boxf);
+
+	  /** Add triplet in reduced indices */
 	  ptr = gsl_spmatrix_ptr(T, box0r, boxfr);
 	  if (ptr)
 	    *ptr += 1.; /* sum duplicate values */
@@ -767,6 +768,7 @@ getMask(const gsl_matrix_uint *gridMem, gsl_vector_uint *mask)
   const size_t N = mask->size;
   const size_t nTraj = gridMem->size1;
   size_t NFilled;
+  size_t box0, boxf;
 
   // Initialized all boxes as empty (as marked by N)
   gsl_vector_uint_set_all(mask, N);
@@ -774,10 +776,17 @@ getMask(const gsl_matrix_uint *gridMem, gsl_vector_uint *mask)
   // Loop over the states to check which box is filled
   for (size_t traj = 0; traj < nTraj; traj++)
     {
-      // Flag initial box
-      gsl_vector_uint_set(mask, gsl_matrix_uint_get(gridMem, traj, 0), 1);
-      // Flag final box
-      gsl_vector_uint_set(mask, gsl_matrix_uint_get(gridMem, traj, 1), 1);
+      /** Get initial and final boxes */
+      box0 = gsl_matrix_uint_get(gridMem, traj, 0);
+      boxf = gsl_matrix_uint_get(gridMem, traj, 1);
+
+      // Flag initial and final boxes only if both are found
+      // (otherwise the transition will not be count by getTransitionCountTriplet)n
+      if ((box0 < N) && (boxf < N))
+	{
+	  gsl_vector_uint_set(mask, box0, 1);
+	  gsl_vector_uint_set(mask, boxf, 1);
+	}
     }
 
   // Loop over the boxes to finish the mask

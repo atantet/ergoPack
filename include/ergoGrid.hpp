@@ -112,7 +112,7 @@ class RegularGrid : public CurvilinearGrid {
   }
 
   /** \brief Get uniform rectangular. */
-  void getRegularGrid(const gsl_vector *xmin, const gsl_vector *xmax);
+  void getRegularGrid(const gsl_vector *gridLimitsLow, const gsl_vector *gridLimitsUp);
 
   /** \brief Get rectangular grid adapted to the time series. */
   void getAdaptedRegularGrid(const gsl_vector *nSTDLow, const gsl_vector *nSTDHigh,
@@ -122,11 +122,11 @@ public:
   std::vector<gsl_vector *> *bounds; //!< Grid box bounds for each dimension
   
   /** \brief Construct a uniform rectangular grid with different dimensions. */
-  RegularGrid(const gsl_vector_uint *nx_, const gsl_vector *xmin, const gsl_vector *xmax);
+  RegularGrid(const gsl_vector_uint *nx_, const gsl_vector *gridLimitsLow, const gsl_vector *gridLimitsUp);
   
   /** \brief Construct a uniform rectangular grid with same dimensions. */
   RegularGrid(const size_t dim_, const size_t inx,
-	      const double xmin, const double xmax);
+	      const double gridLimitsLow, const double gridLimitsUp);
   
   /** \brief Construct a uniform rectangular grid adapted to time series. */
   RegularGrid(const gsl_vector_uint *nx_,

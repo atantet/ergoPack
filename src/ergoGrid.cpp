@@ -12,92 +12,90 @@
 /**
  * Construct a uniform rectangular grid with same dimensions
  * adapted to the time series.
- * \param[in] inx        Number of boxes for each dimension.
- * \param[in] nSTDLow    Number of standard deviations
- *                       to span away from the mean state from below.
- * \param[in] nSTDHigh   Number of standard deviations
- *                       to span away from the mean state from above.
- * \param[in] states     Time series.
+ * \param[in] inx    Number of boxes for each dimension.
+ * \param[in] limLow Lower limit.
+ * \param[in] limUp  Upper limit.
+ * \param[in] states Time series.
  */
 RegularGrid::RegularGrid(const size_t inx,
-			 const double nSTDLow, const double nSTDHigh,
-			 const gsl_matrix *states)
+			 const double limLow, const double limUp,
+			 const gsl_matrix *states=NULL)
   : CurvilinearGrid(states->size2, inx)
 {
-  gsl_vector *nSTDLowv, *nSTDHighv;
+  gsl_vector *gridLimitsUp, *gridLimitsLow;
   
   // Allocate memory for the grid bounds
   allocateBounds();
   
   // Get uniform vectors
-  if (nSTDLow && nSTDHigh)
+  if (limLow && limUp)
     {
-      nSTDLowv = gsl_vector_alloc(dim);
-      nSTDHighv = gsl_vector_alloc(dim);
-      gsl_vector_set_all(nSTDLowv, nSTDLow);
-      gsl_vector_set_all(nSTDHighv, nSTDHigh);
+      gridLimitsLow = gsl_vector_alloc(dim);
+      gridLimitsUp = gsl_vector_alloc(dim);
+      gsl_vector_set_all(gridLimitsLow, limLow);
+      gsl_vector_set_all(gridLimitsUp, limUp);
     }
   else
     {
-      nSTDLowv = NULL;
-      nSTDHighv = NULL;
+      gridLimitsLow = NULL;
+      gridLimitsUp = NULL;
     }
 
   // Get adapted grid
-  getAdaptedRegularGrid(nSTDLowv, nSTDHighv, states);
+  getAdaptedRegularGrid(gridLimitsLow, gridLimitsUp, states);
 
   // Free
-  if (nSTDLowv && nSTDHighv)
-    {
-      gsl_vector_free(nSTDLowv);
-      gsl_vector_free(nSTDHighv);
-    }
+  if (gridLimitsLow)
+      gsl_vector_free(gridLimitsLow);
+  if (gridLimitsUp)
+      gsl_vector_free(gridLimitsUp);
 }
 
 
 /**
  * Construct a uniform rectangular grid with specific bounds for each dimension.
- * \param[in] nx_        Vector giving the number of boxes for each dimension.
- * \param[in] xmin       Vector giving the minimum box limit for each dimension.
- * \param[in] xmax       Vector giving the maximum box limit for each dimension.
+ * \param[in] nx_            Vector giving the number of boxes for each dimension.
+ * \param[in] gridLimitsLow  Vector giving the lower box limit for each dimension.
+ * \param[in] gridLimitsUp   Vector giving the upper box limit for each dimension.
  */
 RegularGrid::RegularGrid(const gsl_vector_uint *nx_,
-		   const gsl_vector *xmin, const gsl_vector *xmax)
+			 const gsl_vector *gridLimitsLow,
+			 const gsl_vector *gridLimitsUp)
   : CurvilinearGrid(nx_)
 {
   // Allocate memory for the grid bounds
   allocateBounds();
 
   // Allocate and build uniform rectangular grid
-  getRegularGrid(xmin, xmax);
+  getRegularGrid(gridLimitsLow, gridLimitsUp);
 }
 
 /**
  * Construct a uniform rectangular grid with same bounds for each dimension.
- * \param[in] dim_        Number of dimensions.
- * \param[in] inx         Number of boxes, identically for each dimension.
- * \param[in] dxmin       Minimum box limit, identically for each dimension.
- * \param[in] dxmax       Maximum box limit, identically for each dimension.
+ * \param[in] dim_           Number of dimensions.
+ * \param[in] inx            Number of boxes, identically for each dimension.
+ * \param[in] dgridLimitsLow Minimum box limit, identically for each dimension.
+ * \param[in] dgridLimitsUp  Maximum box limit, identically for each dimension.
  */
 RegularGrid::RegularGrid(const size_t dim_, const size_t inx,
-		   const double dxmin, const double dxmax)
+			 const double dgridLimitsLow, const double dgridLimitsUp)
   : CurvilinearGrid(dim_, inx)
 {
   // Allocate memory for the grid bounds
   allocateBounds();
 
   // Convert to uniform vectors to call getRegularGrid.
-  gsl_vector *xmin_ = gsl_vector_alloc(dim_);
-  gsl_vector *xmax_ = gsl_vector_alloc(dim_);
-  gsl_vector_set_all(xmin_, dxmin);
-  gsl_vector_set_all(xmax_, dxmax);
+  gsl_vector *gridLimitsLow_ = gsl_vector_alloc(dim_);
+  gsl_vector *gridLimitsUp_ = gsl_vector_alloc(dim_);
+  gsl_vector_set_all(gridLimitsLow_, dgridLimitsLow);
+  gsl_vector_set_all(gridLimitsUp_, dgridLimitsUp);
 
   // Allocate and build uniform rectangular grid
-  getRegularGrid(xmin_, xmax_);
+  getRegularGrid(gridLimitsLow_, gridLimitsUp_);
 
   // Free
-  gsl_vector_free(xmin_);
-  gsl_vector_free(xmax_);
+  gsl_vector_free(gridLimitsLow_);
+  gsl_vector_free(gridLimitsUp_);
 }
 
 /**
@@ -105,12 +103,12 @@ RegularGrid::RegularGrid(const size_t dim_, const size_t inx,
  * \param[in] nx_        Vector giving the number of boxes for each dimension.
  * \param[in] nSTDLow    Vector giving the number of standard deviations
  *                       to span away from the mean state from below.
- * \param[in] nSTDHigh   Vector giving the number of standard deviations
+ * \param[in] nSTDUp   Vector giving the number of standard deviations
  *                       to span away from the mean state from above.
  * \param[in] states     Time series.
  */
 RegularGrid::RegularGrid(const gsl_vector_uint *nx_,
-		   const gsl_vector *nSTDLow, const gsl_vector *nSTDHigh,
+		   const gsl_vector *nSTDLow, const gsl_vector *nSTDUp,
 		   const gsl_matrix *states)
   : CurvilinearGrid(nx_)
 {
@@ -118,7 +116,7 @@ RegularGrid::RegularGrid(const gsl_vector_uint *nx_,
   allocateBounds();
 
   // Get adapted grid
-  getAdaptedRegularGrid(nSTDLow, nSTDHigh, states);
+  getAdaptedRegularGrid(nSTDLow, nSTDUp, states);
 }
 
 /*
@@ -127,11 +125,12 @@ RegularGrid::RegularGrid(const gsl_vector_uint *nx_,
 
 /**
  * Get a uniform rectangular grid with specific bounds for each dimension.
- * \param[in] xmin       Vector giving the minimum box limit for each dimension.
- * \param[in] xmax       Vector giving the maximum box limit for each dimension.
+ * \param[in] gridLimitsLow Vector giving the minimum box limit for each dimension.
+ * \param[in] gridLimitsUp  Vector giving the maximum box limit for each dimension.
  */
 void
-RegularGrid::getRegularGrid(const gsl_vector *xmin, const gsl_vector *xmax)
+RegularGrid::getRegularGrid(const gsl_vector *gridLimitsLow,
+			    const gsl_vector *gridLimitsUp)
 {
   double delta;
   
@@ -139,11 +138,11 @@ RegularGrid::getRegularGrid(const gsl_vector *xmin, const gsl_vector *xmax)
   for (size_t d = 0; d < dim; d++)
     {
       // Get spatial step
-      delta = (gsl_vector_get(xmax, d) - gsl_vector_get(xmin, d))
+      delta = (gsl_vector_get(gridLimitsUp, d) - gsl_vector_get(gridLimitsLow, d))
 	/ gsl_vector_uint_get(nx, d);
       
       // Set grid bounds
-      gsl_vector_set((*bounds)[d], 0, gsl_vector_get(xmin, d));
+      gsl_vector_set((*bounds)[d], 0, gsl_vector_get(gridLimitsLow, d));
       for (size_t i = 1; i < gsl_vector_uint_get(nx, d) + 1; i++)
 	{
 	  gsl_vector_set((*bounds)[d], i,
@@ -156,24 +155,24 @@ RegularGrid::getRegularGrid(const gsl_vector *xmin, const gsl_vector *xmax)
 
 /**
  * Construct a uniform rectangular grid adapted to the time series.
- * \param[in] nSTDLow    Vector giving the number of standard deviations
- *                       to span away from the mean state from below.
- * \param[in] nSTDHigh   Vector giving the number of standard deviations
- *                       to span away from the mean state from above.
- * \param[in]state       Time series.
+ * \param[in] nSTDLow Vector giving the number of standard deviations
+ *                    to span away from the mean state from below.
+ * \param[in] nSTDUp  Vector giving the number of standard deviations
+ *                    to span away from the mean state from above.
+ * \param[in]state    Time series.
  */
 void
-RegularGrid::getAdaptedRegularGrid(const gsl_vector *nSTDLow, const gsl_vector *nSTDHigh,
+RegularGrid::getAdaptedRegularGrid(const gsl_vector *nSTDLow, const gsl_vector *nSTDUp,
 				   const gsl_matrix *states)
 {
-  gsl_vector *xmin, *xmax, *statesMean, *statesSTD;
+  gsl_vector *gridLimitsLow, *gridLimitsUp, *statesMean, *statesSTD;
   
-  xmin = gsl_vector_alloc(dim);
-  xmax = gsl_vector_alloc(dim);
+  gridLimitsLow = gsl_vector_alloc(dim);
+  gridLimitsUp = gsl_vector_alloc(dim);
 
   // If then number of STD is given, get mean and std of time series
   // Otherwise, get minimum and maximum
-  if (nSTDLow && nSTDHigh)
+  if (nSTDLow && nSTDUp)
     {
       // Find mean and std
       statesMean = gsl_vector_alloc(states->size2);
@@ -184,11 +183,11 @@ RegularGrid::getAdaptedRegularGrid(const gsl_vector *nSTDLow, const gsl_vector *
       // Define limits as multiples of std around the mean
       for (size_t d = 0; d < dim; d++)
 	{
-	  gsl_vector_set(xmin, d, gsl_vector_get(statesMean, 0)
+	  gsl_vector_set(gridLimitsLow, d, gsl_vector_get(statesMean, 0)
 			 - gsl_vector_get(nSTDLow, d)
 			 * gsl_vector_get(statesSTD, d));
-	  gsl_vector_set(xmax, d, gsl_vector_get(statesMean, d)
-			 + gsl_vector_get(nSTDHigh, d)
+	  gsl_vector_set(gridLimitsUp, d, gsl_vector_get(statesMean, d)
+			 + gsl_vector_get(nSTDUp, d)
 			 * gsl_vector_get(statesSTD, d));
 	}
       
@@ -199,19 +198,19 @@ RegularGrid::getAdaptedRegularGrid(const gsl_vector *nSTDLow, const gsl_vector *
   else
     {
       // Get min and max of time series
-      gsl_matrix_get_min(xmin, states, 0);
-      gsl_matrix_get_max(xmax, states, 0);
+      gsl_matrix_get_min(gridLimitsLow, states, 0);
+      gsl_matrix_get_max(gridLimitsUp, states, 0);
       // The upper bound uses a strict inequality,
       // make sure the maximum is included
-      gsl_vector_add_constant(xmax, 1.e-12);
+      gsl_vector_add_constant(gridLimitsUp, 1.e-12);
     }
   
   // Allocate and build uniform rectangular grid
-  getRegularGrid(xmin, xmax);
+  getRegularGrid(gridLimitsLow, gridLimitsUp);
 
   // Free
-  gsl_vector_free(xmin);
-  gsl_vector_free(xmax);
+  gsl_vector_free(gridLimitsLow);
+  gsl_vector_free(gridLimitsUp);
 }
 
 /**
@@ -302,7 +301,7 @@ RegularGrid::getBoxMembership(const gsl_vector *state) const
 
       // Get interval for direction d
       while ((idInt < nBoxDir) &&
-	     (gsl_vector_get(state, d) > gsl_vector_get(boundsDir, idInt + 1)))
+	     (gsl_vector_get(state, d) >= gsl_vector_get(boundsDir, idInt + 1)))
 	// Not in interval idInt, iterate to next interval
 	idInt++;
 
@@ -527,28 +526,6 @@ memVector2memMatrix(const gsl_vector_uint *gridMemVect, size_t tauStep)
 }
 
 /**
- * Get the grid membership matrix from a single long trajectory.
- * \param[in] states         GSL matrix of states for each time step.
- * \param[in] grid           Pointer to Grid object.
- * \param[in] tauStep        Lag used to calculate the transitions.
- * \return                   GSL grid membership matrix.
- */
-gsl_matrix_uint *
-getGridMemMatrix(const gsl_matrix *states, const Grid *grid, const size_t tauStep)
-{
-  // Get membership vector
-  gsl_vector_uint *gridMemVect = getGridMemVector(states, grid);
-
-  // Get membership matrix from vector
-  gsl_matrix_uint *gridMem = memVector2memMatrix(gridMemVect, tauStep);
-
-  // Free
-  gsl_vector_uint_free(gridMemVect);
-  
-  return gridMem;
-}
-
-/**
  * Concatenate a list of membership vectors into one membership matrix.
  * \param[in] memList    STD vector of membership Vectors each of them associated
  * with a single long trajectory.
@@ -570,17 +547,42 @@ memVectorList2memMatrix(const std::vector<gsl_vector_uint *> *memList, size_t ta
   
   // Get membership matrix from list of membership vectors
   count = 0;
-  for (size_t l = 0; l < listSize; l++) {
-    gridMemMatrixL = memVector2memMatrix(memList->at(l), tauStep);
-    for (size_t t = 0; t < gridMemMatrixL->size1; t++) {
-      gsl_matrix_uint_set(gridMem, count, 0,
-			  gsl_matrix_uint_get(gridMemMatrixL, t, 0));
-      gsl_matrix_uint_set(gridMem, count, 1,
-			  gsl_matrix_uint_get(gridMemMatrixL, t, 1));
-      count++;
+  for (size_t l = 0; l < listSize; l++)
+    {
+      gridMemMatrixL = memVector2memMatrix(memList->at(l), tauStep);
+      for (size_t t = 0; t < gridMemMatrixL->size1; t++)
+	{
+	  gsl_matrix_uint_set(gridMem, count, 0,
+			      gsl_matrix_uint_get(gridMemMatrixL, t, 0));
+	  gsl_matrix_uint_set(gridMem, count, 1,
+			      gsl_matrix_uint_get(gridMemMatrixL, t, 1));
+	  count++;
+	}
+      gsl_matrix_uint_free(gridMemMatrixL);
     }
-    gsl_matrix_uint_free(gridMemMatrixL);
-  }
+  
+  return gridMem;
+}
+
+
+/**
+ * Get the grid membership matrix from a single long trajectory.
+ * \param[in] states         GSL matrix of states for each time step.
+ * \param[in] grid           Pointer to Grid object.
+ * \param[in] tauStep        Lag used to calculate the transitions.
+ * \return                   GSL grid membership matrix.
+ */
+gsl_matrix_uint *
+getGridMemMatrix(const gsl_matrix *states, const Grid *grid, const size_t tauStep)
+{
+  // Get membership vector
+  gsl_vector_uint *gridMemVect = getGridMemVector(states, grid);
+
+  // Get membership matrix from vector
+  gsl_matrix_uint *gridMem = memVector2memMatrix(gridMemVect, tauStep);
+
+  // Free
+  gsl_vector_uint_free(gridMemVect);
   
   return gridMem;
 }
@@ -740,7 +742,7 @@ getDensityMLE(const gsl_vector_uint *gridMemVect, const Grid *grid,
 //   gsl_vector *levelsDensity = gsl_vector_calloc(nLevels);
 //   gsl_vector *targetDensity = gsl_vector_alloc(nLevels);
 //   gsl_vector_uint *isNotUsed = gsl_vector_uint_alloc(NSupport);
-//   size_t idxMaxDenAmongNotUsed;
+//   size_t idgridLimitsUpDenAmongNotUsed;
 //   size_t nUsed = 0;
 //   gsl_vector_uint *supportLevelsMem = gsl_vector_uint_calloc(NSupport);
 
@@ -756,18 +758,18 @@ getDensityMLE(const gsl_vector_uint *gridMemVect, const Grid *grid,
 // 	     && (nUsed < NSupport))
 // 	{
 // 	  // Get nonused box with maximum density
-// 	  idxMaxDenAmongNotUsed						\
+// 	  idgridLimitsUpDenAmongNotUsed						\
 // 	    = gsl_vector_max_index_among(supportDensity, isNotUsed);
 	  
 // 	  // Add this box to level
-// 	  gsl_vector_uint_set(supportLevelsMem, idxMaxDenAmongNotUsed, lev);
+// 	  gsl_vector_uint_set(supportLevelsMem, idgridLimitsUpDenAmongNotUsed, lev);
 
 // 	  // Add the density of this box to the level
 // 	  gsl_vector_set(levelsDensity, lev, gsl_vector_get(levelsDensity, lev)
-// 			 + gsl_vector_get(supportDensity, idxMaxDenAmongNotUsed));
+// 			 + gsl_vector_get(supportDensity, idgridLimitsUpDenAmongNotUsed));
 
 // 	  // Mark the box as used
-// 	  gsl_vector_uint_set(isNotUsed, idxMaxDenAmongNotUsed, 0);
+// 	  gsl_vector_uint_set(isNotUsed, idgridLimitsUpDenAmongNotUsed, 0);
 
 // 	  // Increment the number of used boxes
 // 	  nUsed++;

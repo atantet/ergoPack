@@ -423,12 +423,20 @@ public:
   /** \brief Destructor freeing memory. */
   ~model() { gsl_vector_free(currentState); }
 
+  /** \brief Set current state manually. */
+  void setCurrentState(gsl_vector *currentState_)
+  {
+    gsl_vector_memcpy(currentState, currentState_);
+    return;
+  }
+    
   /** \brief One time-step forward integration of the model. */
   void stepForward();
 
   /** \brief Integrate the model forward for a given period. */
   gsl_matrix *integrateForward(const double length, const double spinup,
 			       const size_t sampling);
+
 };
 
 
