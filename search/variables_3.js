@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['defaultcfgar',['defaultCfgAR',['../group__transfer.html#gabc666053cbcac657d58ac314dbdad286',1,'transferSpectrum.hpp']]],
   ['delayedfield',['delayedField',['../classmodel_s_d_d_e.html#a12f255a96d7bc0f7a661650dca4ab2fd',1,'modelSDDE']]],
   ['delaymax',['delayMax',['../classvector_field_delay.html#aacd68dd7a26b845d8f3aef0e0f5f980d',1,'vectorFieldDelay::delayMax()'],['../classmodel_s_d_d_e.html#a8f8e72acb7abc0fd9844346f325149e6',1,'modelSDDE::delayMax()']]],
   ['delayname',['delayName',['../sim_s_d_d_e_8cpp.html#af76fd8dcdbd416c42428d108acbf2343',1,'delayName():&#160;simSDDE.cpp'],['../read_config_8hpp.html#af76fd8dcdbd416c42428d108acbf2343',1,'delayName():&#160;simSDDE.cpp']]],

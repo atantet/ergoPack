@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['examples',['Examples',['../group__examples.html',1,'']]]
+  ['grid',['Grid',['../group__grid.html',1,'']]]
 ];
