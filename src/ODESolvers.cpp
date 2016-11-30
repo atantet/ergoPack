@@ -19,7 +19,7 @@
  * \param[out] field Vector resulting from the evaluation of the vector field.
  */
 void
-linearField::evalField(gsl_vector *state, gsl_vector *field)
+linearField::evalField(const gsl_vector *state, gsl_vector *field)
 {
   // Linear field: apply operator A to state
   gsl_blas_dgemv(CblasNoTrans, 1., A, state, 0., field);
@@ -28,13 +28,49 @@ linearField::evalField(gsl_vector *state, gsl_vector *field)
 }
 
 
+/**
+ * Update the matrix of the linear operator
+ * conditionned on the  */
+void
+JacobianQG4::setMatrix()
+{
+  gsl_matrix_set(A, 0, 0, gsl_vector_get(ci, 0)*gsl_vector_get(x, 1)
+		 - gsl_vector_get(li, 0));
+  gsl_matrix_set(A, 0, 1, gsl_vector_get(ci, 0)*gsl_vector_get(x, 0)
+		 + gsl_vector_get(ci, 1)*gsl_vector_get(x, 2));
+  gsl_matrix_set(A, 0, 2, gsl_vector_get(ci, 1)*gsl_vector_get(x, 1)
+		 + gsl_vector_get(ci, 2)*gsl_vector_get(x, 3));
+  gsl_matrix_set(A, 0, 3, gsl_vector_get(ci, 2) * gsl_vector_get(x, 2));
+  gsl_matrix_set(A, 1, 0, gsl_vector_get(ci, 4) * gsl_vector_get(x, 2)
+		 - 2 * gsl_vector_get(ci, 0) * gsl_vector_get(x, 0));
+  gsl_matrix_set(A, 1, 1, gsl_vector_get(ci, 3)*gsl_vector_get(x, 3)
+		 - gsl_vector_get(li, 1));
+  gsl_matrix_set(A, 1, 2, gsl_vector_get(ci, 4)*gsl_vector_get(x, 0));
+  gsl_matrix_set(A, 1, 3, gsl_vector_get(ci, 3)*gsl_vector_get(x, 1));
+  gsl_matrix_set(A, 2, 0, gsl_vector_get(ci, 5)*gsl_vector_get(x, 3)
+		 - (gsl_vector_get(ci, 1)+gsl_vector_get(ci, 4))
+		 * gsl_vector_get(x, 1));
+  gsl_matrix_set(A, 2, 1, -(gsl_vector_get(ci, 1)+gsl_vector_get(ci, 4))
+		 * gsl_vector_get(x, 0));
+  gsl_matrix_set(A, 2, 2, -gsl_vector_get(li, 2));
+  gsl_matrix_set(A, 2, 3, gsl_vector_get(ci, 5)*gsl_vector_get(x, 0));
+  gsl_matrix_set(A, 3, 0, -(gsl_vector_get(ci, 2)+gsl_vector_get(ci, 5))
+		 * gsl_vector_get(x, 2));
+  gsl_matrix_set(A, 3, 1, -2*gsl_vector_get(ci, 3)*gsl_vector_get(x, 1));
+  gsl_matrix_set(A, 3, 2, -(gsl_vector_get(ci, 2)+gsl_vector_get(ci, 5))
+		 * gsl_vector_get(x, 0));
+  gsl_matrix_set(A, 3, 3, -gsl_vector_get(li, 3));
+
+    return;
+}
+
 /** 
  * Evaluate the one-dimensional polynomial vector field at a given state.
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] field Vector resulting from the evaluation of the vector field.
  */
 void
-polynomial1D::evalField(gsl_vector *state, gsl_vector *field)
+polynomial1D::evalField(const gsl_vector *state, gsl_vector *field)
 {
   double tmp;
   double stateScal = gsl_vector_get(state, 0);
@@ -62,7 +98,7 @@ polynomial1D::evalField(gsl_vector *state, gsl_vector *field)
  * \param[out] field Vector resulting from the evaluation of the vector field.
  */
 void
-saddleNodeField::evalField(gsl_vector *state, gsl_vector *field)
+saddleNodeField::evalField(const gsl_vector *state, gsl_vector *field)
 {
   // F(x) = mu - x^2
   gsl_vector_set(field, 0, mu - pow(gsl_vector_get(state, 0), 2));
@@ -81,7 +117,7 @@ saddleNodeField::evalField(gsl_vector *state, gsl_vector *field)
  * \param[out] field Vector resulting from the evaluation of the vector field.
  */
 void
-transcriticalField::evalField(gsl_vector *state, gsl_vector *field)
+transcriticalField::evalField(const gsl_vector *state, gsl_vector *field)
 {
   // F(x) = mu*x - x^2
   gsl_vector_set(field, 0, gsl_vector_get(state, 0) * (mu - gsl_vector_get(state, 0)));
@@ -100,7 +136,7 @@ transcriticalField::evalField(gsl_vector *state, gsl_vector *field)
  * \param[out] field Vector resulting from the evaluation of the vector field.
  */
 void
-pitchforkField::evalField(gsl_vector *state, gsl_vector *field)
+pitchforkField::evalField(const gsl_vector *state, gsl_vector *field)
 {
   // F(x) = mu*x - x^3
   gsl_vector_set(field, 0, mu*gsl_vector_get(state, 0)
@@ -120,7 +156,7 @@ pitchforkField::evalField(gsl_vector *state, gsl_vector *field)
  * \param[out] field Vector resulting from the evaluation of the vector field.
  */
 void
-pitchforkSubField::evalField(gsl_vector *state, gsl_vector *field)
+pitchforkSubField::evalField(const gsl_vector *state, gsl_vector *field)
 {
   // F(x) = mu*x + x^3
   gsl_vector_set(field, 0, mu*gsl_vector_get(state, 0)
@@ -141,10 +177,11 @@ pitchforkSubField::evalField(gsl_vector *state, gsl_vector *field)
  * \param[out] field Vector resulting from the evaluation of the vector field.
  */
 void
-HopfField::evalField(gsl_vector *state, gsl_vector *field)
+HopfField::evalField(const gsl_vector *state, gsl_vector *field)
 {
   // F(x) = mu*x - x^2
-  gsl_vector_set(field, 0, gsl_vector_get(state, 0) * (mu - gsl_vector_get(state, 0)));
+  gsl_vector_set(field, 0, gsl_vector_get(state, 0)
+		 * (mu - gsl_vector_get(state, 0)));
   
   return;
 }
@@ -160,7 +197,7 @@ HopfField::evalField(gsl_vector *state, gsl_vector *field)
  * \param[out] field Vector resulting from the evaluation of the vector field.
  */
 void
-cuspField::evalField(gsl_vector *state, gsl_vector *field)
+cuspField::evalField(const gsl_vector *state, gsl_vector *field)
 {
   // F(x) = h + r x - x^3
   gsl_vector_set(field, 0, h + r * gsl_vector_get(state, 0) 
@@ -183,7 +220,7 @@ cuspField::evalField(gsl_vector *state, gsl_vector *field)
  * \param[out] field Vector resulting from the evaluation of the vector field.
  */
 void
-Lorenz63::evalField(gsl_vector *state, gsl_vector *field)
+Lorenz63::evalField(const gsl_vector *state, gsl_vector *field)
 {
 
   // Fx = sigma * (y - x)
@@ -201,6 +238,54 @@ Lorenz63::evalField(gsl_vector *state, gsl_vector *field)
 }
 
 
+/** 
+ * Evaluate the vector field of the QG4 model
+ * at a given state.
+ * \param[in]  state State at which to evaluate the vector field.
+ * \param[out] field Vector resulting from the evaluation of the vector field.
+ */
+void
+QG4::evalField(const gsl_vector *state, gsl_vector *field)
+{
+
+  // F1 = c1*A1*A2 + c2*A2*A3 + c3*A3*A4 - l1*A1
+  gsl_vector_set(field, 0,
+		 gsl_vector_get(ci, 0)
+		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 1)
+		 + gsl_vector_get(ci, 1)
+		 * gsl_vector_get(state, 1) * gsl_vector_get(state, 2)
+		 + gsl_vector_get(ci, 2)
+		 * gsl_vector_get(state, 2) * gsl_vector_get(state, 3)
+		 - gsl_vector_get(li, 0) * gsl_vector_get(state, 0));
+  // F2 = c4*A2*A4 + c5*A1*A3 - c1*A1**2 - l2*A2 + sigma
+  gsl_vector_set(field, 1,
+		 gsl_vector_get(ci, 3)
+		 * gsl_vector_get(state, 1) * gsl_vector_get(state, 3)
+		 + gsl_vector_get(ci, 4)
+		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 2)
+		 - gsl_vector_get(ci, 0)
+		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 0)
+		 - gsl_vector_get(li, 1) * gsl_vector_get(state, 1)
+		 + gsl_vector_get(ci, 6) * sigma);
+  // F3 = c6*A1*A4 - (c2+c5)*A1*A2 - l3*A3
+  gsl_vector_set(field, 2,
+		 gsl_vector_get(ci, 5)
+		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 3)
+		 - (gsl_vector_get(ci, 1) + gsl_vector_get(ci, 4))
+		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 1)
+		 - gsl_vector_get(li, 2) * gsl_vector_get(state, 2));
+  // F4 = -c4*A2**2 - (c3+c6)*A1*A3 - l4*A4
+  gsl_vector_set(field, 3,
+		 - gsl_vector_get(ci, 3)
+		 * gsl_vector_get(state, 1) * gsl_vector_get(state, 1)
+		 - (gsl_vector_get(ci, 2) + gsl_vector_get(ci, 5))
+		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 2)
+		 - gsl_vector_get(li, 3) * gsl_vector_get(state, 3));
+ 
+  return;
+}
+
+
 /*
  * Numerical schemes definitions:
  */
@@ -208,22 +293,23 @@ Lorenz63::evalField(gsl_vector *state, gsl_vector *field)
 /**
  * Integrate one step forward for a given vector field and state
  * using the Euler scheme.
- * \param[in]     field        Vector field to evaluate.
- * \param[in,out] currentState Current state to update by one time step.
+ * \param[in]     field   Vector field to evaluate.
+ * \param[in,out] current Current state to update by one time step.
+ * \param[in]     dt      Time step.
  */
 void
-Euler::stepForward(vectorField *field, gsl_vector *currentState)
+Euler::stepForward(vectorField *field, gsl_vector *current, const double dt)
 {
   gsl_vector_view tmp = gsl_matrix_row(work, 0); 
 
   // Get vector field
-  field->evalField(currentState, &tmp.vector);
+  field->evalField(current, &tmp.vector);
   
   // Scale by time step
   gsl_vector_scale(&tmp.vector, dt);
 
   // Add previous state
-  gsl_vector_add(currentState, &tmp.vector);
+  gsl_vector_add(current, &tmp.vector);
 
   return;
 }
@@ -232,11 +318,12 @@ Euler::stepForward(vectorField *field, gsl_vector *currentState)
 /**
  * Integrate one step forward for a given vector field and state
  * using the Runge-Kutta 4 scheme.
- * \param[in]     field        Vector field to evaluate.
- * \param[in,out] currentState Current state to update by one time step.
+ * \param[in]     field   Vector field to evaluate.
+ * \param[in,out] current Current state to update by one time step.
+ * \param[in]     dt      Time step.
  */
 void
-RungeKutta4::stepForward(vectorField *field, gsl_vector *currentState)
+RungeKutta4::stepForward(vectorField *field, gsl_vector *current, const double dt)
 {
   /** Use views on a working matrix not to allocate memory
    *  at each time step */
@@ -250,12 +337,12 @@ RungeKutta4::stepForward(vectorField *field, gsl_vector *currentState)
   k4 = gsl_matrix_row(work, 4);
   
   // First increament
-  field->evalField(currentState, &k1.vector);
+  field->evalField(current, &k1.vector);
   gsl_vector_scale(&k1.vector, dt);
   
   gsl_vector_memcpy(&tmp.vector, &k1.vector);
   gsl_vector_scale(&tmp.vector, 0.5);
-  gsl_vector_add(&tmp.vector, currentState);
+  gsl_vector_add(&tmp.vector, current);
 
   // Second increment
   field->evalField(&tmp.vector, &k2.vector);
@@ -263,14 +350,14 @@ RungeKutta4::stepForward(vectorField *field, gsl_vector *currentState)
   
   gsl_vector_memcpy(&tmp.vector, &k2.vector);
   gsl_vector_scale(&tmp.vector, 0.5);
-  gsl_vector_add(&tmp.vector, currentState);
+  gsl_vector_add(&tmp.vector, current);
 
   // Third increment
   field->evalField(&tmp.vector, &k3.vector);
   gsl_vector_scale(&k3.vector, dt);
   
   gsl_vector_memcpy(&tmp.vector, &k3.vector);
-  gsl_vector_add(&tmp.vector, currentState);
+  gsl_vector_add(&tmp.vector, current);
 
   // Fourth increment
   field->evalField(&tmp.vector, &k4.vector);
@@ -285,7 +372,7 @@ RungeKutta4::stepForward(vectorField *field, gsl_vector *currentState)
   gsl_vector_scale(&tmp.vector, 1. / 6);
 
   // Update state
-  gsl_vector_add(currentState, &tmp.vector);
+  gsl_vector_add(current, &tmp.vector);
 
   return;
 }
@@ -296,47 +383,329 @@ RungeKutta4::stepForward(vectorField *field, gsl_vector *currentState)
  */
 
 /**
- * Integrate one step forward the model by calling the numerical scheme.
+ * Get current state.
+ * param[in]  current_ Vector in which to copy the current state.
  */
 void
-model::stepForward()
+model::getCurrentState(gsl_vector *current_)
+{
+  gsl_vector_memcpy(current_, current);
+  
+  return;
+}
+    
+/**
+ * Set current state manually.
+ * \param[in] current_ Vector to copy to the current state.
+ */
+void
+model::setCurrentState(const gsl_vector *current_)
+{
+  gsl_vector_memcpy(current, current_);
+  
+  return;
+}
+
+/**
+ * Integrate one step forward the model by calling the numerical scheme.
+ * \param[in]  dt Time step.
+ */
+void
+model::stepForward(const double dt)
 {
   // Apply numerical scheme to step forward
-  scheme->stepForward(field, currentState);
+  scheme->stepForward(field, current, dt);
     
   return;
 }
 
 
 /**
- * Integrate the model forward for a given period.
- * \param[in]  length   Duration of the integration.
- * \param[in]  spinup   Initial integration period to remove.
+ * Integrate the model forward for a number of time steps from the current state.
+ * If data different from NULL is provided,
+ * the sampled states are recorded in *data.
+ * If *data is not of the right size, it is reallocated.
+ * \param[in]  nt       Duration of the integration.
+ * \param[in]  dt       Time step.
+ * \param[in]  ntSpinup Initial integration steps to remove.
  * \param[in]  sampling Time step at which to save states.
- * \return              Matrix to record the states.
+ * \param[out] data     Record states in pointed data.
  */
-gsl_matrix *
-model::integrateForward(const double length, const double spinup,
-			const size_t sampling)
+void
+model::integrateForward(const size_t nt, const double dt,
+			const size_t ntSpinup, const size_t sampling,
+			gsl_matrix **data)
 {
-  size_t nt = (size_t) (length / scheme->getTimeStep() + 0.1);
-  size_t ntSpinup = (size_t) (spinup / scheme->getTimeStep() + 0.1);
-  gsl_matrix *data = gsl_matrix_alloc((size_t) ((nt - ntSpinup) / sampling),
-				      dim);
+  size_t dataSize = (size_t) ((nt - ntSpinup) / sampling + 0.1);
+
+  // Check if data is of the right size.
+  if (data && (((*data)->size1 != dataSize) || ((*data)->size2 != dim)))
+    {
+      gsl_matrix_free(*data);
+      *data = gsl_matrix_alloc(dataSize, dim);
+    }
+
   // Get spinup
   for (size_t i = 1; i <= ntSpinup; i++)
-    stepForward();
+    stepForward(dt);
 
   // Get record
   for (size_t i = ntSpinup+1; i <= nt; i++)
     {
-      stepForward();
+      stepForward(dt);
 
       // Save state
-      if (i%sampling == 0)
-	gsl_matrix_set_row(data, (i - ntSpinup) / sampling - 1, currentState);
+      if ((i%sampling == 0) && data)
+	gsl_matrix_set_row(*data, (i - ntSpinup) / sampling - 1, current);
     }
 
-  return data;
+  return;
 }
 
+
+/**
+ * Integrate the model forward for a number of time steps from a given inital state.
+ * If data different from NULL is provided,
+ * the sampled states are recorded in *data.
+ * If *data is not of the right size, it is reallocated.
+ * \param[in]  init     Initial state.
+ * \param[in]  nt       Duration of the integration.
+ * \param[in]  dt       Time step.
+ * \param[in]  ntSpinup Initial integration steps to remove.
+ * \param[in]  sampling Time step at which to save states.
+ * \param[out] data     Record states in pointed data.
+ */
+void
+model::integrateForward(const gsl_vector *init, const size_t nt, const double dt,
+			const size_t ntSpinup, const size_t sampling,
+			gsl_matrix **data)
+{
+  // Initialize state
+  setCurrentState(init);
+
+  // Integrate forward
+  integrateForward(nt, dt, ntSpinup, sampling, data);
+  
+  return;
+}
+
+
+/*
+ * Integrate the model forward for a given period from the current state.
+ * \param[in]  length   Duration of the integration.
+ * \param[in]  dt       Time step.
+ * \param[in]  spinup   Initial integration period to remove.
+ * \param[in]  sampling Time step at which to save states.
+ * \param[out] data     Record states in pointed data.
+ */
+void
+model::integrateForward(const double length, const double dt,
+			const double spinup, const size_t sampling,
+			gsl_matrix **data)
+{
+  size_t nt = (size_t) (length / dt + 0.1);
+  size_t ntSpinup = (size_t) (spinup / dt + 0.1);
+
+  integrateForward(nt, dt, ntSpinup, sampling, data);
+
+  return;
+}
+
+
+/**
+ * Integrate the model forward for a given period from a given initial state.
+ * \param[in]  init     Initial state.
+ * \param[in]  length   Duration of the integration.
+ * \param[in]  dt       Time step.
+ * \param[in]  spinup   Initial integration period to remove.
+ * \param[in]  sampling Time step at which to save states.
+ * \param[out] data     Record states in pointed data.
+ */
+void
+model::integrateForward(const gsl_vector *init, const double length, const double dt,
+			const double spinup, const size_t sampling,
+			gsl_matrix **data)
+{
+  size_t nt = (size_t) (length / dt + 0.1);
+  size_t ntSpinup = (size_t) (spinup / dt + 0.1);
+
+  integrateForward(init, nt, dt, ntSpinup, sampling, data);
+
+  return;
+}
+
+/*
+ * Linearized Model definitions:
+ */
+
+/**
+ * Get current state.
+ * param[in]  current_ Matrix in which to copy the current state.
+ */
+void linearizedModel::getCurrentState(gsl_matrix *current_)
+{
+  gsl_matrix_memcpy(current_, current);
+  
+  return;
+}
+    
+/**
+ * Integrate one step forward the linearized model by calling the numerical scheme.
+ * First the full model is integrated forward.
+ * Then, integrate forward the linearized model.
+ * Last, the Jacobian matrix is updated to the new state.
+ * \param[in] dt Time step.
+ */
+void
+linearizedModel::stepForward(const double dt)
+{
+  gsl_vector_view col;
+
+  // Integrate the model forward
+  mod->stepForward(dt);
+
+  // Integrate the fundamental matrix forward
+  for (size_t d = 0; d < dim; d++)
+    {
+      // Get matrix column
+      col = gsl_matrix_column(current, d); 
+  
+      // Apply numerical scheme to step forward
+      mod->scheme->stepForward(Jacobian, &col.vector, dt);
+    }
+    
+  // Update the Jacobian with the full model current state
+  Jacobian->setState(mod->current);
+  
+  return;
+}
+
+
+/**
+ * Integrate the linearizedModel forward for a given number of time steps
+ * and from the current state.
+ * \param[in]  nt      Number of time steps to integrate.
+ * \param[in]  dt      Time step.
+ */
+void
+linearizedModel::integrateForward(const size_t nt, const double dt)
+{
+  // Get record
+  for (size_t i = 1; i <= nt; i++)
+      stepForward(dt);
+
+  return;
+}
+
+
+/**
+ * Integrate the linearizedModel forward for a given number of time steps
+ * and from a given initial state.
+ * \param[in]  init    Initial state.
+ * \param[in]  initMat Initial fundamental matrix.
+ * \param[in]  nt      Number of time steps to integrate.
+ * \param[in]  dt      Time step.
+ */
+void
+linearizedModel::integrateForward(const gsl_vector *init, const gsl_matrix *initMat,
+				  const size_t nt, const double dt)
+{
+  // Initialize state and fundamental matrix
+  setCurrentState(init, initMat);
+
+  // Integrate forward
+  integrateForward(nt, dt);
+
+  return;
+}
+
+
+/**
+ * Integrate the linearizedModel forward for a given period
+ * and from the current state.
+ * \param[in]  length      Duration of the integration.
+ * \param[in]  dt          Time step.
+ */
+void
+linearizedModel::integrateForward(const double length, const double dt)
+{
+  size_t nt = (size_t) (length / dt + 0.1);
+
+  // Get record
+  integrateForward(nt, dt);
+
+  return;
+}
+
+/**
+ * Integrate the linearizedModel forward for a given period
+ * and from a given initial state.
+ * \param[in]  init        Initial state.
+ * \param[in]  initMatrix  Initial fundamental matrix.
+ * \param[in]  length      Duration of the integration.
+ * \param[in]  dt          Time step.
+ */
+void
+linearizedModel::integrateForward(const gsl_vector *init, const gsl_matrix *initMat,
+				  const double length, const double dt)
+{
+  size_t nt = (size_t) (length / dt + 0.1);
+
+  // Get record
+  integrateForward(init, initMat, nt, dt);
+
+  return;
+}
+
+/**
+ * Set current fundamental matrix manually.
+ * \param[in] currentMat Fundamental matrix to set to.
+ */
+void
+linearizedModel::setCurrentState(const gsl_matrix *currentMat)
+{
+  gsl_matrix_memcpy(current, currentMat);
+  
+  return;
+}
+    
+/**
+ * Set current state and fundamental matrix manually.
+ * \param[in]  current_   Current state to set to.
+ * \param[in]  currentMat Current fundamental matrix to set to.
+ */
+void
+linearizedModel::setCurrentState(const gsl_vector *current_,
+				 const gsl_matrix *currentMat)
+{
+  // Set current state of model
+  mod->setCurrentState(current_);
+  
+  // Update Jacobian to that at current state
+  Jacobian->setState(mod->current);
+  
+  // Update current state of the fundamental matrix
+  gsl_matrix_memcpy(current, currentMat);
+  
+  return;
+}
+    
+/**
+ * Set current state manually and fundamental matrix to identity.
+ * \param[in]  current_ Current state to set to.
+ */
+void
+linearizedModel::setCurrentState(const gsl_vector *current_)
+{
+  // Set current state of model
+  mod->setCurrentState(current_);
+  
+  // Update Jacobian to that at current state
+  Jacobian->setState(mod->current);
+  
+  // Update current state of the fundamental matrix
+  gsl_matrix_set_identity(current);
+  
+  return;
+}
+    

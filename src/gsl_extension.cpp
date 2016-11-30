@@ -59,6 +59,23 @@ gsl_vector_get_sum(const gsl_vector *v)
 
 
 /**
+ * Get sum of squares of vector elements.
+ * \param[in]      v Vector from which to sum the square of the elements.
+ * \return         Sum of vector elements squared.
+ */
+double
+gsl_vector_get_sum_squares(const gsl_vector *v)
+{
+  double sum = 0;
+
+  for (size_t j = 0; j < v->size; j++)
+    sum += gsl_pow_2(v->data[j * v->stride]);
+  
+  return sum;
+}
+
+
+/**
  * Get the inner product of two vectors for a given measure.
  * The inner product of \f$L^2_\mu\f$ between \f$v\f$ and \f$w\f$ is equal to
  * \f$\sum_{k = 1}^n v_k \mu_k w_k \f$.
@@ -260,15 +277,40 @@ gsl_vector_linspace(gsl_vector *v, const double lower, const double upper)
   double delta = (upper - lower) / (v->size - 1);
   
   for (i = 0; i < v->size; i++)
-    {
-      gsl_vector_set(v, i, lower + i * delta);
-    }
+    gsl_vector_set(v, i, lower + i * delta);
   
   return GSL_SUCCESS;
 }
 
 
+/**
+ * Scale a complex vector with a real number.
+ * \param[in/out] v Vector to scale.
+ * \param[in]     a Real number with which to scale.
+ */
+void
+gsl_vector_complex_scale_real(gsl_vector_complex *v, const double a)
+{
+  for (size_t i = 0; i < v->size; i++)
+    gsl_vector_complex_set(v, i,
+			   gsl_complex_mul_real(gsl_vector_complex_get(v, i), a));
+  
+  return;
+}
 
+/** 
+ * Get complex logarithm of complex vector.
+ * \param[out] res Complex vector in which to save the logaritm.
+ * \param[in]  v   Complex vector from which to calculate the logarithm.
+ */
+void
+gsl_vector_complex_log(gsl_vector_complex *res, const gsl_vector_complex *v)
+{
+  for (size_t i = 0; i < v->size; i++)
+    gsl_vector_complex_set(res, i, gsl_complex_log(gsl_vector_complex_get(v, i)));
+      
+  return;
+}
 /** 
  * Copy vector to real part of complex vector.
  * \param[out] dst Destination complex vector to which copy real part.

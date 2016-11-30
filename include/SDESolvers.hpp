@@ -158,7 +158,7 @@ public:
   /** \brief Virtual method to integrate the stochastic model one step forward. */
   virtual void stepForward(vectorField *field,
 			   vectorFieldStochastic *stocField,
-			   gsl_vector *currentState) = 0;
+			   gsl_vector *current) = 0;
 };
 
 
@@ -176,7 +176,7 @@ public:
 
   /** \brief Virtual method to integrate the stochastic model one step forward. */
   void stepForward(vectorField *field, vectorFieldStochastic *stocField,
-		   gsl_vector *currentState);
+		   gsl_vector *current);
 };
 
 
@@ -197,7 +197,7 @@ protected:
   vectorField *field;                //!< Vector field
   vectorFieldStochastic *stocField;  //!< Stochastic vector field
   numericalSchemeStochastic *scheme; //!< Numerical scheme
-  gsl_vector *currentState;          //!< Current state
+  gsl_vector *current;          //!< Current state
   
 public:
   /** \brief Constructor assigning a vector field, a numerical scheme
@@ -205,7 +205,7 @@ public:
   modelStochastic(vectorField *field_, vectorFieldStochastic *stocField_,
 		  numericalSchemeStochastic *scheme_)
     : dim(field_->getDim()), field(field_), stocField(stocField_), scheme(scheme_)
-  { currentState = gsl_vector_calloc(dim); }
+  { current = gsl_vector_calloc(dim); }
 
   /** \brief Constructor assigning a vector field, a numerical scheme
    *  and a stochastic vector field and setting initial state. */
@@ -213,12 +213,12 @@ public:
 		  numericalSchemeStochastic *scheme_, gsl_vector *initState)
     : dim(field_->getDim()), field(field_), stocField(stocField_), scheme(scheme_)
   {
-    currentState = gsl_vector_alloc(dim);
-    gsl_vector_memcpy(currentState, initState);
+    current = gsl_vector_alloc(dim);
+    gsl_vector_memcpy(current, initState);
   }
 
   /** \brief Destructor freeing memory. */
-  ~modelStochastic() { gsl_vector_free(currentState); }
+  ~modelStochastic() { gsl_vector_free(current); }
 
   /** \brief One time-step forward integration of the modelStochastic. */
   void stepForward();

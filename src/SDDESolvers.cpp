@@ -88,17 +88,17 @@ vectorFieldDelay::evalField(gsl_matrix *state, gsl_vector *field)
 
 /**
  * Update past states of historic by one time step.
- * \param[in,out] currentState Historic to update.
+ * \param[in,out] current Historic to update.
  */
-void numericalSchemeSDDE::updateHistoric(gsl_matrix *currentState)
+void numericalSchemeSDDE::updateHistoric(gsl_matrix *current)
 {
   gsl_vector_view delayedState, afterState;
-  size_t delayMax = currentState->size1 - 1;
+  size_t delayMax = current->size1 - 1;
 
   for (size_t d = 0; d < delayMax; d++)
     {
-      delayedState = gsl_matrix_row(currentState, delayMax - d);
-      afterState = gsl_matrix_row(currentState, delayMax - d - 1);
+      delayedState = gsl_matrix_row(current, delayMax - d);
+      afterState = gsl_matrix_row(current, delayMax - d - 1);
       gsl_vector_memcpy(&delayedState.vector, &afterState.vector);
     }
 
@@ -111,12 +111,12 @@ void numericalSchemeSDDE::updateHistoric(gsl_matrix *currentState)
  * and state using the Euler Maruyama scheme.
  * \param[in]     delayedField Delayed vector fields to evaluate.
  * \param[in]     stocField    stochastic vector field to evaluate.
- * \param[in,out] currentState Current state to update by one time step.
+ * \param[in,out] current Current state to update by one time step.
  */
 void
 EulerMaruyamaSDDE::stepForward(vectorFieldDelay *delayedField,
 			       vectorFieldStochastic *stocField,
-			       gsl_matrix *currentState)
+			       gsl_matrix *current)
 {
   // Assign pointers to workspace vectors
   gsl_vector_view tmp = gsl_matrix_row(work, 0);
@@ -124,15 +124,15 @@ EulerMaruyamaSDDE::stepForward(vectorFieldDelay *delayedField,
   gsl_vector_view presentState;
 
   /** Evaluate drift */
-  delayedField->evalField(currentState, &tmp.vector);
+  delayedField->evalField(current, &tmp.vector);
   // Scale by time step
   gsl_vector_scale(&tmp.vector, dt);
 
   /** Update historic */
-  updateHistoric(currentState);
+  updateHistoric(current);
 
   // Assign pointer to present state
-  presentState = gsl_matrix_row(currentState, 0);
+  presentState = gsl_matrix_row(current, 0);
 
   // Evaluate stochastic field at present state
   stocField->evalField(&presentState.vector, &tmp1.vector); 
@@ -160,7 +160,7 @@ void
 modelSDDE::stepForward()
 {
   // Apply numerical scheme to step forward
-  scheme->stepForward(delayedField, stocField, currentState);
+  scheme->stepForward(delayedField, stocField, current);
     
   return;
 }
@@ -198,7 +198,7 @@ modelSDDE::integrateForward(const double length, const double spinup,
       // Save present state
       if (i%sampling == 0)
 	{
-	  presentState = gsl_matrix_row(currentState, 0);
+	  presentState = gsl_matrix_row(current, 0);
 	  gsl_matrix_set_row(data, (i - ntSpinup) / sampling - 1,
 			     &presentState.vector);
 	}

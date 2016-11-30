@@ -82,7 +82,7 @@ protected:
   gsl_matrix *work;      //!< Workspace used to evaluate the vector field
 
   /** \brief Update past states of a historic by one step */
-  void updateHistoric(gsl_matrix *currentState);
+  void updateHistoric(gsl_matrix *current);
     
 public:
   /** \brief Constructor defining the dimensions, time step and allocating workspace. */
@@ -109,7 +109,7 @@ public:
   /** \brief Virtual method to integrate the stochastic model one step forward. */
   virtual void stepForward(vectorFieldDelay *delayedField,
 			   vectorFieldStochastic *stocField,
-			   gsl_matrix *currentState) = 0;
+			   gsl_matrix *current) = 0;
 };
 
 
@@ -128,7 +128,7 @@ public:
 
   /** \brief Virtual method to integrate the stochastic model one step forward. */
   void stepForward(vectorFieldDelay *delayedField, vectorFieldStochastic *stocField,
-		   gsl_matrix *currentState);
+		   gsl_matrix *current);
 };
 
 
@@ -152,7 +152,7 @@ protected:
   vectorFieldDelay *delayedField;    //!< Vector field for each delay
   vectorFieldStochastic *stocField; //!< Stochastic vector field
   numericalSchemeSDDE *scheme;      //!< Numerical scheme
-  gsl_matrix *currentState;         //!< Current state (historic)
+  gsl_matrix *current;         //!< Current state (historic)
   
 public:
   /** \brief Constructor assigning a delayed vector field, a numerical scheme
@@ -165,7 +165,7 @@ public:
       delayMax(delayedField_->getDelayMax()),
       stocField(stocField_),
       scheme(scheme_)
-  { currentState = gsl_matrix_calloc(delayMax + 1, dim); }
+  { current = gsl_matrix_calloc(delayMax + 1, dim); }
   
   /** \brief Constructor assigning a delayed vector field, a numerical scheme
    *  and a stochastic vector field and setting a constant initial state. */
@@ -178,9 +178,9 @@ public:
       stocField(stocField_),
       scheme(scheme_)
   {
-    currentState = gsl_matrix_alloc(delayMax + 1, dim);
+    current = gsl_matrix_alloc(delayMax + 1, dim);
     for (size_t d = 0; d <= delayMax; d++)
-      gsl_matrix_set_row(currentState, d, initStateCst);
+      gsl_matrix_set_row(current, d, initStateCst);
   }
 
   /** \brief Constructor assigning a delayed vector field, a numerical scheme
@@ -194,12 +194,12 @@ public:
       stocField(stocField_),
       scheme(scheme_)
   {
-    currentState = gsl_matrix_alloc(delayMax + 1, dim);
-    gsl_matrix_memcpy(currentState, initState);
+    current = gsl_matrix_alloc(delayMax + 1, dim);
+    gsl_matrix_memcpy(current, initState);
   }
 
   /** \brief Destructor freeing memory. */
-  ~modelSDDE() { gsl_matrix_free(currentState); }
+  ~modelSDDE() { gsl_matrix_free(current); }
 
   /** \brief One time-step forward integration of the modelSDDE. */
   void stepForward();

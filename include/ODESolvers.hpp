@@ -45,7 +45,7 @@ public:
   size_t getDim() { return dim; }
   
   /** \brief Virtual method for evaluating the vector field at a given state. */
-  virtual void evalField(gsl_vector *state, gsl_vector *field) = 0;
+  virtual void evalField(const gsl_vector *state, gsl_vector *field) = 0;
 };
 
 
@@ -55,10 +55,10 @@ public:
  *  \f$ F(x) = A x \f$.
  */
 class linearField : public vectorField {
-  
-gsl_matrix *A;  //!< Matrix representation of the linear operator \f$ A \f$.
-  
+
 public:
+  gsl_matrix *A;  //!< Matrix representation of the linear operator \f$ A \f$.
+  
   /** \brief Construction by allocating matrix of the linear operator. */
   linearField(const size_t dim_) : vectorField(dim_)
   { A = gsl_matrix_alloc(dim, dim); }
@@ -77,7 +77,87 @@ public:
   void setParameters(const gsl_matrix *A_) { gsl_matrix_memcpy(A, A_); return; }
 
   /** \brief Evaluate the linear vector field at a given state. */
-  void evalField(gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field);
+};
+
+
+/** \brief Linear vector field conditioned on another state.
+ *
+ *  Linear vector field conditioned on another state.
+ */
+class stateLinearField : public linearField {
+  
+protected:
+  gsl_vector *x; //!< State on which the field is conditioned
+  
+  /** \brief Update the matrix of the linear operator. */
+  virtual void setMatrix() = 0;
+  
+public:
+  /** \brief Construction by allocating matrix of the linear operator. */
+  stateLinearField(const size_t dim_) : linearField(dim_)
+  { x = gsl_vector_alloc(dim); }
+
+  /** \brief Construction by allocating matrix of the linear operator. */
+  stateLinearField(const gsl_vector *x_) : linearField(x_->size)
+  { x = gsl_vector_alloc(dim); gsl_vector_memcpy(x, x_); }
+
+  /** Destructor freeing the matrix. */
+  ~stateLinearField(){ gsl_vector_free(x); }
+
+  /** \brief Return the state on which the field is conditioned. */
+  void getState(gsl_vector *x_) { gsl_vector_memcpy(x_, x); return; }
+
+  /** \brief Return the matrix. */
+  void getMatrix(gsl_matrix *A_) { gsl_matrix_memcpy(A_, A); return; }
+
+  /** \brief Sets the conditionning state and update the matrix. */
+  void setState(const gsl_vector *x_)
+  { gsl_vector_memcpy(x, x_); setMatrix(); return; }
+
+};
+
+
+class JacobianQG4 : public stateLinearField {
+  
+  double sigma;
+  gsl_vector *ci;
+  gsl_vector *li;
+
+protected:
+  /** \brief Update the matrix of the linear operator. */
+  void setMatrix();  
+
+public:
+  /** \brief Construction by allocating matrix of the linear operator. */
+  JacobianQG4(const double sigma_, const gsl_vector *ci_, const gsl_vector *li_)
+    : stateLinearField(4), sigma(sigma_)
+  { ci = gsl_vector_alloc(7); gsl_vector_memcpy(ci, ci_);
+    li = gsl_vector_alloc(4); gsl_vector_memcpy(li, li_); }
+
+  /** \brief Construction by allocating matrix of the linear operator. */
+  JacobianQG4(const double sigma_, const gsl_vector *ci_, const gsl_vector *li_,
+	      const gsl_vector *x_)
+    : stateLinearField(x_), sigma(sigma_)
+  { ci = gsl_vector_alloc(7); gsl_vector_memcpy(ci, ci_);
+    li = gsl_vector_alloc(4); gsl_vector_memcpy(li, li_);
+    setMatrix(); }
+
+  /** \brief Destructor. */
+  ~JacobianQG4() { gsl_vector_free(ci); gsl_vector_free(li); }
+
+  /** \brief Return the parameters of the model. */
+  void getParameters(double *sigma_, gsl_vector *ci_, gsl_vector *li_)
+  { *sigma_ = sigma; gsl_vector_memcpy(ci_, ci); gsl_vector_memcpy(li, li_);
+    return; }
+
+  /** \brief Set parameters of the model. */
+  void setParameters(const double sigma_, const gsl_vector *ci_,
+		     const gsl_vector *li_)
+  { sigma = sigma_; gsl_vector_memcpy(ci, ci_); gsl_vector_memcpy(li, li_); return; }
+
+  /** \brief Update the matrix of the linear operator after the state. */
+  void setMatrix(gsl_vector *x);
 };
 
 
@@ -111,7 +191,7 @@ public:
   void setParameters(const gsl_vector *coeff_) { gsl_vector_memcpy(coeff, coeff_); return; }
 
   /** \brief Evaluate the linear vector field at a given state. */
-  void evalField(gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field);
 };
 
 
@@ -139,7 +219,7 @@ public:
   virtual void setParameters(const double mu_) { mu = mu_; return; }
 
   /** \brief Virtual method for evaluating the vector field at a given state. */
-  virtual void evalField(gsl_vector *state, gsl_vector *field) = 0;
+  virtual void evalField(const gsl_vector *state, gsl_vector *field) = 0;
 };
 
 
@@ -158,7 +238,7 @@ public:
     : codim1Field(1, mu_) {}
 
   /** \brief Evaluate the saddle-node vector field at a given state. */
-  void evalField(gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field);
 };
 
 
@@ -177,7 +257,7 @@ public:
     : codim1Field(1, mu_) {}
 
   /** \brief Evaluate the transcritical vector field at a given state. */
-  void evalField(gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field);
 };
 
 
@@ -196,7 +276,7 @@ public:
     : codim1Field(1, mu_) {}
 
   /** \brief Evaluate the supercritical pitchfork vector field at a given state. */
-  void evalField(gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field);
 };
 
 
@@ -215,7 +295,7 @@ public:
     : codim1Field(1, mu_) {}
 
   /** \brief Evaluate the subcritical pitchfork vector field at a given state. */
-  void evalField(gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field);
 };
 
 
@@ -235,7 +315,7 @@ public:
     : codim1Field(2, mu_) {}
 
   /** \brief Evaluate the Hopf vector field at a given state. */
-  void evalField(gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field);
 };
 
 
@@ -270,7 +350,7 @@ public:
   void setParameters(const double r_, const double h_) { r = r_; h = h_; return; }
 
   /** \brief Evaluate the cusp vector field at a given state. */
-  void evalField(gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field);
 };
 
 
@@ -307,8 +387,42 @@ public:
   { rho = rho_; sigma = sigma_; beta = beta_; return; }
 
   /** \brief Evaluate the vector field of the Lorenz 63 model for a given state. */
-  void evalField(gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field);
 
+};
+
+
+/** \brief Vector field for the quasi-geostrophic 4 modes model.
+ *
+ *  Vector field for the quasi-geostrophic 4 modes model.
+ */
+class QG4 : public vectorField {
+  double sigma;
+  gsl_vector *ci; // c1, ..., c6
+  gsl_vector *li; // c1, ..., c6
+  
+public:
+  /** \brief Constructor defining the model parameters. */
+  QG4(const double sigma_, const gsl_vector *ci_, const gsl_vector *li_)
+    : vectorField(4), sigma(sigma_) {
+    ci = gsl_vector_alloc(7); gsl_vector_memcpy(ci, ci_);
+    li = gsl_vector_alloc(4); gsl_vector_memcpy(li, li_);
+  }
+
+  /** \brief Destructor. */
+  ~QG4() { gsl_vector_free(ci); gsl_vector_free(li); }
+
+  /** \brief Return the parameters of the model. */
+  void getParameters(double *sigma_, gsl_vector *ci_, gsl_vector *li_)
+  { *sigma_ = sigma; gsl_vector_memcpy(ci_, ci); gsl_vector_memcpy(li_, li); return; }
+
+  /** \brief Set parameters of the model. */
+  void setParameters(const double sigma_, const gsl_vector *ci_, const gsl_vector *li_)
+  { sigma = sigma_; gsl_vector_memcpy(ci, ci_); gsl_vector_memcpy(li, li_); return; }
+
+  /** \brief Evaluate the vector field of the quasi-geostrophic 4 modes model
+   *  for a given state. */
+  void evalField(const gsl_vector *state, gsl_vector *field);
 };
 
 
@@ -321,7 +435,6 @@ class numericalScheme {
 protected:
   const size_t dim;      //!< Dimension of the phase space
   const size_t dimWork;  //!< Dimension of the workspace used to evaluate the field
-  double dt;             //!< Time step of integration.
   gsl_matrix *work;      //!< Workspace used to evaluate the vector field
 
 public:
@@ -330,25 +443,15 @@ public:
     : dim(dim_), dimWork(dimWork_)
   { work = gsl_matrix_alloc(dimWork, dim); }
   
-  /** \brief Constructor defining the dimensions, time step and allocating workspace. */
-  numericalScheme(const size_t dim_, const size_t dimWork_, const double dt_)
-    : dim(dim_), dimWork(dimWork_), dt(dt_)
-  { work = gsl_matrix_alloc(dimWork, dim); }
-  
   /** \brief Destructor freeing workspace. */
   virtual ~numericalScheme() { gsl_matrix_free(work); }
 
   /** \brief Dimension access method. */
   size_t getDim() { return dim; }
   
-  /** \brief Return the time step used for the integration. */
-  double getTimeStep() { return dt; }
-
-  /** \brief Set or change the time step of integration. */
-  void setTimeStep(const double dt_) { dt = dt_; return; }
-
   /** \brief Virtual method to integrate the model one step forward. */
-  virtual void stepForward(vectorField *field, gsl_vector *currentState) = 0;
+  virtual void stepForward(vectorField *field, gsl_vector *current,
+			   const double dt) = 0;
 
 };
 
@@ -360,14 +463,13 @@ public:
 class Euler : public numericalScheme {
 public:
   /** \brief Constructor defining integration parameters and allocating workspace. */
-  Euler(const size_t dim_, const double dt_)
-    : numericalScheme(dim_, 1, dt_){}
+  Euler(const size_t dim_) : numericalScheme(dim_, 1){}
   
   /** \brief Destructor. */
   ~Euler() {}
 
   /** \brief One time-step Euler forward Integration of the model. */
-  void stepForward(vectorField *field, gsl_vector *currentState);
+  void stepForward(vectorField *field, gsl_vector *current, const double dt);
 };
 
 
@@ -378,12 +480,11 @@ public:
 class RungeKutta4 : public numericalScheme {
 public:
   /** \brief Constructor defining integration parameters and allocating workspace. */
-  RungeKutta4(const size_t dim_, const double dt_)
-    : numericalScheme(dim_, 5, dt_){}
+  RungeKutta4(const size_t dim_) : numericalScheme(dim_, 5){}
   ~RungeKutta4() {}
   
   /** \brief One time-step Runge-Kutta 4 forward Integration of the model. */
-  void stepForward(vectorField *field, gsl_vector *currentState);
+  void stepForward(vectorField *field, gsl_vector *current, const double dt);
 };
 
 
@@ -400,42 +501,119 @@ class model {
   
 protected:
   const size_t dim;                 //!< Phase space dimension
-  vectorField *field;               //!< Vector field
-  numericalScheme *scheme;          //!< Numerical scheme
-  gsl_vector *currentState;         //!< Current state
   
 public:
-  /** \brief Constructor assigning a vector field and a numerical scheme
-   *  and setting initial state to origin. */
+  vectorField *field;               //!< Vector field
+  numericalScheme *scheme;          //!< Numerical scheme
+  gsl_vector *current;              //!< Current state
+  
+  /** \brief Constructor assigning a vector field, a numerical scheme
+   *  and a state. */
   model(vectorField *field_, numericalScheme *scheme_)
     : dim(field_->getDim()), field(field_), scheme(scheme_)
-  { currentState = gsl_vector_calloc(dim); }
-
-  /** \brief Constructor assigning a vector field and a numerical scheme
-   *  and set initial state. */
-  model(vectorField *field_, numericalScheme *scheme_, gsl_vector *initState)
-    : dim(field_->getDim()), field(field_), scheme(scheme_)
-  {
-    currentState = gsl_vector_alloc(dim);
-    gsl_vector_memcpy(currentState, initState);
-  }
+  { current = gsl_vector_alloc(dim); }
 
   /** \brief Destructor freeing memory. */
-  ~model() { gsl_vector_free(currentState); }
+  ~model() { gsl_vector_free(current); }
 
-  /** \brief Set current state manually. */
-  void setCurrentState(gsl_vector *currentState_)
-  {
-    gsl_vector_memcpy(currentState, currentState_);
-    return;
-  }
+  /** \brief Get dimension. */
+  size_t getDim(){ return dim; }
     
-  /** \brief One time-step forward integration of the model. */
-  void stepForward();
+  /** \brief Get current state. */
+  void getCurrentState(gsl_vector *current_);
+    
+  /** \brief Set current state manually. */
+  void setCurrentState(const gsl_vector *current_);
 
-  /** \brief Integrate the model forward for a given period. */
-  gsl_matrix *integrateForward(const double length, const double spinup,
-			       const size_t sampling);
+  /** \brief One time-step forward integration of the model. */
+  void stepForward(const double dt);
+
+  /** \brief Integrate the model forward for a given number of time steps
+   *  from the current state. */
+  void integrateForward(const size_t nt, const double dt, const size_t ntSpinup=0,
+			const size_t sampling=1, gsl_matrix **data=NULL);
+  /** \brief Integrate the model forward for a given number of time steps
+   *  from a given initial state. */
+  void integrateForward(const gsl_vector *init, const size_t nt, const double dt,
+			const size_t ntSpinup=0, const size_t samping=1,
+			gsl_matrix **data=NULL);
+  /** \brief Integrate the model forward for a given period.
+   *  from the current state. */
+  void integrateForward(const double length, const double dt, const double spinup=0,
+			const size_t sampling=1, gsl_matrix **data=NULL);
+  /** \brief Integrate the model forward for a given period.
+   *  from a given initial state. */
+  void integrateForward(const gsl_vector *init, const double length, const double dt,
+			const double spinup=0, const size_t sampling=1,
+			gsl_matrix **data=NULL);
+
+};
+
+
+/** \brief Numerical linearized model class.
+ *
+ *  Numerical linearized model class.
+ *  A linearizedModel is defined by a linearized vector field and a numerical scheme.
+ *  The current state of the linearizedModel is also recorded as a fundamental matrix.
+ *  Attention: the constructors do not copy the vector field
+ *  and the numerical scheme given to them, so that
+ *  any modification or freeing will affect the linearizedModel.
+ */
+class linearizedModel {
+  
+protected:
+  const size_t dim;                 //!< Phase space dimension
+  
+public:
+  stateLinearField *Jacobian;       //!< Jacobianobian Vector field
+  model *mod;                       //!< Full model
+  gsl_matrix *current;              //!< Current state
+
+  /** \brief Constructor assigning a vector field, a numerical scheme
+   *  and a state. */
+  linearizedModel(model *mod_, stateLinearField *Jacobian_)
+    : mod(mod_), Jacobian(Jacobian_), dim(mod_->getDim())
+  { current = gsl_matrix_calloc(dim, dim); }
+
+
+  /** \brief Destructor freeing memory. */
+  ~linearizedModel() { gsl_matrix_free(current); }
+
+  /** \brief Get dimension. */
+  size_t getDim(){ return dim; }
+
+  /** \brief Get Jacobian pointer. */
+  stateLinearField *getJacobian(){ return Jacobian; }
+    
+  /** \brief Get current state. */
+  void getCurrentState(gsl_matrix *current_);
+    
+  /** \brief Set current fundamental matrix manually. */
+  void setCurrentState(const gsl_matrix *currentMat);
+    
+  /** \brief Set current state and fundamental matrix manually. */
+  void setCurrentState(const gsl_vector *current_, const gsl_matrix *currentMat);
+    
+  /** \brief Set current state manually and fundamental matrix to identity. */
+  void setCurrentState(const gsl_vector *current_);
+    
+  /** \brief One time-step forward integration of the linearizedModel. */
+  void stepForward(const double dt);
+
+  /** \brief Integrate full and linearized model forward for a number of time steps
+   *  from the current state. */
+  void integrateForward(const size_t, const double);
+  /** \brief Integrate full and linearized model forward for a given period. 
+   *  from the current state. */
+  void integrateForward(const double, const double);
+  /** \brief Integrate full and linearized model forward for a number of time steps
+   *  from a given initial state. */
+  void integrateForward(const gsl_vector *, const gsl_matrix *,
+			const size_t, const double);
+  /** \brief Integrate full and linearized model forward for a given period. 
+   *  from a given initial state. */
+  void integrateForward(const gsl_vector *, const gsl_matrix *,
+			const double, const double);
 
 };
 

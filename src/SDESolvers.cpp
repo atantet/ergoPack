@@ -47,26 +47,26 @@ multiplicativeLinearWiener::evalField(gsl_vector *state, gsl_vector *field)
  * and state using the Euler Maruyama scheme.
  * \param[in]     field        Vector field to evaluate.
  * \param[in]     stocField    Stochastic vector field to evaluate.
- * \param[in,out] currentState Current state to update by one time step.
+ * \param[in,out] current Current state to update by one time step.
  */
 void
 EulerMaruyama::stepForward(vectorField *field, vectorFieldStochastic *stocField,
-			   gsl_vector *currentState)
+			   gsl_vector *current)
 {
   gsl_vector_view tmp = gsl_matrix_row(work, 0);
   gsl_vector_view tmp1 = gsl_matrix_row(work, 1);
 
   // Evalueate fields
-  field->evalField(currentState, &tmp.vector);
-  stocField->evalField(currentState, &tmp1.vector);
+  field->evalField(current, &tmp.vector);
+  stocField->evalField(current, &tmp1.vector);
 
   // Add drift
   gsl_vector_scale(&tmp.vector, dt);
-  gsl_vector_add(currentState, &tmp.vector);
+  gsl_vector_add(current, &tmp.vector);
 
   // Add diffusion
   gsl_vector_scale(&tmp1.vector, sqrt(dt));
-  gsl_vector_add(currentState, &tmp1.vector);
+  gsl_vector_add(current, &tmp1.vector);
 
   return;
 }
@@ -79,7 +79,7 @@ void
 modelStochastic::stepForward()
 {
   // Apply numerical scheme to step forward
-  scheme->stepForward(field, stocField, currentState);
+  scheme->stepForward(field, stocField, current);
     
   return;
 }
@@ -111,7 +111,7 @@ modelStochastic::integrateForward(const double length, const double spinup,
 
       // Save state
       if (i%sampling == 0)
-	gsl_matrix_set_row(data, (i - ntSpinup) / sampling - 1, currentState);
+	gsl_matrix_set_row(data, (i - ntSpinup) / sampling - 1, current);
     }
 
   return data;

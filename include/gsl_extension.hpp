@@ -28,6 +28,8 @@ int gsl_vector_sqrt(gsl_vector *v);
 int gsl_vector_normalize(gsl_vector *v);
 /** \brief Get sum of vector elements. */
 double gsl_vector_get_sum(const gsl_vector *v);
+/** \brief Get sum of squares of vector elements. */
+double gsl_vector_get_sum_squares(const gsl_vector *v);
 /** \brief Get inner product of two vectors for a given measure. */
 double gsl_vector_get_innerproduct(const gsl_vector *v, const gsl_vector *w,
 				   const gsl_vector *mu);
@@ -54,6 +56,10 @@ int gsl_vector_linspace(gsl_vector *v, const double lower, const double upper,
 int gsl_vector_complex_memcpy_real(gsl_vector_complex *dst, const gsl_vector *src);
 /** \brief Copy vector to imaginary part of complex vector. */
 int gsl_vector_complex_memcpy_imag(gsl_vector_complex *dst, const gsl_vector *src);
+/** \brief Scale a complex vector with a real number. */
+void gsl_vector_complex_scale_real(gsl_vector_complex *v, const double a);
+/** \brief Get complex logarithm of complex vector. */
+void gsl_vector_complex_log(gsl_vector_complex *res, const gsl_vector_complex *v);
 /** \brief Get absolute values of complex vector. */
 gsl_vector *gsl_vector_complex_abs(const gsl_vector_complex *v);
 /** \brief Find the maximum in absolute value of a complex vector. */
