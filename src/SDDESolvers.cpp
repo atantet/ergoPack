@@ -20,15 +20,12 @@
  */
 vectorFieldDelay::vectorFieldDelay(std::vector<vectorField *> *fields_,
 				   const gsl_vector_uint *delays_)
-  : dim(fields_->at(0)->getDim()), nDelays(delays_->size),
-    delayMax(gsl_vector_uint_get(delays_, nDelays - 1)), fields(fields_)
+  : nDelays(delays_->size), delayMax(gsl_vector_uint_get(delays_, nDelays - 1)),
+    fields(fields_), work(NULL)
   {
     // Copy delays
     delays = gsl_vector_uint_alloc(nDelays);
     gsl_vector_uint_memcpy(delays, delays_);
-			   
-    // Allocate workspace
-    work = gsl_vector_alloc(dim);
   }
 
 
@@ -44,8 +41,9 @@ vectorFieldDelay::~vectorFieldDelay()
   delete fields;
   
   gsl_vector_uint_free(delays);
-  
-  gsl_vector_free(work);
+
+  if (work)
+    gsl_vector_free(work);
 }
 
 
@@ -59,6 +57,15 @@ vectorFieldDelay::evalField(gsl_matrix *state, gsl_vector *field)
 {
   gsl_vector_view delayedState;
   unsigned int delay;
+
+  // Adapt workspace
+  if (!work)
+    work = gsl_vector_alloc(state->size2);
+  else if (work->size != state->size2)
+    {
+      gsl_vector_free(work);
+      work = gsl_vector_alloc(state->size2);
+    }
 
   // Set field evaluation to 0
   gsl_vector_set_zero(field);

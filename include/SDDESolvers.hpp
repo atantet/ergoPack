@@ -37,7 +37,6 @@
 class vectorFieldDelay {
   
 protected:
-  const size_t dim;                   //!< Phase space dimension
   const size_t nDelays;               //!< Number of delayed fields
   const size_t delayMax;              //!< Maximum delay in time steps
   gsl_vector_uint *delays;            //!< Delays
@@ -46,13 +45,11 @@ protected:
 
 public:
   /** \brief Constructor setting the dimension and allocating. */
-  vectorFieldDelay(std::vector<vectorField *> *fields_, const gsl_vector_uint *delays_);
+  vectorFieldDelay(std::vector<vectorField *> *fields_,
+		   const gsl_vector_uint *delays_);
 
   /** \brief Destructor freeing fields and workspace. */
   virtual ~vectorFieldDelay();
-  
-  /** \brief Dimension access method. */
-  size_t getDim() { return dim; }
   
   /** \brief Number of delays access method. */
   size_t getNDelays() { return nDelays; }
@@ -160,7 +157,7 @@ public:
   modelSDDE(vectorFieldDelay *delayedField_, vectorFieldStochastic *stocField_,
 	    numericalSchemeSDDE *scheme_)
     : delayedField(delayedField_),
-      dim(delayedField_->getDim()),
+      dim(scheme_->getDim()),
       nDelays(delayedField_->getNDelays()),
       delayMax(delayedField_->getDelayMax()),
       stocField(stocField_),
@@ -172,7 +169,7 @@ public:
   modelSDDE(vectorFieldDelay *delayedField_, vectorFieldStochastic *stocField_,
 	    numericalSchemeSDDE *scheme_, gsl_vector *initStateCst)
     : delayedField(delayedField_),
-      dim(delayedField_->getDim()),
+      dim(scheme_->getDim()),
       nDelays(delayedField_->getNDelays()),
       delayMax(delayedField_->getDelayMax()),
       stocField(stocField_),
@@ -188,7 +185,7 @@ public:
   modelSDDE(vectorFieldDelay *delayedField_, vectorFieldStochastic *stocField_,
 	    numericalSchemeSDDE *scheme_, gsl_matrix *initState)
     : delayedField(delayedField_),
-      dim(delayedField_->getDim()),
+      dim(scheme_->getDim()),
       nDelays(delayedField_->getNDelays()),
       delayMax(delayedField_->getDelayMax()),
       stocField(stocField_),

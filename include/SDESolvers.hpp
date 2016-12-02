@@ -38,16 +38,17 @@ class vectorFieldStochastic : public vectorField {
 protected:
   gsl_rng *rng;              //!< Random number gnerator
   gsl_vector *noiseState;    //!< Current noise state (mainly a workspace)
+  const size_t noiseDim;     //!< Dimension of Wiener process
 
 public:
   /** \brief Constructor setting the dimension and allocating. */
-  vectorFieldStochastic(const size_t dim_) : vectorField(dim_)
-  { noiseState = gsl_vector_alloc(dim); }
+  vectorFieldStochastic(const size_t noiseDim_) : noiseDim(noiseDim_), vectorField()
+  { noiseState = gsl_vector_alloc(noiseDim); }
 
   /** \brief Constructor setting the dimension, the generator and allocating. */
-  vectorFieldStochastic(const size_t dim_, gsl_rng *rng_)
-    : vectorField(dim_), rng(rng_)
-  { noiseState = gsl_vector_alloc(dim); }
+  vectorFieldStochastic(const size_t noiseDim_, gsl_rng *rng_)
+    : vectorField(), rng(rng_), noiseDim(noiseDim_)
+  { noiseState = gsl_vector_alloc(noiseDim); }
   
   /** \brief Destructor freeing noise. */
   virtual ~vectorFieldStochastic() { gsl_vector_free(noiseState); }
@@ -58,7 +59,7 @@ public:
 
   /** \brief Update noise realization. */
   void stepForwardNoise() {
-    for (size_t i = 0; i < dim; i++)
+    for (size_t i = 0; i < noiseDim; i++)
       gsl_vector_set(noiseState, i, gsl_ran_gaussian(rng, 1.));
   }
 
@@ -73,16 +74,18 @@ public:
  */
 class additiveWiener : public vectorFieldStochastic {
   gsl_matrix *Q;  //!< Correlation matrix to apply to noise realization.
+  const size_t dim;
 
 public:
   /** \brief Construction by allocating  the matrix of the linear operator. */
-  additiveWiener(const size_t dim_) : vectorFieldStochastic(dim_)
-  { Q = gsl_matrix_alloc(dim, dim); }
+  additiveWiener(const size_t dim_, const size_t noiseDim_)
+    : vectorFieldStochastic(noiseDim_), dim(dim_)
+  { Q = gsl_matrix_alloc(dim, noiseDim); }
   
   /** \brief Construction by copying the matrix of the linear operator. */
   additiveWiener(const gsl_matrix *Q_, gsl_rng *rng_)
-    : vectorFieldStochastic(Q_->size1, rng_)
-  { Q = gsl_matrix_alloc(dim, dim); gsl_matrix_memcpy(Q, Q_); }
+    : dim(Q_->size1), vectorFieldStochastic(Q_->size2, rng_)
+  { Q = gsl_matrix_alloc(dim, noiseDim); gsl_matrix_memcpy(Q, Q_); }
   
   /** Destructor freeing the matrix. */
   ~additiveWiener(){ gsl_matrix_free(Q); }
@@ -204,14 +207,14 @@ public:
    *  and a stochastic vector field and setting initial state to origin. */
   modelStochastic(vectorField *field_, vectorFieldStochastic *stocField_,
 		  numericalSchemeStochastic *scheme_)
-    : dim(field_->getDim()), field(field_), stocField(stocField_), scheme(scheme_)
+    : dim(scheme_->getDim()), field(field_), stocField(stocField_), scheme(scheme_)
   { current = gsl_vector_calloc(dim); }
 
   /** \brief Constructor assigning a vector field, a numerical scheme
    *  and a stochastic vector field and setting initial state. */
   modelStochastic(vectorField *field_, vectorFieldStochastic *stocField_,
 		  numericalSchemeStochastic *scheme_, gsl_vector *initState)
-    : dim(field_->getDim()), field(field_), stocField(stocField_), scheme(scheme_)
+    : dim(scheme_->getDim()), field(field_), stocField(stocField_), scheme(scheme_)
   {
     current = gsl_vector_alloc(dim);
     gsl_vector_memcpy(current, initState);
