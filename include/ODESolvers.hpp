@@ -98,13 +98,13 @@ class JacobianQG4 : public linearField {
 public:
   /** \brief Construction by allocating matrix of the linear operator. */
   JacobianQG4(const double sigma_, const gsl_vector *ci_, const gsl_vector *li_)
-    : linearField(5), sigma(sigma_)
+    : linearField(4), sigma(sigma_)
   { ci = gsl_vector_alloc(7); gsl_vector_memcpy(ci, ci_);
     li = gsl_vector_alloc(4); gsl_vector_memcpy(li, li_); }
 
   /** \brief Construction by allocating matrix of the linear operator. */
   JacobianQG4(const double sigma_, const gsl_vector *ci_, const gsl_vector *li_,
-	      const gsl_vector *x_) : linearField(5), sigma(sigma_)
+	      const gsl_vector *x_) : linearField(4), sigma(sigma_)
   { ci = gsl_vector_alloc(7); gsl_vector_memcpy(ci, ci_);
     li = gsl_vector_alloc(4); gsl_vector_memcpy(li, li_);
     setMatrix(x_); }

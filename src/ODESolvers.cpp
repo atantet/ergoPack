@@ -1,4 +1,5 @@
 #include <ODESolvers.hpp>
+#include <iostream>
 
 /** \file ODESolvers.cpp
  *  \brief Definitions for ODESolvers.hpp
@@ -27,6 +28,43 @@ linearField::evalField(const gsl_vector *state, gsl_vector *field)
   return;
 }
 
+
+/**
+ * Update the matrix of the linear operator
+ * conditionned on the  */
+void
+JacobianQG4::setMatrix(const gsl_vector *x)
+{
+  // Set non-zero elements
+  gsl_matrix_set(A, 0, 0, gsl_vector_get(ci, 0)*gsl_vector_get(x, 1)
+		 - gsl_vector_get(li, 0));
+  gsl_matrix_set(A, 0, 1, gsl_vector_get(ci, 0)*gsl_vector_get(x, 0)
+		 + gsl_vector_get(ci, 1)*gsl_vector_get(x, 2));
+  gsl_matrix_set(A, 0, 2, gsl_vector_get(ci, 1)*gsl_vector_get(x, 1)
+		 + gsl_vector_get(ci, 2)*gsl_vector_get(x, 3));
+  gsl_matrix_set(A, 0, 3, gsl_vector_get(ci, 2) * gsl_vector_get(x, 2));
+  gsl_matrix_set(A, 1, 0, gsl_vector_get(ci, 4) * gsl_vector_get(x, 2)
+		 - 2 * gsl_vector_get(ci, 0) * gsl_vector_get(x, 0));
+  gsl_matrix_set(A, 1, 1, gsl_vector_get(ci, 3)*gsl_vector_get(x, 3)
+		 - gsl_vector_get(li, 1));
+  gsl_matrix_set(A, 1, 2, gsl_vector_get(ci, 4)*gsl_vector_get(x, 0));
+  gsl_matrix_set(A, 1, 3, gsl_vector_get(ci, 3)*gsl_vector_get(x, 1));
+  gsl_matrix_set(A, 2, 0, gsl_vector_get(ci, 5)*gsl_vector_get(x, 3)
+		 - (gsl_vector_get(ci, 1)+gsl_vector_get(ci, 4))
+		 * gsl_vector_get(x, 1));
+  gsl_matrix_set(A, 2, 1, -(gsl_vector_get(ci, 1)+gsl_vector_get(ci, 4))
+		 * gsl_vector_get(x, 0));
+  gsl_matrix_set(A, 2, 2, -gsl_vector_get(li, 2));
+  gsl_matrix_set(A, 2, 3, gsl_vector_get(ci, 5)*gsl_vector_get(x, 0));
+  gsl_matrix_set(A, 3, 0, -(gsl_vector_get(ci, 2)+gsl_vector_get(ci, 5))
+		 * gsl_vector_get(x, 2));
+  gsl_matrix_set(A, 3, 1, -2*gsl_vector_get(ci, 3)*gsl_vector_get(x, 1));
+  gsl_matrix_set(A, 3, 2, -(gsl_vector_get(ci, 2)+gsl_vector_get(ci, 5))
+		 * gsl_vector_get(x, 0));
+  gsl_matrix_set(A, 3, 3, -gsl_vector_get(li, 3));
+
+    return;
+}
 
 /**
  * Update the matrix of the linear operator
