@@ -192,6 +192,108 @@ public:
 };
 
 
+/** \brief Jacobian of the Lorenz 63 model.
+ *
+ *  Jacobian the Lorenz 63 model.
+ */
+class JacobianLorenz63 : public linearField {
+  
+  double rho;     //!< Parameter \f$ \rho \f$ corresponding to the Rayleigh number
+  double sigma;   //!< Parameter \f$ \sigma \f$
+  double beta;    //!< Parameter \f$ \beta \f$
+  
+public:
+  /** \brief Construction by allocating matrix of the linear operator. */
+  JacobianLorenz63(const double rho_, const double sigma_, const double beta_)
+    : linearField(3), rho(rho_), sigma(sigma_), beta(beta_) {}
+
+  /** \brief Construction by allocating matrix of the linear operator. */
+  JacobianLorenz63(const double rho_, const double sigma_, const double beta_,
+		   const gsl_vector *x_)
+    : linearField(3), rho(rho_), sigma(sigma_), beta(beta_) {}
+
+  /** \brief Destructor. */
+  ~JacobianLorenz63() { }
+
+  /** \brief Return the parameters of the model. */
+  void getParameters(double *rho_, double *sigma_, double *beta_)
+  { *rho_ = rho; *sigma_ = sigma; *beta_ = beta; return; }
+
+  /** \brief Set parameters of the model. */
+  void setParameters(const double rho_, const double sigma_, const double beta_)
+  { rho = rho_; sigma = sigma_; beta = beta_; return; }
+
+  /** \brief Update the matrix of the linear operator after the state. */
+  void setMatrix(const gsl_vector *x);
+};
+
+
+/** \brief Jacobian of the Lorenz 63 model.
+ *
+ *  Jacobian the Lorenz 63 model.
+ */
+class JacobianLorenz63Cont : public linearField {
+  
+  double sigma;   //!< Parameter \f$ \sigma \f$
+  double beta;    //!< Parameter \f$ \beta \f$
+  
+public:
+  /** \brief Construction by allocating matrix of the linear operator. */
+  JacobianLorenz63Cont(const double sigma_, const double beta_)
+    : linearField(4), sigma(sigma_), beta(beta_) {}
+
+  /** \brief Construction by allocating matrix of the linear operator. */
+  JacobianLorenz63Cont(const double sigma_, const double beta_, const gsl_vector *x_)
+    : linearField(4), sigma(sigma_), beta(beta_) {}
+
+  /** \brief Destructor. */
+  ~JacobianLorenz63Cont() { }
+
+  /** \brief Return the parameters of the model. */
+  void getParameters(double *sigma_, double *beta_)
+  { *sigma_ = sigma; *beta_ = beta; return; }
+
+  /** \brief Set parameters of the model. */
+  void setParameters(const double sigma_, const double beta_)
+  { sigma = sigma_; beta = beta_; return; }
+
+  /** \brief Update the matrix of the linear operator after the state. */
+  void setMatrix(const gsl_vector *x);
+};
+
+
+/** \brief Vector field for the Lorenz 63 model for continuation.
+ *
+ *  Vector field for the Lorenz 63 model (Lorenz, 1963) for continuation
+ *  with respect to \f$\rho\f$.
+ */
+class Lorenz63Cont : public vectorField {
+  
+  double sigma;   //!< Parameter \f$ \sigma \f$
+  double beta;    //!< Parameter \f$ \beta \f$
+  
+public:
+  /** \brief Constructor defining the model parameters. */
+  Lorenz63Cont(const double sigma_, const double beta_)
+    : vectorField(), sigma(sigma_), beta(beta_) {}
+
+  /** \brief Destructor. */
+  ~Lorenz63Cont() {}
+
+  /** \brief Return the parameters of the model. */
+  void getParameters(double *sigma_, double *beta_)
+  { *sigma_ = sigma; *beta_ = beta; return; }
+
+  /** \brief Set parameters of the model. */
+  void setParameters(const double sigma_, const double beta_)
+  { sigma = sigma_; beta = beta_; return; }
+
+  /** \brief Evaluate the vector field of the Lorenz 63 model for a given state. */
+  void evalField(const gsl_vector *state, gsl_vector *field);
+
+};
+
+
 /** \brief Vector field for the quasi-geostrophic 4 modes model.
  *
  *  Vector field for the quasi-geostrophic 4 modes model.
@@ -316,13 +418,13 @@ class JacobianQG4Cont : public linearField {
 public:
   /** \brief Construction by allocating matrix of the linear operator. */
   JacobianQG4Cont(const gsl_vector *ci_, const gsl_vector *li_)
-    : linearField(5, 5)
+    : linearField(5)
   { ci = gsl_vector_alloc(7); gsl_vector_memcpy(ci, ci_);
     li = gsl_vector_alloc(4); gsl_vector_memcpy(li, li_); }
 
   /** \brief Construction by allocating matrix of the linear operator. */
   JacobianQG4Cont(const gsl_vector *ci_, const gsl_vector *li_,
-		  const gsl_vector *x_) : linearField(5, 5)
+		  const gsl_vector *x_) : linearField(5)
   { ci = gsl_vector_alloc(7); gsl_vector_memcpy(ci, ci_);
     li = gsl_vector_alloc(4); gsl_vector_memcpy(li, li_);
     setMatrix(x_); }
