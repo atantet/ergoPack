@@ -409,7 +409,7 @@ fixedPointCont::continueStep(const double contStep, const gsl_vector *init)
 /**
  * Get current state of tracking.
  * If current_->size == dim + 1, return x(0), T
- * else if current_->size == dim*nShoot + 1, return x(0), ..., x(numShoot-1), T
+ * else if current_->size == dim*numShoot + 1, return x(0), ..., x(numShoot-1), T
  * \param[in]  current_ Vector in which to copy the current state.
  */
 void
@@ -500,7 +500,7 @@ periodicOrbitTrack::setCurrentState(const gsl_vector *init)
   gsl_vector_view currentState;
   
   // Set current state
-  // Check if initCont as size dim+1 or dim*nShoot+1
+  // Check if initCont as size dim+1 or dim*numShoot+1
   if (init->size == dim + 1)
     {
       // Set period
@@ -574,8 +574,7 @@ void
 periodicOrbitCorr::getSystemCorr()
 {
   gsl_matrix_view mView;
-  gsl_vector_view vView;
-  gsl_vector_view vView2;
+  gsl_vector_view vView, vView2;
 
   // Set initial data
   gsl_matrix_set_zero(S);
@@ -648,68 +647,6 @@ periodicOrbitCorr::updateTargetCorr()
 }
 
 
-// /**
-//  * Get matrix of the linear system to be solved.
-//  */
-// void
-// periodicOrbitCorr::getSystemCorr()
-// {
-//   gsl_matrix_view mView;
-//   gsl_vector_view vView;
-
-//   // Set initial data
-//   gsl_matrix_set(S, dim, dim, 0.);
-//   // View on the upper left corner
-//   mView = gsl_matrix_submatrix(S, 0, 0, dim, dim);
-//   // Set to minus the current matrix of linear model, i.e., the identity by default
-//   linMod->getCurrentState(&mView.matrix);
-//   gsl_matrix_scale(&mView.matrix, -1.);
-//   // Add F(x0) to lower left corner
-//   vView = gsl_matrix_subrow(S, dim, 0, dim);
-//   linMod->mod->evalField(linMod->mod->current, &vView.vector);
-
-//   // Get solution and fundamental matrix after the period
-//   linMod->integrateForward(nt, dt);
-
-//   // Set data after a period
-//   mView = gsl_matrix_submatrix(S, 0, 0, dim, dim);
-//   // Add MT to state part
-//   gsl_matrix_add(&mView.matrix, linMod->current);
-//   // Add F(xT) to upper right corner
-//   vView = gsl_matrix_subcolumn(S, dim, 0, dim);
-//   linMod->mod->evalField(linMod->mod->current, &vView.vector);
-    
-//   return;
-// }
-
-
-// /**
-//  * Update targetCorr vector for periodic orbit tracking.
-//  */
-// void
-// periodicOrbitCorr::updateTargetCorr()
-// {
-//   // Creatte views on the state part of the targetCorr and the current state
-//   gsl_vector_view targetCorrState = gsl_vector_subvector(targetCorr, 0, dim);
-//   gsl_vector_view currentState = gsl_vector_subvector(current, 0, dim);
-
-//   // Copy the current state there
-//   gsl_vector_memcpy(targetCorr, current);
-  
-//   /** Integrate model for a period from the new current state
-//    *  (no need to update the linear model here). */
-//   linMod->mod->integrateForward(&currentState.vector, nt, dt);
-
-//   // Substract the new state
-//   gsl_vector_sub(&targetCorrState.vector, linMod->mod->current);
-
-//   // Set targetCorr for period to 0
-//   gsl_vector_set(targetCorr, dim, 0.);
-
-//   return;
-// }
-
-
 /**
  * Find periodic orbit using Newton-Raphson method.
  * \param[in]  init Vector from which to start tracking.
@@ -727,7 +664,7 @@ periodicOrbitCorr::findSolution(const gsl_vector *init)
 
   // Get targetCorr vector to x - \phi_T(x) and update error
   updateTargetCorr();
-  errDist = sqrt(gsl_vector_get_sum_squares(targetCorr));
+  errDist = sqrt(gsl_vector_get_sum_squares(targetCorr)) / numShoot;
 
   /** Update state x of model and Jacobian J(x) to current state
    *  and reinitizlize fundamental matrix to identity
@@ -741,7 +678,7 @@ periodicOrbitCorr::findSolution(const gsl_vector *init)
       NewtonStep();
 
       // Update correction step size before to damp it
-      errStepCorrSize = sqrt(gsl_vector_get_sum_squares(stepCorr));
+      errStepCorrSize = sqrt(gsl_vector_get_sum_squares(stepCorr)) / numShoot;
 
       // Update model state
       applyCorr();
@@ -757,7 +694,7 @@ periodicOrbitCorr::findSolution(const gsl_vector *init)
       setCurrentState();
     
       // Update distance to targetCorr
-      errDist = sqrt(gsl_vector_get_sum_squares(targetCorr));
+      errDist = sqrt(gsl_vector_get_sum_squares(targetCorr)) / numShoot;
       numIter++;
     }
 
@@ -770,271 +707,453 @@ periodicOrbitCorr::findSolution(const gsl_vector *init)
 }
 
 
-// /*
-//  * Periodic orbit continuation definitions
-//  */
+/*
+ * Periodic orbit continuation definitions
+ */
 
-// /**
-//  * Get matrix of the linear system to be solved for correction.
-//  */
-// void
-// periodicOrbitCont::getSystemCorr()
-// {
-//   gsl_matrix_view mView, mView2;
-//   gsl_vector_view vView;
-
-//   // Set initial data
-//   // View on the upper left corner
-//   mView = gsl_matrix_submatrix(S, 0, 0, dim, dim);
-//   // Set to minus the current matrix of linear model, i.e., the identity by default
-//   // including the last row/col for the parameter.
-//   // S[:dim+1, :dim+1] = -I, S[dim, :dim+1] will be changed
-//   linMod->getCurrentState(&mView.matrix);
-//   gsl_matrix_scale(&mView.matrix, -1.);
-//   // Add F(x0) to lower left corner (the last entry is 0)
-//   // S[dim+1, :dim+1] = F(x) with F[dim] = 0.
-//   vView = gsl_matrix_subrow(S, dim, 0, dim);
-//   linMod->mod->evalField(linMod->mod->current, &vView.vector);
-
-//   // Get solution and fundamental matrix after the period
-//   linMod->integrateForward(nt, dt);
-
-//   // Set data after a period
-//   // Add MT to state part, including the last column for parameter
-//   // S[:dim, :dim+1] += M(t), ddalpha
-//   mView = gsl_matrix_submatrix(S, 0, 0, dim-1, dim);
-//   mView2 = gsl_matrix_submatrix(linMod->current, 0, 0, dim-1, dim);
-//   gsl_matrix_add(&mView.matrix, &mView2.matrix);
-//   // Add F(xT) to upper right corner
-//   // S[:dim+1, dim+1] = F(xT).T
-//   vView = gsl_matrix_subcolumn(S, dim, 0, dim);
-//   linMod->mod->evalField(linMod->mod->current, &vView.vector);
-
-//   // Set the middle part to the previous prediction step
-//   // to normalize the step.
-//   // S[dim+1, :dim+1] = v
-//   vView = gsl_matrix_subrow(S, dim-1, 0, dim+1);
-//   gsl_vector_memcpy(&vView.vector, stepPred);
-//   // Set last element to zero to exclude period from normalization
-//   gsl_matrix_set(S, dim-1, dim, 0.);
-
-//   // Set bottom right corner to zero S[dim+1, dim+1] = 0.
-//   gsl_matrix_set(S, dim, dim, 0.);
-
-//   return;
-// }
-
-
-// /**
-//  * Get matrix of the linear system to be solved for prediction.
-//  */
-// void
-// periodicOrbitCont::getSystemPred()
-// {
-//   getSystemCorr();
-
-//   return;
-// }
-
-
-// /**
-//  * Prediction Newton-Raphson step.
-//  */
-// void
-// periodicOrbitCont::predict()
-// {
-//   gsl_permutation *p = gsl_permutation_alloc(dim + 1);
-//   int s;
-
-//   // Get linear system
-//   getSystemPred();
-
-//   // Set up LU decomposition
-//   // Note that this modifies the matrix A
-//   gsl_linalg_LU_decomp(S, p, &s);
-
-//   // Solve the linear system to get new predition step
-//   gsl_linalg_LU_solve(S, p, targetPred, stepPred);
-
-//   return;
-// }
-
-
-// /** 
-//  * Update state after prediction
-//  */
-// void
-// periodicOrbitCont::applyPredict(const double contStep)
-// {
-//   // Scale prediction step by continuation step
-//   gsl_vector_scale(stepPred, contStep);
+/**
+ * Adapt time step and number of time steps to shooting strategy.
+ * \param[in]  T Period to adapt time to.
+ */
+void
+periodicOrbitCont::adaptTimeToPeriod(const double T)
+{
+  // Get total number of time steps
+  nt = (size_t) (ceil(T / intStepCorr) + 0.1);
   
-//   // Update current state
-//   gsl_vector_add(current, stepPred);
-
-//   // Scale back, since the continuation step is used as later
-//   gsl_vector_scale(stepPred, 1. / contStep);
-
-//   return;
-// }
-
-
-// /**
-//  * Update correction target vector for fixed point tracking.
-//  */
-// void
-// periodicOrbitCont::updateTargetCorr()
-// {
-//   // Creatte views on the state part of the targetCorr and the current state
-//   gsl_vector_view targetCorrState = gsl_vector_subvector(targetCorr, 0, dim);
-//   gsl_vector_view currentState = gsl_vector_subvector(current, 0, dim);
-
-//   // Copy the current state there
-//   gsl_vector_memcpy(targetCorr, current);
+  // Get time step
+  dt = T / nt;
   
-//   /** Integrate model for a period from the new current state
-//    *  (no need to update the linear model here). */
-//   linMod->mod->integrateForward(&currentState.vector, nt, dt);
-
-//   // Substract the new state
-//   gsl_vector_sub(&targetCorrState.vector, linMod->mod->current);
-
-//   // Set targetCorr for parameter to 0 (pseudo-arclength)
-//   gsl_vector_set(targetCorr, dim-1, 0.);
-
-//   // Set targetCorr for period to 0
-//   gsl_vector_set(targetCorr, dim, 0.);
-
-//   return;
-// }
-
-
-// /**
-//  * Correct prediction by pseudo-arclenght continuation and Newton-Raphson.
-//  */
-// void
-// periodicOrbitCont::correct()
-// {
-//   // Make sure the iteration counter and errors are reset.
-//   numIter = 0;
-//   errDist = 1.e27;
-//   errStepCorrSize = 1.e27;
-//   converged = false;
-//   double T;
+  // Uniformly divide number of time steps
+  gsl_vector_uint_set_all(ntShoot, (size_t) (nt / numShoot));
   
-//   // Get integration time stepCorr.
-//   T = gsl_vector_get(current, dim);
-//   nt = (int) (ceil(T / intStepCorr) + 0.1);
-//   dt = T / nt;
+  // Add remaining
+  gsl_vector_uint_set(ntShoot, numShoot-1,
+		      gsl_vector_uint_get(ntShoot, numShoot-1) + (nt % numShoot));
 
-//   // Get targetCorr vector to x - \phi_T(x) and update error
-//   errDist = sqrt(gsl_vector_get_sum_squares(targetCorr));
-//   updateTargetCorr();
+  return;
+}
 
-//   /** Update state x of model and Jacobian J(x) to current state
-//    *  and reinitizlize fundamental matrix to identity
-//    *  (after integration in updateTargetCorr). */
-//   setCurrentState();
+
+/**
+ * Adapt time step and number of time steps to shooting strategy.
+ */
+void
+periodicOrbitCont::adaptTimeToPeriod()
+{
+  double T;
+  
+  // Get integration time stepCorr.
+  T = gsl_vector_get(current, (dim-1) * numShoot + 1);
+
+  // Adapt
+  adaptTimeToPeriod(T);
+  
+  return;
+}
+
+
+/**
+ * Get extended state vector x(s), lambda.
+ * \param[out] state Vector in which to copy the extended state.
+ * \param[in]  s     Shooting number. 
+ */
+void
+periodicOrbitCont::getExtendedState(gsl_vector *state, const size_t s)
+{
+  gsl_vector_view vView1, vView2;
+  
+  vView1 = gsl_vector_subvector(current, s*(dim-1), dim-1);
+  vView2 = gsl_vector_subvector(state, 0, dim-1);
+  gsl_vector_memcpy(&vView2.vector, &vView1.vector);
+  gsl_vector_set(state, dim-1, gsl_vector_get(current, (dim-1) * numShoot));
+  
+  return;
+}
+
+
+/**
+ * Get current state of tracking.
+ * If current_->size == dim + 1, return x(0), T
+ * else if current_->size == dim*numShoot + 1, return x(0), ..., x(numShoot-1), T
+ * \param[in]  current_ Vector in which to copy the current state.
+ */
+void
+periodicOrbitCont::getCurrentState(gsl_vector *current_)
+{
+  if (current_->size == dim + 1)
+    {
+      // Set state x(0)
+      gsl_vector_view vView = gsl_vector_subvector(current, 0, dim);
+      gsl_vector_view vView2 = gsl_vector_subvector(current_, 0, dim);
+      gsl_vector_memcpy(&vView2.vector, &vView.vector);
+
+      // Set parameter
+      gsl_vector_set(current_, dim-1, gsl_vector_get(current, (dim-1)*numShoot));
+      
+      // Set the period
+      gsl_vector_set(current_, dim, gsl_vector_get(current, (dim-1) * numShoot + 1));
+    }
+  else if (current_->size == dim * numShoot + 1)
+    gsl_vector_memcpy(current_, current);
+  else
+    std::cerr << "Destination vector size " << current_->size
+	      << " does not match dim + 1 = " << (dim + 1)
+	      << " nor dim * numShoot + 1 = " << (dim * numShoot + 1) << std::endl;
+
+  return;
+}
+
+/**
+ * Set current state x(s), lambda of the model and fundamental matrix
+ * \param[in]  s Shooting number
+ */
+void
+periodicOrbitCont::setCurrentState(const size_t s)
+{
+  // Set state of linearized model x(0), lambda.
+  getExtendedState(work, s);
+  linMod->setCurrentState(work);
+
+  return;
+}
+
+
+/**
+ * Set current state x(0), lambda of the model and fundamental matrix
+ */
+void
+periodicOrbitCont::setCurrentState()
+{
+  // Set state of linearized model x(0), lambda.
+  setCurrentState((size_t) 0);
+
+  return;
+}
+
+
+/**
+ * Set current state of the problem together with that of the model.
+ * \param[in]  init Initial state.
+ */
+void
+periodicOrbitCont::setCurrentState(const gsl_vector *init)
+{
+  gsl_vector_view currentState;
+  
+  // Set current state
+  // Check if initCont as size dim+1 or dim*numShoot+1
+  if (init->size == dim + 1)
+    {
+      // Set period (to adapt time)
+      gsl_vector_set(current, (dim-1)*numShoot+1, gsl_vector_get(init, dim));
+
+      // Adapt time
+      adaptTimeToPeriod();
+      
+      // Set x(0), lambda and initialize model (last element will be overwritten)
+      currentState = gsl_vector_subvector(current, 0, dim);
+      gsl_vector_const_view vView = gsl_vector_const_subvector(init, 0, dim);
+      gsl_vector_memcpy(&currentState.vector, &vView.vector);
+      linMod->setCurrentState(&vView.vector);
+
+      // Only x(0) has been given, integrate to x(s) and set
+      for (size_t s = 0; s < numShoot - 1; s++)
+	{
+	  linMod->mod->integrateForward((size_t) gsl_vector_uint_get(ntShoot, s), dt);
+	  currentState = gsl_vector_subvector(current, (s+1)*(dim-1), dim);
+	  linMod->mod->getCurrentState(&currentState.vector);
+	}
+      
+      // Set period (again, because overwritten)
+      gsl_vector_set(current, (dim-1)*numShoot+1, gsl_vector_get(init, dim));
+    }
+  else if (init->size == (dim-1) * numShoot + 2)
+    gsl_vector_memcpy(current, init);
+  else
+    std::cerr << "Initial state size " << init->size
+	      << " does not match dim + 1 = " << (dim + 1)
+	      << " nor dim * numShoot + 1 = " << (dim * numShoot + 1) << std::endl;
+  // Set current state of model
+  setCurrentState();
+
+  return;
+}
+
+
+/**
+ * Get matrix of the linear system to be solved for correction.
+ */
+void
+periodicOrbitCont::getSystemCorr()
+{
+  gsl_matrix_view mView, mView2;
+  gsl_vector_view vView, vView2;
+
+  // Set initial data
+  gsl_matrix_set_zero(S);
+  for (size_t s = 0; s < numShoot; s++)
+    {
+      // Add F(x(s)) to last row (the last entry will be updated, with the very last 0)
+      // S[dim*numShoot+1, :dim*numShoot+1] = F(x(0)), ... F(x(numShoot-1))
+      // with F[dim * numShoot] = 0.
+      vView = gsl_matrix_subrow(S, (dim-1)*numShoot+1, s*(dim-1), dim);
+      // Get view of the state x(s) and set linMod to it
+      // (used to integrate to (x(s+T), M(s+T)))
+      setCurrentState(s);
+      linMod->mod->evalField(linMod->mod->current, &vView.vector);
+
+      // Set identity matrices
+      mView = gsl_matrix_submatrix(S, s*(dim-1), ((s+1) % numShoot)*(dim-1),
+				   dim-1, dim-1);
+      gsl_matrix_set_identity(&mView.matrix);
+      gsl_matrix_scale(&mView.matrix, -1.);
+
+      // Get solution x(s + T) and fundamental matrix M(s + T)
+      linMod->integrateForward((size_t) gsl_vector_uint_get(ntShoot, s), dt);
+
+      // Set data after a period
+      // Add M(s + T) to state part
+      mView = gsl_matrix_submatrix(S, s*(dim-1), s*(dim-1), dim-1, dim-1);
+      mView2 = gsl_matrix_submatrix(linMod->current, 0, 0, dim-1, dim-1);
+      // Used add in case numShoot == 1
+      gsl_matrix_add(&mView.matrix, &mView2.matrix);
+
+      // Set the column for the derivative with respect to parameter
+      vView = gsl_matrix_subcolumn(S, numShoot*(dim-1), s*(dim-1), dim-1);
+      vView2 = gsl_matrix_subcolumn(linMod->current, dim-1, 0, dim-1);
+      gsl_vector_memcpy(&vView.vector, &vView2.vector);
+      
+      // Set F(x(s + T)) last column 
+      vView = gsl_matrix_subcolumn(S, (dim-1)*numShoot+1, s*(dim-1), dim);
+      linMod->mod->evalField(linMod->mod->current, &vView.vector);
+    }
+  
+  // Set the penultiem row to previous prediction step to normalize the step.
+  vView = gsl_matrix_row(S, (dim-1)*numShoot);
+  gsl_vector_memcpy(&vView.vector, stepPred);
+  // Set last element to zero to exclude period from normalization
+  gsl_matrix_set(S, (dim-1)*numShoot, (dim-1)*numShoot+1, 0.);
+
+  // Set bottom right corner to zero
+  gsl_matrix_set(S, (dim-1)*numShoot+1, (dim-1)*numShoot+1, 0.);
+
+  return;
+}
+
+
+/**
+ * Update correction target vector for fixed point tracking.
+ */
+void
+periodicOrbitCont::updateTargetCorr()
+{
+  gsl_vector_view targetCorrState;
+
+  for (size_t s = 0; s < numShoot; s++)
+    {
+      // Get a view on part of target (s) (the last element will be overwritten)
+      targetCorrState = gsl_vector_subvector(targetCorr, s*(dim-1), dim);
+      
+      // Get extended state vector x(s+1), lambda and copy it to target (s)
+      getExtendedState(work, ((s + 1) % numShoot));
+      gsl_vector_memcpy(&targetCorrState.vector, work);
+  
+      /** Integrate model for a period from the new current state
+	  after initializing the linear model to x(s)
+       *  (no need to update the linear model here). */
+      setCurrentState(s);
+      linMod->mod->integrateForward((size_t) gsl_vector_uint_get(ntShoot, s), dt);
+
+      // Substract the new state
+      gsl_vector_sub(&targetCorrState.vector, linMod->mod->current);
+    }
+  
+  // Set targetCorr for parameter to 0 (pseudo-arclength)
+  gsl_vector_set(targetCorr, (dim-1) * numShoot, 0.);
+
+  // Set targetCorr for period to 0
+  gsl_vector_set(targetCorr, (dim-1) * numShoot + 1, 0.);
+
+  return;
+}
+
+
+/**
+ * Get matrix of the linear system to be solved for prediction.
+ */
+void
+periodicOrbitCont::getSystemPred()
+{
+  getSystemCorr();
+
+  return;
+}
+
+
+/**
+ * Prediction Newton-Raphson step.
+ */
+void
+periodicOrbitCont::predict()
+{
+  gsl_permutation *p = gsl_permutation_alloc((dim-1)*numShoot + 2);
+  int s;
+
+  // Get linear system
+  getSystemPred();
+
+  // Set up LU decomposition
+  // Note that this modifies the matrix A
+  gsl_linalg_LU_decomp(S, p, &s);
+
+  // Solve the linear system to get new predition step
+  gsl_linalg_LU_solve(S, p, targetPred, stepPred);
+
+  return;
+}
+
+
+/** 
+ * Update state after prediction
+ */
+void
+periodicOrbitCont::applyPredict(const double contStep)
+{
+  // Scale prediction step by continuation step
+  gsl_vector_scale(stepPred, contStep);
+  
+  // Update current state
+  gsl_vector_add(current, stepPred);
+
+  // Scale back, since the continuation step is used as later
+  gsl_vector_scale(stepPred, 1. / contStep);
+
+  return;
+}
+
+
+/**
+ * Correct prediction by pseudo-arclenght continuation and Newton-Raphson.
+ */
+void
+periodicOrbitCont::correct()
+{
+  // Make sure the iteration counter and errors are reset.
+  numIter = 0;
+  errDist = 1.e27;
+  errStepCorrSize = 1.e27;
+  converged = false;
+  
+  // Set time step
+  adaptTimeToPeriod();
+
+  // Get targetCorr vector to x - \phi_T(x) and update error
+  errDist = sqrt(gsl_vector_get_sum_squares(targetCorr)) / numShoot;
+  updateTargetCorr();
+
+  /** Update state x of model and Jacobian J(x) to current state
+   *  and reinitizlize fundamental matrix to identity
+   *  (after integration in updateTargetCorr). */
+  setCurrentState();
     
-//   while (((errDist > epsDist) || (errStepCorrSize > epsStepCorrSize))
-// 	 && (numIter < maxIter))
-//     {
-//       // Perform Newton step
-//       NewtonStep();
+  while (((errDist > epsDist) || (errStepCorrSize > epsStepCorrSize))
+	 && (numIter < maxIter))
+    {
+      // Perform Newton step
+      NewtonStep();
+      
+      // Update step size before to damp it
+      errStepCorrSize = sqrt(gsl_vector_get_sum_squares(stepCorr)) / numShoot;
 
-//       // Update step size before to damp it
-//       errStepCorrSize = sqrt(gsl_vector_get_sum_squares(stepCorr));
+      // Update model state
+      applyCorr();
 
-//       // Update model state
-//       applyCorr();
+      // Set time step
+      adaptTimeToPeriod();
 
-//       // Get integration time stepCorr from new current state.
-//       T = gsl_vector_get(current, dim);
-//       nt = (int) (ceil(T / intStepCorr) + 0.1);
-//       dt = T / nt;
+      // Get target vector
+      updateTargetCorr();
 
-//       // Get target vector
-//       updateTargetCorr();
-
-//       /** Update state x of model and Jacobian J(x) to current state
-//        *  and reinitizlize fundamental matrix to identity. */
-//       setCurrentState();
+      /** Update state x of model and Jacobian J(x) to current state
+       *  and reinitizlize fundamental matrix to identity. */
+      setCurrentState();
     
-//       // Update distance to target and iterate
-//       errDist = sqrt(gsl_vector_get_sum_squares(targetCorr));
-//       numIter++;
-//     }
+      // Update distance to target and iterate
+      errDist = sqrt(gsl_vector_get_sum_squares(targetCorr)) / numShoot;
+      numIter++;
+    }
 
-//   /** Update the convergence flag. */
-//   if (numIter < maxIter)
-//     converged = true;
+  /** Update the convergence flag. */
+  if (numIter < maxIter)
+    converged = true;
 
-//   return;
-// }
-
-
-// /**
-//  * Correct initial state.
-//  */
-// void
-// periodicOrbitCont::correct(const gsl_vector *init)
-// {
-//   // Initialize current state of tracking and linearized model state
-//   setCurrentState(init);
-
-//   // Correct
-//   correct();
-
-//   return;
-// }
+  return;
+}
 
 
-// /**
-//  * Perform one step (correction + prediction) of pseudo-arclength continuation
-//  * from current step.
-//  * \param[in]  contStep Continuation step size.
-//  */
-// void
-// periodicOrbitCont::continueStep(const double contStep)
-// {
-//   numIter = 0;
+/**
+ * Correct initial state.
+ */
+void
+periodicOrbitCont::correct(const gsl_vector *init)
+{
+  // Initialize current state of tracking and linearized model state
+  setCurrentState(init);
+
+  // Correct
+  correct();
+
+  return;
+}
+
+
+/**
+ * Perform one step (correction + prediction) of pseudo-arclength continuation
+ * from current step.
+ * \param[in]  contStep Continuation step size.
+ */
+void
+periodicOrbitCont::continueStep(const double contStep)
+{
+  numIter = 0;
   
-//   // Initialize to current state
-//   setCurrentState();
+  // Initialize to current state
+  setCurrentState();
 
-//   // Predict
-//   predict();
+  // Predict
+  predict();
 
-//   // Apply prediction
-//   applyPredict(contStep);
+  // Apply prediction
+  applyPredict(contStep);
 
-//   // Update model and Jacobian to current state (the prediction has been applied)
-//   setCurrentState();
+  // Update model and Jacobian to current state (the prediction has been applied)
+  setCurrentState();
   
-//   // Correct using Newton-Raphson
-//   correct();
+  // Correct using Newton-Raphson
+  correct();
   
-//   return;
-// }
+  return;
+}
 
-// /**
-//  * Perform one step (correction + prediction) of pseudo-arclength continuation
-//  * from initial state.
-//  * \param[in]  contStep Continuation step size.
-//  * \param[in]  init     Vector from which to start tracking.
-//  */
-// void
-// periodicOrbitCont::continueStep(const double contStep, const gsl_vector *init)
-// {
-//   numIter = 0;
+/**
+ * Perform one step (correction + prediction) of pseudo-arclength continuation
+ * from initial state.
+ * \param[in]  contStep Continuation step size.
+ * \param[in]  init     Vector from which to start tracking.
+ */
+void
+periodicOrbitCont::continueStep(const double contStep, const gsl_vector *init)
+{
+  numIter = 0;
   
-//   // Initialize current state of tracking and linearized model state
-//   setCurrentState(init);
+  // Initialize current state of tracking and linearized model state
+  setCurrentState(init);
 
-//   // Continue
-//   continueStep(contStep);
+  // Continue
+  continueStep(contStep);
   
-//   return;
-// }
+  return;
+}
 
 

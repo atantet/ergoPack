@@ -214,9 +214,10 @@ protected:
   const size_t numShoot; //!< Number of shoots to correct/predict orbit
 
   /** \brief Adapt time step and number of time steps to shooting strategy. */
-  void adaptTimeToPeriod();
+  virtual void adaptTimeToPeriod();
+
   /** \brief Adapt time step and number of time steps for a give period. */
-  void adaptTimeToPeriod(const double T);
+  virtual void adaptTimeToPeriod(const double T);
   
 public:
   
@@ -241,13 +242,13 @@ public:
   size_t getNumShoot() { return numShoot; }
 
   /** \brief Get current state of tracking. */
-  void getCurrentState(gsl_vector *current_);
+  virtual void getCurrentState(gsl_vector *current_);
 
   /** \brief Set current state of model and fundamental matrix from the current one. */
-  void setCurrentState();
+  virtual void setCurrentState();
 
   /** \brief Set current state of the problem together with that of the model. */
-  void setCurrentState(const gsl_vector *init);
+  virtual void setCurrentState(const gsl_vector *init);
 
   /** \brief Get the fundamental matrix of the solution. */
   void getStabilityMatrix(gsl_matrix *matrix);
@@ -289,60 +290,86 @@ public:
 };
 
 
-// class periodicOrbitCont : public periodicOrbitTrack {
+class periodicOrbitCont : public periodicOrbitTrack {
 
-// private:
-//   gsl_vector *stepPred;         //!< Step of prediction.
-//   gsl_vector *targetPred;       //!< (0, ..., 0, 1) vector for prediction
+private:
+  gsl_vector *stepPred;         //!< Step of prediction.
+  gsl_vector *targetPred;       //!< (0, ..., 0, 1) vector for prediction
+  gsl_vector *work;             //!< Workspace vector
 
-// public:
-//   /** \brief Constructor assigning a linearized model and parameters. */
-//   periodicOrbitCont(fundamentalMatrixModel *linMod_, const double epsDist_,
-// 		    const double epsStepCorrSize_, const size_t maxIter_,
-// 		    const double intStepCorr_)
-//     : periodicOrbitTrack(linMod_, epsDist_, epsStepCorrSize_, maxIter_,
-// 			 intStepCorr_) {
-//     current = gsl_vector_alloc(dim + 1);
-//     stepCorr = gsl_vector_alloc(dim + 1);
-//     targetCorr = gsl_vector_alloc(dim + 1);
-//     S = gsl_matrix_alloc(dim + 1, dim + 1);
-//     stepPred = gsl_vector_calloc(dim + 1);
-//     // Set initial param step to 1. to avoid singular matrix in correction
-//     gsl_vector_set(stepPred, dim-1, 1);
-//     targetPred = gsl_vector_calloc(dim + 1);
-//     gsl_vector_set(targetPred, dim-1, 1.);  // (0,...,0, 1, 0)
-//   }
-
-//   ~periodicOrbitCont() { gsl_vector_free(stepPred); gsl_vector_free(targetPred); }
-
-//   /** \brief Prediction Newton-Raphson step. */
-//   void predict();
-
-//   /** \brief Update state after prediction */
-//   void applyPredict(const double contStep);
-
-//   /** \brief Correction after prediction. */
-//   void correct();
-
-//   /** \brief Correction of initial state. */
-//   void correct(const gsl_vector *init);
-
-//   /** \brief Update correction target vector for periodic orbit tracking. */
-//   void updateTargetCorr();
+  /** \brief Adapt time step and number of time steps to shooting strategy. */
+  void adaptTimeToPeriod();
   
-//   /** \brief Perform one step (correction + prediction) of peudo-arc. continuation. */
-//   void continueStep(const double contStep);
-    
-//   /** \brief Perform one step (correction + prediction) of peudo-arc. continuation. */
-//   void continueStep(const double contStep, const gsl_vector *init);
-    
-//   /** \brief Get matrix of the linear system to be solved for correction. */
-//   void getSystemCorr();
+  /** \brief Adapt time step and number of time steps for a give period. */
+  void adaptTimeToPeriod(const double T);
+  
+public:
+  /** \brief Constructor assigning a linearized model and parameters. */
+  periodicOrbitCont(fundamentalMatrixModel *linMod_, const double epsDist_,
+		    const double epsStepCorrSize_, const size_t maxIter_,
+		    const double intStepCorr_, const size_t numShoot_)
+    : periodicOrbitTrack(linMod_, epsDist_, epsStepCorrSize_, maxIter_,
+			 intStepCorr_, numShoot_) {
+    current = gsl_vector_alloc((dim-1) * numShoot + 2);
+    stepCorr = gsl_vector_alloc((dim-1) * numShoot + 2);
+    targetCorr = gsl_vector_alloc((dim-1) * numShoot + 2);
+    S = gsl_matrix_alloc((dim-1) * numShoot + 2, (dim-1) * numShoot + 2);
+    stepPred = gsl_vector_calloc((dim-1) * numShoot + 2);
+    // Set initial param step to 1. to avoid singular matrix in correction
+    gsl_vector_set(stepPred, (dim-1) * numShoot, 1.);
+    targetPred = gsl_vector_calloc((dim-1) * numShoot + 2);
+    gsl_vector_set(targetPred, (dim-1) * numShoot, 1.);  // (0,...,0, 1, 0)
+    work = gsl_vector_alloc(dim);
+  }
 
-//   /** \brief Get matrix of the linear system to be solved for prediction. */
-//   void getSystemPred();
+  ~periodicOrbitCont() {
+    gsl_vector_free(stepPred);
+    gsl_vector_free(targetPred);
+    gsl_vector_free(work); }
 
-// };
+  /** \brief Get extended state vector x(s), lambda. */
+  void getExtendedState(gsl_vector *state, const size_t s);
+
+  /** \brief Get current state of tracking. */
+  void getCurrentState(gsl_vector *current_);
+
+  /** \brief Set current state of model and fundamental matrix from the current one. */
+  void setCurrentState(const size_t s);
+
+  /** \brief Set current state of model and fundamental matrix from the current one. */
+  void setCurrentState();
+
+  /** \brief Set current state of the problem together with that of the model. */
+  void setCurrentState(const gsl_vector *init);
+
+  /** \brief Prediction Newton-Raphson step. */
+  void predict();
+
+  /** \brief Update state after prediction */
+  void applyPredict(const double contStep);
+
+  /** \brief Correction after prediction. */
+  void correct();
+
+  /** \brief Correction of initial state. */
+  void correct(const gsl_vector *init);
+
+  /** \brief Update correction target vector for periodic orbit tracking. */
+  void updateTargetCorr();
+  
+  /** \brief Perform one step (correction + prediction) of peudo-arc. continuation. */
+  void continueStep(const double contStep);
+    
+  /** \brief Perform one step (correction + prediction) of peudo-arc. continuation. */
+  void continueStep(const double contStep, const gsl_vector *init);
+    
+  /** \brief Get matrix of the linear system to be solved for correction. */
+  void getSystemCorr();
+
+  /** \brief Get matrix of the linear system to be solved for prediction. */
+  void getSystemPred();
+
+};
 
 
 /**
