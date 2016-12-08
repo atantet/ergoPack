@@ -28,13 +28,11 @@ int gsl_vector_sqrt(gsl_vector *v);
 int gsl_vector_normalize(gsl_vector *v);
 /** \brief Get sum of vector elements. */
 double gsl_vector_get_sum(const gsl_vector *v);
-/** \brief Get sum of squares of vector elements. */
-double gsl_vector_get_sum_squares(const gsl_vector *v);
 /** \brief Get inner product of two vectors for a given measure. */
 double gsl_vector_get_innerproduct(const gsl_vector *v, const gsl_vector *w,
-				   const gsl_vector *mu);
+				   const gsl_vector *mu=NULL);
 /** \brief Get \f$L^2\f$ norm of a vector for a given measure. */
-double gsl_vector_get_norm(const gsl_vector *v, const gsl_vector *mu);
+double gsl_vector_get_norm(const gsl_vector *v, const gsl_vector *mu=NULL);
 /** \brief Get product of vector elements. */
 double gsl_vector_get_prod(const gsl_vector *v);
 /** \brief Get product of vector elements. */

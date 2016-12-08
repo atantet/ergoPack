@@ -296,11 +296,18 @@ public:
   model * const mod;                       //!< Full model
   gsl_matrix *current;              //!< Current state
 
-  /** \brief Constructor assigning a vector field, a numerical scheme
-   *  and a state. */
+  /** \brief Constructor assigning a vector field, a numerical scheme. */
   fundamentalMatrixModel(model *mod_, linearField *Jacobian_)
     : mod(mod_), scheme(mod_->scheme), Jacobian(Jacobian_), dim(mod_->getDim())
   { current = gsl_matrix_alloc(dim, dim); }
+
+  /** \brief Constructor assigning a vector field, a numerical scheme
+   *  and a state. */
+  fundamentalMatrixModel(model *mod_, linearField *Jacobian_,
+			 const gsl_vector *initState)
+    : mod(mod_), scheme(mod_->scheme), Jacobian(Jacobian_), dim(mod_->getDim())
+  { current = gsl_matrix_alloc(dim, dim);
+    setCurrentState(initState); }
 
 
   /** \brief Destructor freeing memory. */
@@ -321,6 +328,10 @@ public:
   /** \brief Set current state manually and fundamental matrix to identity. */
   void setCurrentState(const gsl_vector *current_);
     
+  /** \brief Update Jacobian to current model state
+   * and set fundamental matrix to identity. */
+  void setCurrentState();
+
   /** \brief One time-step forward integration of the fundamentalMatrixModel. */
   void stepForward(const double dt);
 

@@ -1,4 +1,5 @@
 #include <ODESolvers.hpp>
+#include <gsl/gsl_blas.h>
 
 /** \file ODESolvers.cpp
  *  \brief Definitions for ODESolvers.hpp
@@ -465,11 +466,28 @@ fundamentalMatrixModel::setCurrentState(const gsl_vector *current_,
   Jacobian->setMatrix(mod->current);
   
   // Update current state of the fundamental matrix
-  gsl_matrix_memcpy(current, currentMat);
+  setCurrentState(currentMat);
   
   return;
 }
     
+
+/**
+ * Update Jacobian to current model state and set fundamental matrix to identity.
+ */
+void
+fundamentalMatrixModel::setCurrentState()
+{
+  // Update Jacobian to that at current state
+  Jacobian->setMatrix(mod->current);
+  
+  // Set fundamental matrix to identity
+  gsl_matrix_set_identity(current);
+  
+  return;
+}
+    
+
 /**
  * Set current state manually and fundamental matrix to identity.
  * \param[in]  current_ Current state to set to.
@@ -479,12 +497,9 @@ fundamentalMatrixModel::setCurrentState(const gsl_vector *current_)
 {
   // Set current state of model
   mod->setCurrentState(current_);
-  
-  // Update Jacobian to that at current state
-  Jacobian->setMatrix(mod->current);
-  
-  // Update current state of the fundamental matrix
-  gsl_matrix_set_identity(current);
+
+  // Update Jacobian to current model state and set fundamental matrix to identity
+  setCurrentState();
   
   return;
 }

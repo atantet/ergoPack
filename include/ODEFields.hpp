@@ -1,10 +1,8 @@
 #ifndef ODEFIELDS_HPP
 #define ODEFIELDS_HPP
 
-#include <gsl/gsl_math.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_matrix.h>
-#include <gsl/gsl_blas.h>
 #include <ODESolvers.hpp>
 
 /** \file ODEFields.hpp
@@ -228,6 +226,38 @@ public:
 };
 
 
+/** \brief Vector field for the Lorenz 63 model for continuation.
+ *
+ *  Vector field for the Lorenz 63 model (Lorenz, 1963) for continuation
+ *  with respect to \f$\rho\f$.
+ */
+class Lorenz63Cont : public vectorField {
+  
+  double sigma;   //!< Parameter \f$ \sigma \f$
+  double beta;    //!< Parameter \f$ \beta \f$
+  
+public:
+  /** \brief Constructor defining the model parameters. */
+  Lorenz63Cont(const double sigma_, const double beta_)
+    : vectorField(), sigma(sigma_), beta(beta_) {}
+
+  /** \brief Destructor. */
+  ~Lorenz63Cont() {}
+
+  /** \brief Return the parameters of the model. */
+  void getParameters(double *sigma_, double *beta_)
+  { *sigma_ = sigma; *beta_ = beta; return; }
+
+  /** \brief Set parameters of the model. */
+  void setParameters(const double sigma_, const double beta_)
+  { sigma = sigma_; beta = beta_; return; }
+
+  /** \brief Evaluate the vector field of the Lorenz 63 model for a given state. */
+  void evalField(const gsl_vector *state, gsl_vector *field);
+
+};
+
+
 /** \brief Jacobian of the Lorenz 63 model.
  *
  *  Jacobian the Lorenz 63 model.
@@ -259,38 +289,6 @@ public:
 
   /** \brief Update the matrix of the linear operator after the state. */
   void setMatrix(const gsl_vector *x);
-};
-
-
-/** \brief Vector field for the Lorenz 63 model for continuation.
- *
- *  Vector field for the Lorenz 63 model (Lorenz, 1963) for continuation
- *  with respect to \f$\rho\f$.
- */
-class Lorenz63Cont : public vectorField {
-  
-  double sigma;   //!< Parameter \f$ \sigma \f$
-  double beta;    //!< Parameter \f$ \beta \f$
-  
-public:
-  /** \brief Constructor defining the model parameters. */
-  Lorenz63Cont(const double sigma_, const double beta_)
-    : vectorField(), sigma(sigma_), beta(beta_) {}
-
-  /** \brief Destructor. */
-  ~Lorenz63Cont() {}
-
-  /** \brief Return the parameters of the model. */
-  void getParameters(double *sigma_, double *beta_)
-  { *sigma_ = sigma; *beta_ = beta; return; }
-
-  /** \brief Set parameters of the model. */
-  void setParameters(const double sigma_, const double beta_)
-  { sigma = sigma_; beta = beta_; return; }
-
-  /** \brief Evaluate the vector field of the Lorenz 63 model for a given state. */
-  void evalField(const gsl_vector *state, gsl_vector *field);
-
 };
 
 

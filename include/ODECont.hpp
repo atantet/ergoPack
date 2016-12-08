@@ -33,13 +33,15 @@ protected:
   bool converged;           //!< Flag for convergence of the tracking.
   gsl_matrix *S;            //!< Matrix of the linear system to solve (workspace).
   gsl_vector *current;      //!< Current state of tracking
+  bool verbose;           //!< Verbose mode.
 
   
 public:
   /** \brief Constructor assigning a linearized model and parameters. */
   solutionCorrection(const double epsDist_, const double epsStepCorrSize_,
-		const size_t maxIter_)
+		     const size_t maxIter_, const bool verbose_=false)
     : epsDist(epsDist_), epsStepCorrSize(epsStepCorrSize_), maxIter(maxIter_),
+      verbose(verbose_),
       errDist(1.e27), errStepCorrSize(1.e27), numIter(0), converged(false) {}
 
   /** \brief Return the dimension of the problem. */
@@ -61,7 +63,7 @@ public:
   void NewtonStep();
   
   /** \brief Correct with the stepCorr obtained from the Newton stepCorr. */
-  void applyCorr(const double damping=1.);
+  void applyCorr(const double damping=1);
 
   /** \brief Destructor. */
   virtual ~solutionCorrection(){};
@@ -97,9 +99,10 @@ public:
   
   /** \brief Constructor assigning a linearized model and parameters. */
   fixedPointTrack(vectorField *field_, linearField *Jac, const double epsDist_,
-		  const double epsStepCorrSize_, const size_t maxIter_)
-    : solutionCorrection(epsDist_, epsStepCorrSize_, maxIter_), field(field_),
-      Jacobian(Jac) { dim = Jac->getRows(); }
+		  const double epsStepCorrSize_, const size_t maxIter_,
+		  const bool verbose_=false)
+    : solutionCorrection(epsDist_, epsStepCorrSize_, maxIter_, verbose_),
+      field(field_), Jacobian(Jac) { dim = Jac->getRows(); }
 
   ~fixedPointTrack()
   { gsl_vector_free(current);
@@ -129,11 +132,13 @@ class fixedPointCorr : public fixedPointTrack {
 public:
   /** \brief Constructor assigning a linearized model and parameters. */
   fixedPointCorr(vectorField *field_, linearField *Jac, const double epsDist_,
-		  const double epsStepCorrSize_, const size_t maxIter_)
-    : fixedPointTrack(field_, Jac, epsDist_, epsStepCorrSize_, maxIter_) {
+		  const double epsStepCorrSize_, const size_t maxIter_,
+		  const bool verbose_=false)
+    : fixedPointTrack(field_, Jac, epsDist_, epsStepCorrSize_, maxIter_,
+		      verbose_) {
     current = gsl_vector_alloc(dim);
     S = gsl_matrix_alloc(dim, dim);
-    stepCorr = gsl_vector_alloc(dim);
+    stepCorr = gsl_vector_calloc(dim);
     targetCorr = gsl_vector_alloc(dim);
   }
 
@@ -159,11 +164,13 @@ private:
 public:
   /** \brief Constructor assigning a linearized model and parameters. */
   fixedPointCont(vectorField *field_, linearField *Jac, const double epsDist_,
-		 const double epsStepSize_, const size_t maxIter_)
-    : fixedPointTrack(field_, Jac, epsDist_, epsStepSize_, maxIter_) {
+		 const double epsStepSize_, const size_t maxIter_,
+		 const bool verbose_=false)
+    : fixedPointTrack(field_, Jac, epsDist_, epsStepSize_, maxIter_,
+		      verbose) {
     current = gsl_vector_alloc(dim);
     S = gsl_matrix_alloc(dim, dim);
-    stepCorr = gsl_vector_alloc(dim);
+    stepCorr = gsl_vector_calloc(dim);
     targetCorr = gsl_vector_alloc(dim);
     // Set initial step to 1. to avoid singular matrix in correction
     stepPred = gsl_vector_calloc(dim);
@@ -186,7 +193,7 @@ public:
   /** \brief Correction of initial state. */
   void correct(const gsl_vector *init);
 
-  /** \brief Update correction target vector for periodic orbit tracking. */
+  /** \brief Update correction target vector for fixed point tracking. */
   void updateTargetCorr();
   
   /** \brief Perform one step (correction + prediction) of peudo-arc. continuation. */
@@ -224,9 +231,10 @@ public:
   /** \brief Constructor assigning a linearized model and parameters. */
   periodicOrbitTrack(fundamentalMatrixModel *linMod_, const double epsDist_,
 		     const double epsStepCorrSize_, const size_t maxIter_,
-		     const double intStepCorr_, const size_t numShoot_=1)
-    : solutionCorrection(epsDist_, epsStepCorrSize_, maxIter_), linMod(linMod_),
-      intStepCorr(intStepCorr_), numShoot(numShoot_) {
+		     const double intStepCorr_, const size_t numShoot_=1,
+		     const bool verbose_=false)
+    : solutionCorrection(epsDist_, epsStepCorrSize_, maxIter_, verbose_),
+      linMod(linMod_), intStepCorr(intStepCorr_), numShoot(numShoot_) {
     dim = linMod->getDim();
     ntShoot = gsl_vector_uint_alloc(numShoot); }
 
@@ -267,12 +275,13 @@ public:
   
   /** \brief Constructor assigning a linearized model and parameters. */
   periodicOrbitCorr(fundamentalMatrixModel *linMod_, const double epsDist_,
-		     const double epsStepCorrSize_, const size_t maxIter_,
-		    const double intStepCorr_, const size_t numShoot_)
+		    const double epsStepCorrSize_, const size_t maxIter_,
+		    const double intStepCorr_, const size_t numShoot_=1,
+		    const bool verbose_=false)
     : periodicOrbitTrack(linMod_, epsDist_, epsStepCorrSize_, maxIter_,
-			 intStepCorr_, numShoot_) {
+			 intStepCorr_, numShoot_, verbose_) {
     current = gsl_vector_alloc(dim * numShoot + 1);
-    stepCorr = gsl_vector_alloc(dim * numShoot + 1);
+    stepCorr = gsl_vector_calloc(dim * numShoot + 1);
     targetCorr = gsl_vector_alloc(dim * numShoot + 1);
     S = gsl_matrix_alloc(dim * numShoot + 1, dim * numShoot + 1);
   }
@@ -307,11 +316,12 @@ public:
   /** \brief Constructor assigning a linearized model and parameters. */
   periodicOrbitCont(fundamentalMatrixModel *linMod_, const double epsDist_,
 		    const double epsStepCorrSize_, const size_t maxIter_,
-		    const double intStepCorr_, const size_t numShoot_)
+		    const double intStepCorr_, const size_t numShoot_=1,
+		    const bool verbose_=false)
     : periodicOrbitTrack(linMod_, epsDist_, epsStepCorrSize_, maxIter_,
-			 intStepCorr_, numShoot_) {
+			 intStepCorr_, numShoot_, verbose_) {
     current = gsl_vector_alloc((dim-1) * numShoot + 2);
-    stepCorr = gsl_vector_alloc((dim-1) * numShoot + 2);
+    stepCorr = gsl_vector_calloc((dim-1) * numShoot + 2);
     targetCorr = gsl_vector_alloc((dim-1) * numShoot + 2);
     S = gsl_matrix_alloc((dim-1) * numShoot + 2, (dim-1) * numShoot + 2);
     stepPred = gsl_vector_calloc((dim-1) * numShoot + 2);
@@ -373,7 +383,7 @@ public:
 
 
 /**
- * @}
+p * @}
  */
 
 #endif

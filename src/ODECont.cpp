@@ -174,7 +174,7 @@ fixedPointCorr::findSolution(const gsl_vector *init)
       NewtonStep();
 
       // Update stepCorr size before to damp it
-      errStepCorrSize = sqrt(gsl_vector_get_sum_squares(stepCorr));
+      errStepCorrSize = gsl_vector_get_norm(stepCorr);
 
       // Update model state
       applyCorr();
@@ -186,7 +186,7 @@ fixedPointCorr::findSolution(const gsl_vector *init)
       setCurrentState();
 
       // Update distance to targetCorr and iterate
-      errDist = sqrt(gsl_vector_get_sum_squares(targetCorr));
+      errDist = gsl_vector_get_norm(targetCorr);
       numIter++;
     }
 
@@ -314,7 +314,7 @@ fixedPointCont::correct()
       NewtonStep();
 
       // Update step size before to damp it
-      errStepCorrSize = sqrt(gsl_vector_get_sum_squares(stepCorr));
+      errStepCorrSize = gsl_vector_get_norm(stepCorr);
 
       // Update model state
       applyCorr();
@@ -326,7 +326,7 @@ fixedPointCont::correct()
       setCurrentState();
 
       // Update distance to target and iterate
-      errDist = sqrt(gsl_vector_get_sum_squares(targetCorr));
+      errDist = gsl_vector_get_norm(targetCorr);
       numIter++;
     }
 
@@ -664,7 +664,7 @@ periodicOrbitCorr::findSolution(const gsl_vector *init)
 
   // Get targetCorr vector to x - \phi_T(x) and update error
   updateTargetCorr();
-  errDist = sqrt(gsl_vector_get_sum_squares(targetCorr)) / numShoot;
+  errDist = gsl_vector_get_norm(targetCorr) / numShoot;
 
   /** Update state x of model and Jacobian J(x) to current state
    *  and reinitizlize fundamental matrix to identity
@@ -677,8 +677,8 @@ periodicOrbitCorr::findSolution(const gsl_vector *init)
       // Perform Newton step (leaves the model integrated forward)
       NewtonStep();
 
-      // Update correction step size before to damp it
-      errStepCorrSize = sqrt(gsl_vector_get_sum_squares(stepCorr)) / numShoot;
+      // Update correction step size
+      errStepCorrSize = gsl_vector_get_norm(stepCorr) / numShoot;
 
       // Update model state
       applyCorr();
@@ -694,7 +694,7 @@ periodicOrbitCorr::findSolution(const gsl_vector *init)
       setCurrentState();
     
       // Update distance to targetCorr
-      errDist = sqrt(gsl_vector_get_sum_squares(targetCorr)) / numShoot;
+      errDist = gsl_vector_get_norm(targetCorr) / numShoot;
       numIter++;
     }
 
@@ -1024,6 +1024,11 @@ periodicOrbitCont::applyPredict(const double contStep)
   gsl_vector_scale(stepPred, contStep);
   
   // Update current state
+  if (verbose)
+    {
+      std::cout << "Applying prediction:" << std::endl;
+      gsl_vector_fprintf(stdout, stepPred, "%lf");
+    }
   gsl_vector_add(current, stepPred);
 
   // Scale back, since the continuation step is used as later
@@ -1049,7 +1054,7 @@ periodicOrbitCont::correct()
   adaptTimeToPeriod();
 
   // Get targetCorr vector to x - \phi_T(x) and update error
-  errDist = sqrt(gsl_vector_get_sum_squares(targetCorr)) / numShoot;
+  errDist = gsl_vector_get_norm(targetCorr) / numShoot;
   updateTargetCorr();
 
   /** Update state x of model and Jacobian J(x) to current state
@@ -1060,11 +1065,22 @@ periodicOrbitCont::correct()
   while (((errDist > epsDist) || (errStepCorrSize > epsStepCorrSize))
 	 && (numIter < maxIter))
     {
+      if (verbose)
+	{
+	  std::cout << "Correction iteration " << numIter << " with previous step:\n"
+		    << "Current state: " << std::endl;
+	  gsl_vector_fprintf(stdout, current, "%lf");
+	  std::cout << "Correction step: " << std::endl;
+	  gsl_vector_fprintf(stdout, stepCorr, "%lf");
+	  std::cout << "errDist: " << errDist << "\nerrStepCorrSize = "
+		    << errStepCorrSize << std::endl;
+	}
+      
       // Perform Newton step
       NewtonStep();
       
       // Update step size before to damp it
-      errStepCorrSize = sqrt(gsl_vector_get_sum_squares(stepCorr)) / numShoot;
+      errStepCorrSize = gsl_vector_get_norm(stepCorr) / numShoot;
 
       // Update model state
       applyCorr();
@@ -1080,7 +1096,7 @@ periodicOrbitCont::correct()
       setCurrentState();
     
       // Update distance to target and iterate
-      errDist = sqrt(gsl_vector_get_sum_squares(targetCorr)) / numShoot;
+      errDist = gsl_vector_get_norm(targetCorr) / numShoot;
       numIter++;
     }
 
@@ -1121,6 +1137,13 @@ periodicOrbitCont::continueStep(const double contStep)
   // Initialize to current state
   setCurrentState();
 
+  // Previous prediction
+  if (verbose)
+    {
+      std::cout << "Previous prediction step:" << std::endl;
+      gsl_vector_fprintf(stdout, stepPred, "%lf");
+    }
+
   // Predict
   predict();
 
@@ -1131,6 +1154,8 @@ periodicOrbitCont::continueStep(const double contStep)
   setCurrentState();
   
   // Correct using Newton-Raphson
+  if (verbose)
+    std::cout << "Correcting..." << std::endl;
   correct();
   
   return;

@@ -214,7 +214,7 @@ Lorenz63Cont::evalField(const gsl_vector *state, gsl_vector *field)
   gsl_vector_set(field, 2, gsl_vector_get(state, 0) * gsl_vector_get(state, 1)
 		 - beta * gsl_vector_get(state, 2));
   // Last element is 0
-  gsl_vector_set(field, 4, 0.);
+  gsl_vector_set(field, 3, 0.);
  
   return;
 }

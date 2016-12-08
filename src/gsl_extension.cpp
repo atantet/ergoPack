@@ -59,23 +59,6 @@ gsl_vector_get_sum(const gsl_vector *v)
 
 
 /**
- * Get sum of squares of vector elements.
- * \param[in]      v Vector from which to sum the square of the elements.
- * \return         Sum of vector elements squared.
- */
-double
-gsl_vector_get_sum_squares(const gsl_vector *v)
-{
-  double sum = 0;
-
-  for (size_t j = 0; j < v->size; j++)
-    sum += gsl_pow_2(v->data[j * v->stride]);
-  
-  return sum;
-}
-
-
-/**
  * Get the inner product of two vectors for a given measure.
  * The inner product of \f$L^2_\mu\f$ between \f$v\f$ and \f$w\f$ is equal to
  * \f$\sum_{k = 1}^n v_k \mu_k w_k \f$.
@@ -91,13 +74,20 @@ gsl_vector_get_inner_product(const gsl_vector *v, const gsl_vector *w,
   double inner;
   gsl_vector *tmp;
 
-  if ((v->size != w->size) || (v->size != mu->size))
+  if (v->size != w->size)
     GSL_ERROR("Vectors and measure should have the same size.", GSL_EINVAL);
+
+  if (mu)
+    if (v->size != mu->size)
+      GSL_ERROR("Vectors and measure should have the same size.", GSL_EINVAL);
 
   // Get the inner product
   tmp = gsl_vector_alloc(v->size);
   gsl_vector_memcpy(tmp, v);
-  gsl_vector_mul(tmp, mu);
+  // If mu is given, get the Euclidean mu-innerproduct
+  // Otherwise, get the Euclidean innerproduct.
+  if (mu)
+     gsl_vector_mul(tmp, mu);
   gsl_vector_mul(tmp, w);
   inner = gsl_vector_get_sum(tmp);
 
@@ -122,8 +112,9 @@ gsl_vector_get_norm(const gsl_vector *v, const gsl_vector *mu)
   double norm;
   gsl_vector *w;
 
-  if (v->size != mu->size)
-    GSL_ERROR("Vector and measure should have the same size.", GSL_EINVAL);
+  if (mu)
+    if (v->size != mu->size)
+      GSL_ERROR("Vector and measure should have the same size.", GSL_EINVAL);
 
   // Copy vector
   w = gsl_vector_alloc(v->size);
