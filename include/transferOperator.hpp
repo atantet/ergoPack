@@ -83,15 +83,16 @@ public:
   
   /** \brief Empty constructor allocating for grid size and mask */
   transferOperator(const size_t N_, const bool stationary_=false)
-    : N(N_), stationary(stationary_), P(NULL), Q(NULL) { mask = gsl_vector_uint_alloc(N); }
+    : N(N_), stationary(stationary_), P(NULL), Q(NULL)
+  { mask = gsl_vector_uint_alloc(N); }
   
   /** \brief Constructor from the membership matrix. */
   transferOperator(const gsl_matrix_uint *gridMem, const size_t N_,
-		   const bool stationary_);
+		   const bool stationary_=false);
   
   /** \brief Constructor from initial and final states for a given grid */
   transferOperator(const gsl_matrix *initStates, const gsl_matrix *finalStates,
-		   const Grid *grid, const bool stationary_);
+		   const Grid *grid, const bool stationary_=false);
   
   /** \brief Constructor from a long trajectory for a given grid and lag */
   transferOperator(const gsl_matrix *states, const Grid *grid, size_t tauStep);

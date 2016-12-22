@@ -518,7 +518,8 @@ periodicOrbitTrack::setCurrentState(const gsl_vector *init)
       // Only x(0) has been given, integrate to x(s) and set
       for (size_t s = 0; s < numShoot - 1; s++)
 	{
-	  linMod->mod->integrateForward((size_t) gsl_vector_uint_get(ntShoot, s), dt);
+	  linMod->mod->integrateForward((size_t) gsl_vector_uint_get(ntShoot, s),
+					dt);
 	  currentState = gsl_vector_subvector(current, (s+1)*dim, dim);
 	  linMod->mod->getCurrentState(&currentState.vector);
 	}
@@ -860,7 +861,8 @@ periodicOrbitCont::setCurrentState(const gsl_vector *init)
       // Only x(0) has been given, integrate to x(s) and set
       for (size_t s = 0; s < numShoot - 1; s++)
 	{
-	  linMod->mod->integrateForward((size_t) gsl_vector_uint_get(ntShoot, s), dt);
+	  linMod->mod->integrateForward((size_t) gsl_vector_uint_get(ntShoot, s),
+					dt);
 	  currentState = gsl_vector_subvector(current, (s+1)*(dim-1), dim);
 	  linMod->mod->getCurrentState(&currentState.vector);
 	}

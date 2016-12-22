@@ -217,7 +217,7 @@ model::integrateForward(const size_t nt, const double dt,
 			const size_t ntSpinup, const size_t sampling,
 			gsl_matrix **data)
 {
-  size_t dataSize = (size_t) ((nt - ntSpinup) / sampling + 0.1);
+  size_t dataSize = (size_t) ((nt - ntSpinup) / sampling + 0.1 + 1);
 
   // Check if data is of the right size.
   if (data && (((*data)->size1 != dataSize) || ((*data)->size2 != dim)))
@@ -230,6 +230,10 @@ model::integrateForward(const size_t nt, const double dt,
   for (size_t i = 1; i <= ntSpinup; i++)
     stepForward(dt);
 
+  // Save initial condition
+  if (data)
+    gsl_matrix_set_row(*data, 0, current);
+  
   // Get record
   for (size_t i = ntSpinup+1; i <= nt; i++)
     {
@@ -237,7 +241,7 @@ model::integrateForward(const size_t nt, const double dt,
 
       // Save state
       if ((i%sampling == 0) && data)
-	gsl_matrix_set_row(*data, (i - ntSpinup) / sampling - 1, current);
+	gsl_matrix_set_row(*data, (i - ntSpinup) / sampling, current);
     }
 
   return;

@@ -6,21 +6,21 @@ import ergoPlot
 # Model parameters
 model = 'Hopf'
 gam = 1.
-#beta = 0.
-beta = 0.5
+beta = 0.
+#beta = 0.5
 eps = 1.
 #muRng = np.array([-5.])
 #plotPoint = True
 #plotOrbit = False
-muRng = np.array([0.])
-plotPoint = False
-plotOrbit = False
+#muRng = np.array([0.])
+#plotPoint = False
+#plotOrbit = False
 #muRng = np.array([3.])
 #plotPoint = False
 #plotOrbit = False
-#muRng = np.array([7.])
-#plotPoint = True
-#plotOrbit = True
+muRng = np.array([7.])
+plotPoint = True
+plotOrbit = True
 
 mu0 = -10.
 muf = 15.
@@ -171,7 +171,7 @@ for k in np.arange(muRng.shape[0]):
     ax.set_xlim(xmin, xmax)
     ax.set_ylim(ymin, ymax)
     # Parameter labels
-    ax.text(xmin*0.96, ymax*1.03, r'$\mu = %.1f$' % mu,
+    ax.text(xmin*0.96, ymax*1.03, r'$\delta = %.1f$' % mu,
             fontsize='xx-large')
     ax.text(xmin*0.18, ymax*1.03, r'$\beta = %.1f$' % beta,
             fontsize='xx-large')
@@ -313,7 +313,7 @@ for k in np.arange(muRng.shape[0]):
     # Add parameter indications
     pxlim = ax.get_xlim()
     pylim = ax.get_ylim()
-    ax.text(pxlim[0]*0.9, pylim[1]*1.03, r'$\mu = %.1f$' % mu,
+    ax.text(pxlim[0]*0.9, pylim[1]*1.03, r'$\delta = %.1f$' % mu,
             fontsize='xx-large')
     ax.text(pxlim[1]*0.55, pylim[1]*1.03, r'$\beta = %.1f$' % beta,
             fontsize='xx-large')

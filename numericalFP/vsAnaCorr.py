@@ -9,18 +9,18 @@ gam = 1.
 #beta = 0.
 beta = 0.5
 eps = 1.
-#muRng = np.array([-5.])
-#plotPoint = True
-#plotOrbit = False
+muRng = np.array([-5.])
+plotPoint = True
+plotOrbit = False
 #muRng = np.array([0.])
 #plotPoint = False
 #plotOrbit = False
 #muRng = np.array([3.])
 #plotPoint = False
 #plotOrbit = False
-muRng = np.array([7.])
-plotPoint = True
-plotOrbit = True
+#muRng = np.array([7.])
+#plotPoint = True
+#plotOrbit = True
 
 mu0 = -10.
 muf = 15.
@@ -137,6 +137,8 @@ for k in np.arange(muRng.shape[0]):
                              eigVecForward)
 
     # Sort eigenvalues and eigenvectors
+    eigVecForward = eigVecForward.T
+    eigVecBackward = eigVecBackward.T
     (eigValForward, eigValBackward, eigVecForward, eigVecBackward) \
         = ergoPlot.sortEigenvectors(eigValForward, eigValBackward,
                                     eigVecForward, eigVecBackward, 'LR')
@@ -146,7 +148,7 @@ for k in np.arange(muRng.shape[0]):
         = ergoPlot.makeBiorthonormal(eigVecForward, eigVecBackward)
 
     # Get stationary density (used to normalize power spectrum)
-    statDist = eigVecForward[:, 0].real
+    statDist = eigVecForward[0].real
     statDist /= statDist.sum()
 
     # Define observables
@@ -175,8 +177,8 @@ for k in np.arange(muRng.shape[0]):
         # Get weights of the spectral projections of the observables
         # let the forward eigenvectors carry the measure.
         weightsObs = ergoPlot.getSpectralWeights(f[obs], g[obs],
-                                                 eigVecForward[:, :nevRec],
-                                                 eigVecBackward[:, :nevRec])
+                                                 eigVecForward[:nevRec],
+                                                 eigVecBackward[:nevRec])
         weights.append(weightsObs)
         # Get power spectrum
         powerObs, powerCompObs = ergoPlot.spectralRecPower(angFreq, f[obs], g[obs],
@@ -248,7 +250,7 @@ for k in np.arange(muRng.shape[0]):
                       marker='x', color=pointColor, s=msizeAna)
 
     # Parameter labels
-    axEig.text(xmin*0.96, ylim[1]*1.03, r'$\mu = %.1f$' % mu,
+    axEig.text(xmin*0.96, ylim[1]*1.03, r'$\delta = %.1f$' % mu,
                fontsize='xx-large')
     axEig.text(xmin*0.18, ylim[1]*1.03, r'$\beta = %.1f$' % beta,
                fontsize='xx-large')

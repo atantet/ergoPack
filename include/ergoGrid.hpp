@@ -44,6 +44,8 @@ protected:
   const size_t N;                        //!< Number of grid boxes
 
 public:
+  std::vector<gsl_vector *> *bounds = NULL; //!< Grid box bounds for each dimension
+  
   /** \brief Constructor allocating an empty grid. */
   Grid(const gsl_vector_uint *nx_)
     : dim(nx_->size), N(gsl_vector_uint_get_prod(nx_)) {}
@@ -119,8 +121,6 @@ class RegularGrid : public CurvilinearGrid {
 			     const gsl_matrix *states);
 
 public:
-  std::vector<gsl_vector *> *bounds; //!< Grid box bounds for each dimension
-  
   /** \brief Construct a uniform rectangular grid with different dimensions. */
   RegularGrid(const gsl_vector_uint *nx_, const gsl_vector *gridLimitsLow, const gsl_vector *gridLimitsUp);
   
@@ -178,6 +178,15 @@ gsl_matrix_uint * memVectorList2memMatrix(const std::vector<gsl_vector_uint *> *
 /** \brief Get MLE of a density from the grid membership vector of a time series. */
 void getDensityMLE(const gsl_vector_uint *gridMemVect, const Grid *grid,
 		   gsl_vector *density);
+
+
+/** \brief Convert multi index to flat index. */
+size_t ravel_multi_index(const gsl_vector_uint *multiIdx,
+			 const gsl_vector_uint *nx);
+  
+/** \brief Convert flat index to multi index. */
+void unravel_index(const size_t flatIdx, const gsl_vector_uint *nx,
+		   gsl_vector_uint *multiIdx);
 
 
 // /** \brief Polar grid. */

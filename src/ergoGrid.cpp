@@ -279,7 +279,7 @@ RegularGrid::getBoxMembership(const gsl_vector *state) const
   const size_t dim = state->size;
   size_t nFoundInt, nBoxDir, foundBox, idInt;
   gsl_vector *boundsDir;
-  gsl_vector_uint *idIntervals = gsl_vector_uint_alloc(dim);
+  gsl_vector_uint *multiIdx = gsl_vector_uint_alloc(dim);
 
   // Get box
   foundBox = N;
@@ -307,30 +307,24 @@ RegularGrid::getBoxMembership(const gsl_vector *state) const
 
       // Check if interval was found.
       // If yes, save the index for direction d and go to next direction.
-      // Otherwise the box is outside the domain, no need to continue, the box is not found.
+      // Otherwise the box is outside the domain, no need to continue,
+      // the box is not found.
       if (idInt < nBoxDir)
 	{
 	  nFoundInt++;
-	  gsl_vector_uint_set(idIntervals, d, idInt);
+	  gsl_vector_uint_set(multiIdx, d, idInt);
 	  continue;
 	}
       else
 	break;
     }
   
-  // Is the state in this box?
+  // Is the state in this box? If yes, flatten index
   if (nFoundInt == dim)
-    {
-      // Convert interval indices to box index, e.g.:
-      // foundBox = iz + nz * (iy + ny * ix)
-      foundBox = gsl_vector_uint_get(idIntervals, 0);
-      for (size_t d = 1; d < dim; d++)
-	foundBox = foundBox * gsl_vector_uint_get(nx, d)
-	  + gsl_vector_uint_get(idIntervals, d);
-    }
+    foundBox = ravel_multi_index(multiIdx, nx);
 
   // Free
-  gsl_vector_uint_free(idIntervals);
+  gsl_vector_uint_free(multiIdx);
   
   return foundBox;
 }
@@ -426,28 +420,26 @@ getGridMemMatrix(const gsl_matrix *initStates, const gsl_matrix *finalStates,
 		 const Grid *grid)
 {
   const size_t nTraj = initStates->size1;
-  const size_t dim = initStates->size2;
   gsl_matrix_uint *gridMem;
 
   // Allocate
-  gridMem = gsl_matrix_uint_alloc(grid->getN(), 2);
-  
+  gridMem = gsl_matrix_uint_alloc(nTraj, 2);
+
   // Assign a pair of source and destination boxes to each trajectory
 #pragma omp parallel
   {
-    gsl_vector *X = gsl_vector_alloc(dim);
     size_t box0, boxf;
     
 #pragma omp for
     for (size_t traj = 0; traj < nTraj; traj++)
       {
 	// Find initial box
-	gsl_matrix_get_row(X, initStates, traj);
-	box0 = grid->getBoxMembership(X);
+	gsl_vector_const_view x0 = gsl_matrix_const_row(initStates, traj);
+	box0 = grid->getBoxMembership(&x0.vector);  
 	
 	// Find final box
-	gsl_matrix_get_row(X, finalStates, traj);
-	boxf = grid->getBoxMembership(X);
+	gsl_vector_const_view xf = gsl_matrix_const_row(finalStates, traj);
+	boxf = grid->getBoxMembership(&xf.vector);
 	
 	// Add transition
 #pragma omp critical
@@ -456,8 +448,6 @@ getGridMemMatrix(const gsl_matrix *initStates, const gsl_matrix *finalStates,
 	  gsl_matrix_uint_set(gridMem, traj, 1, boxf);
 	}
       }
-    
-    gsl_vector_free(X);
   }
   
   return gridMem;
@@ -473,21 +463,19 @@ gsl_vector_uint *
 getGridMemVector(const gsl_matrix *states, const Grid *grid)
 {
   const size_t nStates = states->size1;
-  const size_t dim = states->size2;
   gsl_vector_uint *gridMem = gsl_vector_uint_alloc(nStates);
 
   // Assign a pair of source and destination boxes to each trajectory
 #pragma omp parallel
   {
-    gsl_vector *X = gsl_vector_alloc(dim);
     size_t box;
     
 #pragma omp for
     for (size_t traj = 0; traj < nStates; traj++)
       {
 	// Find box
-	gsl_matrix_get_row(X, states, traj);
-	box = grid->getBoxMembership(X);
+	gsl_vector_const_view x0 = gsl_matrix_const_row(states, traj);
+	box = grid->getBoxMembership(&x0.vector);
 
 	// Add box
 #pragma omp critical
@@ -495,8 +483,6 @@ getGridMemVector(const gsl_matrix *states, const Grid *grid)
 	  gsl_vector_uint_set(gridMem, traj, box);
 	}
       }
-    
-    gsl_vector_free(X);
   }
   
   return gridMem;
@@ -620,6 +606,59 @@ getDensityMLE(const gsl_vector_uint *gridMemVect, const Grid *grid,
 
   return;
 }
+
+
+/*
+ * Convert multi index to flat index, e.g.:
+ * flat = iz + nz * (iy + ny * ix)
+ * \param[in]  multiIdx Multi-index.
+ * \param[in]  nx       Dimensions.
+ * \return              Flat index.
+ */
+size_t ravel_multi_index(const gsl_vector_uint *multiIdx,
+			 const gsl_vector_uint *nx)
+{
+  size_t dim = nx->size;
+  size_t flatIdx;
+
+  flatIdx = gsl_vector_uint_get(multiIdx, 0);
+  for (size_t d = 1; d < dim; d++)
+    flatIdx = flatIdx * gsl_vector_uint_get(nx, d)
+      + gsl_vector_uint_get(multiIdx, d);
+  
+  return flatIdx;
+}
+
+/*
+ * Convert flat index to multi index, e.g.:
+ * flat = iz + nz * (iy + ny * ix)
+ * \param[in]  flatIdx  Flat index
+ * \param[in]  nx       Dimensions.
+ * \param[out] multiIdx Multi Index
+ */
+void unravel_index(const size_t flatIdx, const gsl_vector_uint *nx,
+		   gsl_vector_uint *multiIdx)
+{
+  size_t dim = nx->size;
+  size_t nxd, quotient;
+
+  // Initialize quotient
+  quotient = flatIdx;
+  for (int d = dim-1; d >= 0; d--)
+    {
+      // Get divisor
+      nxd = gsl_vector_uint_get(nx, d);
+      
+      // Assign remainder to multi index
+      gsl_vector_uint_set(multiIdx, d, quotient % nxd);
+      
+      // Get quotient
+      quotient /= nxd;
+    }
+
+  return;
+}
+
 
 // /**
 //  * Construct a polar grid adapted to the time series (yet, only for 2D).
@@ -841,4 +880,5 @@ getDensityMLE(const gsl_vector_uint *gridMemVect, const Grid *grid,
 
 //   return supportSectorsMem;
 // }
+
 

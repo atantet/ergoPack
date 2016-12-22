@@ -99,7 +99,7 @@ for imu in np.arange(muRng.shape[0]):
                     label=r'$\Re(\widehat{\lambda}_{%d})} = %.2f \epsilon$' \
                     % (ev, A[0, 0]))
         else:
-            label = r'$\Re(\widehat{\lambda}_{%d})} = -\epsilon^2 (1 + \beta^2) / (2 \mu)$' % ev
+            label = r'$\Re(\widehat{\lambda}_{%d})} = -\epsilon^2 (1 + \beta^2) / (2 \delta)$' % ev
             ax.plot(xplot, -xplot**2 * (1 + beta**2) / (2*mu),
                     '-%s' % muColor[imu], linewidth=2, label=label)
         if np.abs(eigVal[0, imu, ev].imag) > 1.e-6:
@@ -128,16 +128,16 @@ for imu in np.arange(muRng.shape[0]):
                     ha='right', va='bottom')
         else:
             rotation = 0.
-            txt = r'$\Re(\widehat{\lambda}_{%d}) = -\epsilon^2 (1 + \beta^2) / (2 \mu)$' % evRank[iev] \
+            txt = r'$\Re(\widehat{\lambda}_{%d}) = -\epsilon^2 (1 + \beta^2) / (2 \delta)$' % evRank[iev] \
                   + '\n' \
-                  + r'$\quad \quad \quad \quad \quad \quad \quad \quad \mathrm{for} \quad \mu = %d$' % mu
+                  + r'$\quad \quad \quad \quad \quad \quad \quad \quad \mathrm{for} \quad \delta = %d$' % mu
             xcorr = (xlim[1] - xlim[0]) * 0.01
             ycorr = (ylim[1] - ylim[0]) * (-0.05)
             ax.text(epsRng[ii] + xcorr, -epsRng[ii]**2 \
                     * (1 + beta**2) / (2*mu) + ycorr, txt,
                     rotation=rotation, fontsize = 'xx-large')
 ax.text(xlim[0] + (xlim[1] - xlim[0]) * 0.05,
-        ylim[1] + (ylim[1] - ylim[0]) * 0.02, r'$\mu = %.1f$' % mu,
+        ylim[1] + (ylim[1] - ylim[0]) * 0.02, r'$\delta = %.1f$' % mu,
         fontsize='xx-large')
 ax.text(xlim[1] - (xlim[1] - xlim[0]) * 0.18,
         ylim[1] + (ylim[1] - ylim[0]) * 0.02, r'$\beta = %.1f$' % beta,
