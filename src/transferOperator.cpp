@@ -22,7 +22,7 @@
  */
 transferOperator::transferOperator(const gsl_matrix_uint *gridMem,
 				   const size_t N_,
-				   const bool stationary_=false)
+				   const bool stationary_)
   : N(N_), stationary(stationary_), P(NULL), Q(NULL)
 {
   // Get mask
@@ -50,7 +50,7 @@ transferOperator::transferOperator(const gsl_matrix_uint *gridMem,
 transferOperator::transferOperator(const gsl_matrix *initStates,
 				   const gsl_matrix *finalStates,
 				   const Grid *grid,
-				   const bool stationary_=false)
+				   const bool stationary_)
   : N(grid->getN()), stationary(stationary_), P(NULL), Q(NULL)
 {
   gsl_matrix_uint *gridMem;
