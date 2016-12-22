@@ -44,15 +44,15 @@ protected:
   const size_t N;                        //!< Number of grid boxes
 
 public:
-  std::vector<gsl_vector *> *bounds = NULL; //!< Grid box bounds for each dimension
+  std::vector<gsl_vector *> *bounds; //!< Grid box bounds for each dimension
   
   /** \brief Constructor allocating an empty grid. */
   Grid(const gsl_vector_uint *nx_)
-    : dim(nx_->size), N(gsl_vector_uint_get_prod(nx_)) {}
+    : dim(nx_->size), N(gsl_vector_uint_get_prod(nx_)), bounds(NULL) {}
 
   /** \brief Constructor allocating an empty grid with same dimensions. */
   Grid(const size_t dim_, const size_t inx)
-    : dim(dim_), N(gsl_pow_uint(inx, dim)) {}
+    : dim(dim_), N(gsl_pow_uint(inx, dim)), bounds(NULL) {}
   
   /** \brief Destructor. */
   virtual ~Grid() {}
