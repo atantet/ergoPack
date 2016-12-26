@@ -11,6 +11,31 @@
  */
 
 /**
+ * Empty constructor to allow manual building of transition matrix
+ * from the grid membership matrix without mask.
+ * \param[in] N_          Number of grid boxes.
+ * \param[in] stationary_ Whether the system is stationary
+ *                        (in which case \f$\rho_0 = \rho_f\f$ and no need
+ *                        to calculate the backward transition matrix).
+ */
+transferOperator::transferOperator(const size_t N_, const bool stationary_)
+  : N(N_), stationary(stationary_), P(NULL), Q(NULL)
+{
+  // Get default mask
+  mask = gsl_vector_uint_alloc(N);
+  NFilled = getMask(mask);
+
+  // Allocate distributions and set matrices to NULL pointer
+  allocateDist();
+
+  /** Initialize distributions to zero */
+  if (initDist)
+    gsl_vector_set_zero(initDist);
+  if (finalDist)
+    gsl_vector_set_zero(finalDist);
+}
+
+/**
  * Construct transferOperator by calculating
  * the forward and backward transition matrices and distributions 
  * from the grid membership matrix.
@@ -27,7 +52,7 @@ transferOperator::transferOperator(const gsl_matrix_uint *gridMem,
 {
   // Get mask
   mask = gsl_vector_uint_alloc(N);
-  NFilled = getMask(gridMem, mask);
+  NFilled = getMask(mask, gridMem);
 
   // Allocate distributions and set matrices to NULL pointer
   allocateDist();
@@ -60,7 +85,7 @@ transferOperator::transferOperator(const gsl_matrix *initStates,
 
   // Get mask
   mask = gsl_vector_uint_alloc(N);
-  NFilled = getMask(gridMem, mask);
+  NFilled = getMask(mask, gridMem);
 
   // Allocate distributions and set matrices to NULL pointer
   allocateDist();
@@ -91,7 +116,7 @@ transferOperator::transferOperator(const gsl_matrix *states, const Grid *grid,
 
   // Get mask
   mask = gsl_vector_uint_alloc(N);  
-  NFilled = getMask(gridMem, mask);
+  NFilled = getMask(mask, gridMem);
 
   // Allocate distributions and set matrices to NULL pointer
   allocateDist();
@@ -153,11 +178,10 @@ int
 transferOperator::buildFromMembership(const gsl_matrix_uint *gridMem)
 {
   const size_t nTraj = gridMem->size1;
-  const double tol = .9 / nTraj; // The min non-zero dist is 1. / nTraj
   size_t nIn;
   gsl_spmatrix *T;
 
-  // Get transition count triplets
+  // Allocate transition count matrix
   if (!(T = gsl_spmatrix_alloc_nzmax(NFilled, NFilled, nTraj,
 				     GSL_SPMATRIX_TRIPLET)))
     {
@@ -166,18 +190,36 @@ triplet count matrix.\n");
       std::bad_alloc();
     }
 
-  if (stationary)
-    nIn = getTransitionCountTriplet(gridMem, mask, T, initDist, NULL);
-  else
-    nIn = getTransitionCountTriplet(gridMem, mask, T, initDist, finalDist);
+  // Get transitions
+  nIn = getTransitionCountTriplet(gridMem, T);
   std::cout <<  nIn * 100. / nTraj
 	    << "% of the trajectories ended up inside the domain." << std::endl;
 
+  // Build transition matrices from transition count matrix
+  buildFromTransitionCount(T, nTraj);
+  
+  /** Free transition count matrix */
+  gsl_spmatrix_free(T);
+
+  return 0;
+}
+
+
+/**
+ * Buid transition matrices of transfer operator from transition count matrix.
+ * \param[in]  T    Transition count matrix.
+ * \param[in] nTraj Number of trajectories (to define the minimum tolerance).
+ */
+void
+transferOperator::buildFromTransitionCount(const gsl_spmatrix *T,
+					   const size_t nTraj)
+{
+  const double tol = .9 / nTraj; // The min non-zero dist is 1. / nTraj
   
   /** Convert to CRS summing duplicates */
   if (!(P = gsl_spmatrix_crs(T)))
     {
-      fprintf(stderr, "transferOperator::buildFromMembership: error compressing\
+      fprintf(stderr, "transferOperator::buildTransitionCount: error compressing\
 forward transition matrix.\n");
       throw std::exception();
     }
@@ -189,14 +231,14 @@ forward transition matrix.\n");
       /** Get transpose copy */
       if (!(Q = gsl_spmatrix_alloc_nzmax(NFilled, NFilled, P->nz, GSL_SPMATRIX_CRS)))
 	{
-	  fprintf(stderr, "transferOperator::buildFromMembership: error allocating\
-backward transition matrix.\n");
+	  fprintf(stderr, "transferOperator::buildFromTransitionCount: \
+error allocating backward transition matrix.\n");
 	  throw std::bad_alloc();
 	}
       if (gsl_spmatrix_transpose_memcpy(Q, P))
 	{
-	  fprintf(stderr, "transferOperator::buildFromMembership: error copying\
-forward transition matrix to backward.\n");
+	  fprintf(stderr, "transferOperator::buildFromTransitionCount: \
+error copying forward transition matrix to backward.\n");
 	  throw std::exception();
 	}
   
@@ -208,13 +250,9 @@ forward transition matrix to backward.\n");
   /** Make the forward transition matrix left stochastic */
   gsl_spmatrix_div_cols(P, finalDist, tol);
   gsl_vector_normalize(finalDist);
-  
-  /** Free */
-  gsl_spmatrix_free(T);
 
-  return 0;
+  return;
 }
-
 
 /** 
  * Filter weak Markov states (boxes) of forward and backward transition matrices
@@ -686,31 +724,63 @@ opening stream to read");
 }
 
 
-/*
- * Function definitions
+/** 
+ * Add transition to count matrix from a pair of initial and final grid boxes.
+ * \param[in]  T         Transition count matrix.
+ * \param[in]  box0      Initial box of transition.
+ * \param[in]  boxf      Final box of transition.
+ * \return               Number of trajectories inside domain.
  */
+size_t
+transferOperator::addTransition(gsl_spmatrix *T, size_t box0, size_t boxf)
+{
+  size_t box0r, boxfr;
+  size_t nIn = 0;
+  double *ptr;
+
+  /** Record transitions */
+  /** Add transition triplet, summing if duplicate */
+  if ((box0 < N) && (boxf < N))
+    {
+      /** Convert to reduced indices */
+      box0r = gsl_vector_uint_get(mask, box0);
+      boxfr = gsl_vector_uint_get(mask, boxf);
+
+      /** Add triplet in reduced indices */
+      ptr = gsl_spmatrix_ptr(T, box0r, boxfr);
+      if (ptr)
+	*ptr += 1.; /* sum duplicate values */
+      else
+	gsl_spmatrix_set(T, box0r, boxfr, 1.);   /* initalize to x */
+
+      /** Add initial and final boxes to initial and final distributions,
+	  respectively (not on a reduced grid). */
+      if (initDist)
+	gsl_vector_set(initDist, box0r, gsl_vector_get(initDist, box0r) + 1.);
+      if (finalDist)
+	gsl_vector_set(finalDist, boxfr, gsl_vector_get(finalDist, boxfr) + 1.);
+
+      nIn = 1;
+    }
+
+  return nIn;
+}
+
 
 /** 
  * Get the triplet vector counting the transitions
  * from pairs of grid boxes from the grid membership matrix.
  * \param[in]  gridMem   Grid membership matrix.
- * \param[in]  mask      Mask.
  * \param[out] T         Triplet matrix counting the transitions.
- * \param[out] initDist  Initial states count
- * \param[out] finalDist Final states count
  * \return               Number of trajectories inside domain.
  */
 size_t
-getTransitionCountTriplet(const gsl_matrix_uint *gridMem,
-			  const gsl_vector_uint *mask,
-			  gsl_spmatrix *T, gsl_vector *initDist=NULL,
-			  gsl_vector *finalDist=NULL)
+transferOperator::getTransitionCountTriplet(const gsl_matrix_uint *gridMem,
+					    gsl_spmatrix *T)
 {
   const size_t nTraj = gridMem->size1;
-  const size_t N = mask->size;
-  size_t box0, boxf, box0r, boxfr;
+  size_t box0, boxf;
   size_t nIn = 0;
-  double *ptr;
 
   /** Initialize distributions to zero */
   if (initDist)
@@ -726,78 +796,74 @@ getTransitionCountTriplet(const gsl_matrix_uint *gridMem,
       boxf = gsl_matrix_uint_get(gridMem, traj, 1);
       
       /** Add transition triplet, summing if duplicate */
-      if ((box0 < N) && (boxf < N))
-	{
-	  /** Convert to reduced indices */
-	  box0r = gsl_vector_uint_get(mask, box0);
-	  boxfr = gsl_vector_uint_get(mask, boxf);
-
-	  /** Add triplet in reduced indices */
-	  ptr = gsl_spmatrix_ptr(T, box0r, boxfr);
-	  if (ptr)
-	    *ptr += 1.; /* sum duplicate values */
-	  else
-	    gsl_spmatrix_set(T, box0r, boxfr, 1.);   /* initalize to x */
-
-	  /** Add initial and final boxes to initial and final distributions,
-	      respectively (not on a reduced grid). */
-	  if (initDist)
-	    gsl_vector_set(initDist, box0r, gsl_vector_get(initDist, box0r) + 1.);
-	  if (finalDist)
-	    gsl_vector_set(finalDist, boxfr, gsl_vector_get(finalDist, boxfr) + 1.);
-
-	  nIn++;
-	}
+      nIn += addTransition(T, box0, boxf);
     }
 
   return nIn;
 }
 
 
+/*
+ * Function definitions
+ */
+
+
 /** 
  * Get mask from grid membership matrix.
  * The mask is an N-dimensional vector giving the indices
  * of each box in the reduced set non-empty boxes.
- * \param[in]  gridMem Grid membership matrix.
+ * If the grid membership matrix is NULL, no box is masked.
  * \param[out] mask    Mask.
+ * \param[in]  gridMem Grid membership matrix.
  * \return     NFilled Number of filled boxes.
  */
 size_t
-getMask(const gsl_matrix_uint *gridMem, gsl_vector_uint *mask)
+getMask(gsl_vector_uint *mask, const gsl_matrix_uint *gridMem)
 {
   const size_t N = mask->size;
-  const size_t nTraj = gridMem->size1;
+  size_t nTraj;
   size_t NFilled;
   size_t box0, boxf;
 
-  // Initialized all boxes as empty (as marked by N)
-  gsl_vector_uint_set_all(mask, N);
-
-  // Loop over the states to check which box is filled
-  for (size_t traj = 0; traj < nTraj; traj++)
+  if (gridMem)
     {
-      /** Get initial and final boxes */
-      box0 = gsl_matrix_uint_get(gridMem, traj, 0);
-      boxf = gsl_matrix_uint_get(gridMem, traj, 1);
+      nTraj = gridMem->size1;
 
-      // Flag initial and final boxes only if both are found
-      // (otherwise the transition will not be count by getTransitionCountTriplet)n
-      if ((box0 < N) && (boxf < N))
+      // Initialized all boxes as empty (as marked by N)
+      gsl_vector_uint_set_all(mask, N);
+
+      // Loop over the states to check which box is filled
+      for (size_t traj = 0; traj < nTraj; traj++)
 	{
-	  gsl_vector_uint_set(mask, box0, 1);
-	  gsl_vector_uint_set(mask, boxf, 1);
+	  /** Get initial and final boxes */
+	  box0 = gsl_matrix_uint_get(gridMem, traj, 0);
+	  boxf = gsl_matrix_uint_get(gridMem, traj, 1);
+
+	  // Flag initial and final boxes only if both are found
+	  // (otherwise the transition will not be count by getTransitionCountTriplet)n
+	  if ((box0 < N) && (boxf < N))
+	    {
+	      gsl_vector_uint_set(mask, box0, 1);
+	      gsl_vector_uint_set(mask, boxf, 1);
+	    }
+	}
+
+      // Loop over the boxes to finish the mask
+      NFilled = 0;
+      for (size_t box = 0; box < N; box++)
+	{
+	  if (gsl_vector_uint_get(mask, box) == 1)
+	    {
+	      gsl_vector_uint_set(mask, box, NFilled);
+	      NFilled++;
+	    }
 	}
     }
-
-  // Loop over the boxes to finish the mask
-  NFilled = 0;
-  for (size_t box = 0; box < N; box++)
+  else
     {
-      if (gsl_vector_uint_get(mask, box) == 1)
-	{
-	  gsl_vector_uint_set(mask, box, NFilled);
-	  NFilled++;
-	}
+      for (size_t box = 0; box < N; box++)
+	gsl_vector_uint_set(mask, box, box);
+      NFilled = N;
     }
   
   return NFilled;

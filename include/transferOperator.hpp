@@ -81,21 +81,21 @@ public:
   gsl_vector_uint *mask; //!< Mask for empty boxes
 
   
-  /** \brief Empty constructor allocating for grid size and mask */
-  transferOperator(const size_t N_, const bool stationary_=false)
-    : N(N_), stationary(stationary_), P(NULL), Q(NULL)
-  { mask = gsl_vector_uint_alloc(N); }
+/** \brief Empty constructor to allow manual building of transition matrix. */
+  transferOperator(const size_t N_, const bool stationary_=false);
   
   /** \brief Constructor from the membership matrix. */
   transferOperator(const gsl_matrix_uint *gridMem, const size_t N_,
 		   const bool stationary_=false);
   
   /** \brief Constructor from initial and final states for a given grid */
-  transferOperator(const gsl_matrix *initStates, const gsl_matrix *finalStates,
+  transferOperator(const gsl_matrix *initStates,
+		   const gsl_matrix *finalStates,
 		   const Grid *grid, const bool stationary_=false);
   
   /** \brief Constructor from a long trajectory for a given grid and lag */
-  transferOperator(const gsl_matrix *states, const Grid *grid, size_t tauStep);
+  transferOperator(const gsl_matrix *states, const Grid *grid,
+		   size_t tauStep);
   
   /** \brief Destructor */
   ~transferOperator();
@@ -160,14 +160,27 @@ public:
 
   // Manual modifications
   /** \brief Manually change the initial distribution. */
-  void setInitDist(const gsl_vector *initDist_) { gsl_vector_memcpy(initDist, initDist_); return; }
+  void setInitDist(const gsl_vector *initDist_)
+  { gsl_vector_memcpy(initDist, initDist_); return; }
 
   /** \brief Manually change the finalial distribution. */
-  void setFinalDist(const gsl_vector *finalDist_) { gsl_vector_memcpy(finalDist, finalDist_); return; }
+  void setFinalDist(const gsl_vector *finalDist_)
+  { gsl_vector_memcpy(finalDist, finalDist_); return; }
 
   /** \brief Manually change the mask. */
-  void setMask(const gsl_vector_uint *mask_) { gsl_vector_uint_memcpy(mask, mask_); return; }
+  void setMask(const gsl_vector_uint *mask_)
+  { gsl_vector_uint_memcpy(mask, mask_); return; }
 
+  /** \brief Add transition from pairs of initial and final grid boxes. */
+  size_t addTransition(gsl_spmatrix *T, size_t box0, size_t boxf);
+
+  /** \brief Get triplet vector from membership matrix. */
+  size_t getTransitionCountTriplet(const gsl_matrix_uint *gridMem,
+				   gsl_spmatrix *T);
+
+  /** \brief Buid transition matrices from transition count matrix. */
+  void buildFromTransitionCount(const gsl_spmatrix *T, const size_t nTraj);
+    
   /** \brief Filtering of weak Markov states. */
   int filter(double tol);
 };
@@ -178,12 +191,8 @@ public:
  *  Functions declarations
  */
 
-/** \brief Get triplet vector from membership matrix. */
-size_t getTransitionCountTriplet(const gsl_matrix_uint *gridMem, const gsl_vector_uint *mask,
-				 gsl_spmatrix *T, gsl_vector *initDist, gsl_vector *finalDist);
-
 /** \brief Get mask from grid membership matrix. */
-size_t getMask(const gsl_matrix_uint *gridMem, gsl_vector_uint *mask);
+size_t getMask(gsl_vector_uint *mask, const gsl_matrix_uint *gridMem=NULL);
 
 /** \brief Remove weak nodes from a transition matrix. */
 int filterStochasticMatrix(gsl_spmatrix *M, gsl_vector *rowCut, gsl_vector *colCut,
