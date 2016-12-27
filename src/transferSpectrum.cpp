@@ -395,6 +395,64 @@ backward eigen problem solved first before to make biorthonormal set"
 
 
 /**
+ * Write eigenvalues of forward transition matrix.
+ * \param[in] EigValForwardFile  File name of the file to print forward eigenvalues.
+ * \param[in] fileFormat         String "bin" or "txt" for the output type.
+ * \return                       Exit status.
+ */
+void
+transferSpectrum::writeEigValForward(const char *EigValForwardFile,
+				     const char *fileFormat) const
+{
+  FILE *streamEigVal;
+  
+  /** Open files for forward */
+  if (!(streamEigVal = fopen(EigValForwardFile, "w")))
+    {
+      throw std::ios::failure("transferSpectrum::writeSpectrum, \
+opening stream for writing forward eigenvalues");
+    }
+
+  /** Write forward */
+  writeSpectrumAR(streamEigVal, EigValForward, fileFormat);
+
+  /** Close */
+  fclose(streamEigVal);
+
+  return;
+}
+
+
+/**
+ * Write eigenvalues and of backward transition matrix.
+ * \param[in] EigValBackwardFile  File name of the file to print backward eigenvalues.
+ * \param[in] fileFormat          String "bin" or "txt" for the output type.
+ * \return                        Exit status.
+ */
+void
+transferSpectrum::writeEigValBackward(const char *EigValBackwardFile,
+				      const char *fileFormat) const
+{
+  FILE *streamEigVal;
+  
+  /** Open files back backward */
+  if (!(streamEigVal = fopen(EigValBackwardFile, "w")))
+    {
+      throw std::ios::failure("transferSpectrum::writeSpectrum, \
+opening stream back writing backward eigenvalues");
+    }
+
+  /** Write backward */
+  writeSpectrumAR(streamEigVal, EigValBackward, fileFormat);
+
+  /** Close */
+  fclose(streamEigVal);
+
+  return;
+}
+
+
+/**
  * Write eigenvalues and eigenvectors of forward transition matrix.
  * \param[in] EigValForwardFile  File name of the file to print forward eigenvalues.
  * \param[in] EigVecForwardFile  File name of the file to print forward eigenvectors.
@@ -644,6 +702,31 @@ getSpectrumAR(int *nev, const size_t N, ARNonSymStdEig<double, gsl_spmatrix2AR >
   return;
 }
 
+
+/**
+ * Write complex eigenvalues obtained as arrays from ARPACK++.
+ * \param[in] fEigVal    File descriptor for eigenvalues.
+ * \param[in] EigVal     Array of eigenvalues real parts.
+ * \param[in] fileFormat String "bin" or "txt" for the output type.
+ */
+void
+writeSpectrumAR(FILE *fEigVal, const gsl_vector_complex *EigVal,
+		const char *fileFormat)
+{
+  // Print eigenvalues
+  if (strcmp(fileFormat, "bin") == 0)
+    gsl_vector_complex_fwrite(fEigVal, EigVal);
+  else
+    gsl_vector_complex_fprintf(fEigVal, EigVal, "%.12lf");
+  
+  /** Check for printing errors */
+  if (ferror(fEigVal))
+    {
+      throw std::ios::failure("writeSpectrumAR, printing eigenvalues");
+  }
+
+  return;
+}
 
 /**
  * Write complex eigenvalues and eigenvectors obtained as arrays from ARPACK++.

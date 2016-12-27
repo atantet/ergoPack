@@ -111,6 +111,13 @@ public:
   /** \brief Get weights for two observables. */
   gsl_vector_complex *getWeights(const gsl_vector *f, const gsl_vector *g);
 
+  /** \brief Write forward eigenvalues. */
+  void writeEigValForward(const char *EigValForwardFile,
+			  const char *fileFormat="txt") const;
+  /** \brief Write backward eigenvalues. */
+  void writeEigValBackward(const char *EigValBackwardFile,
+			     const char *fileFormat="txt") const;
+  
   /** \brief Write forward eigenvalues and eigenvectors. */
   void writeSpectrumForward(const char *EigValForwardFile,
 			    const char *EigVecForwardFile,
@@ -153,6 +160,10 @@ public:
 void getSpectrumAR(int *nev, const size_t N, ARNonSymStdEig<double, gsl_spmatrix2AR > *EigProb,
 		   gsl_spmatrix2AR *gsl2AR, configAR cfgAR,
 		   gsl_vector_complex **EigVal, gsl_matrix_complex **EigVec);
+
+/** \brief Write eigenvalues of a nonsymmetric matrix using ARPACK++. */
+void writeSpectrumAR(FILE *fEigVal, const gsl_vector_complex *EigVal,
+		     const char *fileFormat);
 
 /** \brief Write spectrum of a nonsymmetric matrix using ARPACK++. */
 void writeSpectrumAR(FILE *fEigVal, FILE *fEigVec,

@@ -29,9 +29,8 @@ transferOperator::transferOperator(const size_t N_, const bool stationary_)
   allocateDist();
 
   /** Initialize distributions to zero */
-  if (initDist)
-    gsl_vector_set_zero(initDist);
-  if (finalDist)
+  gsl_vector_set_zero(initDist);
+  if (!stationary)
     gsl_vector_set_zero(finalDist);
 }
 
@@ -219,8 +218,8 @@ transferOperator::buildFromTransitionCount(const gsl_spmatrix *T,
   /** Convert to CRS summing duplicates */
   if (!(P = gsl_spmatrix_crs(T)))
     {
-      fprintf(stderr, "transferOperator::buildTransitionCount: error compressing\
-forward transition matrix.\n");
+      fprintf(stderr, "transferOperator::buildFromTransitionCount: \
+error compressing forward transition matrix.\n");
       throw std::exception();
     }
 
@@ -229,7 +228,8 @@ forward transition matrix.\n");
   if (!stationary)
     {
       /** Get transpose copy */
-      if (!(Q = gsl_spmatrix_alloc_nzmax(NFilled, NFilled, P->nz, GSL_SPMATRIX_CRS)))
+      if (!(Q = gsl_spmatrix_alloc_nzmax(NFilled, NFilled, P->nz,
+					 GSL_SPMATRIX_CRS)))
 	{
 	  fprintf(stderr, "transferOperator::buildFromTransitionCount: \
 error allocating backward transition matrix.\n");
@@ -755,9 +755,8 @@ transferOperator::addTransition(gsl_spmatrix *T, size_t box0, size_t boxf)
 
       /** Add initial and final boxes to initial and final distributions,
 	  respectively (not on a reduced grid). */
-      if (initDist)
-	gsl_vector_set(initDist, box0r, gsl_vector_get(initDist, box0r) + 1.);
-      if (finalDist)
+      gsl_vector_set(initDist, box0r, gsl_vector_get(initDist, box0r) + 1.);
+      if (!stationary)
 	gsl_vector_set(finalDist, boxfr, gsl_vector_get(finalDist, boxfr) + 1.);
 
       nIn = 1;
