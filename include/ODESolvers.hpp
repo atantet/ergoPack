@@ -257,20 +257,24 @@ public:
 
   /** \brief Integrate the model forward for a given number of time steps
    *  from the current state. */
-  void integrateForward(const size_t nt, const double dt, const size_t ntSpinup=0,
+  void integrateForward(const size_t nt, const double dt,
+			const size_t ntSpinup=0,
 			const size_t sampling=1, gsl_matrix **data=NULL);
   /** \brief Integrate the model forward for a given number of time steps
    *  from a given initial state. */
-  void integrateForward(const gsl_vector *init, const size_t nt, const double dt,
+  void integrateForward(const gsl_vector *init, const size_t nt,
+			const double dt,
 			const size_t ntSpinup=0, const size_t samping=1,
 			gsl_matrix **data=NULL);
   /** \brief Integrate the model forward for a given period.
    *  from the current state. */
-  void integrateForward(const double length, const double dt, const double spinup=0,
+  void integrateForward(const double length, const double dt,
+			const double spinup=0,
 			const size_t sampling=1, gsl_matrix **data=NULL);
   /** \brief Integrate the model forward for a given period.
    *  from a given initial state. */
-  void integrateForward(const gsl_vector *init, const double length, const double dt,
+  void integrateForward(const gsl_vector *init, const double length,
+			const double dt,
 			const double spinup=0, const size_t sampling=1,
 			gsl_matrix **data=NULL);
 
@@ -323,7 +327,8 @@ public:
   void setCurrentState(const gsl_matrix *currentMat);
     
   /** \brief Set current state and fundamental matrix manually. */
-  void setCurrentState(const gsl_vector *current_, const gsl_matrix *currentMat);
+  void setCurrentState(const gsl_vector *current_,
+		       const gsl_matrix *currentMat);
     
   /** \brief Set current state manually and fundamental matrix to identity. */
   void setCurrentState(const gsl_vector *current_);

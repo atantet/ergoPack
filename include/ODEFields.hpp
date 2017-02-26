@@ -127,8 +127,8 @@ public:
  */
 class cuspField : public vectorField {
   
-  double r;  //< Parameter \f$ r \f$ related to the pitchfork bifurcation.
-  double h;  //< Parameter \f$ h \f$ related to the catastrophe.
+  double r;  //!< Parameter \f$ r \f$ related to the pitchfork bifurcation.
+  double h;  //!< Parameter \f$ h \f$ related to the catastrophe.
   
 public:
   /** \brief Default constructor, just defining the phase space dimension. */
@@ -298,8 +298,8 @@ public:
  */
 class QG4 : public vectorField {
   double sigma;
-  gsl_vector *ci; // c1, ..., c6
-  gsl_vector *li; // c1, ..., c6
+  gsl_vector *ci; //!< c1, ..., c6
+  gsl_vector *li; //!< c1, ..., c6
   
 public:
   /** \brief Constructor defining the model parameters. */
@@ -332,8 +332,8 @@ public:
  *  with respect to \f$\sigma\f$.
  */
 class QG4Cont : public vectorField {
-  gsl_vector *ci; // c1, ..., c6
-  gsl_vector *li; // mu1, ..., m4
+  gsl_vector *ci; //!< c1, ..., c6
+  gsl_vector *li; //!< mu1, ..., m4
   
 public:
   /** \brief Constructor defining the model parameters. */
