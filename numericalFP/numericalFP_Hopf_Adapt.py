@@ -73,9 +73,9 @@ k0 = int(np.round((-mu0 + muRng[0]) / dmu))
 
 # Grid definition
 dim = 2
-#nx0 = 50
+nx0 = 50
 #nx0 = 100
-nx0 = 200
+#nx0 = 200
 #nSTD = 2.
 nSTD = 5.
 #nSTD = 10.

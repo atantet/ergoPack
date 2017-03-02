@@ -334,7 +334,7 @@ void fundamentalMatrixModel::getCurrentState(gsl_matrix *current_)
   return;
 }
     
-p/**
+/**
  * Integrate one step forward the linearized model by calling the numerical scheme.
  * First the full model is integrated forward.
  * Then, integrate forward the linearized model.

@@ -1,115 +1,30 @@
 import numpy as np
-import pylibconfig2
 from scipy import sparse
 from scipy.sparse import linalg
-def ChangCooper(points, idx, nx, dx, drift, Q):
-    """For a constant diagonal diffusion"""
-    (dim, N) = points.shape
-    rows = []
-    cols = []
-    data = []
+from ergoNumAna import ChangCooper
+#import pylibconfig2
 
-    for k in np.arange(N):
-        j = idx[:, k]
-        pj = points[:, k]
-
-        for d in np.arange(dim):
-            # Get step for this dimension
-            h = dx[d]
-            # Get indices +1 and -1
-            jp1 = j.copy()
-            jp1[d] += 1
-            jm1 = j.copy()
-            jm1[d] -= 1
-#            print 'j-1 = ', jm1[d], ', j = ', j, ', j+1 = ', j+1
-                
-            # Get points +1/2 and -1/2
-            pjp = pj.copy()
-            pjp[d] += h / 2
-            pjm = pj.copy()
-            pjm[d] -= h / 2
-#            print 'Xj-1 = ', pjm[d], ', Xj = ', pj, ', Xj+1 = ',pjp[d]
-            
-            # Get fields
-            Bjp = - drift(pjp)[d]
-            Bjm = - drift(pjm)[d]
-            Cjp = Q[d, d] / 2
-            Cjm = Q[d, d] / 2
-            
-            # Get convex combination weights
-            wj = h * Bjp / Cjp
-            if np.isposinf(wj):
-                deltaj = 0.
-            if np.isneginf(wj):
-                deltaj = 1.
-            elif np.abs(wj) < 1.e-8:
-                deltaj = 1./2
-            else:
-                deltaj = 1. / wj - 1. / (np.exp(wj) - 1)
-
-            wjm1 = h * Bjm / Cjm
-            if np.isposinf(wjm1):
-                deltajm1 = 0.
-            if np.isneginf(wjm1):
-                deltajm1 = 1.
-            elif np.abs(wjm1) < 1.e-8:
-                deltajm1 = 1./2
-            else:
-                deltajm1 = 1. / wjm1 - 1. / (np.exp(wjm1) - 1)
-
-            # Do not devide by step since we directly do the matrix product
-            if j[d] == 0:
-                kp1 = np.ravel_multi_index(jp1, nx)
-                rows.append(k)
-                cols.append(k)
-                data.append(-(Cjp / h - deltaj * Bjp) / h)
-                rows.append(k)
-                cols.append(kp1)
-                data.append(((1. - deltaj) * Bjp + Cjp / h) / h)
-            elif j[d] + 1 == nx[d]:
-                km1 = np.ravel_multi_index(jm1, nx)
-                rows.append(k)
-                cols.append(km1)
-                data.append((Cjm / h - deltajm1 * Bjm) / h)
-                rows.append(k)
-                cols.append(k)
-                data.append(-(Cjm / h + (1 - deltajm1) * Bjm) / h)
-            else:
-                km1 = np.ravel_multi_index(jm1, nx)
-                kp1 = np.ravel_multi_index(jp1, nx)
-#                print 'k-1 = ', km1, ', k = ', k, ', k+1 = ', kp1
-                rows.append(k)
-                cols.append(km1)
-                data.append((Cjm / h - deltajm1 * Bjm) / h)
-                rows.append(k)
-                cols.append(k)
-                data.append(-((Cjp + Cjm) / h + (1 - deltajm1) * Bjm - deltaj * Bjp) / h)
-                rows.append(k)
-                cols.append(kp1)
-                data.append(((1. - deltaj) * Bjp + Cjp / h) / h)
-
-    # Get CRS matrix
-    FPO = sparse.csr_matrix((data, (rows, cols)), shape=(N, N))
-    return FPO
-
-# Get configuration
-configFile = '../cfg/OU2d.cfg'
-cfg = pylibconfig2.Config()
-cfg.read_file(configFile)
+# # Get configuration
+# configFile = '../cfg/OU2d.cfg'
+# cfg = pylibconfig2.Config()
+# cfg.read_file(configFile)
 
 # Grid definition
 #nx0 = 400
 nx0 = 50
-nSTD0 = 1
+nSTD0 = 5
 
 # Number of eigenvalues
 nev = 50
 tol = 0.
 
 # Get model
-dim = cfg.model.dim
-A = np.array(cfg.model.drift).reshape(dim, dim)
-B = np.array(cfg.model.diffusion).reshape(dim, dim)
+A = np.array([[0.196, 0.513], [-0.513, -0.396]])
+B = np.array([[1., 0.], [0., 1.]])
+dim = A.shape[0]
+# dim = cfg.model.dim
+#A = np.array(cfg.model.drift).reshape(dim, dim)
+#B = np.array(cfg.model.diffusion).reshape(dim, dim)
 
 # Define drift
 def drift(x):
@@ -139,7 +54,7 @@ for d in np.arange(dim):
 
 # Get discretized Fokker-Planck operator
 print 'Discretizing Fokker-Planck operator'
-FPO = ChangCooper(points, idx, nx, dx, drift, Q)
+FPO = ChangCooper(points, nx, dx, drift, Q)
 
 print 'Solving eigenvalue problem'
 (w, v) = linalg.eigs(FPO, k=nev, which='LR', tol=tol)
@@ -152,5 +67,11 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.scatter(w.real, w.imag)
 
-
-
+# Plot eigenvalues from natural linear combinations
+# of the eigenvalues of the drift
+eigDrift = np.linalg.eig(A)[0]
+for k in np.arange(10):
+    for l in np.arange(10):
+        eig = k * eigDrift[0] + l * eigDrift[1]
+        ax.plot(eig.real, eig.imag, '+k')
+        

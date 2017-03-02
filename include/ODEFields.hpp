@@ -389,7 +389,7 @@ public:
 
   /** \brief Return the parameters of the model. */
   void getParameters(double *sigma_, gsl_vector *ci_, gsl_vector *li_)
-  { *sigma_ = sigma; gsl_vector_memcpy(ci_, ci); gsl_vector_memcpy(li, li_);
+  { *sigma_ = sigma; gsl_vector_memcpy(ci_, ci); gsl_vector_memcpy(li_, li);
     return; }
 
   /** \brief Set parameters of the model. */
@@ -432,7 +432,7 @@ public:
 
   /** \brief Return the parameters of the model. */
   void getParameters(gsl_vector *ci_, gsl_vector *li_)
-  { gsl_vector_memcpy(ci_, ci); gsl_vector_memcpy(li, li_);
+  { gsl_vector_memcpy(ci_, ci); gsl_vector_memcpy(li_, li);
     return; }
 
   /** \brief Set parameters of the model. */
