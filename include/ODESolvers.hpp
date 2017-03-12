@@ -1,6 +1,7 @@
 #ifndef ODESOLVERS_HPP
 #define ODESOLVERS_HPP
 
+#include <vector>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_matrix.h>
@@ -173,10 +174,13 @@ public:
   /** \brief Dimension access method. */
   size_t getDim() { return dim; }
   
-  /** \brief Virtual method to integrate the model one step forward. */
-  virtual void stepForward(vectorField *field, gsl_vector *current,
-			   const double dt) = 0;
+  /** \brief Integrate the model one step. */
+  void stepForward(vectorField *field, gsl_vector *current,
+		   const double dt);
 
+  /** \brief Virtual method to get one step of integration. */
+  virtual gsl_vector_view getStep(vectorField *field, gsl_vector *current,
+				  const double dt) = 0;
 };
 
 
@@ -186,14 +190,15 @@ public:
  */
 class Euler : public numericalScheme {
 public:
-  /** \brief Constructor defining integration parameters and allocating workspace. */
+  /** \brief Constructor. Define integration param. and allocate workspace. */
   Euler(const size_t dim_) : numericalScheme(dim_, 1){}
   
   /** \brief Destructor. */
   ~Euler() {}
 
-  /** \brief One time-step Euler forward Integration of the model. */
-  void stepForward(vectorField *field, gsl_vector *current, const double dt);
+  /** \brief Virtual method to get one step of integration. */
+  gsl_vector_view getStep(vectorField *field, gsl_vector *current,
+			  const double dt);
 };
 
 
@@ -203,12 +208,15 @@ public:
  */
 class RungeKutta4 : public numericalScheme {
 public:
-  /** \brief Constructor defining integration parameters and allocating workspace. */
+  /** \brief Constructor. Define integration param. and allocate workspace. */
   RungeKutta4(const size_t dim_) : numericalScheme(dim_, 5){}
+
+  /** \brief Destructor. */
   ~RungeKutta4() {}
   
-  /** \brief One time-step Runge-Kutta 4 forward Integration of the model. */
-  void stepForward(vectorField *field, gsl_vector *current, const double dt);
+  /** \brief Virtual method to get one step of integration. */
+  gsl_vector_view getStep(vectorField *field, gsl_vector *current,
+			  const double dt);
 };
 
 
@@ -252,31 +260,27 @@ public:
   /** \brief Evaluate the vector field. */
   void evalField(const gsl_vector *state, gsl_vector *vField);
 
-  /** \brief One time-step forward integration of the model. */
+  /** \brief One time-step integration of the model. */
   void stepForward(const double dt);
 
-  /** \brief Integrate the model forward for a given number of time steps
+  /** \brief Integrate the model for a given number of time steps
    *  from the current state. */
-  void integrateForward(const size_t nt, const double dt,
-			const size_t ntSpinup=0,
-			const size_t sampling=1, gsl_matrix **data=NULL);
-  /** \brief Integrate the model forward for a given number of time steps
+  void integrate(const size_t nt, const double dt, const size_t ntSpinup=0,
+		 const size_t sampling=1, gsl_matrix **data=NULL);
+  /** \brief Integrate the model for a given number of time steps
    *  from a given initial state. */
-  void integrateForward(const gsl_vector *init, const size_t nt,
-			const double dt,
-			const size_t ntSpinup=0, const size_t samping=1,
-			gsl_matrix **data=NULL);
-  /** \brief Integrate the model forward for a given period.
+  void integrate(const gsl_vector *init, const size_t nt, const double dt,
+		 const size_t ntSpinup=0, const size_t samping=1,
+		 gsl_matrix **data=NULL);
+  /** \brief Integrate the model for a given period.
    *  from the current state. */
-  void integrateForward(const double length, const double dt,
-			const double spinup=0,
-			const size_t sampling=1, gsl_matrix **data=NULL);
-  /** \brief Integrate the model forward for a given period.
+  void integrate(const double length, const double dt, const double spinup=0,
+		 const size_t sampling=1, gsl_matrix **data=NULL);
+  /** \brief Integrate the model for a given period.
    *  from a given initial state. */
-  void integrateForward(const gsl_vector *init, const double length,
-			const double dt,
-			const double spinup=0, const size_t sampling=1,
-			gsl_matrix **data=NULL);
+  void integrate(const gsl_vector *init, const double length,
+		 const double dt, const double spinup=0,
+		 const size_t sampling=1, gsl_matrix **data=NULL);
 
 };
 
@@ -302,14 +306,16 @@ public:
 
   /** \brief Constructor assigning a vector field, a numerical scheme. */
   fundamentalMatrixModel(model *mod_, linearField *Jacobian_)
-    : mod(mod_), scheme(mod_->scheme), Jacobian(Jacobian_), dim(mod_->getDim())
+    : mod(mod_), scheme(mod_->scheme), Jacobian(Jacobian_),
+      dim(mod_->getDim())
   { current = gsl_matrix_alloc(dim, dim); }
 
   /** \brief Constructor assigning a vector field, a numerical scheme
    *  and a state. */
   fundamentalMatrixModel(model *mod_, linearField *Jacobian_,
 			 const gsl_vector *initState)
-    : mod(mod_), scheme(mod_->scheme), Jacobian(Jacobian_), dim(mod_->getDim())
+    : mod(mod_), scheme(mod_->scheme), Jacobian(Jacobian_),
+      dim(mod_->getDim())
   { current = gsl_matrix_alloc(dim, dim);
     setCurrentState(initState); }
 
@@ -337,24 +343,37 @@ public:
    * and set fundamental matrix to identity. */
   void setCurrentState();
 
-  /** \brief One time-step forward integration of the fundamentalMatrixModel. */
+  /** \brief One time-step integration offundamentalMatrixModel. */
   void stepForward(const double dt);
 
-  /** \brief Integrate full and linearized model forward for a number of time steps
+  /** \brief Integrate full and linear model for a number of time steps
    *  from the current state. */
-  void integrateForward(const size_t, const double);
-  /** \brief Integrate full and linearized model forward for a given period. 
+  void integrate(const size_t, const double);
+  
+  /** \brief Integrate full and linearized model for a given period. 
    *  from the current state. */
-  void integrateForward(const double, const double);
-  /** \brief Integrate full and linearized model forward for a number of time steps
+  void integrate(const double, const double);
+  
+  /** \brief Integrate full and linear model for a number of time steps
    *  from a given initial state. */
-  void integrateForward(const gsl_vector *, const gsl_matrix *,
-			const size_t, const double);
-  /** \brief Integrate full and linearized model forward for a given period. 
+  void integrate(const gsl_vector *, const gsl_matrix *,
+		 const size_t, const double);
+  
+  /** \brief Integrate full and linearized model for a given period. 
    *  from a given initial state. */
-  void integrateForward(const gsl_vector *, const gsl_matrix *,
-			const double, const double);
+  void integrate(const gsl_vector *, const gsl_matrix *,
+		 const double, const double);
 
+  /** \brief Get the fundamental matrices Mts for s between 0 and t. */
+  void integrateRange(const size_t nt, const double dt, gsl_matrix **xt,
+		      std::vector<gsl_matrix *> *Mts,
+		      const size_t ntSpinup=0);
+
+  /** \brief Get the fund. mat. Mts for s between 0 and t with init. */
+  void integrateRange(const gsl_vector *init, const size_t nt,
+		      const double dt, gsl_matrix **xt,
+		      std::vector<gsl_matrix *> *Mts,
+		      const size_t ntSpinup=0);
 };
 
 

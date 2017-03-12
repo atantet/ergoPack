@@ -1,11 +1,11 @@
 #ifndef ODECONT_HPP
 #define ODECONT_HPP
 
+#include <vector>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_blas.h>
-#include <iostream>
 
 /** \file ODECont.hpp
  *  \brief Continuation of Ordinary Differential Equations.
@@ -31,7 +31,7 @@ protected:
   gsl_vector *targetCorr;       //!< TargetCorr vector
   size_t numIter;           //!< Number of iterations
   bool converged;           //!< Flag for convergence of the tracking.
-  gsl_matrix *S;            //!< Matrix of the linear system to solve (workspace).
+  gsl_matrix *S;            //!< Matrix of linear system to solve (workspace).
   gsl_vector *current;      //!< Current state of tracking
   bool verbose;           //!< Verbose mode.
 
@@ -167,7 +167,7 @@ public:
 		 const double epsStepSize_, const size_t maxIter_,
 		 const bool verbose_=false)
     : fixedPointTrack(field_, Jac, epsDist_, epsStepSize_, maxIter_,
-		      verbose) {
+		      verbose_) {
     current = gsl_vector_alloc(dim);
     S = gsl_matrix_alloc(dim, dim);
     stepCorr = gsl_vector_calloc(dim);
@@ -213,7 +213,7 @@ public:
 class periodicOrbitTrack : public solutionCorrection {
 
 protected:
-  const double intStepCorr; //!< Int. time stepCorr (to be adapted to the period).
+  const double intStepCorr; //!< Int. time stepCorr (to be adap. to period).
   size_t nt;            //!< Total number of integration step.
   gsl_vector_uint *ntShoot; //!< Number of integration step per shoot.
   double dt;            //!< Adapted time step.
@@ -225,7 +225,7 @@ protected:
 
   /** \brief Adapt time step and number of time steps for a give period. */
   virtual void adaptTimeToPeriod(const double T);
-  
+
 public:
   
   /** \brief Constructor assigning a linearized model and parameters. */
@@ -252,10 +252,12 @@ public:
   /** \brief Get current state of tracking. */
   virtual void getCurrentState(gsl_vector *current_);
 
-  /** \brief Set current state of model and fundamental matrix from the current one. */
+  /** \brief Set current state of model and fundamental matrix
+   * from the current one. */
   virtual void setCurrentState();
 
-  /** \brief Set current state of the problem together with that of the model. */
+  /** \brief Set current state of the problem together with that
+   * of the model. */
   virtual void setCurrentState(const gsl_vector *init);
 
   /** \brief Get the fundamental matrix of the solution. */
@@ -266,6 +268,7 @@ public:
 
   /** \brief Get matrix of the linear system to be solved for correction. */
   virtual void getSystemCorr() = 0;
+  
 };
 
 
@@ -300,7 +303,8 @@ public:
 
 
 class periodicOrbitCont : public periodicOrbitTrack {
-
+  using periodicOrbitTrack::adaptTimeToPeriod;
+  
 private:
   gsl_vector *stepPred;         //!< Step of prediction.
   gsl_vector *targetPred;       //!< (0, ..., 0, 1) vector for prediction
@@ -308,9 +312,6 @@ private:
 
   /** \brief Adapt time step and number of time steps to shooting strategy. */
   void adaptTimeToPeriod();
-  
-  /** \brief Adapt time step and number of time steps for a give period. */
-  void adaptTimeToPeriod(const double T);
   
 public:
   /** \brief Constructor assigning a linearized model and parameters. */
@@ -382,8 +383,47 @@ public:
 };
 
 
+/** \brief Calculate covariance matrix from M(t, s) and Q(s). */
+void getCovarianceMatrix(const std::vector<gsl_matrix *> &Qs,
+			 const std::vector<gsl_matrix *> *Mts,
+			 gsl_matrix *CT, const double dt=1.);
+
+/** \brief Calculate phase diffusion coefficient from covariance matrix.  */
+double getPhaseDiffusion(const gsl_matrix *CT,
+			 const gsl_vector *vLeft, const gsl_vector *vRight,
+			 const double T=1.);
+
+/** Calculate phase diffusion coefficient from M(t, s) and Q(s).  */
+double getPhaseDiffusion(const std::vector<gsl_matrix *> *Qs,
+			 const std::vector<gsl_matrix *> *Mts,
+			 const gsl_vector *vLeft, const gsl_vector *vRight,
+			 const double dt=1.);
+
+/** \brief Get Floquet elements from continuation. */
+void getFloquet(periodicOrbitCont *track, gsl_vector *state,
+		gsl_vector_complex *FloquetExp,
+		gsl_matrix_complex *eigVecLeft,
+		gsl_matrix_complex *eigVecRight,
+		const bool sort=false);
+
+/** \brief Write Floquet eigenvalues and left and right eigenvectors. */
+void writeFloquet(periodicOrbitCont *track, const gsl_vector *state,
+		  const gsl_vector_complex *FloquetExp,
+		  const gsl_matrix_complex *eigVecLeft,
+		  const gsl_matrix_complex *eigVecRight,
+		  FILE *streamState, FILE *streamExp,
+		  FILE *streamVecLeft, FILE *streamVecRight,
+		  const char *fileFormat="txt", const bool verbose=false);
+
+/** \brief Sort eigenelements by largest magnitude of eigenvalue. */
+void sortSpectrum(gsl_vector_complex *eigValLeft,
+		  gsl_matrix_complex *eigVecLeft,
+		  gsl_vector_complex *eigValRight,
+		  gsl_matrix_complex *eigVecRight);
+
+
 /**
-p * @}
+ * @}
  */
 
 #endif

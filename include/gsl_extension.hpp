@@ -29,8 +29,8 @@ int gsl_vector_normalize(gsl_vector *v);
 /** \brief Get sum of vector elements. */
 double gsl_vector_get_sum(const gsl_vector *v);
 /** \brief Get inner product of two vectors for a given measure. */
-double gsl_vector_get_innerproduct(const gsl_vector *v, const gsl_vector *w,
-				   const gsl_vector *mu=NULL);
+double gsl_vector_get_inner_product(const gsl_vector *v, const gsl_vector *w,
+				    const gsl_vector *mu=NULL);
 /** \brief Get \f$L^2\f$ norm of a vector for a given measure. */
 double gsl_vector_get_norm(const gsl_vector *v, const gsl_vector *mu=NULL);
 /** \brief Get product of vector elements. */

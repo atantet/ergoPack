@@ -557,13 +557,15 @@ gsl_vector_complex_get_norm(const gsl_vector_complex *v, const gsl_vector *mu)
 
 
 /**
- * Permute rows (axis = 0) or columns (axis = 1) of a matrix according to permutation.
+ * Permute rows (axis = 0) or columns (axis = 1)
+of a matrix according to permutation.
  * \param[in]     p    Permutation.
  * \param[in,out] m    Matrix to permute.
  * \param[in]     axis Axis along which to permute.
  * \return             Exit status.
  */
-int gsl_permute_matrix_complex(const gsl_permutation * p, gsl_matrix_complex * m,
+int gsl_permute_matrix_complex(const gsl_permutation * p,
+			       gsl_matrix_complex * m,
 			       const size_t axis)
 {
   size_t sizeAxis;
@@ -585,8 +587,8 @@ int gsl_permute_matrix_complex(const gsl_permutation * p, gsl_matrix_complex * m
 
   if (p->size != sizeAxis)
     {
-      GSL_ERROR("Permutation must have the same size as axis of matrix along which\
-to permute", GSL_EINVAL);
+      GSL_ERROR("Permutation must have the same size as axis of matrix \
+along which to permute", GSL_EINVAL);
     }
   
   //! Save matrix
@@ -605,7 +607,8 @@ to permute", GSL_EINVAL);
       else if (axis == 1)
 	{
 	  gsl_vector_complex_const_view view
-	    = gsl_matrix_complex_const_column(tmp, (gsl_permutation_data(p))[i]);
+	    = gsl_matrix_complex_const_column(tmp,
+					      (gsl_permutation_data(p))[i]);
 	  gsl_matrix_complex_set_col(m, i, &view.vector);
 	}
     }
