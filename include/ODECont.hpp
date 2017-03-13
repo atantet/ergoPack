@@ -185,27 +185,10 @@ protected:
   
 public:
   /** \brief Constructor. */
-  solutionCont(const size_t dim, const size_t numShoot_,
-	       const size_t verboseCont_) : verboseCont(verboseCont_)
-  {
-    stepPred = gsl_vector_calloc((dim-1) * numShoot_ + 2);
-    // Set initial param step to 1. to avoid singular matrix in correction
-    gsl_vector_set(stepPred, (dim-1) * numShoot_, 1.);
-    targetPred = gsl_vector_calloc((dim-1) * numShoot_ + 2);
-    gsl_vector_set(targetPred, (dim-1) * numShoot_, 1.);  // (0,...,0, 1, 0)
-  }
+  solutionCont(const size_t verboseCont_) : verboseCont(verboseCont_) { }
 
   /** \brief Default destructor. */
   ~solutionCont() { gsl_vector_free(stepPred); gsl_vector_free(targetPred); }
-
-  /** \brief Set initial state. */
-  virtual void setInitialState(const gsl_vector *init) = 0;
-
-  /** \brief Correction of initial state. */
-  void correct(const gsl_vector *init);
-
-  /** \brief Correction after prediction. */
-  virtual void correct() = 0;
 
   /** \brief Update state after prediction. */
   void applyPredict(const double contStep, gsl_vector *current);
@@ -213,12 +196,6 @@ public:
   /** \brief Prediction Newton-Raphson step. */
   void predict(gsl_matrix *S);
 
-  /** \brief Perform one step (correct. + predict.) of peudo-arc. cont. */
-  virtual void continueStep(const double contStep) = 0;
-    
-  /** \brief Perform one step (correct. + predict.) of peudo-arc. cont. */
-  void continueStep(const double contStep, const gsl_vector *init);
-    
   /** \brief Get matrix of the linear system to be solved for prediction. */
   virtual void getSystemPred() = 0;
 };
@@ -227,22 +204,31 @@ public:
 class fixedPointCont : public fixedPointTrack, public solutionCont {
 
 public:
+  
   /** \brief Constructor assigning a linearized model and parameters. */
   fixedPointCont(vectorField *field_, linearField *Jac, const double epsDist_,
 		 const double epsStepSize_, const size_t maxIter_,
 		 const bool verbose_=false)
     : fixedPointTrack(field_, Jac, epsDist_, epsStepSize_, maxIter_,
-		      verbose_), solutionCont(dim, 1, verbose_) {
+		      verbose_), solutionCont(verbose_) {
     current = gsl_vector_alloc(dim);
     initial = gsl_vector_alloc(dim);
     S = gsl_matrix_alloc(dim, dim);
     stepCorr = gsl_vector_calloc(dim);
     targetCorr = gsl_vector_alloc(dim);
     // Set initial step to 1. to avoid singular matrix in correction
+    stepPred = gsl_vector_calloc(dim);
+    // Set initial param step to 1. to avoid singular matrix in correction
+    gsl_vector_set(stepPred, dim - 1, 1.);
+    targetPred = gsl_vector_calloc(dim);
+    gsl_vector_set(targetPred, dim - 1, 1.);  // (0,...,0, 1, 0)
   }
 
   /** \brief Default destructor. */
   ~fixedPointCont() {}
+
+  /** \brief Correction of initial state. */
+  void correct(const gsl_vector *init);
 
   /** \brief Correction after prediction. */
   void correct();
@@ -250,6 +236,9 @@ public:
   /** \brief Update correction target vector for fixed point tracking. */
   void updateTargetCorr();
   
+  /** \brief Perform one step (correct. + predict.) of peudo-arc. cont. */
+  void continueStep(const double contStep, const gsl_vector *init);
+    
   /** \brief Perform one step (correct. + predict.) of peudo-arc. cont. */
   void continueStep(const double contStep);
     
@@ -372,7 +361,6 @@ private:
   void adaptTimeToPeriod();
   
 public:
-  using solutionCont::correct;
   
   /** \brief Constructor assigning a linearized model and parameters. */
   periodicOrbitCont(fundamentalMatrixModel *linMod_, const double epsDist_,
@@ -381,12 +369,17 @@ public:
 		    const bool verbose_=false)
     : periodicOrbitTrack(linMod_, epsDist_, epsStepCorrSize_, maxIter_,
 			 intStepCorr_, numShoot_, verbose_),
-      solutionCont(dim, numShoot_, verbose_) {
+      solutionCont(verbose_) {
     current = gsl_vector_alloc((dim-1) * numShoot + 2);
     initial = gsl_vector_alloc((dim-1) * numShoot + 2);
     stepCorr = gsl_vector_calloc((dim-1) * numShoot + 2);
     targetCorr = gsl_vector_alloc((dim-1) * numShoot + 2);
     S = gsl_matrix_alloc((dim-1) * numShoot + 2, (dim-1) * numShoot + 2);
+    stepPred = gsl_vector_calloc((dim-1) * numShoot_ + 2);
+    // Set initial param step to 1. to avoid singular matrix in correction
+    gsl_vector_set(stepPred, (dim-1) * numShoot_, 1.);
+    targetPred = gsl_vector_calloc((dim-1) * numShoot_ + 2);
+    gsl_vector_set(targetPred, (dim-1) * numShoot_, 1.);  // (0,...,0, 1, 0)
     work = gsl_vector_alloc(dim);
   }
 
@@ -416,12 +409,18 @@ public:
   /** \brief Set initial state. */
   void setInitialState(const gsl_vector *init);
 
+  /** \brief Correction of initial state. */
+  void correct(const gsl_vector *init);
+
   /** \brief Correction after prediction. */
   void correct();
 
   /** \brief Update correction target vector for periodic orbit tracking. */
   void updateTargetCorr();
   
+  /** \brief Perform one step (correct. + predict.) of peudo-arc. cont. */
+  void continueStep(const double contStep, const gsl_vector *init);
+    
   /** \brief Perform one step (correct. + predict.) of peudo-arc. cont. */
   void continueStep(const double contStep);
     

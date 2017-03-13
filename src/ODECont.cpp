@@ -251,22 +251,6 @@ fixedPointCorr::findSolution(const gsl_vector *init)
  * General continuation definitions:
  */
 
-/**
- * Correct initial state.
- */
-void
-solutionCont::correct(const gsl_vector *init)
-{
-  // Initialize current state of tracking and linearized model state
-  setInitialState(init);
-
-  // Correct
-  correct();
-
-  return;
-}
-
-
 /** 
  * Update state after prediction
  */
@@ -313,25 +297,6 @@ solutionCont::predict(gsl_matrix *S)
   // Solve the linear system to get new predition step
   gsl_linalg_LU_solve(S, p, targetPred, stepPred);
 
-  return;
-}
-
-
-/**
- * Perform one step (correction + prediction) of pseudo-arclength continuation
- * from initial state.
- * \param[in]  contStep Continuation step size.
- * \param[in]  init     Vector from which to start tracking.
- */
-void
-solutionCont::continueStep(const double contStep, const gsl_vector *init)
-{
-  // Initialize current state of tracking and linearized model state
-  setInitialState(init);
-
-  // Continue
-  continueStep(contStep);
-  
   return;
 }
 
@@ -386,6 +351,22 @@ fixedPointCont::updateTargetCorr()
 
   // Set target for pseudo-arclength
   gsl_vector_set(targetCorr, dim-1, 0.);
+
+  return;
+}
+
+
+/**
+ * Correct initial state.
+ */
+void
+fixedPointCont::correct(const gsl_vector *init)
+{
+  // Initialize current state of tracking and linearized model state
+  setInitialState(init);
+
+  // Correct
+  correct();
 
   return;
 }
@@ -451,6 +432,25 @@ fixedPointCont::correct()
   if (numIter < maxIter)
     converged = true;
 
+  return;
+}
+
+
+/**
+ * Perform one step (correction + prediction) of pseudo-arclength continuation
+ * from initial state.
+ * \param[in]  contStep Continuation step size.
+ * \param[in]  init     Vector from which to start tracking.
+ */
+void
+fixedPointCont::continueStep(const double contStep, const gsl_vector *init)
+{
+  // Initialize current state of tracking and linearized model state
+  setInitialState(init);
+
+  // Continue
+  continueStep(contStep);
+  
   return;
 }
 
@@ -1297,6 +1297,22 @@ periodicOrbitCont::getSystemPred()
 
 
 /**
+ * Correct initial state.
+ */
+void
+periodicOrbitCont::correct(const gsl_vector *init)
+{
+  // Initialize current state of tracking and linearized model state
+  setInitialState(init);
+
+  // Correct
+  correct();
+
+  return;
+}
+
+
+/**
  * Correct prediction by pseudo-arclenght continuation and Newton-Raphson.
  */
 void
@@ -1380,6 +1396,25 @@ periodicOrbitCont::correct()
   if (numIter < maxIter)
     converged = true;
 
+  return;
+}
+
+
+/**
+ * Perform one step (correction + prediction) of pseudo-arclength continuation
+ * from initial state.
+ * \param[in]  contStep Continuation step size.
+ * \param[in]  init     Vector from which to start tracking.
+ */
+void
+periodicOrbitCont::continueStep(const double contStep, const gsl_vector *init)
+{
+  // Initialize current state of tracking and linearized model state
+  setInitialState(init);
+
+  // Continue
+  continueStep(contStep);
+  
   return;
 }
 
