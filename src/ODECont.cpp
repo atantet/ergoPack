@@ -36,6 +36,18 @@ solutionCorrection::getCurrentState(gsl_vector *current_)
   return;
 }
 
+/**
+ * Get initial state of tracking.
+ * \param[in]  initial_ Vector in which to copy the initial state.
+ */
+void
+solutionCorrection::getInitialState(gsl_vector *initial_)
+{
+  gsl_vector_memcpy(initial_, initial);
+
+  return;
+}
+
 /** 
  * Update state after Newton step.
  * \param[in] damping Damping to apply to the Newton step.
@@ -120,6 +132,23 @@ fixedPointTrack::setCurrentState(const gsl_vector *init)
 
 
 /**
+ * Set initial state of the problem together with that of the model.
+ * \param[in]  init Initial state.
+ */
+void
+fixedPointTrack::setInitialState(const gsl_vector *init)
+{
+  // Set initial state
+  gsl_vector_memcpy(initial, init);
+
+  // Set current state
+  initialize();
+
+  return;
+}
+
+
+/**
  * Get Jacobian matrix of the current state.
  * \param[in]  Matrix in which to copy the Jacobian.
  */
@@ -181,8 +210,8 @@ fixedPointCorr::findSolution(const gsl_vector *init)
   
   numIter = 0;
   
-  // Initialize current state of tracking and linearized model state
-  setCurrentState(init);  
+  // Initialize tracking and linearized model state
+  setInitialState(init);  
     
   // Get targetCorr vector -f(x)
   updateTargetCorr();
@@ -219,6 +248,95 @@ fixedPointCorr::findSolution(const gsl_vector *init)
 
 
 /*
+ * General continuation definitions:
+ */
+
+/**
+ * Correct initial state.
+ */
+void
+solutionCont::correct(const gsl_vector *init)
+{
+  // Initialize current state of tracking and linearized model state
+  setInitialState(init);
+
+  // Correct
+  correct();
+
+  return;
+}
+
+
+/** 
+ * Update state after prediction
+ */
+void
+solutionCont::applyPredict(const double contStep, gsl_vector *current)
+{
+  // Scale prediction step by continuation step
+  gsl_vector_scale(stepPred, contStep);
+  
+  // Update current state
+  if (verboseCont) {
+      std::cout << "Applying prediction:" << std::endl;
+      gsl_vector_fprintf(stdout, stepPred, "%lf");
+  }
+  gsl_vector_add(current, stepPred);
+
+  // Scale back, since the continuation step is used as later
+  gsl_vector_scale(stepPred, 1. / contStep);
+
+  return;
+}
+
+
+/**
+ * Prediction Newton-Raphson step.
+ */
+void
+solutionCont::predict(gsl_matrix *S)
+{
+  gsl_permutation *p;
+  int s;
+
+  if (verboseCont)
+    std::cout << "Predicting..." << std::endl;
+  
+  // Get linear system
+  getSystemPred();
+
+  // Set up LU decomposition
+  // Note that this modifies the matrix A
+  p = gsl_permutation_alloc(S->size1);
+  gsl_linalg_LU_decomp(S, p, &s);
+
+  // Solve the linear system to get new predition step
+  gsl_linalg_LU_solve(S, p, targetPred, stepPred);
+
+  return;
+}
+
+
+/**
+ * Perform one step (correction + prediction) of pseudo-arclength continuation
+ * from initial state.
+ * \param[in]  contStep Continuation step size.
+ * \param[in]  init     Vector from which to start tracking.
+ */
+void
+solutionCont::continueStep(const double contStep, const gsl_vector *init)
+{
+  // Initialize current state of tracking and linearized model state
+  setInitialState(init);
+
+  // Continue
+  continueStep(contStep);
+  
+  return;
+}
+
+
+/*
  * Fixed point continuation definitions:
  */
 
@@ -248,53 +366,6 @@ void
 fixedPointCont::getSystemPred()
 {
   getSystemCorr();
-
-  return;
-}
-
-
-/**
- * Prediction Newton-Raphson step.
- */
-void
-fixedPointCont::predict()
-{
-  gsl_permutation *p = gsl_permutation_alloc(dim);
-  int s;
-
-  if (verbose)
-    std::cout << "Predicting..." << std::endl;
-  
-  // Get linear system
-  getSystemPred();
-
-  // Set up LU decomposition
-  // Note that this modifies the matrix A
-  gsl_linalg_LU_decomp(S, p, &s);
-
-  // Solve the linear system to get new predition step
-  gsl_linalg_LU_solve(S, p, targetPred, stepPred);
-
-  return;
-}
-
-
-/** 
- * Update state after prediction
- */
-void
-fixedPointCont::applyPredict(const double contStep)
-{
-  // Scale prediction step by continuation step
-  gsl_vector_scale(stepPred, contStep);
-  
-  // Update current state
-  if (verbose)
-      std::cout << "Applying prediction:" << std::endl;
-  gsl_vector_add(current, stepPred);
-
-  // Scale back, since the continuation step is used as later
-  gsl_vector_scale(stepPred, 1. / contStep);
 
   return;
 }
@@ -385,21 +456,6 @@ fixedPointCont::correct()
 
 
 /**
- * Correct initial state.
- */
-void
-fixedPointCont::correct(const gsl_vector *init)
-{
-  // Initialize current state of tracking and linearized model state
-  setCurrentState(init);
-
-  // Correct
-  correct();
-
-}
-
-
-/**
  * Perform one step (correction + prediction) of pseudo-arclength continuation
  * from current step.
  * \param[in]  contStep Continuation step size.
@@ -423,36 +479,16 @@ fixedPointCont::continueStep(const double contStep)
     }
 
   // Predict
-  predict();
+  predict(S);
 
   // Apply prediction
-  applyPredict(contStep);
+  applyPredict(contStep, current);
 
   // Update Jacobian matrix (the prediction has been applied)
   setCurrentState();
   
   // Correct using Newton-Raphson
   correct();
-  
-  return;
-}
-
-/**
- * Perform one step (correction + prediction) of pseudo-arclength continuation
- * from initial state.
- * \param[in]  contStep Continuation step size.
- * \param[in]  init     Vector from which to start tracking.
- */
-void
-fixedPointCont::continueStep(const double contStep, const gsl_vector *init)
-{
-  numIter = 0;
-  
-  // Initialize current state of tracking and linearized model state
-  setCurrentState(init);
-
-  // Continue
-  continueStep(contStep);
   
   return;
 }
@@ -491,54 +527,32 @@ periodicOrbitTrack::getCurrentState(gsl_vector *current_)
 }
 
 /**
- * Adapt time step and number of time steps to shooting strategy.
+ * Get initial state of tracking.
+ * If initial_->size == dim + 1, return x(0), T
+ * else if initial_->size == dim*numShoot + 1, return x(0), ..., x(numShoot-1), T
+ * \param[in]  initial_ Vector in which to copy the initial state.
  */
 void
-periodicOrbitTrack::adaptTimeToPeriod()
+periodicOrbitTrack::getInitialState(gsl_vector *initial_)
 {
-  double T;
-  
-  // Get integration time stepCorr.
-  T = gsl_vector_get(current, dim * numShoot);
-
-  // Adapt
-  adaptTimeToPeriod(T);
-  
-  return;
-}
-
-
-/**
- * Adapt time step and number of time steps to shooting strategy.
- * \param[in]  T Period to adapt time to.
- */
-void
-periodicOrbitTrack::adaptTimeToPeriod(const double T)
-{
-  // Check that period is positive
-  if (gsl_vector_get(current, (dim-1) * numShoot + 1) <= 0.) {
-    std::cerr << "\nError: period is non-positive." << std::endl;
-    converged = false;
-    throw std::exception();
-  }
-
-  // Get total number of time steps
-  nt = (size_t) (ceil(T / intStepCorr) + 0.1);
-  
-  // Get time step
-  dt = T / nt;
-  
-  // Uniformly divide number of time steps
-  gsl_vector_uint_set_all(ntShoot, (size_t) (nt / numShoot));
-  
-  // Add remaining
-  gsl_vector_uint_set(ntShoot, numShoot-1,
-		      gsl_vector_uint_get(ntShoot, numShoot-1)
-		      + (nt % numShoot));
+  if (initial_->size == dim + 1)
+    {
+      // Set state x(0) (dim element will be changed)
+      gsl_vector_view vView = gsl_vector_subvector(initial, 0, dim+1);
+      gsl_vector_memcpy(initial_, &vView.vector);
+      // Set the period
+      gsl_vector_set(initial_, dim, gsl_vector_get(initial, dim * numShoot));
+    }
+  else if (initial_->size == dim * numShoot + 1)
+    gsl_vector_memcpy(initial_, initial);
+  else
+    std::cerr << "Destination vector size " << initial_->size
+	      << " does not match dim + 1 = " << (dim + 1)
+	      << " nor dim * numShoot + 1 = " << (dim * numShoot + 1)
+	      << std::endl;
 
   return;
 }
-
 
 /**
  * Set current state of the model and fundamental matrix
@@ -595,14 +609,132 @@ periodicOrbitTrack::setCurrentState(const gsl_vector *init)
     }
   else if (init->size == dim * numShoot + 1)
     gsl_vector_memcpy(current, init);
-  else
+  else {
     std::cerr << "Initial state size " << init->size
 	      << " does not match dim + 1 = " << (dim + 1)
 	      << " nor dim * numShoot + 1 = " << (dim * numShoot + 1)
 	      << std::endl;
+    throw std::exception();
+  }
 
   // Set current state of model
   setCurrentState();
+
+  return;
+}
+
+
+/**
+ * Set initial state of the problem together with that of the model.
+ * \param[in]  init Initial state.
+ */
+void
+periodicOrbitTrack::setInitialState(const gsl_vector *init)
+{
+  gsl_vector_view initialState;
+  
+  // Set initial state
+  // Check if initCont as size dim+1 or dim*numShoot+1
+  if (init->size == dim + 1)
+    {
+      // Set period
+      gsl_vector_set(initial, dim*numShoot, gsl_vector_get(init, dim));
+      gsl_vector_set(current, dim*numShoot, gsl_vector_get(init, dim));
+
+      // Adapt time
+      adaptTimeToPeriod();
+      
+      // Set x(0) and initialize model
+      initialState = gsl_vector_subvector(initial, 0, dim);
+      gsl_vector_const_view vView = gsl_vector_const_subvector(init, 0, dim);
+      gsl_vector_memcpy(&initialState.vector, &vView.vector);
+      linMod->setCurrentState(&vView.vector);
+
+      // Only x(0) has been given, integrate to x(s) and set
+      for (size_t s = 0; s < numShoot - 1; s++)
+	{
+	  linMod->mod->integrate((size_t) gsl_vector_uint_get(ntShoot,
+								     s), dt);
+	  initialState = gsl_vector_subvector(initial, (s+1)*dim, dim);
+	  linMod->mod->getCurrentState(&initialState.vector);
+	}
+    }
+  else if (init->size == dim * numShoot + 1)
+    gsl_vector_memcpy(initial, init);
+  else {
+    std::cerr << "Initial state size " << init->size
+	      << " does not match dim + 1 = " << (dim + 1)
+	      << " nor dim * numShoot + 1 = " << (dim * numShoot + 1)
+	      << std::endl;
+    throw std::exception();
+  }
+
+  // Set current state of model
+  initialize();
+
+  return;
+}
+
+
+/**
+ * Initialize.
+*/
+void
+periodicOrbitTrack::initialize()
+{
+  // Set current state of model
+  gsl_vector_memcpy(current, initial);
+  setCurrentState();
+
+  return;
+}
+
+
+/**
+ * Adapt time step and number of time steps to shooting strategy.
+ */
+void
+periodicOrbitTrack::adaptTimeToPeriod()
+{
+  double T;
+  
+  // Get integration time stepCorr.
+  T = gsl_vector_get(current, dim * numShoot);
+
+  // Adapt
+  adaptTimeToPeriod(T);
+  
+  return;
+}
+
+
+/**
+ * Adapt time step and number of time steps to shooting strategy.
+ * \param[in]  T Period to adapt time to.
+ */
+void
+periodicOrbitTrack::adaptTimeToPeriod(const double T)
+{
+  // Check that period is positive
+  if (gsl_vector_get(current, (dim-1) * numShoot + 1) <= 0.) {
+    std::cerr << "\nError: period is non-positive." << std::endl;
+    converged = false;
+    throw std::exception();
+  }
+
+  // Get total number of time steps
+  nt = (size_t) (ceil(T / intStepCorr) + 0.1);
+  
+  // Get time step
+  dt = T / nt;
+  
+  // Uniformly divide number of time steps
+  gsl_vector_uint_set_all(ntShoot, (size_t) (nt / numShoot));
+  
+  // Add remaining
+  gsl_vector_uint_set(ntShoot, numShoot-1,
+		      gsl_vector_uint_get(ntShoot, numShoot-1)
+		      + (nt % numShoot));
 
   return;
 }
@@ -738,7 +870,7 @@ periodicOrbitCorr::findSolution(const gsl_vector *init)
   numIter = 0;
   
   // Initialize the current state of tracking and that of the linearized model.
-  setCurrentState(init);
+  setInitialState(init);
 
   // Set time step
   adaptTimeToPeriod();
@@ -960,6 +1092,95 @@ periodicOrbitCont::setCurrentState(const gsl_vector *init)
 
 
 /**
+ * Get initial state of tracking.
+ * If initial_->size == dim + 1, return x(0), T
+ * else if initial_->size == dim*numShoot + 1, return x(0), ..., x(numShoot-1), T
+ * \param[in]  initial_ Vector in which to copy the initial state.
+ */
+void
+periodicOrbitCont::getInitialState(gsl_vector *initial_)
+{
+  if (initial_->size == dim + 1)
+    {
+      // Set state x(0)
+      gsl_vector_view vView = gsl_vector_subvector(initial, 0, dim);
+      gsl_vector_view vView2 = gsl_vector_subvector(initial_, 0, dim);
+      gsl_vector_memcpy(&vView2.vector, &vView.vector);
+
+      // Set parameter
+      gsl_vector_set(initial_, dim-1,
+		     gsl_vector_get(initial, (dim-1)*numShoot));
+      
+      // Set the period
+      gsl_vector_set(initial_, dim,
+		     gsl_vector_get(initial, (dim-1) * numShoot + 1));
+    }
+  else if (initial_->size == dim * numShoot + 1)
+    gsl_vector_memcpy(initial_, initial);
+  else
+    std::cerr << "Destination vector size " << initial_->size
+	      << " does not match dim + 1 = " << (dim + 1)
+	      << " nor dim * numShoot + 1 = " << (dim * numShoot + 1)
+	      << std::endl;
+
+  return;
+}
+
+/**
+ * Set initial state of the problem together with that of the model.
+ * \param[in]  init Initial state.
+ */
+void
+periodicOrbitCont::setInitialState(const gsl_vector *init)
+{
+  gsl_vector_view initialState;
+  
+  // Set initial state
+  // Check if initCont as size dim+1 or dim*numShoot+1
+  if (init->size == dim + 1)
+    {
+      // Set period (to adapt time)
+      gsl_vector_set(initial, (dim-1)*numShoot+1, gsl_vector_get(init, dim));
+      gsl_vector_set(current, (dim-1)*numShoot+1, gsl_vector_get(init, dim));
+
+      // Adapt time
+      adaptTimeToPeriod();
+      
+      // Set x(0), lambda and initialize model
+      // (last element will be overwritten)
+      initialState = gsl_vector_subvector(initial, 0, dim);
+      gsl_vector_const_view vView = gsl_vector_const_subvector(init, 0, dim);
+      gsl_vector_memcpy(&initialState.vector, &vView.vector);
+      linMod->setCurrentState(&vView.vector);
+
+      // Only x(0) has been given, integrate to x(s) and set
+      for (size_t s = 0; s < numShoot - 1; s++)
+	{
+	  linMod->mod->integrate((size_t) gsl_vector_uint_get(ntShoot,
+								     s), dt);
+	  initialState = gsl_vector_subvector(initial, (s+1)*(dim-1), dim);
+	  linMod->mod->getCurrentState(&initialState.vector);
+	}
+      
+      // Set period (again, because overwritten)
+      gsl_vector_set(initial, (dim-1)*numShoot+1, gsl_vector_get(init, dim));
+    }
+  else if (init->size == (dim-1) * numShoot + 2)
+    gsl_vector_memcpy(initial, init);
+  else
+    std::cerr << "Initial state size " << init->size
+	      << " does not match dim + 1 = " << (dim + 1)
+	      << " nor dim * numShoot + 1 = " << (dim * numShoot + 1)
+	      << std::endl;
+  
+  // Set current state of model
+  initialize();
+
+  return;
+}
+
+
+/**
  * Get matrix of the linear system to be solved for correction.
  */
 void
@@ -1076,56 +1297,6 @@ periodicOrbitCont::getSystemPred()
 
 
 /**
- * Prediction Newton-Raphson step.
- */
-void
-periodicOrbitCont::predict()
-{
-  gsl_permutation *p = gsl_permutation_alloc((dim-1)*numShoot + 2);
-  int s;
-
-  if (verbose)
-    std::cout << "Predicting..." << std::endl;
-  
-  // Get linear system
-  getSystemPred();
-
-  // Set up LU decomposition
-  // Note that this modifies the matrix A
-  gsl_linalg_LU_decomp(S, p, &s);
-
-  // Solve the linear system to get new predition step
-  gsl_linalg_LU_solve(S, p, targetPred, stepPred);
-
-  return;
-}
-
-
-/** 
- * Update state after prediction
- */
-void
-periodicOrbitCont::applyPredict(const double contStep)
-{
-  // Scale prediction step by continuation step
-  gsl_vector_scale(stepPred, contStep);
-  
-  // Update current state
-  if (verbose)
-    {
-      std::cout << "Applying prediction:" << std::endl;
-      gsl_vector_fprintf(stdout, stepPred, "%lf");
-    }
-  gsl_vector_add(current, stepPred);
-
-  // Scale back, since the continuation step is used later
-  gsl_vector_scale(stepPred, 1. / contStep);
-
-  return;
-}
-
-
-/**
  * Correct prediction by pseudo-arclenght continuation and Newton-Raphson.
  */
 void
@@ -1214,22 +1385,6 @@ periodicOrbitCont::correct()
 
 
 /**
- * Correct initial state.
- */
-void
-periodicOrbitCont::correct(const gsl_vector *init)
-{
-  // Initialize current state of tracking and linearized model state
-  setCurrentState(init);
-
-  // Correct
-  correct();
-
-  return;
-}
-
-
-/**
  * Perform one step (correction + prediction) of pseudo-arclength continuation
  * from current step.
  * \param[in]  contStep Continuation step size.
@@ -1253,7 +1408,7 @@ periodicOrbitCont::continueStep(const double contStep)
     }
 
   // Predict
-  predict();
+  predict(S);
 
   // Check if step in period is not unrealistically large
   if (fabs(gsl_vector_get(stepPred, dim * numShoot) * contStep)
@@ -1267,7 +1422,7 @@ periodicOrbitCont::continueStep(const double contStep)
   }
 
   // Apply prediction
-  applyPredict(contStep);
+  applyPredict(contStep, current);
 
   // Update model and Jacobian to current state
   // (the prediction has been applied)
@@ -1277,26 +1432,6 @@ periodicOrbitCont::continueStep(const double contStep)
   if (verbose)
     std::cout << "Correcting..." << std::endl;
   correct();
-  
-  return;
-}
-
-/**
- * Perform one step (correction + prediction) of pseudo-arclength continuation
- * from initial state.
- * \param[in]  contStep Continuation step size.
- * \param[in]  init     Vector from which to start tracking.
- */
-void
-periodicOrbitCont::continueStep(const double contStep, const gsl_vector *init)
-{
-  numIter = 0;
-  
-  // Initialize current state of tracking and linearized model state
-  setCurrentState(init);
-
-  // Continue
-  continueStep(contStep);
   
   return;
 }
