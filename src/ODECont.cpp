@@ -1538,7 +1538,7 @@ getPhaseDiffusion(const gsl_matrix *CT,
 
   // Get vLeft * C(T, 0) * vLeft
   phi = gsl_vector_get_inner_product(vLeft, CTvLeft)
-    / gsl_vector_get_inner_product(vLeft, vRight) / T;
+    / fabs(gsl_vector_get_inner_product(vLeft, vRight)) / T;
 
   // Free
   gsl_vector_free(CTvLeft);
@@ -1707,43 +1707,52 @@ sortSpectrum(gsl_vector_complex *eigValLeft, gsl_matrix_complex *eigVecLeft,
   gsl_vector_complex *tmpValLeft = gsl_vector_complex_alloc(dim);
   gsl_matrix_complex *tmpVecLeft = gsl_matrix_complex_alloc(dim, dim);
   gsl_permutation *sort_idx = gsl_permutation_alloc(dim);
-  gsl_vector *absEigVal;
-  gsl_complex tmp;
+  gsl_vector_view realEigVal;
+  gsl_complex tmp, eigval;
   size_t idx;
 
-  // Sort right eigenvalues and vectors
-  absEigVal = gsl_vector_complex_abs(eigValRight);
-  gsl_sort_vector_index(sort_idx, absEigVal);
+  //! Sort right eigenvalues and vectors by decreasing real parts
+  //! Get real part of right eigenvalues
+  realEigVal = gsl_vector_complex_real(eigValRight);
+  //! Get sort by increasing real part
+  gsl_sort_vector_index(sort_idx, &realEigVal.vector);
+  //! Reverse to decreasing real part
   gsl_permutation_reverse(sort_idx);
+  //! Apply sort to right eigenvalues
   gsl_permute_vector_complex(sort_idx, eigValRight);
+  //! Apply sort to right eigenvectors (column by column)
   gsl_permute_matrix_complex(sort_idx, eigVecRight, 1);
 
   /** Sort left vectors by correspondance to for counterparts
    *  (since different eigenvalues may have the same magnitude). */
+  //! Save left eigen elements
   gsl_matrix_complex_memcpy(tmpVecLeft, eigVecLeft);
   gsl_vector_complex_memcpy(tmpValLeft, eigValLeft);
-  for (size_t ev = 0; ev < dim; ev++)
-    {
-      //! Get distance from eigenvalue
-      gsl_vector_complex_memcpy(tmpValRight, eigValRight);
-      tmp = gsl_complex_negative(gsl_complex_conjugate(gsl_vector_complex_get(tmpValLeft, ev)));
-      gsl_vector_complex_add_constant(tmpValRight, tmp);
-      idx = gsl_vector_complex_min_index(tmpValRight);
+  for (size_t ev = 0; ev < dim; ev++) {
+    //! Select left eigenvalue ev
+    eigval = gsl_vector_complex_get(tmpValLeft, ev);
 
-      //! Sort left eigenvalue and eigenvector
-      gsl_vector_complex_set(eigValLeft, idx,
-			     gsl_vector_complex_get(tmpValLeft, ev));
-      gsl_vector_complex_const_view view =
-	gsl_matrix_complex_const_row(tmpVecLeft, ev);
-      gsl_matrix_complex_set_row(eigVecLeft, idx, &view.vector);
-    }
+    //! Get distance from eigenvalue |vr - conj(vl)|
+    gsl_vector_complex_memcpy(tmpValRight, eigValRight);
+    tmp = gsl_complex_negative(gsl_complex_conjugate(eigval));
+    gsl_vector_complex_add_constant(tmpValRight, tmp);
+    //! Get index idx of right eigenvalue with minimum distance to left one
+    idx = gsl_vector_complex_min_index(tmpValRight);
+    
+    //! Move left eigenvalue ev to idx
+    gsl_vector_complex_set(eigValLeft, idx,
+			   gsl_vector_complex_get(tmpValLeft, ev));
+    //! Move left eigenvector ev to idx
+    gsl_vector_complex_const_view view =
+      gsl_matrix_complex_const_column(tmpVecLeft, ev);
+    gsl_matrix_complex_set_col(eigVecLeft, idx, &view.vector);
+  }
 
   //! Free
   gsl_vector_complex_free(tmpValRight);
   gsl_matrix_complex_free(tmpVecRight);
   gsl_vector_complex_free(tmpValLeft);
   gsl_matrix_complex_free(tmpVecLeft);
-  gsl_vector_free(absEigVal);
   gsl_permutation_free(sort_idx);
   
   return;

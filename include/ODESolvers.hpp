@@ -5,6 +5,7 @@
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_matrix.h>
+#include <ergoParam.hpp>
 
 /** \file ODESolvers.hpp
  *  \brief Solve Ordinary Differential Equations.
@@ -30,15 +31,26 @@
  *  Abstract class defining a vector field. 
  */
 class vectorField {
+protected:
+  param p;
   
 public:
-  /** \brief Constructor. */
+  /** \brief Default onstructor. */
   vectorField() {}
+  
+  /** \brief Constructor. */
+  vectorField(const param *p_) : p(*p_) {}
   
   /** \brief Destructor. */
   virtual ~vectorField() {}
   
-  /** \brief Virtual method for evaluating the vector field at a given state. */
+  /** \brief Return the parameters of the model. */
+  virtual void getParameters(param *p_) { *p_ = p; return; }
+
+  /** \brief Set parameters of the model. */
+  virtual void setParameters(const param *p_) { p = *p_; return; }
+
+  /** \brief Evaluate the vector field at a given state. */
   virtual void evalField(const gsl_vector *state, gsl_vector *field) = 0;
 
 };
@@ -59,8 +71,8 @@ public:
   { A = gsl_matrix_alloc(dim_, dim_); }
 
   /** \brief Construction by allocating matrix of the linear operator. */
-  linearField(const size_t dim1, const size_t dim2) : vectorField()
-  { A = gsl_matrix_alloc(dim1, dim2); }
+  linearField(const size_t dim, const param *p_) : vectorField(p_)
+  { A = gsl_matrix_alloc(dim, dim); }
 
   /** \brief Construction by copying the matrix of the linear operator. */
   linearField(const gsl_matrix *A_) : vectorField()
@@ -120,34 +132,6 @@ public:
 
   /** \brief Evaluate the linear vector field at a given state. */
   void evalField(const gsl_vector *state, gsl_vector *field);
-};
-
-
-/** \brief Abstract class for codimension one bifurcations of equilibria.
- *
- *  Abstract class for codimension one bifurcations of equilibria
- * (Guckenheimer and Holmes 1988, Strogatz 1994).
- */
-class codim1Field : public vectorField {
-protected:
-  double mu;  //!< Parameter \f$ mu \f$ of the bifurcation.
-  
-public:
-  /** \brief Constructor defining the model parameters. */
-  codim1Field(const double mu_)
-    : vectorField(), mu(mu_) {}
-
-  /** \brief Destructor. */
-  ~codim1Field(){}
-
-  /** \brief Return the parameters of the model. */
-  virtual void getParameters(double *mu_) { *mu_ = mu; return; }
-
-  /** \brief Set parameters of the model. */
-  virtual void setParameters(const double mu_) { mu = mu_; return; }
-
-  /** \brief Virtual method for evaluating the vector field at a given state. */
-  virtual void evalField(const gsl_vector *state, gsl_vector *field) = 0;
 };
 
 

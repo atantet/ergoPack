@@ -1,3 +1,4 @@
+#include <gsl/gsl_math.h>
 #include <ODESolvers.hpp>
 #include <ODEFields.hpp>
 
@@ -27,8 +28,8 @@
 void
 saddleNodeField::evalField(const gsl_vector *state, gsl_vector *field)
 {
-  // F(x) = mu - x^2
-  gsl_vector_set(field, 0, mu - pow(gsl_vector_get(state, 0), 2));
+  // F(x) = p["mu"] - x^2
+  gsl_vector_set(field, 0, p["mu"] - pow(gsl_vector_get(state, 0), 2));
   
   return;
 }
@@ -38,7 +39,7 @@ saddleNodeField::evalField(const gsl_vector *state, gsl_vector *field)
  * Evaluate the vector field of the normal form of the transcritical bifurcation
  * (Guckenheimer & Holmes, 1988, Strogatz,  1994) at a given state:
  * 
- *         F(x) = \mu x - x^2
+ *         F(x) = \p["mu"] x - x^2
  *
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] field Vector resulting from the evaluation of the vector field.
@@ -46,8 +47,9 @@ saddleNodeField::evalField(const gsl_vector *state, gsl_vector *field)
 void
 transcriticalField::evalField(const gsl_vector *state, gsl_vector *field)
 {
-  // F(x) = mu*x - x^2
-  gsl_vector_set(field, 0, gsl_vector_get(state, 0) * (mu - gsl_vector_get(state, 0)));
+  // F(x) = p["mu"]*x - x^2
+  gsl_vector_set(field, 0, gsl_vector_get(state, 0)
+		 * (p["mu"] - gsl_vector_get(state, 0)));
   
   return;
 }
@@ -57,7 +59,7 @@ transcriticalField::evalField(const gsl_vector *state, gsl_vector *field)
  * Evaluate the vector field of the normal form of the supercritical pitchfork bifurcation
  * (Guckenheimer & Holmes, 1988, Strogatz,  1994) at a given state:
  * 
- *         F(x) = mu x - x^3
+ *         F(x) = p["mu"] x - x^3
  *
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] field Vector resulting from the evaluation of the vector field.
@@ -65,8 +67,8 @@ transcriticalField::evalField(const gsl_vector *state, gsl_vector *field)
 void
 pitchforkField::evalField(const gsl_vector *state, gsl_vector *field)
 {
-  // F(x) = mu*x - x^3
-  gsl_vector_set(field, 0, mu*gsl_vector_get(state, 0)
+  // F(x) = p["mu"]*x - x^3
+  gsl_vector_set(field, 0, p["mu"] * gsl_vector_get(state, 0)
 		 - pow(gsl_vector_get(state, 0), 3));
   
   return;
@@ -77,7 +79,7 @@ pitchforkField::evalField(const gsl_vector *state, gsl_vector *field)
  * Evaluate the vector field of the normal form of the subcritical pitchfork bifurcation
  * (Guckenheimer & Holmes, 1988, Strogatz,  1994) at a given state:
  * 
- *         F(x) = mu x + x^3
+ *         F(x) = p["mu"] x + x^3
  *
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] field Vector resulting from the evaluation of the vector field.
@@ -85,30 +87,9 @@ pitchforkField::evalField(const gsl_vector *state, gsl_vector *field)
 void
 pitchforkSubField::evalField(const gsl_vector *state, gsl_vector *field)
 {
-  // F(x) = mu*x + x^3
-  gsl_vector_set(field, 0, mu*gsl_vector_get(state, 0)
+  // F(x) = p["mu"]*x + x^3
+  gsl_vector_set(field, 0, p["mu"] * gsl_vector_get(state, 0)
 		 + pow(gsl_vector_get(state, 0), 3));
-  
-  return;
-}
-
-
-/** 
- * Evaluate the vector field of the normal form of the Hopf bifurcation
- * (Guckenheimer & Holmes, 1988, Strogatz,  1994) at a given state:
- *
- *            F_1(x) = -y + x (\mu - (x^2 + y^2))
- *            F_2(x) = x + y (\mu - (x^2 + y^2)).
- *
- * \param[in]  state State at which to evaluate the vector field.
- * \param[out] field Vector resulting from the evaluation of the vector field.
- */
-void
-HopfField::evalField(const gsl_vector *state, gsl_vector *field)
-{
-  // F(x) = mu*x - x^2
-  gsl_vector_set(field, 0, gsl_vector_get(state, 0)
-		 * (mu - gsl_vector_get(state, 0)));
   
   return;
 }
@@ -127,12 +108,131 @@ void
 cuspField::evalField(const gsl_vector *state, gsl_vector *field)
 {
   // F(x) = h + r x - x^3
-  gsl_vector_set(field, 0, h + r * gsl_vector_get(state, 0) 
+  gsl_vector_set(field, 0, p["h"] + p["r"] * gsl_vector_get(state, 0) 
 		 - pow(gsl_vector_get(state, 0), 3));
   
   return;
 }
 
+
+/** 
+ * Evaluate the vector field of the Hopf normal format a given state.
+ * 
+ * \param[in]  state State at which to evaluate the vector field.
+ * \param[out] field Vector resulting from the evaluation of the vector field.
+ */
+void
+Hopf::evalField(const gsl_vector *state, gsl_vector *field)
+{
+  double x, y, r2;
+  x = gsl_vector_get(state, 0);
+  y = gsl_vector_get(state, 1);
+  r2 = gsl_pow_2(x) + gsl_pow_2(y);
+
+  //! F_1(x) = (\mu - (x^2 + y^2)) x - (gamma - \beta (x^2 +y^2)) y
+  gsl_vector_set(field, 0,
+		 (p["mu"] - r2) * x - (p["gamma"] - p["beta"] * r2) * y);
+  //! F_2(x) = (gamma - \beta (x^2 +y^2)) x + (\mu - (x^2 + y^2)) y
+  gsl_vector_set(field, 1,
+		 (p["gamma"] - p["beta"] * r2) * x + (p["mu"] - r2) * y);
+ 
+  return;
+}
+
+
+/**
+ * Update the matrix of the Jacobian of the Hopf normal form
+ * conditionned on the state x.
+ * \param[in] x State vector.
+*/
+void
+JacobianHopf::setMatrix(const gsl_vector *state)
+{
+  double x, y, r2, x2, y2, xy;
+  x = gsl_vector_get(state, 0);
+  y = gsl_vector_get(state, 1);
+  xy = x * y;
+  x2 = gsl_pow_2(x);
+  y2 = gsl_pow_2(y);
+  r2 = x2 + y2;
+
+  // Set row for \f$x_1\f$
+  gsl_matrix_set(A, 0, 0, p["mu"] - r2 - 2*x2 + 2*p["beta"] * xy);
+  gsl_matrix_set(A, 0, 1, -2*xy - (p["gamma"] - p["beta"] * r2) \
+		 + 2*p["beta"] * y2);
+  // Set row for \f$x_2\f$
+  gsl_matrix_set(A, 1, 0, p["gamma"] - p["beta"] * r2 - 2*p["beta"] * x2 \
+		 - 2 * xy);
+  gsl_matrix_set(A, 1, 1, -2*p["beta"] * xy + (p["mu"] - r2) - 2*y2);
+
+  return;
+}
+
+/** 
+ * Evaluate the vector field of the Hopf normal form
+ * at a given state for continuation with respect to \f$\rho\f$.
+ * \param[in]  state State at which to evaluate the vector field.
+ * \param[out] field Vector resulting from the evaluation of the vector field.
+ */
+void
+HopfCont::evalField(const gsl_vector *state, gsl_vector *field)
+{
+
+  double x, y, r2;
+  double mu;
+  x = gsl_vector_get(state, 0);
+  y = gsl_vector_get(state, 1);
+  mu = gsl_vector_get(state, 2);
+  r2 = gsl_pow_2(x) + gsl_pow_2(y);
+
+  //! F_1(x) = (\mu - (x^2 + y^2)) x - (gamma - \beta (x^2 +y^2)) y
+  gsl_vector_set(field, 0, (mu - r2) * x - (p["gamma"] - p["beta"] * r2) * y);
+  //! F_2(x) = (gamma - \beta (x^2 +y^2)) x + (\mu - (x^2 + y^2)) y
+  gsl_vector_set(field, 1,
+		 (p["gamma"] - p["beta"] * r2) * x + (mu - r2) * y);
+ 
+  // Last element is 0
+  gsl_vector_set(field, 2, 0.);
+ 
+  return;
+}
+
+
+/**
+ * Update the matrix of the Jacobian of the Hopf normal form
+ * conditionned on the state x for continuation with respect to \f$\rho\f$.
+ * \param[in] x State vector.
+*/
+void
+JacobianHopfCont::setMatrix(const gsl_vector *state)
+{
+  double x, y, r2, x2, y2, xy;
+  double mu;
+  x = gsl_vector_get(state, 0);
+  y = gsl_vector_get(state, 1);
+  mu = gsl_vector_get(state, 2);
+  xy = x * y;
+  x2 = gsl_pow_2(x);
+  y2 = gsl_pow_2(y);
+  r2 = x2 + y2;
+
+  // Set last row to 0
+  gsl_vector_view view = gsl_matrix_row(A, 2);
+  gsl_vector_set_zero(&view.vector);
+
+  // Set row for \f$x_1\f$
+  gsl_matrix_set(A, 0, 0, mu - r2 - 2*x2 + 2*p["beta"] * xy);
+  gsl_matrix_set(A, 0, 1, -2*xy - (p["gamma"] - p["beta"] * r2) \
+		 + 2*p["beta"] * y2);
+  gsl_matrix_set(A, 0, 2, x);
+  // Set row for \f$x_2\f$
+  gsl_matrix_set(A, 1, 0, p["gamma"] - p["beta"] * r2 - 2*p["beta"] * x2 \
+		 - 2 * xy);
+  gsl_matrix_set(A, 1, 1, -2*p["beta"] * xy + (mu - r2) - 2*y2);
+  gsl_matrix_set(A, 1, 2, y);
+
+  return;
+}
 
 /**
  * Vector fields and Jacobian for the Lorenz 63 model.
@@ -154,16 +254,16 @@ void
 Lorenz63::evalField(const gsl_vector *state, gsl_vector *field)
 {
 
-  // Fx = sigma * (y - x)
-  gsl_vector_set(field, 0, sigma
+  // Fx = p["sigma"] * (y - x)
+  gsl_vector_set(field, 0, p["sigma"]
 		 * (gsl_vector_get(state, 1) - gsl_vector_get(state, 0)));
   // Fy = x * (rho - z) - y
   gsl_vector_set(field, 1, gsl_vector_get(state, 0)
-		 * (rho - gsl_vector_get(state, 2))
+		 * (p["rho"] - gsl_vector_get(state, 2))
 		 - gsl_vector_get(state, 1));
-  // Fz = x*y - beta*z
+  // Fz = x*y - p["beta"]*z
   gsl_vector_set(field, 2, gsl_vector_get(state, 0) * gsl_vector_get(state, 1)
-		 - beta * gsl_vector_get(state, 2));
+		 - p["beta"] * gsl_vector_get(state, 2));
  
   return;
 }
@@ -175,20 +275,20 @@ Lorenz63::evalField(const gsl_vector *state, gsl_vector *field)
  * \param[in] x State vector.
 */
 void
-JacobianLorenz63::setMatrix(const gsl_vector *x)
+JacobianLorenz63::setMatrix(const gsl_vector *state)
 {
   // Set row for \f$x_1\f$
-  gsl_matrix_set(A, 0, 0, -sigma);
-  gsl_matrix_set(A, 0, 1, sigma);
+  gsl_matrix_set(A, 0, 0, -p["sigma"]);
+  gsl_matrix_set(A, 0, 1, p["sigma"]);
   gsl_matrix_set(A, 0, 2, 0.);
   // Set row for \f$x_2\f$
-  gsl_matrix_set(A, 1, 0, rho - gsl_vector_get(x, 2));
+  gsl_matrix_set(A, 1, 0, p["rho"] - gsl_vector_get(state, 2));
   gsl_matrix_set(A, 1, 1, -1.);
-  gsl_matrix_set(A, 1, 2, -gsl_vector_get(x, 0));
+  gsl_matrix_set(A, 1, 2, -gsl_vector_get(state, 0));
   // Set row for \f$x_3\f$
-  gsl_matrix_set(A, 2, 0, gsl_vector_get(x, 1));
-  gsl_matrix_set(A, 2, 1, gsl_vector_get(x, 0));
-  gsl_matrix_set(A, 2, 2, -beta);
+  gsl_matrix_set(A, 2, 0, gsl_vector_get(state, 1));
+  gsl_matrix_set(A, 2, 1, gsl_vector_get(state, 0));
+  gsl_matrix_set(A, 2, 2, -p["beta"]);
 
   return;
 }
@@ -203,16 +303,16 @@ void
 Lorenz63Cont::evalField(const gsl_vector *state, gsl_vector *field)
 {
 
-  // Fx = sigma * (y - x)
-  gsl_vector_set(field, 0, sigma
+  // Fx = p["sigma"] * (y - x)
+  gsl_vector_set(field, 0, p["sigma"]
 		 * (gsl_vector_get(state, 1) - gsl_vector_get(state, 0)));
   // Fy = x * (rho - z) - y
   gsl_vector_set(field, 1, gsl_vector_get(state, 0)
 		 * (gsl_vector_get(state, 3) - gsl_vector_get(state, 2))
 		 - gsl_vector_get(state, 1));
-  // Fz = x*y - beta*z
+  // Fz = x*y - p["beta"]*z
   gsl_vector_set(field, 2, gsl_vector_get(state, 0) * gsl_vector_get(state, 1)
-		 - beta * gsl_vector_get(state, 2));
+		 - p["beta"] * gsl_vector_get(state, 2));
   // Last element is 0
   gsl_vector_set(field, 3, 0.);
  
@@ -226,218 +326,28 @@ Lorenz63Cont::evalField(const gsl_vector *state, gsl_vector *field)
  * \param[in] x State vector.
 */
 void
-JacobianLorenz63Cont::setMatrix(const gsl_vector *x)
+JacobianLorenz63Cont::setMatrix(const gsl_vector *state)
 {
   // Set last row to 0
   gsl_vector_view view = gsl_matrix_row(A, 3);
   gsl_vector_set_zero(&view.vector);
 
   // Set row for \f$x_1\f$
-  gsl_matrix_set(A, 0, 0, -sigma);
-  gsl_matrix_set(A, 0, 1, sigma);
+  gsl_matrix_set(A, 0, 0, -p["sigma"]);
+  gsl_matrix_set(A, 0, 1, p["sigma"]);
   gsl_matrix_set(A, 0, 2, 0.);
   gsl_matrix_set(A, 0, 3, 0.);
   // Set row for \f$x_2\f$
-  gsl_matrix_set(A, 1, 0, gsl_vector_get(x, 3) - gsl_vector_get(x, 2));
+  gsl_matrix_set(A, 1, 0, gsl_vector_get(state, 3)
+		 - gsl_vector_get(state, 2));
   gsl_matrix_set(A, 1, 1, -1.);
-  gsl_matrix_set(A, 1, 2, -gsl_vector_get(x, 0));
-  gsl_matrix_set(A, 1, 3, gsl_vector_get(x, 0));
+  gsl_matrix_set(A, 1, 2, -gsl_vector_get(state, 0));
+  gsl_matrix_set(A, 1, 3, gsl_vector_get(state, 0));
   // Set row for \f$x_3\f$
-  gsl_matrix_set(A, 2, 0, gsl_vector_get(x, 1));
-  gsl_matrix_set(A, 2, 1, gsl_vector_get(x, 0));
-  gsl_matrix_set(A, 2, 2, -beta);
+  gsl_matrix_set(A, 2, 0, gsl_vector_get(state, 1));
+  gsl_matrix_set(A, 2, 1, gsl_vector_get(state, 0));
+  gsl_matrix_set(A, 2, 2, -p["beta"]);
   gsl_matrix_set(A, 2, 3, 0.);
 
   return;
 }
-
-
-/**
- * Vector fields and Jacobian for the quasi-geostrophic 4 modes model.
- */
-
-/** 
- * Evaluate the vector field of the QG4 model
- * at a given state.
- * \param[in]  state State at which to evaluate the vector field.
- * \param[out] field Vector resulting from the evaluation of the vector field.
- */
-void
-QG4::evalField(const gsl_vector *state, gsl_vector *field)
-{
-
-  // F1 = c1*A1*A2 + c2*A2*A3 + c3*A3*A4 - l1*A1
-  gsl_vector_set(field, 0,
-		 gsl_vector_get(ci, 0)
-		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 1)
-		 + gsl_vector_get(ci, 1)
-		 * gsl_vector_get(state, 1) * gsl_vector_get(state, 2)
-		 + gsl_vector_get(ci, 2)
-		 * gsl_vector_get(state, 2) * gsl_vector_get(state, 3)
-		 - gsl_vector_get(li, 0) * gsl_vector_get(state, 0));
-  // F2 = c4*A2*A4 + c5*A1*A3 - c1*A1**2 - l2*A2 + sigma
-  gsl_vector_set(field, 1,
-		 gsl_vector_get(ci, 3)
-		 * gsl_vector_get(state, 1) * gsl_vector_get(state, 3)
-		 + gsl_vector_get(ci, 4)
-		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 2)
-		 - gsl_vector_get(ci, 0)
-		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 0)
-		 - gsl_vector_get(li, 1) * gsl_vector_get(state, 1)
-		 + gsl_vector_get(ci, 6) * sigma);
-  // F3 = c6*A1*A4 - (c2+c5)*A1*A2 - l3*A3
-  gsl_vector_set(field, 2,
-		 gsl_vector_get(ci, 5)
-		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 3)
-		 - (gsl_vector_get(ci, 1) + gsl_vector_get(ci, 4))
-		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 1)
-		 - gsl_vector_get(li, 2) * gsl_vector_get(state, 2));
-  // F4 = -c4*A2**2 - (c3+c6)*A1*A3 - l4*A4
-  gsl_vector_set(field, 3,
-		 - gsl_vector_get(ci, 3)
-		 * gsl_vector_get(state, 1) * gsl_vector_get(state, 1)
-		 - (gsl_vector_get(ci, 2) + gsl_vector_get(ci, 5))
-		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 2)
-		 - gsl_vector_get(li, 3) * gsl_vector_get(state, 3));
- 
-  return;
-}
-
-
-/** 
- * Evaluate the vector field of the QG4 model
- * at a given state.
- * \param[in]  state State at which to evaluate the vector field.
- * \param[out] field Vector resulting from the evaluation of the vector field.
- */
-void
-QG4Cont::evalField(const gsl_vector *state, gsl_vector *field)
-{
-
-  // F1 = c1*A1*A2 + c2*A2*A3 + c3*A3*A4 - l1*A1
-  gsl_vector_set(field, 0,
-		 gsl_vector_get(ci, 0)
-		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 1)
-		 + gsl_vector_get(ci, 1)
-		 * gsl_vector_get(state, 1) * gsl_vector_get(state, 2)
-		 + gsl_vector_get(ci, 2)
-		 * gsl_vector_get(state, 2) * gsl_vector_get(state, 3)
-		 - gsl_vector_get(li, 0) * gsl_vector_get(state, 0));
-  // F2 = c4*A2*A4 + c5*A1*A3 - c1*A1**2 - l2*A2 + sigma
-  gsl_vector_set(field, 1,
-		 gsl_vector_get(ci, 3)
-		 * gsl_vector_get(state, 1) * gsl_vector_get(state, 3)
-		 + gsl_vector_get(ci, 4)
-		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 2)
-		 - gsl_vector_get(ci, 0)
-		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 0)
-		 - gsl_vector_get(li, 1) * gsl_vector_get(state, 1)
-		 + gsl_vector_get(ci, 6) * gsl_vector_get(state, 4));
-  // F3 = c6*A1*A4 - (c2+c5)*A1*A2 - l3*A3
-  gsl_vector_set(field, 2,
-		 gsl_vector_get(ci, 5)
-		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 3)
-		 - (gsl_vector_get(ci, 1) + gsl_vector_get(ci, 4))
-		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 1)
-		 - gsl_vector_get(li, 2) * gsl_vector_get(state, 2));
-  // F4 = -c4*A2**2 - (c3+c6)*A1*A3 - l4*A4
-  gsl_vector_set(field, 3,
-		 - gsl_vector_get(ci, 3)
-		 * gsl_vector_get(state, 1) * gsl_vector_get(state, 1)
-		 - (gsl_vector_get(ci, 2) + gsl_vector_get(ci, 5))
-		 * gsl_vector_get(state, 0) * gsl_vector_get(state, 2)
-		 - gsl_vector_get(li, 3) * gsl_vector_get(state, 3));
-  // Last element is 0
-  gsl_vector_set(field, 4, 0.);
- 
-  return;
-}
-
-
-/**
- * Update the matrix of the Jacobian of the quasi-geostrophic 4 modes model
- * conditionned on the state x.
- * \param[in] x State vector.
-*/
-void
-JacobianQG4::setMatrix(const gsl_vector *x)
-{
-  // Set non-zero elements
-  gsl_matrix_set(A, 0, 0, gsl_vector_get(ci, 0)*gsl_vector_get(x, 1)
-		 - gsl_vector_get(li, 0));
-  gsl_matrix_set(A, 0, 1, gsl_vector_get(ci, 0)*gsl_vector_get(x, 0)
-		 + gsl_vector_get(ci, 1)*gsl_vector_get(x, 2));
-  gsl_matrix_set(A, 0, 2, gsl_vector_get(ci, 1)*gsl_vector_get(x, 1)
-		 + gsl_vector_get(ci, 2)*gsl_vector_get(x, 3));
-  gsl_matrix_set(A, 0, 3, gsl_vector_get(ci, 2) * gsl_vector_get(x, 2));
-  gsl_matrix_set(A, 1, 0, gsl_vector_get(ci, 4) * gsl_vector_get(x, 2)
-		 - 2 * gsl_vector_get(ci, 0) * gsl_vector_get(x, 0));
-  gsl_matrix_set(A, 1, 1, gsl_vector_get(ci, 3)*gsl_vector_get(x, 3)
-		 - gsl_vector_get(li, 1));
-  gsl_matrix_set(A, 1, 2, gsl_vector_get(ci, 4)*gsl_vector_get(x, 0));
-  gsl_matrix_set(A, 1, 3, gsl_vector_get(ci, 3)*gsl_vector_get(x, 1));
-  gsl_matrix_set(A, 2, 0, gsl_vector_get(ci, 5)*gsl_vector_get(x, 3)
-		 - (gsl_vector_get(ci, 1)+gsl_vector_get(ci, 4))
-		 * gsl_vector_get(x, 1));
-  gsl_matrix_set(A, 2, 1, -(gsl_vector_get(ci, 1)+gsl_vector_get(ci, 4))
-		 * gsl_vector_get(x, 0));
-  gsl_matrix_set(A, 2, 2, -gsl_vector_get(li, 2));
-  gsl_matrix_set(A, 2, 3, gsl_vector_get(ci, 5)*gsl_vector_get(x, 0));
-  gsl_matrix_set(A, 3, 0, -(gsl_vector_get(ci, 2)+gsl_vector_get(ci, 5))
-		 * gsl_vector_get(x, 2));
-  gsl_matrix_set(A, 3, 1, -2*gsl_vector_get(ci, 3)*gsl_vector_get(x, 1));
-  gsl_matrix_set(A, 3, 2, -(gsl_vector_get(ci, 2)+gsl_vector_get(ci, 5))
-		 * gsl_vector_get(x, 0));
-  gsl_matrix_set(A, 3, 3, -gsl_vector_get(li, 3));
-
-    return;
-}
-
-/**
- * Update the matrix of the Jacobian of the quasi-geostrophic 4 modes model
- * conditionned on the state x for continuation with respect to \f$\sigma\f$.
- * \param[in] x State vector.
-*/
-void
-JacobianQG4Cont::setMatrix(const gsl_vector *x)
-{
-  // Set last row to 0
-  gsl_vector_view view = gsl_matrix_row(A, 4);
-  gsl_vector_set_zero(&view.vector);
-
-  // Set non-zero elements
-  gsl_matrix_set(A, 0, 0, gsl_vector_get(ci, 0)*gsl_vector_get(x, 1)
-		 - gsl_vector_get(li, 0));
-  gsl_matrix_set(A, 0, 1, gsl_vector_get(ci, 0)*gsl_vector_get(x, 0)
-		 + gsl_vector_get(ci, 1)*gsl_vector_get(x, 2));
-  gsl_matrix_set(A, 0, 2, gsl_vector_get(ci, 1)*gsl_vector_get(x, 1)
-		 + gsl_vector_get(ci, 2)*gsl_vector_get(x, 3));
-  gsl_matrix_set(A, 0, 3, gsl_vector_get(ci, 2) * gsl_vector_get(x, 2));
-  gsl_matrix_set(A, 0, 4, 0.);
-  gsl_matrix_set(A, 1, 0, gsl_vector_get(ci, 4) * gsl_vector_get(x, 2)
-		 - 2 * gsl_vector_get(ci, 0) * gsl_vector_get(x, 0));
-  gsl_matrix_set(A, 1, 1, gsl_vector_get(ci, 3)*gsl_vector_get(x, 3)
-		 - gsl_vector_get(li, 1));
-  gsl_matrix_set(A, 1, 2, gsl_vector_get(ci, 4)*gsl_vector_get(x, 0));
-  gsl_matrix_set(A, 1, 3, gsl_vector_get(ci, 3)*gsl_vector_get(x, 1));
-  gsl_matrix_set(A, 1, 4, 1.);
-  gsl_matrix_set(A, 2, 0, gsl_vector_get(ci, 5)*gsl_vector_get(x, 3)
-		 - (gsl_vector_get(ci, 1)+gsl_vector_get(ci, 4))
-		 * gsl_vector_get(x, 1));
-  gsl_matrix_set(A, 2, 1, -(gsl_vector_get(ci, 1)+gsl_vector_get(ci, 4))
-		 * gsl_vector_get(x, 0));
-  gsl_matrix_set(A, 2, 2, -gsl_vector_get(li, 2));
-  gsl_matrix_set(A, 2, 3, gsl_vector_get(ci, 5)*gsl_vector_get(x, 0));
-  gsl_matrix_set(A, 2, 4, 0.);
-  gsl_matrix_set(A, 3, 0, -(gsl_vector_get(ci, 2)+gsl_vector_get(ci, 5))
-		 * gsl_vector_get(x, 2));
-  gsl_matrix_set(A, 3, 1, -2*gsl_vector_get(ci, 3)*gsl_vector_get(x, 1));
-  gsl_matrix_set(A, 3, 2, -(gsl_vector_get(ci, 2)+gsl_vector_get(ci, 5))
-		 * gsl_vector_get(x, 0));
-  gsl_matrix_set(A, 3, 3, -gsl_vector_get(li, 3));
-  gsl_matrix_set(A, 3, 4, 0.);
-
-    return;
-}
-
-

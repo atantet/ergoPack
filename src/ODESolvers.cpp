@@ -540,6 +540,79 @@ fundamentalMatrixModel::integrateRange(const size_t nt, const double dt,
 }
 
 
+void
+fundamentalMatrixModel::integrateRange(const size_t nt, const double dt,
+				       gsl_matrix **xt,
+				       std::vector<gsl_matrix *> *Mts,
+				       const size_t ntSpinup)
+{
+  size_t nSamp = (size_t) ((nt - ntSpinup) + 0.1 + 1);
+  gsl_matrix *stepMat = gsl_matrix_alloc(dim, dim);
+  gsl_vector_view colInit, colFinal;
+
+  // Resize Mts vector to the right size
+  Mts->resize(nSamp);
+  
+  // Check if xt is of the right size.
+  if (xt && (((*xt)->size1 != nSamp) || ((*xt)->size2 != dim))) {
+    gsl_matrix_free(*xt);
+    *xt = gsl_matrix_alloc(nSamp, dim);
+  }
+
+  // Get spinup
+  for (size_t i = 1; i <= ntSpinup; i++)
+    mod->stepForward(dt);
+  // Update the Jacobian after spinup and set current to identity
+  setCurrentState();
+  
+  // Save initial conditions
+  gsl_matrix_set_row(*xt, 0, mod->current);
+  Mts->at(0) = gsl_matrix_alloc(dim, dim);
+  gsl_matrix_set_identity(Mts->at(0)); // Should be the same as current
+  
+  // Get record
+  for (size_t r = 1; r < nSamp; r++) {
+    // Initialize fundamental matrix Mtr
+    Mts->at(r) = gsl_matrix_alloc(dim, dim);
+    gsl_matrix_set_identity(Mts->at(r));
+    
+    // Get matrix of stepMat r * dt
+    for (size_t d = 0; d < dim; d++) {
+      // Get matrix column
+      colInit = gsl_matrix_column(current, d); 
+
+      // Apply numerical scheme to current matrix
+      colFinal = scheme->getStep(Jacobian, &colInit.vector, dt);
+
+      // Set stepMat matrix
+      colInit = gsl_matrix_column(stepMat, d);
+      gsl_vector_memcpy(&colInit.vector, &colFinal.vector);
+    }
+
+    // Add step matrix to Mttau with tau < r
+    for (size_t tau = 0; tau < r; tau++)
+      gsl_matrix_add(Mts->at(tau), stepMat);
+
+    // Step the current state forward
+    mod->stepForward(dt);
+    
+    // Step to current fundamental matrix forward
+    gsl_matrix_add(current, stepMat);
+
+    // Update the Jacobian with the full model current state
+    Jacobian->setMatrix(mod->current);
+
+    // Save state
+    gsl_matrix_set_row(*xt, r, mod->current);
+  }
+
+  // Free
+  gsl_matrix_free(stepMat);
+
+  return;
+}
+
+
 /**
  * Get the fundamental matrices Mts for s between 0 and t for a given
  * initial state.

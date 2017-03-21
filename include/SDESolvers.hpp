@@ -42,12 +42,24 @@ protected:
 
 public:
   /** \brief Constructor setting the dimension and allocating. */
-  vectorFieldStochastic(const size_t noiseDim_) : noiseDim(noiseDim_), vectorField()
+  vectorFieldStochastic(const size_t noiseDim_)
+    : noiseDim(noiseDim_), vectorField()
   { noiseState = gsl_vector_alloc(noiseDim); }
 
-  /** \brief Constructor setting the dimension, the generator and allocating. */
+  /** \brief Constructor setting the dim., the generator and allocating. */
   vectorFieldStochastic(const size_t noiseDim_, gsl_rng *rng_)
     : vectorField(), rng(rng_), noiseDim(noiseDim_)
+  { noiseState = gsl_vector_alloc(noiseDim); }
+  
+  /** \brief Constructor setting the dimension and allocating. */
+  vectorFieldStochastic(const size_t noiseDim_, const param *p_)
+    : noiseDim(noiseDim_), vectorField(p_)
+  { noiseState = gsl_vector_alloc(noiseDim); }
+
+  /** \brief Constructor setting the dim., the generator and allocating. */
+  vectorFieldStochastic(const size_t noiseDim_, gsl_rng *rng_,
+			const param *p_)
+    : vectorField(p_), rng(rng_), noiseDim(noiseDim_)
   { noiseState = gsl_vector_alloc(noiseDim); }
   
   /** \brief Destructor freeing noise. */

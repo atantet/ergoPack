@@ -117,14 +117,16 @@ public:
 class EulerMaruyamaSDDE : public numericalSchemeSDDE {
 public:
   /** \brief Constructor defining the dimensions, time step and allocating workspace. */
-  EulerMaruyamaSDDE(const size_t dim_, const size_t nDelays_, const double dt_)
+  EulerMaruyamaSDDE(const size_t dim_, const size_t nDelays_,
+		    const double dt_)
     : numericalSchemeSDDE(dim_, nDelays_, 2, dt_) {}
   
   /** \brief Destructor freeing workspace. */
   ~EulerMaruyamaSDDE() {}
 
   /** \brief Virtual method to integrate the stochastic model one step forward. */
-  void stepForward(vectorFieldDelay *delayedField, vectorFieldStochastic *stocField,
+  void stepForward(vectorFieldDelay *delayedField,
+		   vectorFieldStochastic *stocField,
 		   gsl_matrix *current);
 };
 
