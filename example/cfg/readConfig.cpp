@@ -126,13 +126,14 @@ readModel(const Config *cfg)
 	std::cout << "beta = " << p["beta"] << std::endl;
 	std::cout << "gamma = " << p["gamma"] << std::endl;
       }
-      if (cfg->exists("model.eps")) {
-	p["eps"] = cfg->lookup("model.eps");
-	std::cout << "eps = " << p["eps"] << std::endl;
-      }
       else {
 	std::cerr << "Error: model name invalid." << std::endl;
 	throw std::exception();
+      }
+      
+      if (cfg->exists("model.eps")) {
+	p["eps"] = cfg->lookup("model.eps");
+	std::cout << "eps = " << p["eps"] << std::endl;
       }
     } 
   else

@@ -71,9 +71,9 @@ size_t gsl_vector_complex_min_index(const gsl_vector_complex *v);
 /** \brief Calculate inner product between two complex vectors for a given measure. */
 gsl_complex gsl_vector_complex_get_inner_product(const gsl_vector_complex *v,
 						 const gsl_vector_complex *w,
-						 const gsl_vector *mu);
+						 const gsl_vector *mu=NULL);
 /** \brief Calculate the norm \f$L^2_\mu\f$ of a complex vector for a given measure \f$\mu\f$. */
-double gsl_vector_complex_get_norm(const gsl_vector_complex *v, const gsl_vector *mu);
+double gsl_vector_complex_get_norm(const gsl_vector_complex *v, const gsl_vector *mu=NULL);
 /** \brief Permute rows or columns of a matrix. */
 int gsl_permute_matrix_complex(const gsl_permutation * p, gsl_matrix_complex * m,
 			       const size_t axis);

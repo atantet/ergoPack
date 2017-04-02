@@ -257,7 +257,6 @@ protected:
   size_t nt;            //!< Total number of integration step.
   gsl_vector_uint *ntShoot; //!< Number of integration step per shoot.
   double dt;            //!< Adapted time step.
-  fundamentalMatrixModel * const linMod; //!< Full and linearized model
   const size_t numShoot; //!< Number of shoots to correct/predict orbit
 
   /** \brief Adapt time step and number of time steps to shooting strategy. */
@@ -267,6 +266,7 @@ protected:
   virtual void adaptTimeToPeriod(const double T);
 
 public:
+  fundamentalMatrixModel * const linMod; //!< Full and linearized model
   
   /** \brief Constructor assigning a linearized model and parameters. */
   periodicOrbitTrack(fundamentalMatrixModel *linMod_, const double epsDist_,
@@ -453,7 +453,7 @@ void getFloquet(periodicOrbitCont *track, gsl_vector *state,
 		gsl_vector_complex *FloquetExp,
 		gsl_matrix_complex *eigVecLeft,
 		gsl_matrix_complex *eigVecRight,
-		const bool sort=false);
+		const bool sort=false, const bool norm=false);
 
 /** \brief Write Floquet eigenvalues and left and right eigenvectors. */
 void writeFloquet(periodicOrbitCont *track, const gsl_vector *state,
@@ -471,6 +471,15 @@ void sortSpectrum(gsl_vector_complex *eigValLeft,
 		  gsl_matrix_complex *eigVecRight);
 
 
+/** \brief Normalize the Floquet vectors. */
+void  normalizeFloquet(periodicOrbitCont *track,
+		       const gsl_vector_complex *FloquetExp,
+		       gsl_matrix_complex *eigVecLeft,
+		       gsl_matrix_complex *eigVecRight);
+void  normalizeFloquet(const gsl_vector *stateCont, vectorField *field,
+		       const gsl_vector_complex *FloquetExp,
+		       gsl_matrix_complex *eigVecLeft,
+		       gsl_matrix_complex *eigVecRight);
 /**
  * @}
  */

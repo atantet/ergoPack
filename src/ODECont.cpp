@@ -1494,6 +1494,7 @@ getCovarianceMatrix(const std::vector<gsl_matrix *> *Qs,
   // Calculate int_0^T M(t, r) * Q(r) * M(t, r).T dr
   gsl_matrix_set_zero(CT);
   for (size_t r = 0; r < nt; r++) {
+
     // Q(r) * M(t, r).T
     gsl_blas_dgemm(CblasNoTrans, CblasTrans, 1., Qs->at(r), Mts->at(r),
 		   0., tmp2);
@@ -1596,7 +1597,7 @@ void
 getFloquet(periodicOrbitCont *track, gsl_vector *state,
 	   gsl_vector_complex *FloquetExp,
 	   gsl_matrix_complex *eigVecLeft, gsl_matrix_complex *eigVecRight,
-	   const bool sort)
+	   const bool sort, const bool norm)
 {
   const size_t dim = track->getDim() - 1;
   double T;
@@ -1624,6 +1625,9 @@ getFloquet(periodicOrbitCont *track, gsl_vector *state,
   if (sort)
     sortSpectrum(eigValLeft, eigVecLeft, eigValRight, eigVecRight);
 
+  if (norm)
+    normalizeFloquet(track, FloquetExp, eigVecLeft, eigVecRight);
+
   // Convert to Floquet exponents
   gsl_vector_complex_log(FloquetExp, eigValLeft);
   gsl_vector_complex_scale_real(FloquetExp, 1. / T);
@@ -1635,6 +1639,79 @@ getFloquet(periodicOrbitCont *track, gsl_vector *state,
   gsl_vector_complex_free(eigValLeft);
   gsl_vector_complex_free(eigValRight);
 
+  return;
+}
+
+
+/**
+ * Normalize the Floquet vectors for the left one tangent to the flow
+ * to have the same magnitude as the vector field.
+ * \param[in]  track       Continuation problem.
+ * \param[in]  FloquetExp  Floquet exponents.
+ * \param[out] eigVecLeft  Left Floquet vector.
+ * \param[out] eigVecRight Right Floquet vector.
+ */
+void 
+normalizeFloquet(periodicOrbitCont *track,
+		 const gsl_vector_complex *FloquetExp,
+		 gsl_matrix_complex *eigVecLeft,
+		 gsl_matrix_complex *eigVecRight)
+{
+  const size_t dim = track->getDim() - 1; // Dimension of phase space
+  gsl_vector *stateCont = gsl_vector_alloc(dim + 2);
+  
+  // Get vector field at initial point of periodic orbit
+  // (i.e. at the point in the tangent space of which the Floquet
+  // vectors leave)
+  track->getCurrentState(stateCont);
+  normalizeFloquet(stateCont, track->linMod->mod->field, FloquetExp,
+		   eigVecLeft, eigVecRight);
+
+  gsl_vector_free(stateCont);
+  
+  return;
+}
+
+
+void 
+normalizeFloquet(const gsl_vector *stateCont, vectorField *field,
+		 const gsl_vector_complex *FloquetExp,
+		 gsl_matrix_complex *eigVecLeft,
+		 gsl_matrix_complex *eigVecRight)
+{
+  const size_t dim = stateCont->size - 2; // Dimension of phase space
+  gsl_vector *vField = gsl_vector_alloc(dim);
+  gsl_vector_const_view stateView
+    = gsl_vector_const_subvector(stateCont, 0, dim);
+  gsl_vector_complex_view vecLeftView, vecRightView;
+  double norm, fieldMag;
+  gsl_complex prod;
+  size_t idx0;
+  
+  // Get vector field at initial point of periodic orbit
+  // (i.e. at the point in the tangent space of which the Floquet
+  // vectors leave)
+  field->evalField(&stateView.vector, vField);
+
+  // Get Floquet vectors associated with 0 Floquet exponent
+  idx0 = gsl_vector_complex_min_index(FloquetExp);
+  vecLeftView = gsl_matrix_complex_column(eigVecLeft, idx0);
+  vecRightView = gsl_matrix_complex_column(eigVecRight, idx0);
+
+  // Give the to the right Floquet vector tangent to the flow
+  // the magnitude of the vector field
+  fieldMag = gsl_vector_get_norm(vField);
+  norm = gsl_vector_complex_get_norm(&vecRightView.vector);
+  gsl_vector_complex_scale_real(&vecRightView.vector, fieldMag / norm);
+
+  // Normalize the corresponding left Floquet vector
+  prod = gsl_vector_complex_get_inner_product(&vecLeftView.vector,
+					      &vecRightView.vector);
+  gsl_vector_complex_scale(&vecLeftView.vector, gsl_complex_inverse(prod));
+
+  // Free
+  gsl_vector_free(vField);
+  
   return;
 }
 

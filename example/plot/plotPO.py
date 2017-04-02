@@ -5,8 +5,15 @@ sys.path.append('../cfg/')
 from Hopf import *
 from ergoInt import *
 
+cfg = getModelParam()
 dim = cfg.model.dim
 fileFormat = cfg.general.fileFormat
+dt = cfg.simulation.dt
+if (cfg.general.fileFormat == 'bin'):
+    readFile = np.fromfile
+else:
+    readFile = np.loadtxt
+
 
 # List of continuations to plot
 initContRng = [0.]
@@ -139,7 +146,8 @@ ax[-1].set_xlabel(r'$\mu$', fontsize=ergoPlot.fs_latex)
 for k in np.arange(len(ax)):
     ax[k].set_xlim(np.min(contLim[:, 0]), np.max(contLim[:, 1]) * 1.001)
 
-fig.savefig('%s/continuation/po/poCont%s.eps' % (plotDir, dstPostfix),
+fig.savefig('%s/continuation/po/poCont%s.eps' \
+            % (cfg.general.plotDir, dstPostfix),
             dpi=300, bbox_inches='tight')
 
 
@@ -231,7 +239,7 @@ plt.setp(ax.get_yticklabels(), fontsize=ergoPlot.fs_yticklabels)
 ax.set_xlabel(r'$x$', fontsize=ergoPlot.fs_latex)
 ax.set_ylabel(r'$y$', fontsize=ergoPlot.fs_latex)
 fig.savefig('%s/continuation/po/poContOrbit%s.%s' \
-            % (plotDir, dstPostfix, ergoPlot.figFormat),
+            % (cfg.general.plotDir, dstPostfix, ergoPlot.figFormat),
             dpi=ergoPlot.dpi, bbox_inches=ergoPlot.bbox_inches)
 
     

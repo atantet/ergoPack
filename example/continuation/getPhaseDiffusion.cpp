@@ -199,18 +199,6 @@ int main(int argc, char * argv[])
 	// Get time step adapted to period
 	dtOrbit = T / ntOrbit;
 	      
-	// Read Floquet elements
-	gsl_vector_complex_fread(srcStreamExp, FloquetExp);
-	gsl_matrix_complex_fread(srcStreamVecLeft, FloquetVecLeft);
-	gsl_matrix_complex_fread(srcStreamVecRight, FloquetVecRight);
-	    
-	// Get left and right Floquet vectors in the direction of
-	// the flow (must have been sorted before)
-	vLeft = gsl_matrix_complex_column(FloquetVecLeft, 0);
-	vRight = gsl_matrix_complex_column(FloquetVecRight, 0);
-	vLeftReal = gsl_vector_complex_real(&vLeft.vector);
-	vRightReal = gsl_vector_complex_real(&vRight.vector);
-	      
 	// Define field
 	vectorField *field = new Hopf(&p);
 	    
@@ -227,6 +215,22 @@ int main(int argc, char * argv[])
 	fundamentalMatrixModel *linMod
 	  = new fundamentalMatrixModel(mod, Jacobian);
 
+	// Read Floquet elements
+	gsl_vector_complex_fread(srcStreamExp, FloquetExp);
+	gsl_matrix_complex_fread(srcStreamVecLeft, FloquetVecLeft);
+	gsl_matrix_complex_fread(srcStreamVecRight, FloquetVecRight);
+
+	// Normalize
+	normalizeFloquet(initCont, field, FloquetExp, FloquetVecLeft,
+			 FloquetVecRight);
+	    
+	// Get left and right Floquet vectors in the direction of
+	// the flow (must have been sorted before)
+	vLeft = gsl_matrix_complex_column(FloquetVecLeft, 0);
+	vRight = gsl_matrix_complex_column(FloquetVecRight, 0);
+	vLeftReal = gsl_vector_complex_real(&vLeft.vector);
+	vRightReal = gsl_vector_complex_real(&vRight.vector);
+	      
 	gsl_matrix *xt = gsl_matrix_alloc(1, 1);
 	std::vector<gsl_matrix *> Mts;
 	std::vector<gsl_matrix *> Qs;

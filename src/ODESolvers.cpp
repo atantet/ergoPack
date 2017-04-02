@@ -402,17 +402,15 @@ fundamentalMatrixModel::integrate(const size_t nt, const double dt)
  * Integrate the fundamentalMatrixModel for a number of time steps
  * and from a given initial state.
  * \param[in]  init    Initial state.
- * \param[in]  initMat Initial fundamental matrix.
  * \param[in]  nt      Number of time steps to integrate.
  * \param[in]  dt      Time step.
  */
 void
 fundamentalMatrixModel::integrate(const gsl_vector *init,
-					 const gsl_matrix *initMat,
-					 const size_t nt, const double dt)
+				  const size_t nt, const double dt)
 {
   // Initialize state and fundamental matrix
-  setCurrentState(init, initMat);
+  setCurrentState(init);
 
   // Integrate
   integrate(nt, dt);
@@ -442,19 +440,17 @@ fundamentalMatrixModel::integrate(const double length, const double dt)
  * Integrate the fundamentalMatrixModel for a given period
  * and from a given initial state.
  * \param[in]  init        Initial state.
- * \param[in]  initMatrix  Initial fundamental matrix.
  * \param[in]  length      Duration of the integration.
  * \param[in]  dt          Time step.
  */
 void
 fundamentalMatrixModel::integrate(const gsl_vector *init,
-				  const gsl_matrix *initMat,
 				  const double length, const double dt)
 {
   size_t nt = (size_t) (length / dt + 0.1);
 
   // Get record
-  integrate(init, initMat, nt, dt);
+  integrate(init, nt, dt);
 
   return;
 }
@@ -473,141 +469,27 @@ fundamentalMatrixModel::integrateRange(const size_t nt, const double dt,
 				       std::vector<gsl_matrix *> *Mts,
 				       const size_t ntSpinup)
 {
-  size_t nSamp = (size_t) ((nt - ntSpinup) + 0.1 + 1);
-  gsl_matrix *stepMat = gsl_matrix_alloc(dim, dim);
-  gsl_vector_view colInit, colFinal;
+  size_t ntSamp = (size_t) (nt - ntSpinup);
+  gsl_vector_view initView;
 
   // Resize Mts vector to the right size
-  Mts->resize(nSamp);
+  Mts->resize(ntSamp + 1);
   
-  // Check if xt is of the right size.
-  if (xt && (((*xt)->size1 != nSamp) || ((*xt)->size2 != dim))) {
-    gsl_matrix_free(*xt);
-    *xt = gsl_matrix_alloc(nSamp, dim);
-  }
+  // Get state record
+  mod->integrate(nt, dt, ntSpinup, 1, xt);
+  
+  // Get M(r, T), for 0 <= r <= ntSamp
+  for (size_t r = 0; r <= ntSamp; r++) {
+    // Initialize at x(r): update model, Jacobian and set current to identity
+    initView = gsl_matrix_row(*xt, r);
 
-  // Get spinup
-  for (size_t i = 1; i <= ntSpinup; i++)
-    mod->stepForward(dt);
-  // Update the Jacobian after spinup and set current to identity
-  setCurrentState();
-  
-  // Save initial conditions
-  gsl_matrix_set_row(*xt, 0, mod->current);
-  Mts->at(0) = gsl_matrix_alloc(dim, dim);
-  gsl_matrix_set_identity(Mts->at(0)); // Should be the same as current
-  
-  // Get record
-  for (size_t r = 1; r < nSamp; r++) {
-    // Initialize fundamental matrix Mtr
+    // Integrate from r to T
+    integrate(&initView.vector, ntSamp - r, dt);
+
+    // Save M(r, T)
     Mts->at(r) = gsl_matrix_alloc(dim, dim);
-    gsl_matrix_set_identity(Mts->at(r));
-    
-    // Get matrix of stepMat r * dt
-    for (size_t d = 0; d < dim; d++) {
-      // Get matrix column
-      colInit = gsl_matrix_column(current, d); 
-
-      // Apply numerical scheme to current matrix
-      colFinal = scheme->getStep(Jacobian, &colInit.vector, dt);
-
-      // Set stepMat matrix
-      colInit = gsl_matrix_column(stepMat, d);
-      gsl_vector_memcpy(&colInit.vector, &colFinal.vector);
-    }
-
-    // Add step matrix to Mttau with tau < r
-    for (size_t tau = 0; tau < r; tau++)
-      gsl_matrix_add(Mts->at(tau), stepMat);
-
-    // Step the current state forward
-    mod->stepForward(dt);
-    
-    // Step to current fundamental matrix forward
-    gsl_matrix_add(current, stepMat);
-
-    // Update the Jacobian with the full model current state
-    Jacobian->setMatrix(mod->current);
-
-    // Save state
-    gsl_matrix_set_row(*xt, r, mod->current);
+    getCurrentState(Mts->at(r));
   }
-
-  // Free
-  gsl_matrix_free(stepMat);
-
-  return;
-}
-
-
-void
-fundamentalMatrixModel::integrateRange(const size_t nt, const double dt,
-				       gsl_matrix **xt,
-				       std::vector<gsl_matrix *> *Mts,
-				       const size_t ntSpinup)
-{
-  size_t nSamp = (size_t) ((nt - ntSpinup) + 0.1 + 1);
-  gsl_matrix *stepMat = gsl_matrix_alloc(dim, dim);
-  gsl_vector_view colInit, colFinal;
-
-  // Resize Mts vector to the right size
-  Mts->resize(nSamp);
-  
-  // Check if xt is of the right size.
-  if (xt && (((*xt)->size1 != nSamp) || ((*xt)->size2 != dim))) {
-    gsl_matrix_free(*xt);
-    *xt = gsl_matrix_alloc(nSamp, dim);
-  }
-
-  // Get spinup
-  for (size_t i = 1; i <= ntSpinup; i++)
-    mod->stepForward(dt);
-  // Update the Jacobian after spinup and set current to identity
-  setCurrentState();
-  
-  // Save initial conditions
-  gsl_matrix_set_row(*xt, 0, mod->current);
-  Mts->at(0) = gsl_matrix_alloc(dim, dim);
-  gsl_matrix_set_identity(Mts->at(0)); // Should be the same as current
-  
-  // Get record
-  for (size_t r = 1; r < nSamp; r++) {
-    // Initialize fundamental matrix Mtr
-    Mts->at(r) = gsl_matrix_alloc(dim, dim);
-    gsl_matrix_set_identity(Mts->at(r));
-    
-    // Get matrix of stepMat r * dt
-    for (size_t d = 0; d < dim; d++) {
-      // Get matrix column
-      colInit = gsl_matrix_column(current, d); 
-
-      // Apply numerical scheme to current matrix
-      colFinal = scheme->getStep(Jacobian, &colInit.vector, dt);
-
-      // Set stepMat matrix
-      colInit = gsl_matrix_column(stepMat, d);
-      gsl_vector_memcpy(&colInit.vector, &colFinal.vector);
-    }
-
-    // Add step matrix to Mttau with tau < r
-    for (size_t tau = 0; tau < r; tau++)
-      gsl_matrix_add(Mts->at(tau), stepMat);
-
-    // Step the current state forward
-    mod->stepForward(dt);
-    
-    // Step to current fundamental matrix forward
-    gsl_matrix_add(current, stepMat);
-
-    // Update the Jacobian with the full model current state
-    Jacobian->setMatrix(mod->current);
-
-    // Save state
-    gsl_matrix_set_row(*xt, r, mod->current);
-  }
-
-  // Free
-  gsl_matrix_free(stepMat);
 
   return;
 }

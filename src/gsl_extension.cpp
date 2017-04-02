@@ -505,8 +505,12 @@ gsl_vector_complex_get_inner_product(const gsl_vector_complex *v,
   gsl_complex inner = gsl_complex_rect(0., 0.);
   gsl_complex tmp;
 
-  if ((v->size != w->size) || (v->size != mu->size))
-    {
+  if (v->size != w->size) {
+      fprintf(stderr, "Vectors and measure should have the same size.\n");
+      return inner;
+    }
+  if (mu)
+    if (v->size != mu->size) {
       fprintf(stderr, "Vectors and measure should have the same size.\n");
       return inner;
     }
@@ -516,7 +520,8 @@ gsl_vector_complex_get_inner_product(const gsl_vector_complex *v,
     {
       //! Get product i
       tmp = gsl_vector_complex_get(v, i);
-      tmp = gsl_complex_mul_real(tmp, gsl_vector_get(mu, i));
+      if (mu)
+	tmp = gsl_complex_mul_real(tmp, gsl_vector_get(mu, i));
       tmp = gsl_complex_mul(tmp, gsl_complex_conjugate(gsl_vector_complex_get(w, i)));
 
       //! Add product i	
@@ -539,8 +544,9 @@ gsl_vector_complex_get_norm(const gsl_vector_complex *v, const gsl_vector *mu)
   gsl_complex norm;
   gsl_vector_complex *w;
 
-  if (v->size != mu->size)
-    GSL_ERROR("Vector and measure should have the same size.", GSL_EINVAL);
+  if (mu)
+    if (v->size != mu->size)
+      GSL_ERROR("Vector and measure should have the same size.", GSL_EINVAL);
 
   //! Copy vector
   w = gsl_vector_complex_alloc(v->size);

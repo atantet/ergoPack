@@ -71,8 +71,8 @@ public:
   { A = gsl_matrix_alloc(dim_, dim_); }
 
   /** \brief Construction by allocating matrix of the linear operator. */
-  linearField(const size_t dim, const param *p_) : vectorField(p_)
-  { A = gsl_matrix_alloc(dim, dim); }
+  linearField(const size_t dim_, const param *p_) : vectorField(p_)
+  { A = gsl_matrix_alloc(dim_, dim_); }
 
   /** \brief Construction by copying the matrix of the linear operator. */
   linearField(const gsl_matrix *A_) : vectorField()
@@ -217,9 +217,9 @@ class model {
   
 protected:
   const size_t dim;                 //!< Phase space dimension
-  vectorField * const field;               //!< Vector field
   
 public:
+  vectorField * const field;               //!< Vector field
   numericalScheme * const scheme;          //!< Numerical scheme
   gsl_vector *current;              //!< Current state
   
@@ -332,21 +332,20 @@ public:
 
   /** \brief Integrate full and linear model for a number of time steps
    *  from the current state. */
-  void integrate(const size_t, const double);
+  void integrate(const size_t nt, const double dt);
   
   /** \brief Integrate full and linearized model for a given period. 
    *  from the current state. */
-  void integrate(const double, const double);
+  void integrate(const double length, const double dt);
   
   /** \brief Integrate full and linear model for a number of time steps
    *  from a given initial state. */
-  void integrate(const gsl_vector *, const gsl_matrix *,
-		 const size_t, const double);
+  void integrate(const gsl_vector *, const size_t nt, const double dt);
   
   /** \brief Integrate full and linearized model for a given period. 
    *  from a given initial state. */
-  void integrate(const gsl_vector *, const gsl_matrix *,
-		 const double, const double);
+  void integrate(const gsl_vector *init, const double length,
+		 const double dt);
 
   /** \brief Get the fundamental matrices Mts for s between 0 and t. */
   void integrateRange(const size_t nt, const double dt, gsl_matrix **xt,

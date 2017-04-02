@@ -42,5 +42,9 @@
 # Ignore documentation folder
 html/
 
+# Ignore images
+*.png
+*.eps
+
 # Ignore results folder
 results/
