@@ -53,7 +53,7 @@ by copying the source files to your include directory $INCLUDE:
     cd $GITDIR
     git clone https://github.com/m-reuter/arpackpp
     mkdir $INCLUDE/arpack++
-    cp arpackpp/include/* $INCLUDE/arpack++/
+    cp arpackpp/include/\* $INCLUDE/arpack++/
     
 [ARPACK++] depends at least on [BLAS] and [ARPACK]. If not installed yet,
 they can be compiled from the [arpackpp] directory

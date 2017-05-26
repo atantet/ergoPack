@@ -8,6 +8,7 @@
 #include <gsl/gsl_matrix.h>
 #include <libconfig.h++>
 #include <ODESolvers.hpp>
+#include <ODEFields.hpp>
 #include "../cfg/readConfig.hpp"
 
 using namespace libconfig;
@@ -35,26 +36,51 @@ int main(int argc, char * argv[])
   char postfix[256], dstFileName[256];
 
   // Read configuration file
-  if (argc < 2)
-    {
-      std::cout << "Enter path to configuration file:" << std::endl;
-      std::cin >> configFileName;
-    }
+  if (argc < 2) {
+    std::cout << "Enter path to configuration file:" << std::endl;
+    std::cin >> configFileName;
+  }
   else
-    {
-      strcpy(configFileName, argv[1]);
-    }
-  try
-   {
-     readConfig(configFileName);
-    }
-  catch (...)
-    {
-      std::cerr << "Error reading configuration file" << std::endl;
-      return(EXIT_FAILURE);
-    }
+    strcpy(configFileName, argv[1]);
+  try {
+    Config cfg;
+    std::cout << "Sparsing config file " << configFileName << std::endl;
+    cfg.readFile(configFileName);
+    readGeneral(&cfg);
+    readModel(&cfg);
+    readSimulation(&cfg);
+    readSprinkle(&cfg);
+    std::cout << "Sparsing success.\n" << std::endl;
+  }
+  catch(const SettingTypeException &ex) {
+    std::cerr << "Setting " << ex.getPath() << " type exception."
+	      << std::endl;
+    throw ex;
+  }
+  catch(const SettingNotFoundException &ex) {
+    std::cerr << "Setting " << ex.getPath() << " not found." << std::endl;
+    throw ex;
+  }
+  catch(const SettingNameException &ex) {
+    std::cerr << "Setting " << ex.getPath() << " name exception."
+	      << std::endl;
+    throw ex;
+  }
+  catch(const ParseException &ex) {
+    std::cerr << "Parse error at " << ex.getFile() << ":" << ex.getLine()
+              << " - " << ex.getError() << std::endl;
+    throw ex;
+  }
+  catch(const FileIOException &ex) {
+    std::cerr << "I/O error while reading configuration file." << std::endl;
+    throw ex;
+  }
+  catch (...) {
+    std::cerr << "Error reading configuration file" << std::endl;
+    return(EXIT_FAILURE);
+  }
 
-  // Open destination ile
+  // Open destination file
   // Define names and open destination file
   sprintf(dstFileName, "%s/simulation/sim%s.%s", resDir, postfix, fileFormat);
   if (!(dstStream = fopen(dstFileName, "w")))
@@ -66,19 +92,20 @@ int main(int argc, char * argv[])
 
   // Define field
   std::cout << "Defining deterministic vector field..." << std::endl;
-  vectorField *field = new Lorenz63(rho, sigma, beta);
+  vectorField *field = new Lorenz63(&p);
 
   // Define numerical scheme
   std::cout << "Defining deterministic numerical scheme..." << std::endl;
-  numericalScheme *scheme = new RungeKutta4(dim, dt);
+  numericalScheme *scheme = new RungeKutta4(dim);
 
   // Define model
   std::cout << "Defining deterministic model..." << std::endl;
-  model *mod = new model(field, scheme, initState);
+  model *mod = new model(field, scheme);
   
   // Numerical integration
   printf("Integrating simulation...\n");
-  X = mod->integrateForward(L, spinup, printStepNum);
+  X = gsl_matrix_alloc(1, 1); // Fake allocation
+  mod->integrate(initState, L, dt, spinup, printStepNum, &X);
 
   // Write results
   printf("Writing...\n");

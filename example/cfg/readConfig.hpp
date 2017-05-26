@@ -20,10 +20,12 @@ using namespace libconfig;
 // Configuration variables
 extern char resDir[256];               //!< Root directory in which results are written
 extern char caseName[256];             //!< Name of the case to simulate 
-extern param p;                        //!< Model adimensional parameters
 extern char fileFormat[256];          //!< File format of output ("txt" or "bin")
 extern char delayName[256];            //!< Name associated with the number and values of the delays
 extern int dim;                        //!< Dimension of the phase space
+extern param p;                        //!< Model adimensional parameters
+extern gsl_matrix *A;                  //!< Drift matrix of OU
+extern gsl_matrix *Q;                  //!< Diffusion matrix of OU
 extern gsl_vector *initState;          //!< Initial state for simulation
 extern double LCut;                    //!< Length of the time series without spinup
 extern double spinup;                  //!< Length of initial spinup period to remove

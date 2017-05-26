@@ -1,6 +1,6 @@
-INCDIR=
-LIBDIR=$(HOME)/PhD/dev/lib/
-LIBS=-lgsl -lconfig++ -lergopack -lgomp
+INCDIR=-I$(HOME)/local/include/
+LIBDIR=-L$(HOME)/local/lib/
+LIBS=-lgsl -lgslcblas -lconfig++ -lergopack -lgomp
 CONFIG=../cfg/readConfig
 
 CC=g++
@@ -12,9 +12,9 @@ LDFLAGSGDB=$(LDFLAGSSTD) -gdb
 LDFLAGS=$(LDFLAGSSTD)
 #LDFLAGS=$(LDFLAGSGDB)
 
-#EXE=simOU
+EXE=simOU
 #EXE=simSDDE
-EXE=simLorenz63
+#EXE=simLorenz63
 
 all:$(EXE).out
 
@@ -25,7 +25,7 @@ $(CONFIG).o:$(CONFIG).cpp
 	$(CC) -c $(CFLAGS) $(INCDIR) -o $@ $<
 
 $(EXE).out:$(EXE).o $(CONFIG).o
-	$(CC) $(LDFLAGS) -o $@ $^ -L$(LIBDIR) $(LIBS)
+	$(CC) $(LDFLAGS) -o $@ $^ $(LIBDIR) $(LIBS)
 
 clean:
 	rm -f $(EXE).o $(EXE).out

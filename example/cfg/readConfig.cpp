@@ -1,3 +1,4 @@
+#include <gsl/gsl_matrix.h>
 #include "../cfg/readConfig.hpp"
 
 // Configuration variables
@@ -7,6 +8,8 @@ char fileFormat[256];          //!< File format of output ("txt" or "bin")
 char delayName[256];            //!< Name associated with the number and values of the delays
 int dim;                        //!< Dimension of the phase space
 param p;                        //!< Model adimensional parameters
+gsl_matrix *A;                  //!< Drift matrix of OU
+gsl_matrix *Q;                  //!< Diffusion matrix of OU
 gsl_vector *initState;          //!< Initial state for simulation
 double LCut;                    //!< Length of the time series without spinup
 double spinup;                  //!< Length of initial spinup period to remove
@@ -117,6 +120,35 @@ readModel(const Config *cfg)
 	std::cout << "rho = " << p["rho"] << std::endl;
 	std::cout << "sigma = " << p["sigma"] << std::endl;
 	std::cout << "beta = " << p["beta"] << std::endl;
+      }
+      else if (!strcmp(caseName, "OU_2d")) {
+	// Get linear drift and diffusion of OU
+	A = gsl_matrix_alloc(dim, dim);
+	const Setting &driftSetting = cfg->lookup("model.drift");
+	std::cout << "Linear drift matrix A = [";
+	for (size_t i = 0; i < (size_t) dim; i++) {
+	  std::cout << "[";
+	  for (size_t j = 0; j < (size_t) dim; j++) {
+	    gsl_matrix_set(A, i, j, driftSetting[j + i * dim]);
+	    std::cout << gsl_matrix_get(A, i, j) << " ";
+	  }
+	  std::cout << "]";
+	}
+	std::cout << "]" << std::endl;
+
+	// Get name of diffusion and its read matrix from file
+	Q = gsl_matrix_alloc(dim, dim);
+	const Setting &diffusionSetting = cfg->lookup("model.diffusion");
+	std::cout << "Diffusion matrix Q = [";
+	for (size_t i = 0; i < (size_t) dim; i++) {
+	  std::cout << "[";
+	  for (size_t j = 0; j < (size_t) dim; j++) {
+	    gsl_matrix_set(Q, i, j, diffusionSetting[j + i * dim]);
+	    std::cout << gsl_matrix_get(Q, i, j) << " ";
+	  }
+	  std::cout << "]";
+	}
+	std::cout << "]" << std::endl;
       }
       else if (!strcmp(caseName, "Hopf")) {
 	p["mu"] = cfg->lookup("model.mu");
