@@ -5,3 +5,5 @@
 /** \defgroup grid Gridding */
 
 /** \defgroup examples Examples */
+
+/** \defgroup continuation Continuation */
