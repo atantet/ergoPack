@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['regulargrid',['RegularGrid',['../class_regular_grid.html',1,'']]],
-  ['rungekutta4',['RungeKutta4',['../class_runge_kutta4.html',1,'']]]
+  ['numericalscheme',['numericalScheme',['../classnumerical_scheme.html',1,'']]],
+  ['numericalschemebase',['numericalSchemeBase',['../classnumerical_scheme_base.html',1,'']]],
+  ['numericalschemesdde',['numericalSchemeSDDE',['../classnumerical_scheme_s_d_d_e.html',1,'']]],
+  ['numericalschemestochastic',['numericalSchemeStochastic',['../classnumerical_scheme_stochastic.html',1,'']]]
 ];

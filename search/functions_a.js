@@ -1,12 +1,13 @@
 var searchData=
 [
-  ['pitchforkfield',['pitchforkField',['../classpitchfork_field.html#acb957754a9f04a898ca4df416ecb5065',1,'pitchforkField']]],
-  ['pitchforksubfield',['pitchforkSubField',['../classpitchfork_sub_field.html#ad226bfe08f631a89946902b6497cb909',1,'pitchforkSubField']]],
-  ['polynomial1d',['polynomial1D',['../classpolynomial1_d.html#a48c89af43316274ec445d143ee11753f',1,'polynomial1D::polynomial1D(const size_t degree_)'],['../classpolynomial1_d.html#a917253492a0402cd33160608c3498985',1,'polynomial1D::polynomial1D(const gsl_vector *coeff_)']]],
-  ['printbackwardtransition',['printBackwardTransition',['../classtransfer_operator.html#a06c7e171719e06f3556bacb9a601240e',1,'transferOperator']]],
-  ['printfinaldist',['printFinalDist',['../classtransfer_operator.html#a5291199e573b9d00a6f9db137b3655f3',1,'transferOperator']]],
-  ['printforwardtransition',['printForwardTransition',['../classtransfer_operator.html#afadf909cb4ac156f5f27431979538e07',1,'transferOperator']]],
-  ['printgrid',['printGrid',['../class_grid.html#a0ef5b89c66cf315b880111ec9d1bf1bf',1,'Grid::printGrid()'],['../class_regular_grid.html#a45a6a64234333f421008876748c4dcdc',1,'RegularGrid::printGrid()']]],
-  ['printinitdist',['printInitDist',['../classtransfer_operator.html#ac8ad7df12b54873d3600ad576cc5c53c',1,'transferOperator']]],
-  ['printmask',['printMask',['../classtransfer_operator.html#a6ff5b5c1ae6636b4f1110c366a55b67e',1,'transferOperator']]]
+  ['main',['main',['../sim_lorenz63_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;simLorenz63.cpp'],['../sim_o_u_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;simOU.cpp'],['../sim_s_d_d_e_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;simSDDE.cpp'],['../transfer_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;transfer.cpp'],['../spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;spectrum.cpp']]],
+  ['makebiorthonormal',['makeBiorthonormal',['../classtransfer_spectrum.html#a2f842bdef9c421af44aa2202111a728c',1,'transferSpectrum']]],
+  ['memvector2memmatrix',['memVector2memMatrix',['../group__grid.html#ga16e31c83e10ee645b1defa1e39a7bd4e',1,'memVector2memMatrix(const gsl_vector_uint *gridMemVect, size_t tauStep):&#160;ergoGrid.cpp'],['../group__grid.html#ga16e31c83e10ee645b1defa1e39a7bd4e',1,'memVector2memMatrix(const gsl_vector_uint *gridMemVect, size_t tauStep):&#160;ergoGrid.cpp']]],
+  ['memvectorlist2memmatrix',['memVectorList2memMatrix',['../group__grid.html#gac17e4618b1553c5bd37a0420310c68cc',1,'memVectorList2memMatrix(const std::vector&lt; gsl_vector_uint *&gt; *memList, size_t tauStep):&#160;ergoGrid.cpp'],['../group__grid.html#gac17e4618b1553c5bd37a0420310c68cc',1,'memVectorList2memMatrix(const std::vector&lt; gsl_vector_uint *&gt; *memList, size_t tauStep):&#160;ergoGrid.cpp']]],
+  ['model',['model',['../classmodel.html#a1a9463870c66c88037a07ce392cbe61b',1,'model']]],
+  ['modelbase',['modelBase',['../classmodel_base.html#ad3844a7f8320105efe3772ff8d0e7d2e',1,'modelBase']]],
+  ['modelsdde',['modelSDDE',['../classmodel_s_d_d_e.html#a1988780f5375e2ffbe7f7478fd8a9d31',1,'modelSDDE::modelSDDE(vectorFieldDelay *delayedField_, vectorFieldStochastic *stocField_, numericalSchemeSDDE *scheme_)'],['../classmodel_s_d_d_e.html#ac9a58fdb5bf6f5ae1f2682470ddcf207',1,'modelSDDE::modelSDDE(vectorFieldDelay *delayedField_, vectorFieldStochastic *stocField_, numericalSchemeSDDE *scheme_, gsl_vector *initStateCst)'],['../classmodel_s_d_d_e.html#ab3f177e897e9830ccde63f1e452a416a',1,'modelSDDE::modelSDDE(vectorFieldDelay *delayedField_, vectorFieldStochastic *stocField_, numericalSchemeSDDE *scheme_, gsl_matrix *initState)']]],
+  ['modelstochastic',['modelStochastic',['../classmodel_stochastic.html#a3e4dcca60c3ed9118289d733996a5874',1,'modelStochastic']]],
+  ['multiplicativelinearwiener',['multiplicativeLinearWiener',['../classmultiplicative_linear_wiener.html#a4f3f01c440dce9b14d7cad0b4c8d9765',1,'multiplicativeLinearWiener']]],
+  ['multmv',['MultMv',['../classgsl__spmatrix2_a_r.html#a295ae2404c9871c3eab2ce88362a3127',1,'gsl_spmatrix2AR']]]
 ];

@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['pitchforkfield',['pitchforkField',['../classpitchfork_field.html',1,'']]],
-  ['pitchforksubfield',['pitchforkSubField',['../classpitchfork_sub_field.html',1,'']]],
-  ['polynomial1d',['polynomial1D',['../classpolynomial1_d.html',1,'']]]
+  ['model',['model',['../classmodel.html',1,'']]],
+  ['modelbase',['modelBase',['../classmodel_base.html',1,'']]],
+  ['modelsdde',['modelSDDE',['../classmodel_s_d_d_e.html',1,'']]],
+  ['modelstochastic',['modelStochastic',['../classmodel_stochastic.html',1,'']]],
+  ['multiplicativelinearwiener',['multiplicativeLinearWiener',['../classmultiplicative_linear_wiener.html',1,'']]]
 ];

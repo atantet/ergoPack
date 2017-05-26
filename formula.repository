@@ -24,3 +24,19 @@
 \form#23:$\psi_i^*$
 \form#24:$ w_i = \left<f, \psi_k^* \right>_{\rho_0} \left<\psi_k, g \right>_{\rho_f} $
 \form#25:$ mu $
+\form#26:$\rho$
+\form#27:$ x $
+\form#28:$ J(x) $
+\form#29:$ x - \phi_T(x) $
+\form#30:$ x(s), lambda $
+\form#31:$ x(s) $
+\form#32:$ x(0) $
+\form#33:$\int_0^T M(T, r) * Q(r) * M(T, r).T dt $
+\form#34:$ M(t, s) $
+\form#35:$ Q(s), 0 <= s < nt $
+\form#36:$ T = nt * dt $
+\form#37:$ C(T, 0) $
+\form#38:$ Q(s), 0 \le s < nt $
+\form#39:$ T = nt dt $
+\form#40:$ F_1(x) = (\mu - (x^2 + y^2)) x - (gamma - \beta (x^2 +y^2)) y $
+\form#41:$ F_2(x) = (gamma - \beta (x^2 +y^2)) x + (\mu - (x^2 + y^2)) y $

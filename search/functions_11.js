@@ -1,27 +1,6 @@
 var searchData=
 [
-  ['_7eadditivewiener',['~additiveWiener',['../classadditive_wiener.html#ad7acc18bdbb1f35cc98a1d4df66b3a51',1,'additiveWiener']]],
-  ['_7ecodim1field',['~codim1Field',['../classcodim1_field.html#ac590c2beedcc49f16d9e26f8b7f1cc57',1,'codim1Field']]],
-  ['_7ecurvilineargrid',['~CurvilinearGrid',['../class_curvilinear_grid.html#ab3e32ac4de956bebafc30247477732f1',1,'CurvilinearGrid']]],
-  ['_7ecuspfield',['~cuspField',['../classcusp_field.html#a953bb14b57b617c576189afdd9f0fbea',1,'cuspField']]],
-  ['_7eeuler',['~Euler',['../class_euler.html#afb4b1de4e7735cef3237340a589da6fe',1,'Euler']]],
-  ['_7eeulermaruyama',['~EulerMaruyama',['../class_euler_maruyama.html#a5479f7255531d10bcded3efb7e572d2c',1,'EulerMaruyama']]],
-  ['_7eeulermaruyamasdde',['~EulerMaruyamaSDDE',['../class_euler_maruyama_s_d_d_e.html#ad040be4e244618caf588f5ac04e5e7af',1,'EulerMaruyamaSDDE']]],
-  ['_7egrid',['~Grid',['../class_grid.html#a241c623291936ddbf4f670a796523a91',1,'Grid']]],
-  ['_7elinearfield',['~linearField',['../classlinear_field.html#aabcc9ee4d69e25d1d82460fdc21e6b8e',1,'linearField']]],
-  ['_7elorenz63',['~Lorenz63',['../class_lorenz63.html#a598959cfc79572c3cb6e914bda4f09c9',1,'Lorenz63']]],
-  ['_7emodel',['~model',['../classmodel.html#a23a7dbff52aedc7c5fbd1c81d419688f',1,'model']]],
-  ['_7emodelsdde',['~modelSDDE',['../classmodel_s_d_d_e.html#ad4c4b5d93ed0b5b6708253651239ea47',1,'modelSDDE']]],
-  ['_7emodelstochastic',['~modelStochastic',['../classmodel_stochastic.html#a3dcd73e0eb97142b655c436398e40d21',1,'modelStochastic']]],
-  ['_7emultiplicativelinearwiener',['~multiplicativeLinearWiener',['../classmultiplicative_linear_wiener.html#ac8e656216656a0d4a0de9470ef8d259f',1,'multiplicativeLinearWiener']]],
-  ['_7enumericalscheme',['~numericalScheme',['../classnumerical_scheme.html#a9971b661ae09e7711898863aba079f5c',1,'numericalScheme']]],
-  ['_7enumericalschemesdde',['~numericalSchemeSDDE',['../classnumerical_scheme_s_d_d_e.html#aabb60044ee711950b6b87fb35bb2a161',1,'numericalSchemeSDDE']]],
-  ['_7enumericalschemestochastic',['~numericalSchemeStochastic',['../classnumerical_scheme_stochastic.html#a62a9fe91c0dc56ba99e2fc7b1de60ab2',1,'numericalSchemeStochastic']]],
-  ['_7epolynomial1d',['~polynomial1D',['../classpolynomial1_d.html#ab03a0f5208896980b03e7ccef614370b',1,'polynomial1D']]],
-  ['_7eregulargrid',['~RegularGrid',['../class_regular_grid.html#a982cc3f6fc2a086d27f224b53117775b',1,'RegularGrid']]],
-  ['_7etransferoperator',['~transferOperator',['../classtransfer_operator.html#ab439c74c7b875253c4dd86c95b88aeda',1,'transferOperator']]],
-  ['_7etransferspectrum',['~transferSpectrum',['../classtransfer_spectrum.html#a883a1f9c8045f4e7f20fec6a6954b06f',1,'transferSpectrum']]],
-  ['_7evectorfield',['~vectorField',['../classvector_field.html#a792eda0e2d57b1b07ade8876f918c1ac',1,'vectorField']]],
-  ['_7evectorfielddelay',['~vectorFieldDelay',['../classvector_field_delay.html#a9ca3519c56e0da1672ccf50f96dc9245',1,'vectorFieldDelay']]],
-  ['_7evectorfieldstochastic',['~vectorFieldStochastic',['../classvector_field_stochastic.html#aea045e673f4f258dd8dae2131cfe54f8',1,'vectorFieldStochastic']]]
+  ['unravel_5findex',['unravel_index',['../group__grid.html#ga0f138121f22ba7f274c98eb62b63dbe0',1,'unravel_index(const size_t flatIdx, const gsl_vector_uint *nx, gsl_vector_uint *multiIdx):&#160;ergoGrid.cpp'],['../group__grid.html#ga0f138121f22ba7f274c98eb62b63dbe0',1,'unravel_index(const size_t flatIdx, const gsl_vector_uint *nx, gsl_vector_uint *multiIdx):&#160;ergoGrid.cpp']]],
+  ['updatehistoric',['updateHistoric',['../classnumerical_scheme_s_d_d_e.html#a6d110f2885aae2c9919322822ecc0766',1,'numericalSchemeSDDE']]],
+  ['updatetargetcorr',['updateTargetCorr',['../classsolution_correction.html#ad282f74dbe82b5fa06f7c611a0f3e869',1,'solutionCorrection::updateTargetCorr()'],['../classfixed_point_track.html#a32a2738878914b090727a25ec73e3f3d',1,'fixedPointTrack::updateTargetCorr()'],['../classfixed_point_corr.html#abaff7cf501d431296a3ac941e132a304',1,'fixedPointCorr::updateTargetCorr()'],['../classfixed_point_cont.html#a54d1a7da7cdead7a27a2e53b86cb312b',1,'fixedPointCont::updateTargetCorr()'],['../classperiodic_orbit_track.html#a55b33078877807ecdfdd1a8b3bcaede7',1,'periodicOrbitTrack::updateTargetCorr()'],['../classperiodic_orbit_corr.html#a95790a2ff359d3cc5cb9c21285073c30',1,'periodicOrbitCorr::updateTargetCorr()'],['../classperiodic_orbit_cont.html#ad637e45dda721858e4e6ddee1b5b51ba',1,'periodicOrbitCont::updateTargetCorr()']]]
 ];

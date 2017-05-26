@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['writespectrum',['writeSpectrum',['../classtransfer_spectrum.html#a0ed8c866222940f38a2dd8a96477903d',1,'transferSpectrum']]],
-  ['writespectrumar',['writeSpectrumAR',['../group__transfer.html#gae0a75653074e0be1ac12fa0598895141',1,'writeSpectrumAR(FILE *fEigVal, FILE *fEigVec, const gsl_vector_complex *EigVal, const gsl_matrix_complex *EigVec, const char *fileFormat):&#160;transferSpectrum.cpp'],['../group__transfer.html#gae0a75653074e0be1ac12fa0598895141',1,'writeSpectrumAR(FILE *fEigVal, FILE *fEigVec, const gsl_vector_complex *EigVal, const gsl_matrix_complex *EigVec, const char *fileFormat=&quot;txt&quot;):&#160;transferSpectrum.cpp']]],
-  ['writespectrumbackward',['writeSpectrumBackward',['../classtransfer_spectrum.html#a789355120316c8c72a576e3b8ad42282',1,'transferSpectrum']]],
-  ['writespectrumforward',['writeSpectrumForward',['../classtransfer_spectrum.html#a8ef7d51991d08d119b58e8208494f9df',1,'transferSpectrum']]]
+  ['transcriticalfield',['transcriticalField',['../classtranscritical_field.html#aa063d769a149b94c8615ad49b12a1160',1,'transcriticalField']]],
+  ['transferoperator',['transferOperator',['../classtransfer_operator.html#a756036c76da87ff3d267a7a03bb501be',1,'transferOperator::transferOperator(const size_t N_, const bool stationary_=false)'],['../classtransfer_operator.html#adeb42e1258ebf19fe2a7586a1dc39f7c',1,'transferOperator::transferOperator(const gsl_matrix_uint *gridMem, const size_t N_, const bool stationary_=false)'],['../classtransfer_operator.html#a86e78e43e40ad99486ab372b93098a44',1,'transferOperator::transferOperator(const gsl_matrix *initStates, const gsl_matrix *finalStates, const Grid *grid, const bool stationary_=false)'],['../classtransfer_operator.html#a1ff27bf98cdc9e6897d3a4c886e24dd8',1,'transferOperator::transferOperator(const gsl_matrix *states, const Grid *grid, size_t tauStep)']]],
+  ['transferspectrum',['transferSpectrum',['../classtransfer_spectrum.html#a71e47fd8292c69a1aa416c57077d72ba',1,'transferSpectrum']]]
 ];
