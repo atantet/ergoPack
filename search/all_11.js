@@ -32,7 +32,7 @@ var searchData=
   ['sort',['sort',['../classtransfer_spectrum.html#a2e816ffd6ac5e3d52c7ba25256b937b8',1,'transferSpectrum']]],
   ['sortspectrum',['sortSpectrum',['../_o_d_e_cont_8hpp.html#a2670d85892077493d2d09c2df1afd558',1,'sortSpectrum(gsl_vector_complex *eigValLeft, gsl_matrix_complex *eigVecLeft, gsl_vector_complex *eigValRight, gsl_matrix_complex *eigVecRight):&#160;ODECont.cpp'],['../_o_d_e_cont_8cpp.html#a2670d85892077493d2d09c2df1afd558',1,'sortSpectrum(gsl_vector_complex *eigValLeft, gsl_matrix_complex *eigVecLeft, gsl_vector_complex *eigValRight, gsl_matrix_complex *eigVecRight):&#160;ODECont.cpp']]],
   ['spectrum_2ecpp',['spectrum.cpp',['../spectrum_8cpp.html',1,'']]],
-  ['spinup',['spinup',['../sim_o_u_8cpp.html#a028c8dc840d3db4dfe62398e3f50c758',1,'spinup():&#160;simOU.cpp'],['../sim_s_d_d_e_8cpp.html#a028c8dc840d3db4dfe62398e3f50c758',1,'spinup():&#160;simSDDE.cpp'],['../read_config_8hpp.html#a028c8dc840d3db4dfe62398e3f50c758',1,'spinup():&#160;simOU.cpp']]],
+  ['spinup',['spinup',['../sim_s_d_d_e_8cpp.html#a028c8dc840d3db4dfe62398e3f50c758',1,'spinup():&#160;simSDDE.cpp'],['../read_config_8hpp.html#a028c8dc840d3db4dfe62398e3f50c758',1,'spinup():&#160;simSDDE.cpp']]],
   ['srcpostfix',['srcPostfix',['../read_config_8hpp.html#a7bbe0f3d8db56710bd15dd46f72e784b',1,'readConfig.hpp']]],
   ['stationary',['stationary',['../read_config_8hpp.html#a545e6f510b6127e8466e2cecdc837803',1,'readConfig.hpp']]],
   ['stepcorr',['stepCorr',['../classsolution_correction.html#a9a5d4bbc780469b2dc05aa6433cff404',1,'solutionCorrection']]],

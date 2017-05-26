@@ -1,7 +1,7 @@
 var searchData=
 [
   ['ravel_5fmulti_5findex',['ravel_multi_index',['../group__grid.html#ga182e35df6f455ef1e9245eac5de1b723',1,'ravel_multi_index(const gsl_vector_uint *multiIdx, const gsl_vector_uint *nx):&#160;ergoGrid.cpp'],['../group__grid.html#ga182e35df6f455ef1e9245eac5de1b723',1,'ravel_multi_index(const gsl_vector_uint *multiIdx, const gsl_vector_uint *nx):&#160;ergoGrid.cpp']]],
-  ['readconfig',['readConfig',['../sim_o_u_8cpp.html#aa010785ea3444039793b472da019f4d6',1,'readConfig(const char *cfgFileName):&#160;simOU.cpp'],['../sim_s_d_d_e_8cpp.html#aa010785ea3444039793b472da019f4d6',1,'readConfig(const char *cfgFileName):&#160;simSDDE.cpp'],['../read_config_8hpp.html#aa010785ea3444039793b472da019f4d6',1,'readConfig(const char *cfgFileName):&#160;simOU.cpp']]],
+  ['readconfig',['readConfig',['../sim_s_d_d_e_8cpp.html#aa010785ea3444039793b472da019f4d6',1,'readConfig(const char *cfgFileName):&#160;simSDDE.cpp'],['../read_config_8hpp.html#aa010785ea3444039793b472da019f4d6',1,'readConfig(const char *cfgFileName):&#160;simSDDE.cpp']]],
   ['readcontinuation',['readContinuation',['../read_config_8hpp.html#a61aa699737cd72aeb31bb1bc81c5b001',1,'readConfig.hpp']]],
   ['readgeneral',['readGeneral',['../read_config_8hpp.html#a79aef88575b32c75f8721e96cb71550c',1,'readConfig.hpp']]],
   ['readgrid',['readGrid',['../read_config_8hpp.html#a231d9c1778e2c4741e567eccaad3e42a',1,'readConfig.hpp']]],
