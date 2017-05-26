@@ -76,7 +76,7 @@ public:
   }
 
   /** \brief Virtual method for evaluating the vector field at a given state. */
-  virtual void evalField(gsl_vector *state, gsl_vector *field) = 0;
+  virtual void evalField(const gsl_vector *state, gsl_vector *field) = 0;
 };
 
 
@@ -106,10 +106,11 @@ public:
   void getParameters(gsl_matrix *Q_) { gsl_matrix_memcpy(Q_, Q); return; }
 
   /** \brief Set parameters of the model. */
-  void setParameters(const gsl_matrix *Q_) { gsl_matrix_memcpy(Q, Q_); return; }
+  void setParameters(const gsl_matrix *Q_)
+  { gsl_matrix_memcpy(Q, Q_); return; }
 
   /** \brief Evaluate the linear vector field at a given state. */
-  void evalField(gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field);
 };
 
 
@@ -137,7 +138,7 @@ public:
   void setParameters(const gsl_matrix *Q_) { gsl_matrix_memcpy(Q, Q_); return; }
 
   /** \brief Evaluate the linear vector field at a given state. */
-  void evalField(gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field);
 };
 
 
@@ -145,35 +146,23 @@ public:
  *
  *  Abstract stochastic numerical scheme class.
  */
-class numericalSchemeStochastic {
-protected:
-  const size_t dim;      //!< Dimension of the phase space
-  const size_t dimWork;  //!< Dimension of the workspace used to evaluate the field
-  double dt;             //!< Time step of integration.
-  gsl_matrix *work;      //!< Workspace used to evaluate the vector field
-  
+class numericalSchemeStochastic : public numericalSchemeBase {
 public:
-  /** \brief Constructor defining the dimensions, time step and allocating workspace. */
-  numericalSchemeStochastic(const size_t dim_, const size_t dimWork_, const double dt_)
-    : dim(dim_), dimWork(dimWork_), dt(dt_)
-  { work = gsl_matrix_alloc(dimWork, dim); }
+  /** \brief Constructor initializing dimensions and allocating. */
+  numericalSchemeStochastic(const size_t dim_, const size_t dimWork_)
+    : numericalSchemeBase(dim_, dimWork_) {}
   
   /** \brief Destructor freeing workspace. */
-  virtual ~numericalSchemeStochastic() { gsl_matrix_free(work); }
+  virtual ~numericalSchemeStochastic() { }
 
-  /** \brief Dimension access method. */
-  size_t getDim() { return dim; }
-  
-  /** \brief Return the time step used for the integration. */
-  double getTimeStep() { return dt; }
+  /** \brief Integrate the model one step. */
+  void stepForward(vectorField *field, vectorFieldStochastic *stocField,
+		   gsl_vector *current, const double dt);
 
-  /** \brief Set or change the time step of integration. */
-  void setTimeStep(const double dt_) { dt = dt_; return; }
-
-  /** \brief Virtual method to integrate the stochastic model one step forward. */
-  virtual void stepForward(vectorField *field,
-			   vectorFieldStochastic *stocField,
-			   gsl_vector *current) = 0;
+  /** \brief Virtual method to integrate the stochastic model one step. */
+  virtual gsl_vector_view getStep(vectorField *field,
+				  vectorFieldStochastic *stocField,
+				  gsl_vector *current, const double dt) = 0;
 };
 
 
@@ -183,15 +172,16 @@ public:
 class EulerMaruyama : public numericalSchemeStochastic {
 public:
   /** \brief Constructor defining the dimensions, time step and allocating workspace. */
-  EulerMaruyama(const size_t dim_, const double dt_)
-    : numericalSchemeStochastic(dim_, 2, dt_) {}
+  EulerMaruyama(const size_t dim_)
+    : numericalSchemeStochastic(dim_, 2) {}
   
   /** \brief Destructor freeing workspace. */
   ~EulerMaruyama() {}
 
-  /** \brief Virtual method to integrate the stochastic model one step forward. */
-  void stepForward(vectorField *field, vectorFieldStochastic *stocField,
-		   gsl_vector *current);
+  /** \brief Virtual method to get one step of integration. */
+  gsl_vector_view getStep(vectorField *field,
+			  vectorFieldStochastic *stocField,
+			  gsl_vector *current, const double dt);
 };
 
 
@@ -205,42 +195,24 @@ public:
  *  and the numerical scheme given to them, so that
  *  any modification or freeing will affect the modelStochastic.
  */
-class modelStochastic {
-  
-protected:
-  const size_t dim;                  //!< Phase space dimension
-  vectorField *field;                //!< Vector field
-  vectorFieldStochastic *stocField;  //!< Stochastic vector field
-  numericalSchemeStochastic *scheme; //!< Numerical scheme
-  gsl_vector *current;          //!< Current state
+class modelStochastic : public modelBase {
   
 public:
+  vectorFieldStochastic *stocField;  //!< Stochastic vector field
+  numericalSchemeStochastic * const scheme;          //!< Numerical scheme
+  
   /** \brief Constructor assigning a vector field, a numerical scheme
    *  and a stochastic vector field and setting initial state to origin. */
   modelStochastic(vectorField *field_, vectorFieldStochastic *stocField_,
 		  numericalSchemeStochastic *scheme_)
-    : dim(scheme_->getDim()), field(field_), stocField(stocField_), scheme(scheme_)
-  { current = gsl_vector_calloc(dim); }
+    : modelBase(scheme_->getDim(), field_), stocField(stocField_),
+      scheme(scheme_) {}
 
-  /** \brief Constructor assigning a vector field, a numerical scheme
-   *  and a stochastic vector field and setting initial state. */
-  modelStochastic(vectorField *field_, vectorFieldStochastic *stocField_,
-		  numericalSchemeStochastic *scheme_, gsl_vector *initState)
-    : dim(scheme_->getDim()), field(field_), stocField(stocField_), scheme(scheme_)
-  {
-    current = gsl_vector_alloc(dim);
-    gsl_vector_memcpy(current, initState);
-  }
-
-  /** \brief Destructor freeing memory. */
-  ~modelStochastic() { gsl_vector_free(current); }
+  /** \brief Evaluate the vector field. */
+  void evalFieldStochastic(const gsl_vector *state, gsl_vector *vField);
 
   /** \brief One time-step forward integration of the modelStochastic. */
-  void stepForward();
-
-  /** \brief Integrate the modelStochastic forward for a given period. */
-  gsl_matrix *integrateForward(const double length, const double spinup,
-			       const size_t sampling);
+  void stepForward(const double dt);
 };
 
 

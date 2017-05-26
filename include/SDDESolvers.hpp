@@ -83,8 +83,8 @@ protected:
     
 public:
   /** \brief Constructor defining the dimensions, time step and allocating workspace. */
-  numericalSchemeSDDE(const size_t dim_, const size_t nDelays_, const size_t dimWork_,
-		      const double dt_)
+  numericalSchemeSDDE(const size_t dim_, const size_t nDelays_,
+		      const size_t dimWork_, const double dt_)
     : dim(dim_), nDelays(nDelays_), dimWork(dimWork_), dt(dt_)
   { work = gsl_matrix_alloc(dimWork, dim); }
   

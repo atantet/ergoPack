@@ -10,7 +10,7 @@
  */
 
 void
-additiveWiener::evalField(gsl_vector *state, gsl_vector *field)
+additiveWiener::evalField(const gsl_vector *state, gsl_vector *field)
 {
   // Get new noise realization
   stepForwardNoise();
@@ -23,7 +23,8 @@ additiveWiener::evalField(gsl_vector *state, gsl_vector *field)
 
 
 void
-multiplicativeLinearWiener::evalField(gsl_vector *state, gsl_vector *field)
+multiplicativeLinearWiener::evalField(const gsl_vector *state,
+				      gsl_vector *field)
 {
   // Get new noise realization
   stepForwardNoise();
@@ -43,32 +44,56 @@ multiplicativeLinearWiener::evalField(gsl_vector *state, gsl_vector *field)
  */
 
 /**
- * Integrate stochastically one step forward for a given vector field
- * and state using the Euler Maruyama scheme.
- * \param[in]     field        Vector field to evaluate.
- * \param[in]     stocField    Stochastic vector field to evaluate.
- * \param[in,out] current Current state to update by one time step.
+ * Integrate one step for a given vector field and state
+ * using the scheme.
+ * \param[in]     field     Vector field to evaluate.
+ * \param[in]     stocField Stochastic vector field to evaluate.
+ * \param[in,out] current   Current state to update by one time step.
+ * \param[in]     dt        Time step.
  */
 void
-EulerMaruyama::stepForward(vectorField *field, vectorFieldStochastic *stocField,
-			   gsl_vector *current)
+numericalSchemeStochastic::stepForward(vectorField *field,
+				       vectorFieldStochastic *stocField,
+				       gsl_vector *current,
+				       const double dt)
 {
-  gsl_vector_view tmp = gsl_matrix_row(work, 0);
+  gsl_vector_view tmp = getStep(field, stocField, current, dt);
+
+  // Add previous state
+  gsl_vector_add(current, &tmp.vector);
+
+  return;
+}
+
+
+/**
+ * Get one step of integration for a given vector field,
+ * stochastic vector field  and state using the Euler-Maruyama scheme.
+ * \param[in]     field     Vector field to evaluate.
+ * \param[in]     stocField Stochastic vector field to evaluate.
+ * \param[in,out] current   Current state to update by one time step.
+ * \param[in]     dt        Time step.
+ * \return                  A view on the step in the workspace.
+ */
+gsl_vector_view
+EulerMaruyama::getStep(vectorField *field, vectorFieldStochastic *stocField,
+		       gsl_vector *current, const double dt)
+{
+  gsl_vector_view tmp = gsl_matrix_row(work, 0); 
   gsl_vector_view tmp1 = gsl_matrix_row(work, 1);
 
-  // Evalueate fields
+  // Get vector field
   field->evalField(current, &tmp.vector);
   stocField->evalField(current, &tmp1.vector);
-
-  // Add drift
+  
+  // Get drift
   gsl_vector_scale(&tmp.vector, dt);
-  gsl_vector_add(current, &tmp.vector);
 
   // Add diffusion
   gsl_vector_scale(&tmp1.vector, sqrt(dt));
-  gsl_vector_add(current, &tmp1.vector);
+  gsl_vector_add(&tmp.vector, &tmp1.vector);
 
-  return;
+  return tmp;
 }
 
 
@@ -76,43 +101,26 @@ EulerMaruyama::stepForward(vectorField *field, vectorFieldStochastic *stocField,
  * Integrate one step forward the stochastic model with the numerical scheme.
  */
 void
-modelStochastic::stepForward()
+modelStochastic::stepForward(const double dt)
 {
   // Apply numerical scheme to step forward
-  scheme->stepForward(field, stocField, current);
+  scheme->stepForward(field, stocField, current, dt);
     
   return;
 }
 
 
 /**
- * Integrate the stochastic model forward for a given period.
- * \param[in]  length   Duration of the integration.
- * \param[in]  spinup   Initial integration period to remove.
- * \param[in]  sampling Time step at which to save states.
- * \return              Matrix to record the states.
+ * Evaluate the stochastic vector field.
+ * \param[in]  state State at which to evaluate the vector field.
+ * \param[out] vField Vector resulting from the evaluation of the vector field.
  */
-gsl_matrix *
-modelStochastic::integrateForward(const double length, const double spinup,
-			const size_t sampling)
+void modelStochastic::evalFieldStochastic(const gsl_vector *state,
+					  gsl_vector *vField)
 {
-  size_t nt = length / scheme->getTimeStep();
-  size_t ntSpinup = spinup / scheme->getTimeStep();
-  gsl_matrix *data = gsl_matrix_alloc((size_t) ((nt - ntSpinup) / sampling), dim);
+  stocField->evalField(state, vField);
 
-  // Get spinup
-  for (size_t i = 1; i <= ntSpinup; i++)
-    stepForward();
-  
-  // Get record
-  for (size_t i = ntSpinup+1; i <= nt; i++)
-    {
-      stepForward();
-
-      // Save state
-      if (i%sampling == 0)
-	gsl_matrix_set_row(data, (i - ntSpinup) / sampling - 1, current);
-    }
-
-  return data;
+  return;
 }
+
+

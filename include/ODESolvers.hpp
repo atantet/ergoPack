@@ -135,11 +135,12 @@ public:
 };
 
 
-/** \brief Abstract defining a deterministic numerical scheme.
+/** \brief Abstract base class defining a deterministic numerical scheme.
  *
- *  Abstract class defining a deterministic numerical scheme used to integrate the model.
+ *  Abstract base class defining a deterministic numerical scheme
+ *  used to integrate the model.
  */
-class numericalScheme {
+class numericalSchemeBase {
 
 protected:
   const size_t dim;      //!< Dimension of the phase space
@@ -148,16 +149,33 @@ protected:
 
 public:
   /** \brief Constructor initializing dimensions and allocating. */
-  numericalScheme(const size_t dim_, const size_t dimWork_)
+  numericalSchemeBase(const size_t dim_, const size_t dimWork_)
     : dim(dim_), dimWork(dimWork_)
   { work = gsl_matrix_alloc(dimWork, dim); }
   
   /** \brief Destructor freeing workspace. */
-  virtual ~numericalScheme() { gsl_matrix_free(work); }
+  virtual ~numericalSchemeBase() { gsl_matrix_free(work); }
 
   /** \brief Dimension access method. */
   size_t getDim() { return dim; }
+};
+
+
+/** \brief Abstract defining a deterministic numerical scheme.
+ *
+ *  Abstract class defining a deterministic numerical scheme
+ *  used to integrate the model.
+ */
+class numericalScheme : public numericalSchemeBase {
+
+public:
+  /** \brief Constructor initializing dimensions and allocating. */
+  numericalScheme(const size_t dim_, const size_t dimWork_)
+    : numericalSchemeBase(dim_, dimWork_) {}
   
+  /** \brief Destructor freeing workspace. */
+  virtual ~numericalScheme() { }
+
   /** \brief Integrate the model one step. */
   void stepForward(vectorField *field, gsl_vector *current,
 		   const double dt);
@@ -204,33 +222,26 @@ public:
 };
 
 
-/** \brief Numerical model class.
+/** \brief Numerical model base class.
  *
- *  Numerical model class.
- *  A model is defined by a vector field and a numerical scheme.
- *  The current state of the model is also recorded.
- *  Attention: the constructors do not copy the vector field
- *  and the numerical scheme given to them, so that
- *  any modification or freeing will affect the model.
+ *  Numerical model base class.
  */
-class model {
+class modelBase {
   
 protected:
   const size_t dim;                 //!< Phase space dimension
   
 public:
   vectorField * const field;               //!< Vector field
-  numericalScheme * const scheme;          //!< Numerical scheme
   gsl_vector *current;              //!< Current state
   
   /** \brief Constructor assigning a vector field, a numerical scheme
    *  and a state. */
-  model(vectorField *field_, numericalScheme *scheme_)
-    : dim(scheme_->getDim()), field(field_), scheme(scheme_)
+  modelBase(const size_t dim_, vectorField *field_) : dim(dim_), field(field_)
   { current = gsl_vector_alloc(dim); }
 
   /** \brief Destructor freeing memory. */
-  ~model() { gsl_vector_free(current); }
+  virtual ~modelBase() { gsl_vector_free(current); }
 
   /** \brief Get dimension. */
   size_t getDim(){ return dim; }
@@ -245,7 +256,7 @@ public:
   void evalField(const gsl_vector *state, gsl_vector *vField);
 
   /** \brief One time-step integration of the model. */
-  void stepForward(const double dt);
+  virtual void stepForward(const double dt) = 0;
 
   /** \brief Integrate the model for a given number of time steps
    *  from the current state. */
@@ -266,6 +277,32 @@ public:
 		 const double dt, const double spinup=0,
 		 const size_t sampling=1, gsl_matrix **data=NULL);
 
+};
+
+/** \brief Numerical model class.
+ *
+ *  Numerical model class.
+ *  A model is defined by a vector field and a numerical scheme.
+ *  The current state of the model is also recorded.
+ *  Attention: the constructors do not copy the vector field
+ *  and the numerical scheme given to them, so that
+ *  any modification or freeing will affect the model.
+ */
+class model : public modelBase {
+  
+public:
+  numericalScheme * const scheme;          //!< Numerical scheme
+  
+  /** \brief Constructor assigning a vector field, a numerical scheme
+   *  and a state. */
+  model(vectorField *field_, numericalScheme *scheme_)
+    : modelBase(scheme_->getDim(), field_), scheme(scheme_) {}
+
+  /** \brief Destructor freeing memory. */
+  ~model() { }
+
+  /** \brief One time-step integration of the model. */
+  virtual void stepForward(const double dt);
 };
 
 

@@ -71,7 +71,8 @@ public:
   virtual size_t getBoxMembership(const gsl_vector *state) const = 0;
 
   /** \brief Get center of position of grid box. */
-  virtual void getBoxPosition(const size_t index, gsl_vector *position) const = 0;
+  virtual void getBoxPosition(const size_t index, gsl_vector *position)
+    const = 0;
 };
 
 
@@ -114,15 +115,18 @@ class RegularGrid : public CurvilinearGrid {
   }
 
   /** \brief Get uniform rectangular. */
-  void getRegularGrid(const gsl_vector *gridLimitsLow, const gsl_vector *gridLimitsUp);
+  void getRegularGrid(const gsl_vector *gridLimitsLow,
+		      const gsl_vector *gridLimitsUp);
 
   /** \brief Get rectangular grid adapted to the time series. */
-  void getAdaptedRegularGrid(const gsl_vector *nSTDLow, const gsl_vector *nSTDHigh,
+  void getAdaptedRegularGrid(const gsl_vector *nSTDLow,
+			     const gsl_vector *nSTDHigh,
 			     const gsl_matrix *states);
 
 public:
   /** \brief Construct a uniform rectangular grid with different dimensions. */
-  RegularGrid(const gsl_vector_uint *nx_, const gsl_vector *gridLimitsLow, const gsl_vector *gridLimitsUp);
+  RegularGrid(const gsl_vector_uint *nx_, const gsl_vector *gridLimitsLow,
+	      const gsl_vector *gridLimitsUp);
   
   /** \brief Construct a uniform rectangular grid with same dimensions. */
   RegularGrid(const size_t dim_, const size_t inx,
@@ -133,7 +137,8 @@ public:
 	      const gsl_vector *nSTDLow, const gsl_vector *nSTDHigh,
 	      const gsl_matrix *states);
 
-  /** \brief Construct a uniform rectangular grid with same dimensions adapted to time series. */
+  /** \brief Construct a uniform rectangular grid with same dimensions
+   * adapted to time series. */
   RegularGrid(const size_t inx, const double nSTDLow, const double nSTDHigh,
 	      const gsl_matrix *states);
 

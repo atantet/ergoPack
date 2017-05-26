@@ -49,7 +49,7 @@ ax.annotate(s='', xy=(0, 0), xytext=(0, omega),
 ax.annotate(s='', xy=(muSub, omega), xytext=(0, omega),
             arrowprops=dict(arrowstyle='<->', mutation_scale=20))
 ax.text(-muSub*0.1, omega*0.4, r'$\omega$', fontsize=ergoPlot.fs_latex)
-ax.text(muSub*0.5, omega*1.2, r'$\mu$', fontsize=ergoPlot.fs_latex)
+ax.text(muSub*0.5, omega*1.2, r'$\delta$', fontsize=ergoPlot.fs_latex)
 # Add indices
 xoffset_yindex = -muSub*0.5
 yoffset_yindex = -omega * 0.15
@@ -103,11 +103,11 @@ ax.annotate(s='', xy=(0, 0), xytext=(0, omega),
 ax.text(muSup*0.1, omega*0.4, r'$\omega$', fontsize=ergoPlot.fs_latex)
 ax.annotate(s='', xy=(-D/(2*muSup) - 2*muSup, 0.), xytext=(-D/(2*muSup), 0.),
             arrowprops=dict(arrowstyle='<->', mutation_scale=20))
-ax.text(-2*muSup*0.5, omega*.2, r'$2\mu$', fontsize=ergoPlot.fs_latex)
+ax.text(-2*muSup*0.5, omega*.2, r'$2\delta$', fontsize=ergoPlot.fs_latex)
 ax.annotate(s='', xy=(-D*ll**2/(2*muSup), ll*omega), xytext=(0, ll*omega),
             arrowprops=dict(arrowstyle='<->', mutation_scale=20))
 ax.text(-D*ll**2/(2*muSup)*1.5, ll*omega*1.2,
-        r'$-\frac{n^2 \epsilon^2 (1 + \beta^2)}{2\mu}$', fontsize=ergoPlot.fs_latex)
+        r'$-\frac{n^2 \epsilon^2 (1 + \beta^2)}{2\delta}$', fontsize=ergoPlot.fs_latex)
 # Add indices
 xoffset_yindex = +muSup*0.5
 yoffset_yindex = -omega * 0.15

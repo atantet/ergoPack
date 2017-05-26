@@ -3,6 +3,7 @@
 #include <cstring>
 #include <ODESolvers.hpp>
 #include <ODECont.hpp>
+#include <gsl/gsl_math.h>
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_permutation.h>
 #include <gsl/gsl_permute_vector.h>
@@ -1533,13 +1534,15 @@ getPhaseDiffusion(const gsl_matrix *CT,
   double phi;
   size_t dim = vLeft->size;
   gsl_vector *CTvLeft = gsl_vector_alloc(dim);
+  const double omega = 2 * M_PI / T;
 
   // Get C(T, 0) * vLeft
   gsl_blas_dgemv(CblasNoTrans, 1., CT, vLeft, 0., CTvLeft);
 
   // Get vLeft * C(T, 0) * vLeft
   phi = gsl_vector_get_inner_product(vLeft, CTvLeft)
-    / fabs(gsl_vector_get_inner_product(vLeft, vRight)) / T;
+    / fabs(gsl_vector_get_inner_product(vLeft, vRight))
+    * gsl_pow_2(omega) / T / 2;
 
   // Free
   gsl_vector_free(CTvLeft);

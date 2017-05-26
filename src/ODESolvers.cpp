@@ -172,7 +172,7 @@ RungeKutta4::getStep(vectorField *field, gsl_vector *current,
  * param[in]  current_ Vector in which to copy the current state.
  */
 void
-model::getCurrentState(gsl_vector *current_)
+modelBase::getCurrentState(gsl_vector *current_)
 {
   gsl_vector_memcpy(current_, current);
   
@@ -184,7 +184,7 @@ model::getCurrentState(gsl_vector *current_)
  * \param[in] current_ Vector to copy to the current state.
  */
 void
-model::setCurrentState(const gsl_vector *current_)
+modelBase::setCurrentState(const gsl_vector *current_)
 {
   gsl_vector_memcpy(current, current_);
   
@@ -197,24 +197,10 @@ model::setCurrentState(const gsl_vector *current_)
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] vField Vector resulting from the evaluation of the vector field.
  */
-void model::evalField(const gsl_vector *state, gsl_vector *vField)
+void modelBase::evalField(const gsl_vector *state, gsl_vector *vField)
 {
   field->evalField(state, vField);
 
-  return;
-}
-
-
-/**
- * Integrate one step the model by calling the numerical scheme.
- * \param[in]  dt Time step.
- */
-void
-model::stepForward(const double dt)
-{
-  // Apply numerical scheme to step
-  scheme->stepForward(field, current, dt);
-    
   return;
 }
 
@@ -231,7 +217,7 @@ model::stepForward(const double dt)
  * \param[out] data     Record states in pointed data.
  */
 void
-model::integrate(const size_t nt, const double dt, const size_t ntSpinup,
+modelBase::integrate(const size_t nt, const double dt, const size_t ntSpinup,
 		 const size_t sampling, gsl_matrix **data)
 {
   size_t dataSize = (size_t) ((nt - ntSpinup) / sampling + 0.1 + 1);
@@ -278,9 +264,9 @@ model::integrate(const size_t nt, const double dt, const size_t ntSpinup,
  * \param[out] data     Record states in pointed data.
  */
 void
-model::integrate(const gsl_vector *init, const size_t nt,
-		 const double dt, const size_t ntSpinup,
-		 const size_t sampling, gsl_matrix **data)
+modelBase::integrate(const gsl_vector *init, const size_t nt,
+		     const double dt, const size_t ntSpinup,
+		     const size_t sampling, gsl_matrix **data)
 {
   // Initialize state
   setCurrentState(init);
@@ -301,8 +287,8 @@ model::integrate(const gsl_vector *init, const size_t nt,
  * \param[out] data     Record states in pointed data.
  */
 void
-model::integrate(const double length, const double dt, const double spinup,
-		 const size_t sampling, gsl_matrix **data)
+modelBase::integrate(const double length, const double dt, const double spinup,
+		     const size_t sampling, gsl_matrix **data)
 {
   size_t nt = (size_t) (length / dt + 0.1);
   size_t ntSpinup = (size_t) (spinup / dt + 0.1);
@@ -323,8 +309,9 @@ model::integrate(const double length, const double dt, const double spinup,
  * \param[out] data     Record states in pointed data.
  */
 void
-model::integrate(const gsl_vector *init, const double length, const double dt,
-		 const double spinup, const size_t sampling, gsl_matrix **data)
+modelBase::integrate(const gsl_vector *init, const double length,
+		     const double dt, const double spinup,
+		     const size_t sampling, gsl_matrix **data)
 {
   size_t nt = (size_t) (length / dt + 0.1);
   size_t ntSpinup = (size_t) (spinup / dt + 0.1);
@@ -333,6 +320,20 @@ model::integrate(const gsl_vector *init, const double length, const double dt,
 
   return;
 }
+
+/**
+ * Integrate one step the model by calling the numerical scheme.
+ * \param[in]  dt Time step.
+ */
+void
+model::stepForward(const double dt)
+{
+  // Apply numerical scheme to step
+  scheme->stepForward(field, current, dt);
+    
+  return;
+}
+
 
 /*
  * Linearized Model definitions:
@@ -493,6 +494,84 @@ fundamentalMatrixModel::integrateRange(const size_t nt, const double dt,
 
   return;
 }
+
+
+// /**
+//  * Get the fundamental matrices Mts for s between 0 and t.
+//  * \param[in]  nt       Number of time steps to integrate.
+//  * \param[in]  dt       Time step.
+//  * \param[out] xt       Matrix in which to record states.
+//  * \param[out] Mts      Vector of matrices in which to record state matrices.
+//  * \param[in]  ntSpinup Initial integration steps to remove.
+//  */
+// void
+// fundamentalMatrixModel::integrateRange(const size_t nt, const double dt,
+// 				       gsl_matrix **xt,
+// 				       std::vector<gsl_matrix *> *Mts,
+// 				       const size_t ntSpinup)
+// {
+//   size_t ntSamp = (size_t) (nt - ntSpinup);
+//   gsl_matrix *stepMat = gsl_matrix_alloc(dim, dim);
+//   gsl_vector_view colInit, colFinal;
+
+//   // Resize Mts vector to the right size
+//   Mts->resize(ntSamp + 1);
+  
+//   // Check if xt is of the right size.
+//   if (xt && (((*xt)->size1 != (ntSamp + 1)) || ((*xt)->size2 != dim))) {
+//     gsl_matrix_free(*xt);
+//     *xt = gsl_matrix_alloc(ntSamp + 1, dim);
+//   }
+
+//   // Get spinup
+//   mod->integrate(ntSpinup, dt, 0, 1);
+  
+//   // Save initial conditions
+//   gsl_matrix_set_row(*xt, 0, mod->current);
+//   Mts->at(0) = gsl_matrix_alloc(dim, dim);
+//   gsl_matrix_set_identity(Mts->at(0)); // Should be the same as current
+  
+//   // Get record
+//   for (size_t r = 1; r <= ntSamp; r++) {
+//     // Initialize fundamental matrix Mtr
+//     Mts->at(r) = gsl_matrix_alloc(dim, dim);
+//     gsl_matrix_set_identity(Mts->at(r));
+    
+//     // Get matrix of stepMat r * dt
+//     for (size_t d = 0; d < dim; d++) {
+//       // Get matrix column
+//       colInit = gsl_matrix_column(Mts->at(r), d); 
+
+//       // Apply numerical scheme to current matrix
+//       colFinal = scheme->getStep(Jacobian, &colInit.vector, dt);
+
+//       // Set stepMat matrix
+//       colInit = gsl_matrix_column(stepMat, d);
+//       gsl_vector_memcpy(&colInit.vector, &colFinal.vector);
+//     }
+
+//     // Add step matrix to Mttau with tau < r
+//     for (size_t tau = 0; tau < r; tau++)
+//       gsl_matrix_add(Mts->at(tau), stepMat);
+
+//     // Step the current state forward
+//     mod->stepForward(dt);
+    
+//     // Step to current fundamental matrix forward
+//     gsl_matrix_add(current, stepMat);
+
+//     // Update the Jacobian with the full model current state
+//     Jacobian->setMatrix(mod->current);
+
+//     // Save state
+//     gsl_matrix_set_row(*xt, r, mod->current);
+//   }
+
+//   // Free
+//   gsl_matrix_free(stepMat);
+
+//   return;
+// }
 
 
 /**
