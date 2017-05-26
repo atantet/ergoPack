@@ -89,8 +89,12 @@ Inheritance diagram for modelBase:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad3844a7f8320105efe3772ff8d0e7d2e"><td class="memItemLeft" align="right" valign="top"><a id="ad3844a7f8320105efe3772ff8d0e7d2e"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#ad3844a7f8320105efe3772ff8d0e7d2e">modelBase</a> (const size_t dim_, <a class="el" href="classvector_field.html">vectorField</a> *field_)</td></tr>
-<tr class="memdesc:ad3844a7f8320105efe3772ff8d0e7d2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor assigning a vector field, a numerical scheme and a state. <br /></td></tr>
+<tr class="memdesc:ad3844a7f8320105efe3772ff8d0e7d2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor assigning a vector field and a state. <br /></td></tr>
 <tr class="separator:ad3844a7f8320105efe3772ff8d0e7d2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a186d6067c1610ada5ecd266deb646cec"><td class="memItemLeft" align="right" valign="top"><a id="a186d6067c1610ada5ecd266deb646cec"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#a186d6067c1610ada5ecd266deb646cec">modelBase</a> (const size_t dim_, <a class="el" href="classvector_field.html">vectorField</a> *field_, const double t_)</td></tr>
+<tr class="memdesc:a186d6067c1610ada5ecd266deb646cec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor assigning a vector field, a state and an initial time. <br /></td></tr>
+<tr class="separator:a186d6067c1610ada5ecd266deb646cec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad72cdeed50b3ca16fe5be7d40b3ee328"><td class="memItemLeft" align="right" valign="top"><a id="ad72cdeed50b3ca16fe5be7d40b3ee328"></a>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#ad72cdeed50b3ca16fe5be7d40b3ee328">~modelBase</a> ()</td></tr>
 <tr class="memdesc:ad72cdeed50b3ca16fe5be7d40b3ee328"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor freeing memory. <br /></td></tr>
@@ -103,11 +107,19 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <tr class="memdesc:afbcb1520d501927dd3005b67babe51c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current state.  <a href="#afbcb1520d501927dd3005b67babe51c6">More...</a><br /></td></tr>
 <tr class="separator:afbcb1520d501927dd3005b67babe51c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c5c3a06c9eadc6a1abdf87bc125ef68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#a9c5c3a06c9eadc6a1abdf87bc125ef68">setCurrentState</a> (const gsl_vector *current_)</td></tr>
-<tr class="memdesc:a9c5c3a06c9eadc6a1abdf87bc125ef68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set current state manually.  <a href="#a9c5c3a06c9eadc6a1abdf87bc125ef68">More...</a><br /></td></tr>
+<tr class="memdesc:a9c5c3a06c9eadc6a1abdf87bc125ef68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set current state.  <a href="#a9c5c3a06c9eadc6a1abdf87bc125ef68">More...</a><br /></td></tr>
 <tr class="separator:a9c5c3a06c9eadc6a1abdf87bc125ef68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3869f1308ca609bf766b7cf19363e1a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#a3869f1308ca609bf766b7cf19363e1a6">evalField</a> (const gsl_vector *state, gsl_vector *vField)</td></tr>
-<tr class="memdesc:a3869f1308ca609bf766b7cf19363e1a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the vector field.  <a href="#a3869f1308ca609bf766b7cf19363e1a6">More...</a><br /></td></tr>
-<tr class="separator:a3869f1308ca609bf766b7cf19363e1a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbadb557b8f22ff5d57165cd0f950ee4"><td class="memItemLeft" align="right" valign="top"><a id="abbadb557b8f22ff5d57165cd0f950ee4"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#abbadb557b8f22ff5d57165cd0f950ee4">getCurrentTime</a> ()</td></tr>
+<tr class="memdesc:abbadb557b8f22ff5d57165cd0f950ee4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current time. <br /></td></tr>
+<tr class="separator:abbadb557b8f22ff5d57165cd0f950ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c1c287ae6af51512c7b7d0cec67f925"><td class="memItemLeft" align="right" valign="top"><a id="a7c1c287ae6af51512c7b7d0cec67f925"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#a7c1c287ae6af51512c7b7d0cec67f925">setCurrentTime</a> (const double t_)</td></tr>
+<tr class="memdesc:a7c1c287ae6af51512c7b7d0cec67f925"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set current time. <br /></td></tr>
+<tr class="separator:a7c1c287ae6af51512c7b7d0cec67f925"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abde256ebf3fa5fb34b5d21b0beb709c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#abde256ebf3fa5fb34b5d21b0beb709c8">evalField</a> (const gsl_vector *state, gsl_vector *vField, const double <a class="el" href="classmodel_base.html#a5818d022e9e08fcc56629547ca87db6a">t</a>=0.)</td></tr>
+<tr class="memdesc:abde256ebf3fa5fb34b5d21b0beb709c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the vector field.  <a href="#abde256ebf3fa5fb34b5d21b0beb709c8">More...</a><br /></td></tr>
+<tr class="separator:abde256ebf3fa5fb34b5d21b0beb709c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d7eeda85ae2fe966401d8a7a41cf7d2"><td class="memItemLeft" align="right" valign="top"><a id="a4d7eeda85ae2fe966401d8a7a41cf7d2"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#a4d7eeda85ae2fe966401d8a7a41cf7d2">stepForward</a> (const double <a class="el" href="read_config_8hpp.html#a03e28be41881b703c836edbfe9b51b17">dt</a>)=0</td></tr>
 <tr class="memdesc:a4d7eeda85ae2fe966401d8a7a41cf7d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">One time-step integration of the model. <br /></td></tr>
@@ -136,6 +148,10 @@ Public Attributes</h2></td></tr>
 gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#a37d078d3218e640a1d1e9505a4b959ad">current</a></td></tr>
 <tr class="memdesc:a37d078d3218e640a1d1e9505a4b959ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current state. <br /></td></tr>
 <tr class="separator:a37d078d3218e640a1d1e9505a4b959ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5818d022e9e08fcc56629547ca87db6a"><td class="memItemLeft" align="right" valign="top"><a id="a5818d022e9e08fcc56629547ca87db6a"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#a5818d022e9e08fcc56629547ca87db6a">t</a></td></tr>
+<tr class="memdesc:a5818d022e9e08fcc56629547ca87db6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current time. <br /></td></tr>
+<tr class="separator:a5818d022e9e08fcc56629547ca87db6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -147,10 +163,10 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Numerical model base class. </p>
 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00229">229</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00260">260</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3869f1308ca609bf766b7cf19363e1a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3869f1308ca609bf766b7cf19363e1a6">&#9670;&nbsp;</a></span>evalField()</h2>
+<a id="abde256ebf3fa5fb34b5d21b0beb709c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abde256ebf3fa5fb34b5d21b0beb709c8">&#9670;&nbsp;</a></span>evalField()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -165,7 +181,13 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">gsl_vector *&#160;</td>
-          <td class="paramname"><em>vField</em>&#160;</td>
+          <td class="paramname"><em>vField</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>t</em> = <code>0.</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -178,11 +200,12 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>State at which to evaluate the vector field. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">vField</td><td>Vector resulting from the evaluation of the vector field. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>Time at which to evaluate the vector field. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00200">200</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00214">214</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
 
 </div>
 </div>
@@ -203,7 +226,7 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </div><div class="memdoc">
 <p>Get current state. param[in] current_ Vector in which to copy the current state. </p>
 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00175">175</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00187">187</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
 
 </div>
 </div>
@@ -261,7 +284,7 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00220">220</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00235">235</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="sim_s_d_d_e_8cpp.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>, and <a class="el" href="read_config_8hpp.html#a52d59418c1fd6f77402b8db150d7767a">nt</a>.</p>
 
@@ -330,7 +353,7 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00267">267</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00282">282</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
 
 </div>
 </div>
@@ -395,7 +418,7 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00312">312</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00327">327</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="read_config_8hpp.html#a52d59418c1fd6f77402b8db150d7767a">nt</a>.</p>
 
@@ -423,7 +446,7 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00187">187</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00199">199</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
 
 </div>
 </div>

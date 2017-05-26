@@ -71,7 +71,7 @@ $(function() {
 <p>One-dimensional polynomial vector field.  
  <a href="classpolynomial1_d.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_o_d_e_fields_8hpp_source.html">ODEFields.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for polynomial1D:</div>
 <div class="dyncontent">
@@ -126,6 +126,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field.html#aecbb3dbda3e082391aac968a64527718">setParameters</a> (const param *p_)</td></tr>
 <tr class="memdesc:aecbb3dbda3e082391aac968a64527718 inherit pub_methods_classvector_field"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parameters of the model. <br /></td></tr>
 <tr class="separator:aecbb3dbda3e082391aac968a64527718 inherit pub_methods_classvector_field"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8f48a80219c37398311e61ce094fdbc inherit pub_methods_classvector_field"><td class="memItemLeft" align="right" valign="top"><a id="af8f48a80219c37398311e61ce094fdbc"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field.html#af8f48a80219c37398311e61ce094fdbc">evalField</a> (const gsl_vector *state, gsl_vector *field, const double t)</td></tr>
+<tr class="memdesc:af8f48a80219c37398311e61ce094fdbc inherit pub_methods_classvector_field"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default implementation of a nonautonomous vector field. <br /></td></tr>
+<tr class="separator:af8f48a80219c37398311e61ce094fdbc inherit pub_methods_classvector_field"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -138,7 +142,7 @@ param&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>One-dimensional polynomial vector field <img class="formulaInl" alt="$ F(x) = \sum_{k = 0}^{degree} coeff_k x^k $" src="form_1.png"/> </p>
 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00109">109</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_fields_8hpp_source.html#l00029">29</a> of file <a class="el" href="_o_d_e_fields_8hpp_source.html">ODEFields.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab03a0f5208896980b03e7ccef614370b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab03a0f5208896980b03e7ccef614370b">&#9670;&nbsp;</a></span>~polynomial1D()</h2>
@@ -164,7 +168,7 @@ param&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </div><div class="memdoc">
 <p>Destructor freeing the matrix. </p>
 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00125">125</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_fields_8hpp_source.html#l00045">45</a> of file <a class="el" href="_o_d_e_fields_8hpp_source.html">ODEFields.hpp</a>.</p>
 
 </div>
 </div>
@@ -212,13 +216,15 @@ param&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 
 <p>Implements <a class="el" href="classvector_field.html#ac306685c4efd8e7053003d5573182909">vectorField</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00039">39</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_fields_8cpp_source.html#l00026">26</a> of file <a class="el" href="_o_d_e_fields_8cpp_source.html">ODEFields.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="classpitchfork_field.html#a9728740c93e23ea7df6b14314c13f6b0">pitchforkField::pitchforkField()</a>, <a class="el" href="classpitchfork_sub_field.html#a321c93fb40f447712bf29ade2e7b8e18">pitchforkSubField::pitchforkSubField()</a>, <a class="el" href="classsaddle_node_field.html#a832350504a2743a7ec446910fb3ff091">saddleNodeField::saddleNodeField()</a>, <a class="el" href="classpolynomial1_d.html#abdea2db30e96f919397f82fd18a6320c">setParameters()</a>, <a class="el" href="classtranscritical_field.html#aa063d769a149b94c8615ad49b12a1160">transcriticalField::transcriticalField()</a>, <a class="el" href="classcusp_field.html#a953bb14b57b617c576189afdd9f0fbea">cuspField::~cuspField()</a>, <a class="el" href="class_hopf.html#a157b4f069079ff727a7e5bef1a7b50ff">Hopf::~Hopf()</a>, <a class="el" href="class_hopf_cont.html#a4ba68ba67f9ae1c31b9b10709b36f286">HopfCont::~HopfCont()</a>, <a class="el" href="class_lorenz63.html#a598959cfc79572c3cb6e914bda4f09c9">Lorenz63::~Lorenz63()</a>, and <a class="el" href="class_lorenz63_cont.html#a6fe53fed6cb70328239abc31ec1e719f">Lorenz63Cont::~Lorenz63Cont()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>include/<a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a></li>
-<li>src/<a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a></li>
+<li>include/<a class="el" href="_o_d_e_fields_8hpp_source.html">ODEFields.hpp</a></li>
+<li>src/<a class="el" href="_o_d_e_fields_8cpp_source.html">ODEFields.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

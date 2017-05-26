@@ -105,9 +105,13 @@ Public Member Functions</h2></td></tr>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnumerical_scheme.html#a9971b661ae09e7711898863aba079f5c">~numericalScheme</a> ()</td></tr>
 <tr class="memdesc:a9971b661ae09e7711898863aba079f5c inherit pub_methods_classnumerical_scheme"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor freeing workspace. <br /></td></tr>
 <tr class="separator:a9971b661ae09e7711898863aba079f5c inherit pub_methods_classnumerical_scheme"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a003a9c279019275709c8d171cd21ec inherit pub_methods_classnumerical_scheme"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnumerical_scheme.html#a7a003a9c279019275709c8d171cd21ec">stepForward</a> (<a class="el" href="classvector_field.html">vectorField</a> *field, gsl_vector *current, const double <a class="el" href="read_config_8hpp.html#a03e28be41881b703c836edbfe9b51b17">dt</a>)</td></tr>
-<tr class="memdesc:a7a003a9c279019275709c8d171cd21ec inherit pub_methods_classnumerical_scheme"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the model one step.  <a href="classnumerical_scheme.html#a7a003a9c279019275709c8d171cd21ec">More...</a><br /></td></tr>
-<tr class="separator:a7a003a9c279019275709c8d171cd21ec inherit pub_methods_classnumerical_scheme"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac14b67551b8236e9aee610fc9c7ba50b inherit pub_methods_classnumerical_scheme"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnumerical_scheme.html#ac14b67551b8236e9aee610fc9c7ba50b">stepForward</a> (<a class="el" href="classvector_field.html">vectorField</a> *field, gsl_vector *current, const double <a class="el" href="read_config_8hpp.html#a03e28be41881b703c836edbfe9b51b17">dt</a>, double *t)</td></tr>
+<tr class="memdesc:ac14b67551b8236e9aee610fc9c7ba50b inherit pub_methods_classnumerical_scheme"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the model one step.  <a href="classnumerical_scheme.html#ac14b67551b8236e9aee610fc9c7ba50b">More...</a><br /></td></tr>
+<tr class="separator:ac14b67551b8236e9aee610fc9c7ba50b inherit pub_methods_classnumerical_scheme"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af87b5d93a88833fd628f688dbd57f4ba inherit pub_methods_classnumerical_scheme"><td class="memItemLeft" align="right" valign="top"><a id="af87b5d93a88833fd628f688dbd57f4ba"></a>
+virtual gsl_vector_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnumerical_scheme.html#af87b5d93a88833fd628f688dbd57f4ba">getStep</a> (<a class="el" href="classvector_field.html">vectorField</a> *field, gsl_vector *current, const double <a class="el" href="read_config_8hpp.html#a03e28be41881b703c836edbfe9b51b17">dt</a>, const double t)</td></tr>
+<tr class="memdesc:af87b5d93a88833fd628f688dbd57f4ba inherit pub_methods_classnumerical_scheme"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default implementation of a non-autonomous step. <br /></td></tr>
+<tr class="separator:af87b5d93a88833fd628f688dbd57f4ba inherit pub_methods_classnumerical_scheme"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classnumerical_scheme_base"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classnumerical_scheme_base')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classnumerical_scheme_base.html">numericalSchemeBase</a></td></tr>
 <tr class="memitem:a1e9121446bcf5025cb8c24d354b704ca inherit pub_methods_classnumerical_scheme_base"><td class="memItemLeft" align="right" valign="top"><a id="a1e9121446bcf5025cb8c24d354b704ca"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnumerical_scheme_base.html#a1e9121446bcf5025cb8c24d354b704ca">numericalSchemeBase</a> (const size_t dim_, const size_t dimWork_)</td></tr>
@@ -141,7 +145,7 @@ gsl_matrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Runge-Kutta 4 scheme for numerical integration. </p>
 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00211">211</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00242">242</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a81ebfffd52e4d237da6164a89f5e1737"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a81ebfffd52e4d237da6164a89f5e1737">&#9670;&nbsp;</a></span>getStep()</h2>
@@ -195,7 +199,7 @@ gsl_matrix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 <p>Implements <a class="el" href="classnumerical_scheme.html#a823d6455256cb73e1b2ddd950ba4b6ac">numericalScheme</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00113">113</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00125">125</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="classvector_field.html#ac306685c4efd8e7053003d5573182909">vectorField::evalField()</a>.</p>
 

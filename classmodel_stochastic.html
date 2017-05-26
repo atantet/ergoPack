@@ -98,8 +98,12 @@ Public Member Functions</h2></td></tr>
 <tr class="inherit_header pub_methods_classmodel_base"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmodel_base')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmodel_base.html">modelBase</a></td></tr>
 <tr class="memitem:ad3844a7f8320105efe3772ff8d0e7d2e inherit pub_methods_classmodel_base"><td class="memItemLeft" align="right" valign="top"><a id="ad3844a7f8320105efe3772ff8d0e7d2e"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#ad3844a7f8320105efe3772ff8d0e7d2e">modelBase</a> (const size_t dim_, <a class="el" href="classvector_field.html">vectorField</a> *field_)</td></tr>
-<tr class="memdesc:ad3844a7f8320105efe3772ff8d0e7d2e inherit pub_methods_classmodel_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor assigning a vector field, a numerical scheme and a state. <br /></td></tr>
+<tr class="memdesc:ad3844a7f8320105efe3772ff8d0e7d2e inherit pub_methods_classmodel_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor assigning a vector field and a state. <br /></td></tr>
 <tr class="separator:ad3844a7f8320105efe3772ff8d0e7d2e inherit pub_methods_classmodel_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a186d6067c1610ada5ecd266deb646cec inherit pub_methods_classmodel_base"><td class="memItemLeft" align="right" valign="top"><a id="a186d6067c1610ada5ecd266deb646cec"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#a186d6067c1610ada5ecd266deb646cec">modelBase</a> (const size_t dim_, <a class="el" href="classvector_field.html">vectorField</a> *field_, const double t_)</td></tr>
+<tr class="memdesc:a186d6067c1610ada5ecd266deb646cec inherit pub_methods_classmodel_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor assigning a vector field, a state and an initial time. <br /></td></tr>
+<tr class="separator:a186d6067c1610ada5ecd266deb646cec inherit pub_methods_classmodel_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad72cdeed50b3ca16fe5be7d40b3ee328 inherit pub_methods_classmodel_base"><td class="memItemLeft" align="right" valign="top"><a id="ad72cdeed50b3ca16fe5be7d40b3ee328"></a>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#ad72cdeed50b3ca16fe5be7d40b3ee328">~modelBase</a> ()</td></tr>
 <tr class="memdesc:ad72cdeed50b3ca16fe5be7d40b3ee328 inherit pub_methods_classmodel_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor freeing memory. <br /></td></tr>
@@ -112,11 +116,19 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <tr class="memdesc:afbcb1520d501927dd3005b67babe51c6 inherit pub_methods_classmodel_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current state.  <a href="classmodel_base.html#afbcb1520d501927dd3005b67babe51c6">More...</a><br /></td></tr>
 <tr class="separator:afbcb1520d501927dd3005b67babe51c6 inherit pub_methods_classmodel_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c5c3a06c9eadc6a1abdf87bc125ef68 inherit pub_methods_classmodel_base"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#a9c5c3a06c9eadc6a1abdf87bc125ef68">setCurrentState</a> (const gsl_vector *current_)</td></tr>
-<tr class="memdesc:a9c5c3a06c9eadc6a1abdf87bc125ef68 inherit pub_methods_classmodel_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set current state manually.  <a href="classmodel_base.html#a9c5c3a06c9eadc6a1abdf87bc125ef68">More...</a><br /></td></tr>
+<tr class="memdesc:a9c5c3a06c9eadc6a1abdf87bc125ef68 inherit pub_methods_classmodel_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set current state.  <a href="classmodel_base.html#a9c5c3a06c9eadc6a1abdf87bc125ef68">More...</a><br /></td></tr>
 <tr class="separator:a9c5c3a06c9eadc6a1abdf87bc125ef68 inherit pub_methods_classmodel_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3869f1308ca609bf766b7cf19363e1a6 inherit pub_methods_classmodel_base"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#a3869f1308ca609bf766b7cf19363e1a6">evalField</a> (const gsl_vector *state, gsl_vector *vField)</td></tr>
-<tr class="memdesc:a3869f1308ca609bf766b7cf19363e1a6 inherit pub_methods_classmodel_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the vector field.  <a href="classmodel_base.html#a3869f1308ca609bf766b7cf19363e1a6">More...</a><br /></td></tr>
-<tr class="separator:a3869f1308ca609bf766b7cf19363e1a6 inherit pub_methods_classmodel_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbadb557b8f22ff5d57165cd0f950ee4 inherit pub_methods_classmodel_base"><td class="memItemLeft" align="right" valign="top"><a id="abbadb557b8f22ff5d57165cd0f950ee4"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#abbadb557b8f22ff5d57165cd0f950ee4">getCurrentTime</a> ()</td></tr>
+<tr class="memdesc:abbadb557b8f22ff5d57165cd0f950ee4 inherit pub_methods_classmodel_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current time. <br /></td></tr>
+<tr class="separator:abbadb557b8f22ff5d57165cd0f950ee4 inherit pub_methods_classmodel_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c1c287ae6af51512c7b7d0cec67f925 inherit pub_methods_classmodel_base"><td class="memItemLeft" align="right" valign="top"><a id="a7c1c287ae6af51512c7b7d0cec67f925"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#a7c1c287ae6af51512c7b7d0cec67f925">setCurrentTime</a> (const double t_)</td></tr>
+<tr class="memdesc:a7c1c287ae6af51512c7b7d0cec67f925 inherit pub_methods_classmodel_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set current time. <br /></td></tr>
+<tr class="separator:a7c1c287ae6af51512c7b7d0cec67f925 inherit pub_methods_classmodel_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abde256ebf3fa5fb34b5d21b0beb709c8 inherit pub_methods_classmodel_base"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#abde256ebf3fa5fb34b5d21b0beb709c8">evalField</a> (const gsl_vector *state, gsl_vector *vField, const double <a class="el" href="classmodel_base.html#a5818d022e9e08fcc56629547ca87db6a">t</a>=0.)</td></tr>
+<tr class="memdesc:abde256ebf3fa5fb34b5d21b0beb709c8 inherit pub_methods_classmodel_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the vector field.  <a href="classmodel_base.html#abde256ebf3fa5fb34b5d21b0beb709c8">More...</a><br /></td></tr>
+<tr class="separator:abde256ebf3fa5fb34b5d21b0beb709c8 inherit pub_methods_classmodel_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4afa52af52c87e1f68d3ff8b3959cb4e inherit pub_methods_classmodel_base"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#a4afa52af52c87e1f68d3ff8b3959cb4e">integrate</a> (const size_t <a class="el" href="read_config_8hpp.html#a52d59418c1fd6f77402b8db150d7767a">nt</a>, const double <a class="el" href="read_config_8hpp.html#a03e28be41881b703c836edbfe9b51b17">dt</a>, const size_t ntSpinup=0, const size_t sampling=1, gsl_matrix **data=NULL)</td></tr>
 <tr class="memdesc:a4afa52af52c87e1f68d3ff8b3959cb4e inherit pub_methods_classmodel_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the model for a given number of time steps from the current state.  <a href="classmodel_base.html#a4afa52af52c87e1f68d3ff8b3959cb4e">More...</a><br /></td></tr>
 <tr class="separator:a4afa52af52c87e1f68d3ff8b3959cb4e inherit pub_methods_classmodel_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,6 +162,10 @@ Public Attributes</h2></td></tr>
 gsl_vector *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#a37d078d3218e640a1d1e9505a4b959ad">current</a></td></tr>
 <tr class="memdesc:a37d078d3218e640a1d1e9505a4b959ad inherit pub_attribs_classmodel_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current state. <br /></td></tr>
 <tr class="separator:a37d078d3218e640a1d1e9505a4b959ad inherit pub_attribs_classmodel_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5818d022e9e08fcc56629547ca87db6a inherit pub_attribs_classmodel_base"><td class="memItemLeft" align="right" valign="top"><a id="a5818d022e9e08fcc56629547ca87db6a"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_base.html#a5818d022e9e08fcc56629547ca87db6a">t</a></td></tr>
+<tr class="memdesc:a5818d022e9e08fcc56629547ca87db6a inherit pub_attribs_classmodel_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current time. <br /></td></tr>
+<tr class="separator:a5818d022e9e08fcc56629547ca87db6a inherit pub_attribs_classmodel_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>

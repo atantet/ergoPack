@@ -147,6 +147,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field.html#aecbb3dbda3e082391aac968a64527718">setParameters</a> (const param *p_)</td></tr>
 <tr class="memdesc:aecbb3dbda3e082391aac968a64527718 inherit pub_methods_classvector_field"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parameters of the model. <br /></td></tr>
 <tr class="separator:aecbb3dbda3e082391aac968a64527718 inherit pub_methods_classvector_field"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8f48a80219c37398311e61ce094fdbc inherit pub_methods_classvector_field"><td class="memItemLeft" align="right" valign="top"><a id="af8f48a80219c37398311e61ce094fdbc"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field.html#af8f48a80219c37398311e61ce094fdbc">evalField</a> (const gsl_vector *state, gsl_vector *field, const double t)</td></tr>
+<tr class="memdesc:af8f48a80219c37398311e61ce094fdbc inherit pub_methods_classvector_field"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default implementation of a nonautonomous vector field. <br /></td></tr>
+<tr class="separator:af8f48a80219c37398311e61ce094fdbc inherit pub_methods_classvector_field"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -163,7 +167,7 @@ param&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Vector field defined by a linear operator: <img class="formulaInl" alt="$ F(x) = A x $" src="form_0.png"/>. </p>
 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00064">64</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00124">124</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aabcc9ee4d69e25d1d82460fdc21e6b8e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aabcc9ee4d69e25d1d82460fdc21e6b8e">&#9670;&nbsp;</a></span>~linearField()</h2>
@@ -189,7 +193,7 @@ param&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </div><div class="memdoc">
 <p>Destructor freeing the matrix. </p>
 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00082">82</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8hpp_source.html#l00142">142</a> of file <a class="el" href="_o_d_e_solvers_8hpp_source.html">ODESolvers.hpp</a>.</p>
 
 </div>
 </div>
@@ -237,9 +241,9 @@ param&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 
 <p>Implements <a class="el" href="classvector_field.html#ac306685c4efd8e7053003d5573182909">vectorField</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00024">24</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_solvers_8cpp_source.html#l00056">56</a> of file <a class="el" href="_o_d_e_solvers_8cpp_source.html">ODESolvers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="classlinear_field.html#a8130a4afb5f996e9f23dfcdd79ad5aa6">A</a>.</p>
+<p class="reference">References <a class="el" href="read_config_8hpp.html#a507bede4b0c41eb052cfe335cf8d4dba">A</a>.</p>
 
 </div>
 </div>

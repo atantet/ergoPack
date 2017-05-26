@@ -12,5 +12,6 @@ var searchData=
   ['printforwardtransition',['printForwardTransition',['../classtransfer_operator.html#afadf909cb4ac156f5f27431979538e07',1,'transferOperator']]],
   ['printgrid',['printGrid',['../class_grid.html#a4af727c0a713c0decacf83421672396c',1,'Grid::printGrid()'],['../class_regular_grid.html#a835370196b7885c3581c194bf430beb7',1,'RegularGrid::printGrid()']]],
   ['printinitdist',['printInitDist',['../classtransfer_operator.html#ac8ad7df12b54873d3600ad576cc5c53c',1,'transferOperator']]],
-  ['printmask',['printMask',['../classtransfer_operator.html#a6ff5b5c1ae6636b4f1110c366a55b67e',1,'transferOperator']]]
+  ['printmask',['printMask',['../classtransfer_operator.html#a6ff5b5c1ae6636b4f1110c366a55b67e',1,'transferOperator']]],
+  ['push_5fback',['push_back',['../classvector_field_string.html#ab8ac7e191ed28e60302a8e62a88b163c',1,'vectorFieldString']]]
 ];

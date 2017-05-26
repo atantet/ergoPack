@@ -91,6 +91,7 @@ Inheritance diagram for vectorField:</div>
 <area href="classsaddle_node_field.html" title="Vector field for the normal form of the saddle-node bifurcation. " alt="saddleNodeField" shape="rect" coords="144,560,278,584"/>
 <area href="classtranscritical_field.html" title="Vector field for the normal form of the transcritical bifurcation. " alt="transcriticalField" shape="rect" coords="144,616,278,640"/>
 <area href="classvector_field_stochastic.html" title="Abstract stochastic vector field class. " alt="vectorFieldStochastic" shape="rect" coords="144,672,278,696"/>
+<area href="classvector_field_string.html" title="Vector field made of several fields linked by a set of operations. " alt="vectorFieldString" shape="rect" coords="144,728,278,752"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -120,6 +121,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field.html#ac306685c4efd8e7053003d5573182909">evalField</a> (const gsl_vector *state, gsl_vector *field)=0</td></tr>
 <tr class="memdesc:ac306685c4efd8e7053003d5573182909"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the vector field at a given state. <br /></td></tr>
 <tr class="separator:ac306685c4efd8e7053003d5573182909"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8f48a80219c37398311e61ce094fdbc"><td class="memItemLeft" align="right" valign="top"><a id="af8f48a80219c37398311e61ce094fdbc"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field.html#af8f48a80219c37398311e61ce094fdbc">evalField</a> (const gsl_vector *state, gsl_vector *field, const double t)</td></tr>
+<tr class="memdesc:af8f48a80219c37398311e61ce094fdbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default implementation of a nonautonomous vector field. <br /></td></tr>
+<tr class="separator:af8f48a80219c37398311e61ce094fdbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>

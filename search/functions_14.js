@@ -35,5 +35,6 @@ var searchData=
   ['_7etransferspectrum',['~transferSpectrum',['../classtransfer_spectrum.html#a883a1f9c8045f4e7f20fec6a6954b06f',1,'transferSpectrum']]],
   ['_7evectorfield',['~vectorField',['../classvector_field.html#a792eda0e2d57b1b07ade8876f918c1ac',1,'vectorField']]],
   ['_7evectorfielddelay',['~vectorFieldDelay',['../classvector_field_delay.html#a9ca3519c56e0da1672ccf50f96dc9245',1,'vectorFieldDelay']]],
-  ['_7evectorfieldstochastic',['~vectorFieldStochastic',['../classvector_field_stochastic.html#aea045e673f4f258dd8dae2131cfe54f8',1,'vectorFieldStochastic']]]
+  ['_7evectorfieldstochastic',['~vectorFieldStochastic',['../classvector_field_stochastic.html#aea045e673f4f258dd8dae2131cfe54f8',1,'vectorFieldStochastic']]],
+  ['_7evectorfieldstring',['~vectorFieldString',['../classvector_field_string.html#a618bd853d08c56d894c30ed4f05a5878',1,'vectorFieldString']]]
 ];
