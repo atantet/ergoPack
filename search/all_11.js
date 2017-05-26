@@ -26,7 +26,7 @@ var searchData=
   ['simlorenz63_2ecpp',['simLorenz63.cpp',['../sim_lorenz63_8cpp.html',1,'']]],
   ['simou_2ecpp',['simOU.cpp',['../sim_o_u_8cpp.html',1,'']]],
   ['simsdde_2ecpp',['simSDDE.cpp',['../sim_s_d_d_e_8cpp.html',1,'']]],
-  ['simulation',['Simulation',['../group__simulation.html',1,'']]],
+  ['simulating',['Simulating',['../group__simulation.html',1,'']]],
   ['solutioncont',['solutionCont',['../classsolution_cont.html',1,'solutionCont'],['../classsolution_cont.html#a4a27f815c47951691790bafb88637f59',1,'solutionCont::solutionCont()']]],
   ['solutioncorrection',['solutionCorrection',['../classsolution_correction.html',1,'solutionCorrection'],['../classsolution_correction.html#a86af4b5b0e404fc5ab0c964fe8f7acf0',1,'solutionCorrection::solutionCorrection()']]],
   ['sort',['sort',['../classtransfer_spectrum.html#a2e816ffd6ac5e3d52c7ba25256b937b8',1,'transferSpectrum']]],

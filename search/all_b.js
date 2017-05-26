@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['main_20page',['Main page',['../index.html',1,'']]],
   ['m',['M',['../classgsl__spmatrix2_a_r.html#a56c87e27482e26f8b28352af1d4f08e8',1,'gsl_spmatrix2AR']]],
   ['main',['main',['../sim_lorenz63_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;simLorenz63.cpp'],['../sim_o_u_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;simOU.cpp'],['../sim_s_d_d_e_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;simSDDE.cpp'],['../transfer_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;transfer.cpp'],['../spectrum_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;spectrum.cpp']]],
   ['makebiorthonormal',['makeBiorthonormal',['../classtransfer_spectrum.html#a2f842bdef9c421af44aa2202111a728c',1,'transferSpectrum::makeBiorthonormal()'],['../read_config_8hpp.html#a8f85a6a4912163cf2dc0d8ec4e57b3cb',1,'makeBiorthonormal():&#160;readConfig.hpp']]],

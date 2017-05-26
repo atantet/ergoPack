@@ -6,6 +6,7 @@ var searchData=
   ['configar',['configAR',['../structconfig_a_r.html',1,'']]],
   ['configar_2ehpp',['configAR.hpp',['../config_a_r_8hpp.html',1,'']]],
   ['configfilename',['configFileName',['../read_config_8hpp.html#ab8f7d4e57ff12610ba2500706df80754',1,'readConfig.hpp']]],
+  ['continuation',['Continuation',['../group__continuation.html',1,'']]],
   ['continuestep',['continueStep',['../classfixed_point_cont.html#a8fdff8a0b04537c7bbfc21cac31a14a6',1,'fixedPointCont::continueStep(const double contStep, const gsl_vector *init)'],['../classfixed_point_cont.html#ac50204ccc68002e6f42a986947f8ba8e',1,'fixedPointCont::continueStep(const double contStep)'],['../classperiodic_orbit_cont.html#acdb86d5bf91ff0c0aea2c7897dacc081',1,'periodicOrbitCont::continueStep(const double contStep, const gsl_vector *init)'],['../classperiodic_orbit_cont.html#ac4aadc3339727f2b093e700511215edf',1,'periodicOrbitCont::continueStep(const double contStep)']]],
   ['contmax',['contMax',['../read_config_8hpp.html#a5d45fc021c434d599b7a948eb6589784',1,'readConfig.hpp']]],
   ['contmin',['contMin',['../read_config_8hpp.html#ab2c2d500ccbd39d20860287e5e3d3580',1,'readConfig.hpp']]],
