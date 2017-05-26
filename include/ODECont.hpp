@@ -7,16 +7,16 @@
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_blas.h>
 
+/** \addtogroup continuation
+ * @{
+ */
+
 /** \file ODECont.hpp
  *  \brief Continuation of Ordinary Differential Equations.
  *   
  *  Continuation of Ordinary Differential Equations.
  */
 
-
-/** \ingroup continuation
- * @{
- */
 
 /*
  * Class declarations:

@@ -7,6 +7,10 @@
 #include <gsl/gsl_matrix.h>
 #include <ergoParam.hpp>
 
+/** \addtogroup simulation
+ * @{
+ */
+
 /** \file ODESolvers.hpp
  *  \brief Solve Ordinary Differential Equations.
  *   
@@ -17,10 +21,6 @@
  *  and the numerical scheme (class numericalScheme).
  */
 
-
-/** \ingroup simulation
- * @{
- */
 
 /*
  * Class declarations:

@@ -5,16 +5,16 @@
 #include <gsl/gsl_matrix.h>
 #include <ODESolvers.hpp>
 
+/** \addtogroup simulation
+ * @{
+ */
+
 /** \file ODEFields.hpp
  *  \brief Ordinary differential equation vector fields.
  *   
  *  Ordinary differential equation vector fields of class vectorField.
  */
 
-
-/** \ingroup simulation
- * @{
- */
 
 /*
  * Class declarations:

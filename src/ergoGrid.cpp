@@ -301,8 +301,8 @@ RegularGrid::getBoxMembership(const gsl_vector *state) const
 	break;
 
       // Get interval for direction d
-      while ((idInt < nBoxDir) &&
-	     (gsl_vector_get(state, d) >= gsl_vector_get(boundsDir, idInt + 1)))
+      while ((idInt < nBoxDir) && (gsl_vector_get(state, d)
+				   >= gsl_vector_get(boundsDir, idInt + 1)))
 	// Not in interval idInt, iterate to next interval
 	idInt++;
 
@@ -331,11 +331,6 @@ RegularGrid::getBoxMembership(const gsl_vector *state) const
 }
 
 
-// /**
-//  * Get membership to a grid box of a single realization.
-//  * \param[in] state          Vector of a single state.
-//  * \return                   Box index to which the state belongs.
-//  */
 // size_t
 // RegularGrid::getBoxMembership(const gsl_vector *state) const
 // {
