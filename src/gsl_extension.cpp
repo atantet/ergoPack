@@ -276,7 +276,7 @@ gsl_vector_linspace(gsl_vector *v, const double lower, const double upper)
 
 /**
  * Scale a complex vector with a real number.
- * \param[in/out] v Vector to scale.
+ * \param[inout]  v Vector to scale.
  * \param[in]     a Real number with which to scale.
  */
 void
@@ -1121,7 +1121,8 @@ gsl_spmatrix_div_cols(gsl_spmatrix *m, const gsl_vector *v, const double tol)
 /** 
  * Pre-allocate a sparse matrix in triplet format to read from a binary stream.
  * \param[in] stream Stream from which the sparse matrix will be read.
- * \return    m      The allocated sparse matrix.
+ * \param[in] type   Type of sparse matrix to allocate (CSR, CSC, TRIPLET)
+ * \return           The allocated sparse matrix.
  */
 gsl_spmatrix *
 gsl_spmatrix_alloc2read(FILE *stream, const size_t type)

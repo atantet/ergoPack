@@ -108,4 +108,6 @@ int gsl_spmatrix_div_cols(gsl_spmatrix *m, const gsl_vector *v, const double tol
 /** \brief Pre-allocate a sparse matrix to read from a binary stream. */
 gsl_spmatrix *gsl_spmatrix_alloc2read(FILE *stream, const size_t type);
 
+
 #endif
+

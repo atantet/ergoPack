@@ -129,10 +129,10 @@ Hopf::evalField(const gsl_vector *state, gsl_vector *field)
   y = gsl_vector_get(state, 1);
   r2 = gsl_pow_2(x) + gsl_pow_2(y);
 
-  //! F_1(x) = (\mu - (x^2 + y^2)) x - (gamma - \beta (x^2 +y^2)) y
+  //! \f$ F_1(x) = (\mu - (x^2 + y^2)) x - (gamma - \beta (x^2 +y^2)) y \f$
   gsl_vector_set(field, 0,
 		 (p["mu"] - r2) * x - (p["gamma"] - p["beta"] * r2) * y);
-  //! F_2(x) = (gamma - \beta (x^2 +y^2)) x + (\mu - (x^2 + y^2)) y
+  //! \f$ F_2(x) = (gamma - \beta (x^2 +y^2)) x + (\mu - (x^2 + y^2)) y \f$
   gsl_vector_set(field, 1,
 		 (p["gamma"] - p["beta"] * r2) * x + (p["mu"] - r2) * y);
  
@@ -142,8 +142,8 @@ Hopf::evalField(const gsl_vector *state, gsl_vector *field)
 
 /**
  * Update the matrix of the Jacobian of the Hopf normal form
- * conditionned on the state x.
- * \param[in] x State vector.
+ * conditionned on the state.
+ * \param[in] state State vector.
 */
 void
 JacobianHopf::setMatrix(const gsl_vector *state)
@@ -185,9 +185,9 @@ HopfCont::evalField(const gsl_vector *state, gsl_vector *field)
   mu = gsl_vector_get(state, 2);
   r2 = gsl_pow_2(x) + gsl_pow_2(y);
 
-  //! F_1(x) = (\mu - (x^2 + y^2)) x - (gamma - \beta (x^2 +y^2)) y
+  //! \f$ F_1(x) = (\mu - (x^2 + y^2)) x - (gamma - \beta (x^2 +y^2)) y \f$
   gsl_vector_set(field, 0, (mu - r2) * x - (p["gamma"] - p["beta"] * r2) * y);
-  //! F_2(x) = (gamma - \beta (x^2 +y^2)) x + (\mu - (x^2 + y^2)) y
+  //! \f$ F_2(x) = (gamma - \beta (x^2 +y^2)) x + (\mu - (x^2 + y^2)) y \f$
   gsl_vector_set(field, 1,
 		 (p["gamma"] - p["beta"] * r2) * x + (mu - r2) * y);
  
@@ -200,8 +200,8 @@ HopfCont::evalField(const gsl_vector *state, gsl_vector *field)
 
 /**
  * Update the matrix of the Jacobian of the Hopf normal form
- * conditionned on the state x for continuation with respect to \f$\rho\f$.
- * \param[in] x State vector.
+ * conditionned on the state for continuation with respect to \f$\rho\f$.
+ * \param[in] state State vector.
 */
 void
 JacobianHopfCont::setMatrix(const gsl_vector *state)
@@ -271,8 +271,8 @@ Lorenz63::evalField(const gsl_vector *state, gsl_vector *field)
 
 /**
  * Update the matrix of the Jacobian of the Lorenz 63 model
- * conditionned on the state x.
- * \param[in] x State vector.
+ * conditionned on the state.
+ * \param[in] state State vector.
 */
 void
 JacobianLorenz63::setMatrix(const gsl_vector *state)
@@ -322,8 +322,8 @@ Lorenz63Cont::evalField(const gsl_vector *state, gsl_vector *field)
 
 /**
  * Update the matrix of the Jacobian of the Lorenz 63 model
- * conditionned on the state x for continuation with respect to \f$\rho\f$.
- * \param[in] x State vector.
+ * conditionned on the state for continuation with respect to \f$\rho\f$.
+ * \param[in] state State vector.
 */
 void
 JacobianLorenz63Cont::setMatrix(const gsl_vector *state)

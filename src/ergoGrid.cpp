@@ -159,10 +159,11 @@ RegularGrid::getRegularGrid(const gsl_vector *gridLimitsLow,
  *                    to span away from the mean state from below.
  * \param[in] nSTDUp  Vector giving the number of standard deviations
  *                    to span away from the mean state from above.
- * \param[in]state    Time series.
+ * \param[in] states  Time series.
  */
 void
-RegularGrid::getAdaptedRegularGrid(const gsl_vector *nSTDLow, const gsl_vector *nSTDUp,
+RegularGrid::getAdaptedRegularGrid(const gsl_vector *nSTDLow,
+				   const gsl_vector *nSTDUp,
 				   const gsl_matrix *states)
 {
   gsl_vector *gridLimitsLow, *gridLimitsUp, *statesMean, *statesSTD;
@@ -270,8 +271,8 @@ RegularGrid::printGrid(const char *path, const char *dataFormat="%lf",
 
 /**
  * Get membership to a grid box of a single realization.
- * \param[in] state          Vector of a single state.
- * \return                   Box index to which the state belongs.
+ * \param[in] state Vector of a single state.
+ * \return          Box index to which the state belongs.
  */
 size_t
 RegularGrid::getBoxMembership(const gsl_vector *state) const
@@ -490,7 +491,8 @@ getGridMemVector(const gsl_matrix *states, const Grid *grid)
 
 /**
  * Get the grid membership matrix from the membership vector for a given lag.
- * \param[in] gridMemVect    Grid membership vector of a long trajectory for a grid.
+ * \param[in] gridMemVect    Grid membership vector of a long trajectory
+ *                           for a grid.
  * \param[in] tauStep        Lag used to calculate the transitions.
  * \return                   GSL grid membership matrix.
  */
@@ -513,13 +515,14 @@ memVector2memMatrix(const gsl_vector_uint *gridMemVect, size_t tauStep)
 
 /**
  * Concatenate a list of membership vectors into one membership matrix.
- * \param[in] memList    STD vector of membership Vectors each of them associated
- * with a single long trajectory.
+ * \param[in] memList    STD vector of membership Vectors each of them
+ *                       associated with a single long trajectory.
  * \param[in] tauStep    Lag used to calculate the transitions.
  * \return               GSL grid membership matrix.
  */
 gsl_matrix_uint *
-memVectorList2memMatrix(const std::vector<gsl_vector_uint *> *memList, size_t tauStep)
+memVectorList2memMatrix(const std::vector<gsl_vector_uint *> *memList,
+			size_t tauStep)
 {
   size_t nStatesTot = 0;
   size_t count;

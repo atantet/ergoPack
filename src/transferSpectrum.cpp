@@ -9,7 +9,8 @@
 /*
  * Global variables
  */
-configAR defaultCfgAR = {"LM", 0, 0., 0, NULL, true};
+//! Default Arpack conf.
+configAR defaultCfgAR = {"LM", 0, 0., 0, NULL, true}; 
 
 /*
  * Constructors and destructors definitions
@@ -124,21 +125,18 @@ transferSpectrum::getSpectrumBackward()
   getSpectrumAR(&nev, N, &EigProbBackward, &gsl2AR, config, &EigValBackward,
 		&EigVecBackward);
 
-  if (stationary)
-    {
-      /** Divide eigenvectors (real and imaginary parts)
-       * by stationary distribution */
-      for (size_t i = 0; i < N; i++)
-	{
-	  if (gsl_vector_get(transferOp->initDist, i) > 0)
-	    {
-	      element = gsl_complex_rect(1. / gsl_vector_get(transferOp->initDist, i),
-					 0.);
-	      view = gsl_matrix_complex_column(EigVecBackward, i);
-	      gsl_vector_complex_scale(&view.vector, element);
-  	    }
-  	}
+  if (stationary) {
+    /** Divide eigenvectors (real and imaginary parts)
+     * by stationary distribution */
+    for (size_t i = 0; i < N; i++) {
+      if (gsl_vector_get(transferOp->initDist, i) > 0) {
+	element
+	  = gsl_complex_rect(1. / gsl_vector_get(transferOp->initDist, i), 0.);
+	view = gsl_matrix_complex_column(EigVecBackward, i);
+	gsl_vector_complex_scale(&view.vector, element);
+      }
     }
+  }
 
   return;
 }
@@ -618,14 +616,17 @@ gsl_spmatrix2AR::MultMv(double *v, double *w)
  *
  * Get spectrum of a nonsymmetric matrix using ARPACK++.
  * \param[in]     nev        Number of eigenvalues and eigenvectors to find.
+ * \param[in]     N          Dimension of the square matrix.
  * \param[in,out] EigProb    Eigen problem to use.
- * \param[in]     gsl2AR     Object interfacing the GSL sparse matrix to ARPACK++.
+ * \param[in]     gsl2AR     Object interfacing the GSL sparse matrix
+ *                           to ARPACK++.
  * \param[in]     cfgAR      Configuration options passed as a configAR object.
  * \param[out]    EigVal     Found eigenvalues.
  * \param[out]    EigVec     Found eigenvectors.
 */
 void
-getSpectrumAR(int *nev, const size_t N, ARNonSymStdEig<double, gsl_spmatrix2AR > *EigProb,
+getSpectrumAR(int *nev, const size_t N,
+	      ARNonSymStdEig<double, gsl_spmatrix2AR > *EigProb,
 	      gsl_spmatrix2AR *gsl2AR, configAR cfgAR,
 	      gsl_vector_complex **EigVal, gsl_matrix_complex **EigVec)
 {

@@ -4,8 +4,16 @@
 #include <map>
 #include <string>
 
+/** \brief Class to define operator less for strings.
+ *
+ * \brief Class to define perator less for strings.
+ */
 class strless {
 public:
+  /** \brief Operator less for strings.
+   *
+   * \brief Operator less for strings.
+   */
   bool operator() (const std::string &s1, const std::string &s2 ) const  { 
     return s1 < s2; 
   }

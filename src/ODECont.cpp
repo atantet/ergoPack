@@ -151,7 +151,7 @@ fixedPointTrack::setInitialState(const gsl_vector *init)
 
 /**
  * Get Jacobian matrix of the current state.
- * \param[in]  Matrix in which to copy the Jacobian.
+ * \param[in]  matrix Matrix in which to copy the Jacobian.
  */
 void
 fixedPointTrack::getStabilityMatrix(gsl_matrix *matrix)
@@ -415,10 +415,10 @@ fixedPointCont::correct()
       // Update model state
       applyCorr();
 
-      // Get target vector -f(x)
+      // Get target vector \f$ -f(x) \f$
       updateTargetCorr();
 
-      /** Update state x of model and Jacobian J(x) to current state */
+      /** Update state \f$ x \f$ of model and Jacobian J(x) to current state */
       setCurrentState();
 
       // Update distance to target and iterate
@@ -743,7 +743,7 @@ periodicOrbitTrack::adaptTimeToPeriod(const double T)
 
 /**
  * Get fundamental matrix of the current state.
- * \param[in]  Matrix in which to copy the fundamental matrix.
+ * \param[in] matrix Matrix in which to copy the fundamental matrix.
  */
 void
 periodicOrbitTrack::getStabilityMatrix(gsl_matrix *matrix)
@@ -876,11 +876,12 @@ periodicOrbitCorr::findSolution(const gsl_vector *init)
   // Set time step
   adaptTimeToPeriod();
 
-  // Get targetCorr vector to x - \phi_T(x) and update error
+  // Get targetCorr vector to  \f$ x - \phi_T(x) \f$  and update error
   updateTargetCorr();
   errDist = gsl_vector_get_norm(targetCorr) / numShoot;
 
-  /** Update state x of model and Jacobian J(x) to current state
+  /** Update state  \f$ x \f$ of model
+   * and Jacobian  \f$ J(x) \f$  to current state
    *  and reinitizlize fundamental matrix to identity
    *  (after integration in updateTargetCorr). */
   setCurrentState();
@@ -911,10 +912,12 @@ periodicOrbitCorr::findSolution(const gsl_vector *init)
       // Set time step
       adaptTimeToPeriod();
 
-      // Get targetCorr vector to x - \phi_T(x) and state of linearized model
+      /** Get targetCorr vector to  \f$ x - \phi_T(x) \f$
+       * and state of linearized model */
       updateTargetCorr();
 
-      /** Update state x of model and Jacobian J(x) to current state
+      /** Update state  \f$ x \f$  of model
+       *  and Jacobian  \f$ J(x) \f$ to current state
        *  and reinitizlize fundamental matrix to identity. */
       setCurrentState();
     
@@ -955,7 +958,7 @@ periodicOrbitCont::adaptTimeToPeriod()
 
 
 /**
- * Get extended state vector x(s), lambda.
+ * Get extended state vector  \f$ x(s), lambda \f$ .
  * \param[out] state Vector in which to copy the extended state.
  * \param[in]  s     Shooting number. 
  */
@@ -1009,7 +1012,8 @@ periodicOrbitCont::getCurrentState(gsl_vector *current_)
 }
 
 /**
- * Set current state x(s), lambda of the model and fundamental matrix
+ * Set current state  \f$ x(s) \f$ , lambda of the model
+ * and fundamental matrix
  * \param[in]  s Shooting number
  */
 void
@@ -1018,7 +1022,7 @@ periodicOrbitCont::setCurrentState(const size_t s)
   if (verbose)
     std::cout << "Setting current state..." << std::endl;
   
-  // Set state of linearized model x(0), lambda.
+  // Set state of linearized model  \f$ x(0), lambda \f$ .
   getExtendedState(work, s);
   linMod->setCurrentState(work);    
 
@@ -1027,7 +1031,8 @@ periodicOrbitCont::setCurrentState(const size_t s)
 
 
 /**
- * Set current state x(0), lambda of the model and fundamental matrix
+ * Set current state  \f$ x(0) \f$ , lambda of the model
+ * and fundamental matrix
  */
 void
 periodicOrbitCont::setCurrentState()
@@ -1058,14 +1063,15 @@ periodicOrbitCont::setCurrentState(const gsl_vector *init)
       // Adapt time
       adaptTimeToPeriod();
       
-      // Set x(0), lambda and initialize model
+      // Set  \f$ x(0), lambda \f$  and initialize model
       // (last element will be overwritten)
       currentState = gsl_vector_subvector(current, 0, dim);
       gsl_vector_const_view vView = gsl_vector_const_subvector(init, 0, dim);
       gsl_vector_memcpy(&currentState.vector, &vView.vector);
       linMod->setCurrentState(&vView.vector);
 
-      // Only x(0) has been given, integrate to x(s) and set
+      /** Only  \f$ x(0) \f$  has been given,
+       * integrate to  \f$ x(s) \f$  and set */
       for (size_t s = 0; s < numShoot - 1; s++)
 	{
 	  linMod->mod->integrate((size_t) gsl_vector_uint_get(ntShoot,
@@ -1331,11 +1337,12 @@ periodicOrbitCont::correct()
   // Set time step
   adaptTimeToPeriod();
 
-  // Get targetCorr vector to x - \phi_T(x) and update error
+  // Get targetCorr vector to  \f$ x - \phi_T(x) \f$ and update error
   errDist = gsl_vector_get_norm(targetCorr) / numShoot;
   updateTargetCorr();
 
-  /** Update state x of model and Jacobian J(x) to current state
+  /** Update state  \f$ x \f$ of model
+   * and Jacobian  \f$ J(x) \f$ to current state
    *  and reinitizlize fundamental matrix to identity
    *  (after integration in updateTargetCorr). */
   setCurrentState();
@@ -1381,7 +1388,8 @@ periodicOrbitCont::correct()
       // Get target vector
       updateTargetCorr();
 
-      /** Update state x of model and Jacobian J(x) to current state
+      /** Update state  \f$ x \f$ of model
+       * and Jacobian  \f$ J(x) \f$ to current state
        *  and reinitizlize fundamental matrix to identity. */
       setCurrentState();
     
@@ -1474,9 +1482,10 @@ periodicOrbitCont::continueStep(const double contStep)
 
 
 /**
- * Calculate covariance matrix \int_0^T M(T, r) * Q(r) * M(T, r).T dt
- * from time series of fundamental matrices M(t, s)
- * and of diffusion matrices Q(s), 0 <= s < nt, with T = nt * dt.
+ * Calculate covariance matrix \f$\int_0^T M(T, r) * Q(r) * M(T, r).T dt \f$
+ * from time series of fundamental matrices \f$ M(t, s) \f$
+ * and of diffusion matrices \f$ Q(s), 0 <= s < nt \f$, with
+ * \f$ T = nt * dt \f$.
  * \param[in]  Qs  Time series of diffusion matrices.
  * \param[in]  Mts Time series of fundamental matrices.
  * \param[out] CT  Covariance matrix.
@@ -1492,14 +1501,14 @@ getCovarianceMatrix(const std::vector<gsl_matrix *> *Qs,
   gsl_matrix *tmp = gsl_matrix_alloc(dim, dim);
   gsl_matrix *tmp2 = gsl_matrix_alloc(dim, dim);
 
-  // Calculate int_0^T M(t, r) * Q(r) * M(t, r).T dr
+  // Calculate  \f$ int_0^T M(t, r) * Q(r) * M(t, r).T dr \f$ 
   gsl_matrix_set_zero(CT);
   for (size_t r = 0; r < nt; r++) {
 
-    // Q(r) * M(t, r).T
+    //  \f$ Q(r) * M(t, r).T \f$ 
     gsl_blas_dgemm(CblasNoTrans, CblasTrans, 1., Qs->at(r), Mts->at(r),
 		   0., tmp2);
-    // M(t, r) * Q(r) * M(t, r).T
+    //  \f$ M(t, r) * Q(r) * M(t, r).T \f$ 
     gsl_blas_dgemm(CblasNoTrans, CblasNoTrans, 1., Mts->at(r), tmp2,
 		   0., tmp);
 
@@ -1519,7 +1528,8 @@ getCovarianceMatrix(const std::vector<gsl_matrix *> *Qs,
 
   
 /**
- * Calculate phase diffusion coefficient from covariance matrix C(T, 0).
+ * Calculate phase diffusion coefficient from covariance matrix
+ * \f$ C(T, 0) \f$.
  * \param[in]  CT     Covariance matrix.
  * \param[in]  vLeft  Left vector on which to project.
  * \param[in]  vRight Right vector on which to project.
@@ -1536,10 +1546,10 @@ getPhaseDiffusion(const gsl_matrix *CT,
   gsl_vector *CTvLeft = gsl_vector_alloc(dim);
   const double omega = 2 * M_PI / T;
 
-  // Get C(T, 0) * vLeft
+  // Get  \f$ C(T, 0) * vLeft \f$ 
   gsl_blas_dgemv(CblasNoTrans, 1., CT, vLeft, 0., CTvLeft);
 
-  // Get vLeft * C(T, 0) * vLeft
+  // Get  \f$ vLeft * C(T, 0) * vLeft \f$ 
   phi = gsl_vector_get_inner_product(vLeft, CTvLeft)
     / fabs(gsl_vector_get_inner_product(vLeft, vRight))
     * gsl_pow_2(omega) / T / 2;
@@ -1553,8 +1563,9 @@ getPhaseDiffusion(const gsl_matrix *CT,
 
 /**
  * Calculate phase diffusion coefficient
- * from time series of fundamental matrices M(t, s)
- * and of diffusion matrices Q(s), 0 <= s < nt, with T = nt * dt.
+ * from time series of fundamental matrices  \f$ M(t, s) \f$ 
+ * and of diffusion matrices  \f$ Q(s), 0 \le s < nt \f$,
+ * with  \f$ T = nt dt \f$ .
  * \param[in]  Qs     Time series of diffusion matrices.
  * \param[in]  Mts    Time series of fundamental matrices.
  * \param[in]  vLeft  Left vector on which to project.
@@ -1595,6 +1606,7 @@ getPhaseDiffusion(const std::vector<gsl_matrix *> *Qs,
  * \param[out] eigVecLeft  Left Floquet vectors.
  * \param[out] eigVecRight Right Floquet vectors.
  * \param[in]  sort        Whether to sort the spectrum or not.
+ * \param[in]  norm        Whether to normalize the Floquet vectors or not.
  */
 void
 getFloquet(periodicOrbitCont *track, gsl_vector *state,
@@ -1648,7 +1660,8 @@ getFloquet(periodicOrbitCont *track, gsl_vector *state,
 
 /**
  * Normalize the Floquet vectors for the left one tangent to the flow
- * to have the same magnitude as the vector field.
+ * to have the same magnitude as the vector field given a periodic orbit
+ * continuation problem.
  * \param[in]  track       Continuation problem.
  * \param[in]  FloquetExp  Floquet exponents.
  * \param[out] eigVecLeft  Left Floquet vector.
@@ -1676,6 +1689,17 @@ normalizeFloquet(periodicOrbitCont *track,
 }
 
 
+/**
+ * Normalize the Floquet vectors for the left one tangent to the flow
+ * to have the same magnitude as the vector field given a state
+ * and a vector field.
+ * \param[in]  stateCont   State at which the Floquet analysis is performed.
+ * \param[in]  field       Vector field for which the Floquet analysis
+ *                         is performed.
+ * \param[in]  FloquetExp  Floquet exponents.
+ * \param[out] eigVecLeft  Left Floquet vector.
+ * \param[out] eigVecRight Right Floquet vector.
+ */
 void 
 normalizeFloquet(const gsl_vector *stateCont, vectorField *field,
 		 const gsl_vector_complex *FloquetExp,
@@ -1730,6 +1754,7 @@ normalizeFloquet(const gsl_vector *stateCont, vectorField *field,
  * \param[out] streamExp      Stream in which to write Floquet exponents.
  * \param[out] streamVecLeft  Stream in which to write left Floquet vectors.
  * \param[out] streamVecRight Stream in which to write right Floquet vectors.
+ * \param[in]  fileFormat     Format (bin/txt) of output files.
  * \param[in]  verbose        Print results to standard output.
  */
 void
@@ -1772,10 +1797,10 @@ writeFloquet(periodicOrbitCont *track, const gsl_vector *state,
 /**
  * Sort by left and right eigenvalues and eigenvectors
  * by largest largest maginitude of eigenvalue.
- * \param[in/out]  eigValLeft Left eigenvalues.
- * \param[in/out]  eigVecLeft Left eigenvectors.
- * \param[in/out]  eigValRight Right eigenvalues.
- * \param[in/out]  eigVecRight Right eigenvectors.
+ * \param[inout]  eigValLeft Left eigenvalues.
+ * \param[inout]  eigVecLeft Left eigenvectors.
+ * \param[inout]  eigValRight Right eigenvalues.
+ * \param[inout]  eigVecRight Right eigenvectors.
  */
 void
 sortSpectrum(gsl_vector_complex *eigValLeft, gsl_matrix_complex *eigVecLeft,

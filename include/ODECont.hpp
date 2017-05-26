@@ -18,6 +18,14 @@
  * @{
  */
 
+/*
+ * Class declarations:
+ */
+
+/** \brief Abstract class for Newton corrections.
+ *
+ * Abstract class for Newton correction of zeros.
+ */
 class solutionCorrection {
 
 protected:
@@ -103,6 +111,10 @@ public:
 };
 
 
+/** \brief Abstract class Newton correction of fixed points.
+ *
+ * Abstract class Newton correction of fixed points.
+ */
 class fixedPointTrack : public solutionCorrection {
 
 protected:
@@ -137,7 +149,7 @@ public:
   /** \brief Initialize. */
   void initialize() { setCurrentState(initial); return; }
 
-  /** \brief Update correction target vector for periodic orbit tracking. */
+  /** \brief Update correction target vector for fixed point tracking. */
   virtual void updateTargetCorr() = 0;
   
   /** \brief Get the Jacobian of the solution. */
@@ -148,6 +160,10 @@ public:
 };
 
 
+/** \brief Newton correction of fixed points.
+ *
+ * Newton correction of fixed points.
+ */
 class fixedPointCorr : public fixedPointTrack {
 
 public:
@@ -177,6 +193,10 @@ public:
 };
 
 
+/** \brief Abstract base class for continuation.
+ *
+ * Abstract base class for continuation.
+ */
 class solutionCont {
 protected:
   gsl_vector *stepPred;         //!< Step of prediction.
@@ -201,6 +221,10 @@ public:
 };
 
 
+/** \brief Continuation of fixed points.
+ *
+ * Continuation of fixed points.
+ */
 class fixedPointCont : public fixedPointTrack, public solutionCont {
 
 public:
@@ -250,6 +274,10 @@ public:
 };
 
 
+/** \brief Abstract class Newton correction of periodic orbits.
+ *
+ * Abstract class Newton correction of periodic orbits.
+ */
 class periodicOrbitTrack : public solutionCorrection {
 
 protected:
@@ -320,6 +348,10 @@ public:
 };
 
 
+/** \brief Newton correction of periodic orbits.
+ *
+ * Newton correction of periodic orbits.
+ */
 class periodicOrbitCorr : public periodicOrbitTrack {
 
 public:
@@ -351,6 +383,10 @@ public:
 };
 
 
+/** \brief Continuation of periodic orbits.
+ *
+ * Continuation of periodic orbits.
+ */
 class periodicOrbitCont : public periodicOrbitTrack, public solutionCont {
   using periodicOrbitTrack::adaptTimeToPeriod;
 
@@ -471,11 +507,12 @@ void sortSpectrum(gsl_vector_complex *eigValLeft,
 		  gsl_matrix_complex *eigVecRight);
 
 
-/** \brief Normalize the Floquet vectors. */
+/** \brief Normalize the Floquet vectors given a continuation problem. */
 void  normalizeFloquet(periodicOrbitCont *track,
 		       const gsl_vector_complex *FloquetExp,
 		       gsl_matrix_complex *eigVecLeft,
 		       gsl_matrix_complex *eigVecRight);
+/** \brief Normalize the Floquet vectors given a state and a vector field. */
 void  normalizeFloquet(const gsl_vector *stateCont, vectorField *field,
 		       const gsl_vector_complex *FloquetExp,
 		       gsl_matrix_complex *eigVecLeft,

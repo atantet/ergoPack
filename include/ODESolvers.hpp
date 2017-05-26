@@ -32,7 +32,7 @@
  */
 class vectorField {
 protected:
-  param p;
+  param p; //!< Parameters.
   
 public:
   /** \brief Default onstructor. */
