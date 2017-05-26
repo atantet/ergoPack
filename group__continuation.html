@@ -61,19 +61,569 @@ $(function() {
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#files">Files</a> &#124;
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">Continuation</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
+Files</h2></td></tr>
+<tr class="memitem:_o_d_e_cont_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_o_d_e_cont_8hpp.html">ODECont.hpp</a></td></tr>
+<tr class="memdesc:_o_d_e_cont_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Continuation of Ordinary Differential Equations. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsolution_correction.html">solutionCorrection</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract class for Newton corrections.  <a href="classsolution_correction.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfixed_point_track.html">fixedPointTrack</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract class Newton correction of fixed points.  <a href="classfixed_point_track.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfixed_point_corr.html">fixedPointCorr</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Newton correction of fixed points.  <a href="classfixed_point_corr.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsolution_cont.html">solutionCont</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract base class for continuation.  <a href="classsolution_cont.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfixed_point_cont.html">fixedPointCont</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Continuation of fixed points.  <a href="classfixed_point_cont.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classperiodic_orbit_track.html">periodicOrbitTrack</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract class Newton correction of periodic orbits.  <a href="classperiodic_orbit_track.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classperiodic_orbit_corr.html">periodicOrbitCorr</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Newton correction of periodic orbits.  <a href="classperiodic_orbit_corr.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classperiodic_orbit_cont.html">periodicOrbitCont</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Continuation of periodic orbits.  <a href="classperiodic_orbit_cont.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ga920779282b3ef65abb6edaea5e928d99"><td class="memItemLeft" align="right" valign="top"><a id="ga920779282b3ef65abb6edaea5e928d99"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__continuation.html#ga920779282b3ef65abb6edaea5e928d99">getCovarianceMatrix</a> (const std::vector&lt; gsl_matrix *&gt; &amp;Qs, const std::vector&lt; gsl_matrix *&gt; *Mts, gsl_matrix *CT, const double <a class="el" href="read_config_8hpp.html#a03e28be41881b703c836edbfe9b51b17">dt</a>=1.)</td></tr>
+<tr class="memdesc:ga920779282b3ef65abb6edaea5e928d99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate covariance matrix from M(t, s) and Q(s). <br /></td></tr>
+<tr class="separator:ga920779282b3ef65abb6edaea5e928d99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacfd83b1ac4c82f83b260674be919cac7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__continuation.html#gacfd83b1ac4c82f83b260674be919cac7">getPhaseDiffusion</a> (const gsl_matrix *CT, const gsl_vector *vLeft, const gsl_vector *vRight, const double T=1.)</td></tr>
+<tr class="memdesc:gacfd83b1ac4c82f83b260674be919cac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate phase diffusion coefficient from covariance matrix.  <a href="#gacfd83b1ac4c82f83b260674be919cac7">More...</a><br /></td></tr>
+<tr class="separator:gacfd83b1ac4c82f83b260674be919cac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga05b437593b34e3f8f35a3ea81edcaba7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__continuation.html#ga05b437593b34e3f8f35a3ea81edcaba7">getPhaseDiffusion</a> (const std::vector&lt; gsl_matrix *&gt; *Qs, const std::vector&lt; gsl_matrix *&gt; *Mts, const gsl_vector *vLeft, const gsl_vector *vRight, const double <a class="el" href="read_config_8hpp.html#a03e28be41881b703c836edbfe9b51b17">dt</a>=1.)</td></tr>
+<tr class="separator:ga05b437593b34e3f8f35a3ea81edcaba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga82092df80cdedbfddb97ef78416620a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__continuation.html#ga82092df80cdedbfddb97ef78416620a6">getFloquet</a> (<a class="el" href="classperiodic_orbit_cont.html">periodicOrbitCont</a> *track, gsl_vector *state, gsl_vector_complex *FloquetExp, gsl_matrix_complex *eigVecLeft, gsl_matrix_complex *eigVecRight, const bool sort=false, const bool norm=false)</td></tr>
+<tr class="memdesc:ga82092df80cdedbfddb97ef78416620a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get Floquet elements from continuation.  <a href="#ga82092df80cdedbfddb97ef78416620a6">More...</a><br /></td></tr>
+<tr class="separator:ga82092df80cdedbfddb97ef78416620a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5583f1713ded52cd08d89eff97bb3743"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__continuation.html#ga5583f1713ded52cd08d89eff97bb3743">writeFloquet</a> (<a class="el" href="classperiodic_orbit_cont.html">periodicOrbitCont</a> *track, const gsl_vector *state, const gsl_vector_complex *FloquetExp, const gsl_matrix_complex *eigVecLeft, const gsl_matrix_complex *eigVecRight, FILE *streamState, FILE *streamExp, FILE *streamVecLeft, FILE *streamVecRight, const char *<a class="el" href="read_config_8hpp.html#ac4160d8950f75108ef59df910970fb48">fileFormat</a>=&quot;txt&quot;, const bool <a class="el" href="read_config_8hpp.html#ab3f078684998b83967d507d0f453f454">verbose</a>=false)</td></tr>
+<tr class="memdesc:ga5583f1713ded52cd08d89eff97bb3743"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write Floquet eigenvalues and left and right eigenvectors.  <a href="#ga5583f1713ded52cd08d89eff97bb3743">More...</a><br /></td></tr>
+<tr class="separator:ga5583f1713ded52cd08d89eff97bb3743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2670d85892077493d2d09c2df1afd558"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__continuation.html#ga2670d85892077493d2d09c2df1afd558">sortSpectrum</a> (gsl_vector_complex *eigValLeft, gsl_matrix_complex *eigVecLeft, gsl_vector_complex *eigValRight, gsl_matrix_complex *eigVecRight)</td></tr>
+<tr class="memdesc:ga2670d85892077493d2d09c2df1afd558"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sort eigenelements by largest magnitude of eigenvalue.  <a href="#ga2670d85892077493d2d09c2df1afd558">More...</a><br /></td></tr>
+<tr class="separator:ga2670d85892077493d2d09c2df1afd558"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae7da490d4db9cc0baf05dd76dcef6b29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__continuation.html#gae7da490d4db9cc0baf05dd76dcef6b29">normalizeFloquet</a> (<a class="el" href="classperiodic_orbit_cont.html">periodicOrbitCont</a> *track, const gsl_vector_complex *FloquetExp, gsl_matrix_complex *eigVecLeft, gsl_matrix_complex *eigVecRight)</td></tr>
+<tr class="memdesc:gae7da490d4db9cc0baf05dd76dcef6b29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalize the Floquet vectors given a continuation problem.  <a href="#gae7da490d4db9cc0baf05dd76dcef6b29">More...</a><br /></td></tr>
+<tr class="separator:gae7da490d4db9cc0baf05dd76dcef6b29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6fc465783271560e7dcb6db4c6442ae2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__continuation.html#ga6fc465783271560e7dcb6db4c6442ae2">normalizeFloquet</a> (const gsl_vector *stateCont, <a class="el" href="classvector_field.html">vectorField</a> *field, const gsl_vector_complex *FloquetExp, gsl_matrix_complex *eigVecLeft, gsl_matrix_complex *eigVecRight)</td></tr>
+<tr class="memdesc:ga6fc465783271560e7dcb6db4c6442ae2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalize the Floquet vectors given a state and a vector field.  <a href="#ga6fc465783271560e7dcb6db4c6442ae2">More...</a><br /></td></tr>
+<tr class="separator:ga6fc465783271560e7dcb6db4c6442ae2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ga82092df80cdedbfddb97ef78416620a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga82092df80cdedbfddb97ef78416620a6">&#9670;&nbsp;</a></span>getFloquet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void getFloquet </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classperiodic_orbit_cont.html">periodicOrbitCont</a> *&#160;</td>
+          <td class="paramname"><em>track</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gsl_vector *&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gsl_vector_complex *&#160;</td>
+          <td class="paramname"><em>FloquetExp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gsl_matrix_complex *&#160;</td>
+          <td class="paramname"><em>eigVecLeft</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gsl_matrix_complex *&#160;</td>
+          <td class="paramname"><em>eigVecRight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>sort</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>norm</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>#include &lt;<a class="el" href="_o_d_e_cont_8hpp.html">include/ODECont.hpp</a>&gt;</code></p>
+<p>Get Floquet eigenvalues and left and right eigenvectors from the current state of the periodic orbit continuation. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">track</td><td>Periodic ontinuation problem. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">state</td><td>State vector on orbit. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">FloquetExp</td><td>Floquet exponents. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">eigVecLeft</td><td>Left Floquet vectors. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">eigVecRight</td><td>Right Floquet vectors. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sort</td><td>Whether to sort the spectrum or not. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">norm</td><td>Whether to normalize the Floquet vectors or not. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_o_d_e_cont_8cpp_source.html#l01612">1612</a> of file <a class="el" href="_o_d_e_cont_8cpp_source.html">ODECont.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="classsolution_correction.html#ac20bc649287d02aaa490b4c3cc860bdf">solutionCorrection::dim</a>, <a class="el" href="classperiodic_orbit_cont.html#a5b90db42e8ea4640b68851a2c879ce62">periodicOrbitCont::getCurrentState()</a>, <a class="el" href="classsolution_correction.html#a7adacfd65a5494da48dfba6e33c8eb86">solutionCorrection::getDim()</a>, <a class="el" href="classperiodic_orbit_track.html#a0e679acf5c95540d02cd1f950a69c9ca">periodicOrbitTrack::getStabilityMatrix()</a>, <a class="el" href="gsl__extension_8hpp.html#ac62ac03e8ac334cb2c9b48afeafdb85e">gsl_vector_complex_log()</a>, <a class="el" href="gsl__extension_8hpp.html#a51ce8f802b7a3f9336d1b7e8571691bb">gsl_vector_complex_scale_real()</a>, <a class="el" href="group__continuation.html#gae7da490d4db9cc0baf05dd76dcef6b29">normalizeFloquet()</a>, and <a class="el" href="group__continuation.html#ga2670d85892077493d2d09c2df1afd558">sortSpectrum()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="classperiodic_orbit_cont.html#a39771a7593ee44e87acb21b0f4569845">periodicOrbitCont::periodicOrbitCont()</a>.</p>
+
+</div>
+</div>
+<a id="gacfd83b1ac4c82f83b260674be919cac7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacfd83b1ac4c82f83b260674be919cac7">&#9670;&nbsp;</a></span>getPhaseDiffusion() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double getPhaseDiffusion </td>
+          <td>(</td>
+          <td class="paramtype">const gsl_matrix *&#160;</td>
+          <td class="paramname"><em>CT</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>vLeft</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>vRight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>T</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>#include &lt;<a class="el" href="_o_d_e_cont_8hpp.html">include/ODECont.hpp</a>&gt;</code></p>
+<p>Calculate phase diffusion coefficient from covariance matrix <img class="formulaInl" alt="$ C(T, 0) $" src="form_37.png"/>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">CT</td><td>Covariance matrix. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">vLeft</td><td>Left vector on which to project. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">vRight</td><td>Right vector on which to project. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">T</td><td>Period of integration. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Phase diffusion coefficient </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_o_d_e_cont_8cpp_source.html#l01540">1540</a> of file <a class="el" href="_o_d_e_cont_8cpp_source.html">ODECont.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="classsolution_correction.html#ac20bc649287d02aaa490b4c3cc860bdf">solutionCorrection::dim</a>, and <a class="el" href="gsl__extension_8hpp.html#a81caa9a9483ce4437bb98a57f74a4ecc">gsl_vector_get_inner_product()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="group__continuation.html#ga05b437593b34e3f8f35a3ea81edcaba7">getPhaseDiffusion()</a>, and <a class="el" href="classperiodic_orbit_cont.html#a39771a7593ee44e87acb21b0f4569845">periodicOrbitCont::periodicOrbitCont()</a>.</p>
+
+</div>
+</div>
+<a id="ga05b437593b34e3f8f35a3ea81edcaba7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga05b437593b34e3f8f35a3ea81edcaba7">&#9670;&nbsp;</a></span>getPhaseDiffusion() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double getPhaseDiffusion </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; gsl_matrix *&gt; *&#160;</td>
+          <td class="paramname"><em>Qs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; gsl_matrix *&gt; *&#160;</td>
+          <td class="paramname"><em>Mts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>vLeft</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>vRight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>dt</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>#include &lt;<a class="el" href="_o_d_e_cont_8hpp.html">include/ODECont.hpp</a>&gt;</code></p>
+<p>Calculate phase diffusion coefficient from M(t, s) and Q(s).</p>
+<p>Calculate phase diffusion coefficient from time series of fundamental matrices <img class="formulaInl" alt="$ M(t, s) $" src="form_34.png"/> and of diffusion matrices <img class="formulaInl" alt="$ Q(s), 0 \le s &lt; nt $" src="form_38.png"/>, with <img class="formulaInl" alt="$ T = nt dt $" src="form_39.png"/> . </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">Qs</td><td>Time series of diffusion matrices. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Mts</td><td>Time series of fundamental matrices. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">vLeft</td><td>Left vector on which to project. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">vRight</td><td>Right vector on which to project. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dt</td><td>Time step of integration. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Phase diffusion coefficient </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_o_d_e_cont_8cpp_source.html#l01577">1577</a> of file <a class="el" href="_o_d_e_cont_8cpp_source.html">ODECont.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="classsolution_correction.html#ac20bc649287d02aaa490b4c3cc860bdf">solutionCorrection::dim</a>, <a class="el" href="_o_d_e_cont_8cpp.html#a1118542cbc1f735f5f744612c8a5a9b9">getCovarianceMatrix()</a>, <a class="el" href="group__continuation.html#gacfd83b1ac4c82f83b260674be919cac7">getPhaseDiffusion()</a>, and <a class="el" href="read_config_8hpp.html#a52d59418c1fd6f77402b8db150d7767a">nt</a>.</p>
+
+</div>
+</div>
+<a id="gae7da490d4db9cc0baf05dd76dcef6b29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae7da490d4db9cc0baf05dd76dcef6b29">&#9670;&nbsp;</a></span>normalizeFloquet() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void normalizeFloquet </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classperiodic_orbit_cont.html">periodicOrbitCont</a> *&#160;</td>
+          <td class="paramname"><em>track</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector_complex *&#160;</td>
+          <td class="paramname"><em>FloquetExp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gsl_matrix_complex *&#160;</td>
+          <td class="paramname"><em>eigVecLeft</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gsl_matrix_complex *&#160;</td>
+          <td class="paramname"><em>eigVecRight</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>#include &lt;<a class="el" href="_o_d_e_cont_8hpp.html">include/ODECont.hpp</a>&gt;</code></p>
+<p>Normalize the Floquet vectors for the left one tangent to the flow to have the same magnitude as the vector field given a periodic orbit continuation problem. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">track</td><td>Continuation problem. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">FloquetExp</td><td>Floquet exponents. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">eigVecLeft</td><td>Left Floquet vector. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">eigVecRight</td><td>Right Floquet vector. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_o_d_e_cont_8cpp_source.html#l01671">1671</a> of file <a class="el" href="_o_d_e_cont_8cpp_source.html">ODECont.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="classsolution_correction.html#ac20bc649287d02aaa490b4c3cc860bdf">solutionCorrection::dim</a>, <a class="el" href="classmodel_base.html#a2b910feadba10689a599d40c15b9342d">modelBase::field</a>, <a class="el" href="classperiodic_orbit_cont.html#a5b90db42e8ea4640b68851a2c879ce62">periodicOrbitCont::getCurrentState()</a>, <a class="el" href="classsolution_correction.html#a7adacfd65a5494da48dfba6e33c8eb86">solutionCorrection::getDim()</a>, <a class="el" href="classperiodic_orbit_track.html#a16943bf2f3bdacc2a08b98a9f6c6749b">periodicOrbitTrack::linMod</a>, and <a class="el" href="classfundamental_matrix_model.html#a130033a3956ac2cd2b71a7294141d0af">fundamentalMatrixModel::mod</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="group__continuation.html#ga82092df80cdedbfddb97ef78416620a6">getFloquet()</a>, and <a class="el" href="classperiodic_orbit_cont.html#a39771a7593ee44e87acb21b0f4569845">periodicOrbitCont::periodicOrbitCont()</a>.</p>
+
+</div>
+</div>
+<a id="ga6fc465783271560e7dcb6db4c6442ae2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6fc465783271560e7dcb6db4c6442ae2">&#9670;&nbsp;</a></span>normalizeFloquet() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void normalizeFloquet </td>
+          <td>(</td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>stateCont</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classvector_field.html">vectorField</a> *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector_complex *&#160;</td>
+          <td class="paramname"><em>FloquetExp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gsl_matrix_complex *&#160;</td>
+          <td class="paramname"><em>eigVecLeft</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gsl_matrix_complex *&#160;</td>
+          <td class="paramname"><em>eigVecRight</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>#include &lt;<a class="el" href="_o_d_e_cont_8hpp.html">include/ODECont.hpp</a>&gt;</code></p>
+<p>Normalize the Floquet vectors for the left one tangent to the flow to have the same magnitude as the vector field given a state and a vector field. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">stateCont</td><td>State at which the Floquet analysis is performed. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">field</td><td>Vector field for which the Floquet analysis is performed. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">FloquetExp</td><td>Floquet exponents. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">eigVecLeft</td><td>Left Floquet vector. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">eigVecRight</td><td>Right Floquet vector. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_o_d_e_cont_8cpp_source.html#l01704">1704</a> of file <a class="el" href="_o_d_e_cont_8cpp_source.html">ODECont.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="classsolution_correction.html#ac20bc649287d02aaa490b4c3cc860bdf">solutionCorrection::dim</a>, <a class="el" href="classvector_field.html#ac306685c4efd8e7053003d5573182909">vectorField::evalField()</a>, <a class="el" href="gsl__extension_8hpp.html#a6533a697e931ff8d0593aa21bdd63540">gsl_vector_complex_get_inner_product()</a>, <a class="el" href="gsl__extension_8hpp.html#a004354d7c63073a3227dea892c0445d3">gsl_vector_complex_get_norm()</a>, <a class="el" href="gsl__extension_8hpp.html#ae39d4d8cb46c23848cefd7cd7d809fd1">gsl_vector_complex_min_index()</a>, <a class="el" href="gsl__extension_8hpp.html#a51ce8f802b7a3f9336d1b7e8571691bb">gsl_vector_complex_scale_real()</a>, and <a class="el" href="gsl__extension_8hpp.html#ae59487d770e92091021bff398a9caa19">gsl_vector_get_norm()</a>.</p>
+
+</div>
+</div>
+<a id="ga2670d85892077493d2d09c2df1afd558"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2670d85892077493d2d09c2df1afd558">&#9670;&nbsp;</a></span>sortSpectrum()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sortSpectrum </td>
+          <td>(</td>
+          <td class="paramtype">gsl_vector_complex *&#160;</td>
+          <td class="paramname"><em>eigValLeft</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gsl_matrix_complex *&#160;</td>
+          <td class="paramname"><em>eigVecLeft</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gsl_vector_complex *&#160;</td>
+          <td class="paramname"><em>eigValRight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gsl_matrix_complex *&#160;</td>
+          <td class="paramname"><em>eigVecRight</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>#include &lt;<a class="el" href="_o_d_e_cont_8hpp.html">include/ODECont.hpp</a>&gt;</code></p>
+<p>Sort by left and right eigenvalues and eigenvectors by largest largest maginitude of eigenvalue. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">eigValLeft</td><td>Left eigenvalues. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">eigVecLeft</td><td>Left eigenvectors. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">eigValRight</td><td>Right eigenvalues. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">eigVecRight</td><td>Right eigenvectors. </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Sort right eigenvalues and vectors by decreasing real parts Get real part of right eigenvalues</p>
+<p>Get sort by increasing real part</p>
+<p>Reverse to decreasing real part</p>
+<p>Apply sort to right eigenvalues</p>
+<p>Apply sort to right eigenvectors (column by column)</p>
+<p>Sort left vectors by correspondance to for counterparts (since different eigenvalues may have the same magnitude).</p>
+<p>Save left eigen elements</p>
+<p>Select left eigenvalue ev</p>
+<p>Get distance from eigenvalue |vr - conj(vl)|</p>
+<p>Get index idx of right eigenvalue with minimum distance to left one</p>
+<p>Move left eigenvalue ev to idx</p>
+<p>Move left eigenvector ev to idx</p>
+<p>Free </p>
+
+<p class="definition">Definition at line <a class="el" href="_o_d_e_cont_8cpp_source.html#l01806">1806</a> of file <a class="el" href="_o_d_e_cont_8cpp_source.html">ODECont.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="classsolution_correction.html#ac20bc649287d02aaa490b4c3cc860bdf">solutionCorrection::dim</a>, <a class="el" href="gsl__extension_8hpp.html#a0608ea649a88fa4c67798e090cf5128f">gsl_permute_matrix_complex()</a>, and <a class="el" href="gsl__extension_8hpp.html#ae39d4d8cb46c23848cefd7cd7d809fd1">gsl_vector_complex_min_index()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="group__continuation.html#ga82092df80cdedbfddb97ef78416620a6">getFloquet()</a>, and <a class="el" href="classperiodic_orbit_cont.html#a39771a7593ee44e87acb21b0f4569845">periodicOrbitCont::periodicOrbitCont()</a>.</p>
+
+</div>
+</div>
+<a id="ga5583f1713ded52cd08d89eff97bb3743"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5583f1713ded52cd08d89eff97bb3743">&#9670;&nbsp;</a></span>writeFloquet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void writeFloquet </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classperiodic_orbit_cont.html">periodicOrbitCont</a> *&#160;</td>
+          <td class="paramname"><em>track</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_vector_complex *&#160;</td>
+          <td class="paramname"><em>FloquetExp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_matrix_complex *&#160;</td>
+          <td class="paramname"><em>eigVecLeft</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const gsl_matrix_complex *&#160;</td>
+          <td class="paramname"><em>eigVecRight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>streamState</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>streamExp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>streamVecLeft</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>streamVecRight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>fileFormat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>verbose</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>#include &lt;<a class="el" href="_o_d_e_cont_8hpp.html">include/ODECont.hpp</a>&gt;</code></p>
+<p>Write Floquet eigenvalues and left and right eigenvectors. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">track</td><td>Periodic ontinuation problem. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>State vector on orbit. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">FloquetExp</td><td>Floquet exponents. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">eigVecLeft</td><td>Left Floquet vectors. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">eigVecRight</td><td>Right Floquet vectors. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">streamState</td><td>Stream in which to write state. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">streamExp</td><td>Stream in which to write Floquet exponents. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">streamVecLeft</td><td>Stream in which to write left Floquet vectors. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">streamVecRight</td><td>Stream in which to write right Floquet vectors. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">fileFormat</td><td>Format (bin/txt) of output files. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">verbose</td><td>Print results to standard output. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_o_d_e_cont_8cpp_source.html#l01761">1761</a> of file <a class="el" href="_o_d_e_cont_8cpp_source.html">ODECont.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="classperiodic_orbit_cont.html#a39771a7593ee44e87acb21b0f4569845">periodicOrbitCont::periodicOrbitCont()</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
