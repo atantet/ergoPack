@@ -16,6 +16,38 @@
  */
 
 /** 
+ * Evaluate string of vector field at a given state and time.
+ * \param[in]  state State at which to evaluate the vector field.
+ * \param[out] field Vector resulting from the evaluation of the vector field.
+ * \param[in]  t     Time at which to evaluate vector fields.
+ */
+void
+vectorFieldString::evalField(const gsl_vector *state, gsl_vector *field,
+			     const double t)
+{
+  const size_t dim = state->size;
+  gsl_vector *tmp = gsl_vector_alloc(dim);
+  
+  // Evaluate first field
+  vectorFields->at(0)->evalField(state, field, t);
+
+  // Operate next fields
+  for (size_t k = 1; k < vectorFields->size(); k++) {
+    vectorFields->at(k)->evalField(state, tmp, t);
+    if (operations->at(k-1) == '+')
+      gsl_vector_add(field, tmp);
+    else if (operations->at(k-1) == '*')
+      gsl_vector_mul(field, tmp);
+  }
+
+  // Free
+  gsl_vector_free(tmp);
+    
+  return;
+}
+
+
+/** 
  * Evaluate the linear vector field at a given state.
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] field Vector resulting from the evaluation of the vector field.
@@ -25,30 +57,6 @@ linearField::evalField(const gsl_vector *state, gsl_vector *field)
 {
   // Linear field: apply operator A to state
   gsl_blas_dgemv(CblasNoTrans, 1., A, state, 0., field);
-
-  return;
-}
-
-
-/** 
- * Evaluate the one-dimensional polynomial vector field at a given state.
- * \param[in]  state State at which to evaluate the vector field.
- * \param[out] field Vector resulting from the evaluation of the vector field.
- */
-void
-polynomial1D::evalField(const gsl_vector *state, gsl_vector *field)
-{
-  double tmp;
-  double stateScal = gsl_vector_get(state, 0);
-
-  // One-dimensional polynomial field:
-  tmp = gsl_vector_get(coeff, 0);
-  for (size_t c = 1; c < degree + 1; c++)
-    {
-      tmp += gsl_vector_get(coeff, c) * gsl_pow_uint(stateScal, c);
-    }
-  
-  gsl_vector_set(field, 0, tmp);
 
   return;
 }
@@ -64,15 +72,19 @@ polynomial1D::evalField(const gsl_vector *state, gsl_vector *field)
  * \param[in]     field   Vector field to evaluate.
  * \param[in,out] current Current state to update by one time step.
  * \param[in]     dt      Time step.
+ * \param[in]     t       Time from which to step forward.
  */
 void
 numericalScheme::stepForward(vectorField *field, gsl_vector *current,
-			     const double dt)
+			     const double dt, double *t)
 {
-  gsl_vector_view tmp = getStep(field, current, dt);
+  gsl_vector_view tmp = getStep(field, current, dt, *t);
 
   // Add previous state
   gsl_vector_add(current, &tmp.vector);
+
+  // Update time
+  *t += dt;
 
   return;
 }
@@ -194,12 +206,15 @@ modelBase::setCurrentState(const gsl_vector *current_)
 
 /**
  * Evaluate the vector field.
- * \param[in]  state State at which to evaluate the vector field.
- * \param[out] vField Vector resulting from the evaluation of the vector field.
+ * \param[in]  state  State at which to evaluate the vector field.
+ * \param[out] vField Vector resulting from the evaluation
+ *                    of the vector field.
+ * \param[in]  t      Time at which to evaluate the vector field.
  */
-void modelBase::evalField(const gsl_vector *state, gsl_vector *vField)
+void modelBase::evalField(const gsl_vector *state, gsl_vector *vField,
+			  const double t)
 {
-  field->evalField(state, vField);
+  field->evalField(state, vField, t);
 
   return;
 }
@@ -329,7 +344,7 @@ void
 model::stepForward(const double dt)
 {
   // Apply numerical scheme to step
-  scheme->stepForward(field, current, dt);
+  scheme->stepForward(field, current, dt, &t);
     
   return;
 }
@@ -372,7 +387,7 @@ fundamentalMatrixModel::stepForward(const double dt)
       col = gsl_matrix_column(current, d); 
   
       // Apply numerical scheme to step
-      scheme->stepForward(Jacobian, &col.vector, dt);
+      scheme->stepForward(Jacobian, &col.vector, dt, &(mod->t));
     }
     
   // Update the Jacobian with the full model current state

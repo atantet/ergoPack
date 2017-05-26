@@ -2,6 +2,7 @@
 #include <ODESolvers.hpp>
 #include <ODEFields.hpp>
 
+
 /** \file ODEFields.cpp
  *  \brief Definitions for Ordinary differential equation vector fields.
  *   
@@ -15,6 +16,30 @@
 /*
  * Vector fields definitions:
  */
+
+/** 
+ * Evaluate the one-dimensional polynomial vector field at a given state.
+ * \param[in]  state State at which to evaluate the vector field.
+ * \param[out] field Vector resulting from the evaluation of the vector field.
+ */
+void
+polynomial1D::evalField(const gsl_vector *state, gsl_vector *field)
+{
+  double tmp;
+  double stateScal = gsl_vector_get(state, 0);
+
+  // One-dimensional polynomial field:
+  tmp = gsl_vector_get(coeff, 0);
+  for (size_t c = 1; c < degree + 1; c++)
+    {
+      tmp += gsl_vector_get(coeff, c) * gsl_pow_uint(stateScal, c);
+    }
+  
+  gsl_vector_set(field, 0, tmp);
+
+  return;
+}
+
 
 /** 
  * Evaluate the vector field of the normal form of the saddleNode bifurcation

@@ -21,6 +21,40 @@
  */
 
 
+/** \brief One-dimensional polynomial vector field
+ *
+ * One-dimensional polynomial vector field
+ *  \f$ F(x) = \sum_{k = 0}^{degree} coeff_k x^k \f$
+ */
+class polynomial1D : public vectorField {
+
+  const size_t degree; //!< Degree of the polynomial (coeff->size - 1)
+  gsl_vector *coeff;   //!< Coefficients of the polynomial
+  
+public:
+  /** \brief Construction by allocating vector of coefficients. */
+  polynomial1D(const size_t degree_) : degree(degree_), vectorField()
+  { coeff = gsl_vector_alloc(degree + 1); }
+
+  /** \brief Construction by copying coefficients of polynomial. */
+    polynomial1D(const gsl_vector *coeff_)
+    : degree(coeff_->size - 1), vectorField()
+  { coeff = gsl_vector_alloc(degree + 1); gsl_vector_memcpy(coeff, coeff_); }
+
+  /** Destructor freeing the matrix. */
+  ~polynomial1D(){ gsl_vector_free(coeff); }
+
+  /** \brief Return the coefficients of the polynomial field (should be allocated first). */
+  void getParameters(gsl_vector *coeff_) { gsl_vector_memcpy(coeff_, coeff); return; }
+  
+  /** \brief Set parameters of the model. */
+  void setParameters(const gsl_vector *coeff_) { gsl_vector_memcpy(coeff, coeff_); return; }
+
+  /** \brief Evaluate the linear vector field at a given state. */
+  void evalField(const gsl_vector *state, gsl_vector *field);
+};
+
+
 /** \brief Vector field for the normal form of the saddle-node bifurcation.
  *
  *  Vector field for the normal form of the saddle-node bifurcation

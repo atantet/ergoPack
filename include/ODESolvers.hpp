@@ -53,6 +53,66 @@ public:
   /** \brief Evaluate the vector field at a given state. */
   virtual void evalField(const gsl_vector *state, gsl_vector *field) = 0;
 
+  /** \brief Default implementation of a nonautonomous vector field. */
+  virtual void evalField(const gsl_vector *state, gsl_vector *field,
+			 const double t)
+  { evalField(state, field); return; }
+
+};
+
+
+/** \brief Vector field made of several fields linked by a set of operations.
+ *
+ *  Vector field made of several fields linked by a set of addition
+ *  and multiplication operations.
+ */
+class vectorFieldString : public vectorField {
+protected:
+  std::vector<vectorField *> *vectorFields;  //!< Array of vector fields.
+  std::vector<char> *operations;           //!< Operations on fields.
+  
+public:
+  /** \brief Default constructor. */
+  vectorFieldString(std::vector<vectorField *> *vectorFields_,
+		    std::vector<char> *operations_)
+    : vectorField(), vectorFields(vectorFields_), operations(operations_) {}
+  
+  /** \brief Destructor. */
+  virtual ~vectorFieldString() {}
+  
+  /** \brief Evaluate the vector fields according to operations at a state
+   *  for a constant time 0. */
+  void evalField(const gsl_vector *state, gsl_vector *field)
+  { evalField(state, field, 0.); return; };
+
+  /** \brief Evaluate fields according to operations at a state and time. */
+  void evalField(const gsl_vector *state, gsl_vector *field, const double t);
+
+  /** \brief Addition of a single vector field. */
+  void push_back(vectorField *vField, const char op)
+  {
+    vectorFields->push_back(vField);
+    operations->push_back(op);
+
+    return;
+  }
+ 
+  /** \brief Compound addition of a string of vector fields. */
+  vectorFieldString& operator+=(const vectorFieldString& rhs)
+  {
+    for (size_t k = 0; k < rhs.vectorFields->size(); k++)
+      push_back(rhs.vectorFields->at(k), rhs.operations->at(k));
+
+    return *this;
+  }
+ 
+  /** \brief Addition of two strings of vector fields. */
+  friend vectorFieldString operator+(vectorFieldString lhs,
+				     const vectorFieldString& rhs)
+  {
+    lhs += rhs;
+    return lhs;
+  }
 };
 
 
@@ -101,40 +161,6 @@ public:
 };
 
 
-/** \brief One-dimensional polynomial vector field
- *
- * One-dimensional polynomial vector field
- *  \f$ F(x) = \sum_{k = 0}^{degree} coeff_k x^k \f$
- */
-class polynomial1D : public vectorField {
-
-  const size_t degree; //!< Degree of the polynomial (coeff->size - 1)
-  gsl_vector *coeff;   //!< Coefficients of the polynomial
-  
-public:
-  /** \brief Construction by allocating vector of coefficients. */
-  polynomial1D(const size_t degree_) : degree(degree_), vectorField()
-  { coeff = gsl_vector_alloc(degree + 1); }
-
-  /** \brief Construction by copying coefficients of polynomial. */
-    polynomial1D(const gsl_vector *coeff_)
-    : degree(coeff_->size - 1), vectorField()
-  { coeff = gsl_vector_alloc(degree + 1); gsl_vector_memcpy(coeff, coeff_); }
-
-  /** Destructor freeing the matrix. */
-  ~polynomial1D(){ gsl_vector_free(coeff); }
-
-  /** \brief Return the coefficients of the polynomial field (should be allocated first). */
-  void getParameters(gsl_vector *coeff_) { gsl_vector_memcpy(coeff_, coeff); return; }
-  
-  /** \brief Set parameters of the model. */
-  void setParameters(const gsl_vector *coeff_) { gsl_vector_memcpy(coeff, coeff_); return; }
-
-  /** \brief Evaluate the linear vector field at a given state. */
-  void evalField(const gsl_vector *state, gsl_vector *field);
-};
-
-
 /** \brief Abstract base class defining a deterministic numerical scheme.
  *
  *  Abstract base class defining a deterministic numerical scheme
@@ -178,11 +204,16 @@ public:
 
   /** \brief Integrate the model one step. */
   void stepForward(vectorField *field, gsl_vector *current,
-		   const double dt);
+		   const double dt, double *t);
 
   /** \brief Virtual method to get one step of integration. */
   virtual gsl_vector_view getStep(vectorField *field, gsl_vector *current,
 				  const double dt) = 0;
+
+  /** \brief Default implementation of a non-autonomous step. */
+  virtual gsl_vector_view getStep(vectorField *field, gsl_vector *current,
+				  const double dt, const double t)
+  { return getStep(field, current, dt); }
 };
 
 
@@ -229,15 +260,22 @@ public:
 class modelBase {
   
 protected:
-  const size_t dim;                 //!< Phase space dimension
+  const size_t dim;          //!< Phase space dimension
   
 public:
-  vectorField * const field;               //!< Vector field
-  gsl_vector *current;              //!< Current state
+  vectorField * const field; //!< Vector field
+  gsl_vector *current;       //!< Current state
+  double t;                  //!< Current time
   
-  /** \brief Constructor assigning a vector field, a numerical scheme
-   *  and a state. */
-  modelBase(const size_t dim_, vectorField *field_) : dim(dim_), field(field_)
+  /** \brief Constructor assigning a vector field and a state. */
+  modelBase(const size_t dim_, vectorField *field_)
+    : dim(dim_), field(field_), t(0.)
+  { current = gsl_vector_alloc(dim); }
+
+  /** \brief Constructor assigning a vector field, a state
+   *         and an initial time. */
+  modelBase(const size_t dim_, vectorField *field_, const double t_)
+    : dim(dim_), field(field_), t(t_)
   { current = gsl_vector_alloc(dim); }
 
   /** \brief Destructor freeing memory. */
@@ -249,11 +287,18 @@ public:
   /** \brief Get current state. */
   void getCurrentState(gsl_vector *current_);
     
-  /** \brief Set current state manually. */
+  /** \brief Set current state. */
   void setCurrentState(const gsl_vector *current_);
 
+  /** \brief Get current time. */
+  double getCurrentTime() { return t; }
+    
+  /** \brief Set current time. */
+  void setCurrentTime(const double t_) { t = t_; return; }
+
   /** \brief Evaluate the vector field. */
-  void evalField(const gsl_vector *state, gsl_vector *vField);
+  void evalField(const gsl_vector *state, gsl_vector *vField,
+		 const double t=0.);
 
   /** \brief One time-step integration of the model. */
   virtual void stepForward(const double dt) = 0;
