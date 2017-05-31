@@ -1,4 +1,4 @@
-LIBDIR=$(HOME)/PhD/dev/lib/
+LIBDIR=
 LIBS=-lgsl -lconfig++ -lergopack -lgomp
 CONFIG=../cfg/readConfig
 
@@ -22,7 +22,7 @@ $(CONFIG).o:$(CONFIG).cpp
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 $(EXE).out:$(EXE).o $(CONFIG).o
-	$(CC) $(LDFLAGS) -o $@ $^ -L$(LIBDIR) $(LIBS)
+	$(CC) $(LDFLAGS) -o $@ $^ $(LIBDIR) $(LIBS)
 
 clean:
 	rm -f $(EXE).o $(EXE).out

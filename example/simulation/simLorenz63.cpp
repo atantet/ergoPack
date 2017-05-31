@@ -82,6 +82,10 @@ int main(int argc, char * argv[])
 
   // Open destination file
   // Define names and open destination file
+  sprintf(postfix, "_%s_rho%04d_L%d_spinup%d_dt%d_samp%d", caseName,
+	  (int) (p["rho"] * 100 + 0.1), (int) L, (int) spinup,
+	  (int) (round(-gsl_sf_log(dt)/gsl_sf_log(10)) + 0.1),
+	  (int) printStepNum);
   sprintf(dstFileName, "%s/simulation/sim%s.%s", resDir, postfix, fileFormat);
   if (!(dstStream = fopen(dstFileName, "w")))
     {
