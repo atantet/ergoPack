@@ -21,9 +21,11 @@
  * Evaluate the one-dimensional polynomial vector field at a given state.
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] field Vector resulting from the evaluation of the vector field.
+ * \param[in]  t     Time.
  */
 void
-polynomial1D::evalField(const gsl_vector *state, gsl_vector *field)
+polynomial1D::evalField(const gsl_vector *state, gsl_vector *field,
+			const double t)
 {
   double tmp;
   double stateScal = gsl_vector_get(state, 0);
@@ -49,9 +51,11 @@ polynomial1D::evalField(const gsl_vector *state, gsl_vector *field)
  *
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] field Vector resulting from the evaluation of the vector field.
+ * \param[in]  t     Time.
  */
 void
-saddleNodeField::evalField(const gsl_vector *state, gsl_vector *field)
+saddleNodeField::evalField(const gsl_vector *state, gsl_vector *field,
+			   const double t)
 {
   // F(x) = p["mu"] - x^2
   gsl_vector_set(field, 0, p["mu"] - pow(gsl_vector_get(state, 0), 2));
@@ -68,9 +72,11 @@ saddleNodeField::evalField(const gsl_vector *state, gsl_vector *field)
  *
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] field Vector resulting from the evaluation of the vector field.
+ * \param[in]  t     Time.
  */
 void
-transcriticalField::evalField(const gsl_vector *state, gsl_vector *field)
+transcriticalField::evalField(const gsl_vector *state, gsl_vector *field,
+			      const double t)
 {
   // F(x) = p["mu"]*x - x^2
   gsl_vector_set(field, 0, gsl_vector_get(state, 0)
@@ -88,9 +94,11 @@ transcriticalField::evalField(const gsl_vector *state, gsl_vector *field)
  *
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] field Vector resulting from the evaluation of the vector field.
+ * \param[in]  t     Time.
  */
 void
-pitchforkField::evalField(const gsl_vector *state, gsl_vector *field)
+pitchforkField::evalField(const gsl_vector *state, gsl_vector *field,
+			  const double t)
 {
   // F(x) = p["mu"]*x - x^3
   gsl_vector_set(field, 0, p["mu"] * gsl_vector_get(state, 0)
@@ -108,9 +116,11 @@ pitchforkField::evalField(const gsl_vector *state, gsl_vector *field)
  *
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] field Vector resulting from the evaluation of the vector field.
+ * \param[in]  t     Time.
  */
 void
-pitchforkSubField::evalField(const gsl_vector *state, gsl_vector *field)
+pitchforkSubField::evalField(const gsl_vector *state, gsl_vector *field,
+			     const double t)
 {
   // F(x) = p["mu"]*x + x^3
   gsl_vector_set(field, 0, p["mu"] * gsl_vector_get(state, 0)
@@ -128,9 +138,11 @@ pitchforkSubField::evalField(const gsl_vector *state, gsl_vector *field)
  *
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] field Vector resulting from the evaluation of the vector field.
+ * \param[in]  t     Time.
  */
 void
-cuspField::evalField(const gsl_vector *state, gsl_vector *field)
+cuspField::evalField(const gsl_vector *state, gsl_vector *field,
+		     const double t)
 {
   // F(x) = h + r x - x^3
   gsl_vector_set(field, 0, p["h"] + p["r"] * gsl_vector_get(state, 0) 
@@ -145,9 +157,11 @@ cuspField::evalField(const gsl_vector *state, gsl_vector *field)
  * 
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] field Vector resulting from the evaluation of the vector field.
+ * \param[in]  t     Time.
  */
 void
-Hopf::evalField(const gsl_vector *state, gsl_vector *field)
+Hopf::evalField(const gsl_vector *state, gsl_vector *field,
+		const double t)
 {
   double x, y, r2;
   x = gsl_vector_get(state, 0);
@@ -155,11 +169,12 @@ Hopf::evalField(const gsl_vector *state, gsl_vector *field)
   r2 = gsl_pow_2(x) + gsl_pow_2(y);
 
   //! \f$ F_1(x) = (\mu - (x^2 + y^2)) x - (gamma - \beta (x^2 +y^2)) y \f$
-  gsl_vector_set(field, 0,
-		 (p["mu"] - r2) * x - (p["gamma"] - p["beta"] * r2) * y);
+  gsl_vector_set(field, 0, (p["mu"] - p["alpha"] * r2) * x \
+		 - (p["gamma"] + p["delta"] * p["mu"] - p["beta"] * r2) * y);
   //! \f$ F_2(x) = (gamma - \beta (x^2 +y^2)) x + (\mu - (x^2 + y^2)) y \f$
   gsl_vector_set(field, 1,
-		 (p["gamma"] - p["beta"] * r2) * x + (p["mu"] - r2) * y);
+		 (p["gamma"] + p["delta"] * p["mu"] - p["beta"] * r2) * x \
+		 + (p["mu"] - p["alpha"] * r2) * y);
  
   return;
 }
@@ -198,9 +213,11 @@ JacobianHopf::setMatrix(const gsl_vector *state)
  * at a given state for continuation with respect to \f$\rho\f$.
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] field Vector resulting from the evaluation of the vector field.
+ * \param[in]  t     Time.
  */
 void
-HopfCont::evalField(const gsl_vector *state, gsl_vector *field)
+HopfCont::evalField(const gsl_vector *state, gsl_vector *field,
+		    const double t)
 {
 
   double x, y, r2;
@@ -274,9 +291,11 @@ JacobianHopfCont::setMatrix(const gsl_vector *state)
  *  \f$ F_3(x) = x_1 x_2 - \beta x_3 \f$
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] field Vector resulting from the evaluation of the vector field.
+ * \param[in]  t     Time.
  */
 void
-Lorenz63::evalField(const gsl_vector *state, gsl_vector *field)
+Lorenz63::evalField(const gsl_vector *state, gsl_vector *field,
+		    const double t)
 {
 
   // Fx = p["sigma"] * (y - x)
@@ -323,9 +342,11 @@ JacobianLorenz63::setMatrix(const gsl_vector *state)
  * at a given state for continuation with respect to \f$\rho\f$.
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] field Vector resulting from the evaluation of the vector field.
+ * \param[in]  t     Time.
  */
 void
-Lorenz63Cont::evalField(const gsl_vector *state, gsl_vector *field)
+Lorenz63Cont::evalField(const gsl_vector *state, gsl_vector *field,
+			const double t)
 {
 
   // Fx = p["sigma"] * (y - x)

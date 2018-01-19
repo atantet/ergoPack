@@ -221,12 +221,13 @@ int main(int argc, char * argv[])
 
     // Get full membership matrix
     std::cout << "Getting full membership matrix from the list \
-of membership vecotrs..." << std::endl;
+of membership vectors..." << std::endl;
     gridMemMatrix = memVector2memMatrix(gridMemVector, tauNum);
 
       
     // Get transition matrices as CSR
     std::cout << "Building stationary transfer operator..." << std::endl;
+    std::cout << "N = " << N << std::endl;
     transferOp = new transferOperator(gridMemMatrix, N, stationary);
 
 

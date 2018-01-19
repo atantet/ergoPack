@@ -50,13 +50,9 @@ public:
   /** \brief Set parameters of the model. */
   virtual void setParameters(const param *p_) { p = *p_; return; }
 
-  /** \brief Evaluate the vector field at a given state. */
-  virtual void evalField(const gsl_vector *state, gsl_vector *field) = 0;
-
   /** \brief Default implementation of a nonautonomous vector field. */
   virtual void evalField(const gsl_vector *state, gsl_vector *field,
-			 const double t)
-  { evalField(state, field); return; }
+			 const double t=0.) = 0;
 
 };
 
@@ -80,13 +76,9 @@ public:
   /** \brief Destructor. */
   virtual ~vectorFieldString() {}
   
-  /** \brief Evaluate the vector fields according to operations at a state
-   *  for a constant time 0. */
-  void evalField(const gsl_vector *state, gsl_vector *field)
-  { evalField(state, field, 0.); return; };
-
   /** \brief Evaluate fields according to operations at a state and time. */
-  void evalField(const gsl_vector *state, gsl_vector *field, const double t);
+  void evalField(const gsl_vector *state, gsl_vector *field,
+		 const double t=0.);
 
   /** \brief Addition of a single vector field. */
   void push_back(vectorField *vField, const char op)
@@ -157,7 +149,8 @@ public:
   virtual void setMatrix(const gsl_vector *x) { };
   
   /** \brief Evaluate the linear vector field at a given state. */
-  void evalField(const gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field,
+		 const double t=0.);
 };
 
 
@@ -208,12 +201,7 @@ public:
 
   /** \brief Virtual method to get one step of integration. */
   virtual gsl_vector_view getStep(vectorField *field, gsl_vector *current,
-				  const double dt) = 0;
-
-  /** \brief Default implementation of a non-autonomous step. */
-  virtual gsl_vector_view getStep(vectorField *field, gsl_vector *current,
-				  const double dt, const double t)
-  { return getStep(field, current, dt); }
+				  const double dt, const double t) = 0;
 };
 
 
@@ -231,7 +219,7 @@ public:
 
   /** \brief Virtual method to get one step of integration. */
   gsl_vector_view getStep(vectorField *field, gsl_vector *current,
-			  const double dt);
+			  const double dt, const double t);
 };
 
 
@@ -249,7 +237,7 @@ public:
   
   /** \brief Virtual method to get one step of integration. */
   gsl_vector_view getStep(vectorField *field, gsl_vector *current,
-			  const double dt);
+			  const double dt, const double t);
 };
 
 

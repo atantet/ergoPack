@@ -53,7 +53,8 @@ vectorFieldString::evalField(const gsl_vector *state, gsl_vector *field,
  * \param[out] field Vector resulting from the evaluation of the vector field.
  */
 void
-linearField::evalField(const gsl_vector *state, gsl_vector *field)
+linearField::evalField(const gsl_vector *state, gsl_vector *field,
+		       const double t)
 {
   // Linear field: apply operator A to state
   gsl_blas_dgemv(CblasNoTrans, 1., A, state, 0., field);
@@ -96,15 +97,17 @@ numericalScheme::stepForward(vectorField *field, gsl_vector *current,
  * \param[in]     field   Vector field to evaluate.
  * \param[in,out] current Current state to update by one time step.
  * \param[in]     dt      Time step.
+ * \param[in]     t       Time.
  * \return                A view on the step in the workspace.
  */
 gsl_vector_view
-Euler::getStep(vectorField *field, gsl_vector *current, const double dt)
+Euler::getStep(vectorField *field, gsl_vector *current, const double dt,
+	       const double t)
 {
   gsl_vector_view tmp = gsl_matrix_row(work, 0); 
 
   // Get vector field
-  field->evalField(current, &tmp.vector);
+  field->evalField(current, &tmp.vector, t);
   
   // Scale by time step
   gsl_vector_scale(&tmp.vector, dt);
@@ -119,11 +122,12 @@ Euler::getStep(vectorField *field, gsl_vector *current, const double dt)
  * \param[in]     field   Vector field to evaluate.
  * \param[in,out] current Current state to update by one time step.
  * \param[in]     dt      Time step.
+ * \param[in]     t       Time.
  * \return                A view on the step in the workspace.
  */
 gsl_vector_view
 RungeKutta4::getStep(vectorField *field, gsl_vector *current,
-		     const double dt)
+		     const double dt, const double t)
 {
   /** Use views on a working matrix not to allocate memory
    *  at each time step */
@@ -137,7 +141,7 @@ RungeKutta4::getStep(vectorField *field, gsl_vector *current,
   k4 = gsl_matrix_row(work, 4);
   
   // First increament
-  field->evalField(current, &k1.vector);
+  field->evalField(current, &k1.vector, t);
   gsl_vector_scale(&k1.vector, dt);
   
   gsl_vector_memcpy(&tmp.vector, &k1.vector);
@@ -145,7 +149,7 @@ RungeKutta4::getStep(vectorField *field, gsl_vector *current,
   gsl_vector_add(&tmp.vector, current);
 
   // Second increment
-  field->evalField(&tmp.vector, &k2.vector);
+  field->evalField(&tmp.vector, &k2.vector, t + dt/2);
   gsl_vector_scale(&k2.vector, dt);
   
   gsl_vector_memcpy(&tmp.vector, &k2.vector);
@@ -153,14 +157,14 @@ RungeKutta4::getStep(vectorField *field, gsl_vector *current,
   gsl_vector_add(&tmp.vector, current);
 
   // Third increment
-  field->evalField(&tmp.vector, &k3.vector);
+  field->evalField(&tmp.vector, &k3.vector, t + dt / 2);
   gsl_vector_scale(&k3.vector, dt);
   
   gsl_vector_memcpy(&tmp.vector, &k3.vector);
   gsl_vector_add(&tmp.vector, current);
 
   // Fourth increment
-  field->evalField(&tmp.vector, &k4.vector);
+  field->evalField(&tmp.vector, &k4.vector, t + dt);
   gsl_vector_scale(&k4.vector, dt);
 
   gsl_vector_scale(&k2.vector, 2);
@@ -233,7 +237,7 @@ void modelBase::evalField(const gsl_vector *state, gsl_vector *vField,
  */
 void
 modelBase::integrate(const size_t nt, const double dt, const size_t ntSpinup,
-		 const size_t sampling, gsl_matrix **data)
+		     const size_t sampling, gsl_matrix **data)
 {
   size_t dataSize = (size_t) ((nt - ntSpinup) / sampling + 0.1 + 1);
 

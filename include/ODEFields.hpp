@@ -51,7 +51,8 @@ public:
   void setParameters(const gsl_vector *coeff_) { gsl_vector_memcpy(coeff, coeff_); return; }
 
   /** \brief Evaluate the linear vector field at a given state. */
-  void evalField(const gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field,
+		 const double t=0.);
 };
 
 
@@ -69,7 +70,8 @@ public:
   saddleNodeField(const param *p_) : vectorField(p_) {}
 
   /** \brief Evaluate the saddle-node vector field at a given state. */
-  void evalField(const gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field,
+		 const double t=0.);
 };
 
 
@@ -87,7 +89,8 @@ public:
   transcriticalField(const param *p_) : vectorField(p_) {}
 
   /** \brief Evaluate the transcritical vector field at a given state. */
-  void evalField(const gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field,
+		 const double t=0.);
 };
 
 
@@ -105,7 +108,8 @@ public:
   pitchforkField(const param *p_): vectorField(p_) {}
 
   /** \brief Evaluate the supercritical pitchfork vector field at a given state. */
-  void evalField(const gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field,
+		 const double t=0.);
 };
 
 
@@ -123,7 +127,8 @@ public:
   pitchforkSubField(const param *p_) : vectorField(p_) {}
 
   /** \brief Evaluate the subcritical pitchfork vector field. */
-  void evalField(const gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field,
+		 const double t=0.);
 };
 
 
@@ -147,7 +152,8 @@ public:
   ~cuspField(){}
 
   /** \brief Evaluate the cusp vector field at a given state. */
-  void evalField(const gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field,
+		 const double t=0.);
 };
 
 
@@ -169,7 +175,8 @@ public:
   ~Hopf() {}
 
   /** \brief Evaluate the vector field of the Lorenz 63 model for a given state. */
-  void evalField(const gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field,
+		 const double t=0.);
 
 };
 
@@ -205,7 +212,8 @@ public:
   ~HopfCont() {}
 
   /** \brief Evaluate the vector field of the Hopf normal form. */
-  void evalField(const gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field,
+		 const double t=0.);
 };
 
 
@@ -246,7 +254,8 @@ public:
   ~Lorenz63() {}
 
   /** \brief Evaluate the vector field of the Lorenz 63 model for a given state. */
-  void evalField(const gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field,
+		 const double t=0.);
 
 };
 
@@ -283,7 +292,8 @@ public:
   ~Lorenz63Cont() {}
 
   /** \brief Evaluate the vector field of the Lorenz 63 model. */
-  void evalField(const gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field,
+		 const double t=0.);
 };
 
 

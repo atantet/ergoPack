@@ -125,18 +125,18 @@ transferSpectrum::getSpectrumBackward()
   getSpectrumAR(&nev, N, &EigProbBackward, &gsl2AR, config, &EigValBackward,
 		&EigVecBackward);
 
-  if (stationary) {
-    /** Divide eigenvectors (real and imaginary parts)
-     * by stationary distribution */
-    for (size_t i = 0; i < N; i++) {
-      if (gsl_vector_get(transferOp->initDist, i) > 0) {
-	element
-	  = gsl_complex_rect(1. / gsl_vector_get(transferOp->initDist, i), 0.);
-	view = gsl_matrix_complex_column(EigVecBackward, i);
-	gsl_vector_complex_scale(&view.vector, element);
-      }
-    }
-  }
+  // if (stationary) {
+  //   /** Divide eigenvectors (real and imaginary parts)
+  //    * by stationary distribution */
+  //   for (size_t i = 0; i < N; i++) {
+  //     if (gsl_vector_get(transferOp->initDist, i) > 0) {
+  // 	element
+  // 	  = gsl_complex_rect(1. / gsl_vector_get(transferOp->initDist, i), 0.);
+  // 	view = gsl_matrix_complex_column(EigVecBackward, i);
+  // 	gsl_vector_complex_scale(&view.vector, element);
+  //     }
+  //   }
+  // }
 
   return;
 }
