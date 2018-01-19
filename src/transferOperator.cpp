@@ -14,12 +14,9 @@
  * Empty constructor to allow manual building of transition matrix
  * from the grid membership matrix without mask.
  * \param[in] N_          Number of grid boxes.
- * \param[in] stationary_ Whether the system is stationary
- *                        (in which case \f$\rho_0 = \rho_f\f$ and no need
- *                        to calculate the backward transition matrix).
+ *                        (in which case \f$\rho_0 = \rho_f\f$).
  */
-transferOperator::transferOperator(const size_t N_, const bool stationary_)
-  : N(N_), stationary(stationary_), P(NULL), Q(NULL)
+transferOperator::transferOperator(const size_t N_): N(N_), P(NULL)
 {
   // Get default mask
   mask = gsl_vector_uint_alloc(N);
@@ -30,24 +27,18 @@ transferOperator::transferOperator(const size_t N_, const bool stationary_)
 
   /** Initialize distributions to zero */
   gsl_vector_set_zero(initDist);
-  if (!stationary)
-    gsl_vector_set_zero(finalDist);
 }
 
 /**
  * Construct transferOperator by calculating
- * the forward and backward transition matrices and distributions 
+ * the transition matrix and distributions 
  * from the grid membership matrix.
  * \param[in] gridMem     GSL grid membership matrix.
  * \param[in] N_          Number of grid boxes.
- * \param[in] stationary_ Whether the system is stationary
- *                        (in which case \f$\rho_0 = \rho_f\f$ and no need
- *                        to calculate the backward transition matrix).
+ *                        (in which case \f$\rho_0 = \rho_f\f$).
  */
 transferOperator::transferOperator(const gsl_matrix_uint *gridMem,
-				   const size_t N_,
-				   const bool stationary_)
-  : N(N_), stationary(stationary_), P(NULL), Q(NULL)
+				   const size_t N_) : N(N_), P(NULL)
 {
   // Get mask
   mask = gsl_vector_uint_alloc(N);
@@ -55,27 +46,24 @@ transferOperator::transferOperator(const gsl_matrix_uint *gridMem,
 
   // Allocate distributions and set matrices to NULL pointer
   allocateDist();
-
+  
   // Get transition matrices and distributions from grid membership matrix
   buildFromMembership(gridMem);
 }
 
 /**
  * Construct transferOperator by calculating
- * the forward and backward transition matrices and distributions 
+ * the transition matrix and distributions 
  * from the initial and final states of trajectories.
  * \param[in] initStates     GSL matrix of initial states.
- * \param[in] finalStates    GSL matrix of final states.
+ * \param[in] finalStates     GSL matrix of final states.
  * \param[in] grid           Pointer to Grid object.
- * \param[in] stationary_    Whether the system is stationary
- *                           (in which case \f$\rho_0 = \rho_f\f$ and no need
- *                           to calculate the backward transition matrix).
+ *                           (in which case \f$\rho_0 = \rho_f\f$).
  */
 transferOperator::transferOperator(const gsl_matrix *initStates,
 				   const gsl_matrix *finalStates,
-				   const Grid *grid,
-				   const bool stationary_)
-  : N(grid->getN()), stationary(stationary_), P(NULL), Q(NULL)
+				   const Grid *grid)
+  : N(grid->getN()), P(NULL)
 {
   gsl_matrix_uint *gridMem;
 
@@ -86,7 +74,7 @@ transferOperator::transferOperator(const gsl_matrix *initStates,
   mask = gsl_vector_uint_alloc(N);
   NFilled = getMask(mask, gridMem);
 
-  // Allocate distributions and set matrices to NULL pointer
+  // Allocate distribution
   allocateDist();
 
   // Get transition matrices and distributions from grid membership matrix
@@ -97,8 +85,7 @@ transferOperator::transferOperator(const gsl_matrix *initStates,
 }
 
 /**
- * Construct transferOperator calculating the forward
- * and backward transition matrices
+ * Construct transferOperator calculating the transition matrix
  * and distributions from a single long trajectory, for a given grid and lag.
  * \param[in] states         GSL matrix of states for each time step.
  * \param[in] grid           Pointer to Grid object.
@@ -106,7 +93,7 @@ transferOperator::transferOperator(const gsl_matrix *initStates,
  */
 transferOperator::transferOperator(const gsl_matrix *states, const Grid *grid,
 				   const size_t tauStep)
-  : N(grid->getN()), stationary(true), P(NULL), Q(NULL)
+  : N(grid->getN()), P(NULL)
 {
   gsl_matrix_uint *gridMem;
 
@@ -117,7 +104,7 @@ transferOperator::transferOperator(const gsl_matrix *states, const Grid *grid,
   mask = gsl_vector_uint_alloc(N);  
   NFilled = getMask(mask, gridMem);
 
-  // Allocate distributions and set matrices to NULL pointer
+  // Allocate distributions
   allocateDist();
 
   // Get transition matrices and distributions from grid membership matrix
@@ -134,13 +121,6 @@ transferOperator::~transferOperator()
     gsl_spmatrix_free(P);
   gsl_vector_free(initDist);
   gsl_vector_uint_free(mask);
-
-  if (Q)
-    gsl_spmatrix_free(Q);
-  if (!stationary)
-    {
-      gsl_vector_free(finalDist);
-    }
 }
 
 
@@ -156,13 +136,6 @@ int
 transferOperator::allocateDist()
 {
   initDist = gsl_vector_alloc(NFilled);
-  
-  /** If stationary problem, initDist = finalDist = stationary distribution
-   *  and the backward transition matrix need not be calculated */
-  if (!stationary)
-      finalDist = gsl_vector_alloc(NFilled);
-  else
-      finalDist = initDist;
   
   return 0;
 }
@@ -219,43 +192,19 @@ transferOperator::buildFromTransitionCount(const gsl_spmatrix *T,
   if (!(P = gsl_spmatrix_crs(T)))
     {
       fprintf(stderr, "transferOperator::buildFromTransitionCount: \
-error compressing forward transition matrix.\n");
+error compressing transition matrix.\n");
       throw std::exception();
     }
 
-  /** If the problem is not stationary, get final distribution
-   *  and backward transition matrix */
-  if (!stationary)
-    {
-      /** Get transpose copy */
-      if (!(Q = gsl_spmatrix_alloc_nzmax(NFilled, NFilled, P->nz,
-					 GSL_SPMATRIX_CRS)))
-	{
-	  fprintf(stderr, "transferOperator::buildFromTransitionCount: \
-error allocating backward transition matrix.\n");
-	  throw std::bad_alloc();
-	}
-      if (gsl_spmatrix_transpose_memcpy(Q, P))
-	{
-	  fprintf(stderr, "transferOperator::buildFromTransitionCount: \
-error copying forward transition matrix to backward.\n");
-	  throw std::exception();
-	}
-  
-      /** Make the backward transition matrix left stochastic */
-      gsl_spmatrix_div_cols(Q, initDist, tol);
-      gsl_vector_normalize(initDist);
-    }
-  
-  /** Make the forward transition matrix left stochastic */
-  gsl_spmatrix_div_cols(P, finalDist, tol);
-  gsl_vector_normalize(finalDist);
+  /** Make the transition matrix right stochastic */
+  gsl_spmatrix_div_rows(P, initDist, tol);
+  gsl_vector_normalize(initDist);
 
   return;
 }
 
 /** 
- * Filter weak Markov states (boxes) of forward and backward transition matrices
+ * Filter weak Markov states (boxes) of the transition matrix
  * based on their distributions.
  * \param[in] tol Weight under which a state is filtered out.
  * \return        Exit status.
@@ -265,31 +214,19 @@ transferOperator::filter(double tol)
 {
   int status;
   
-  /** Filter forward transition matrix */
-  if ((status = filterStochasticMatrix(P, initDist, finalDist, tol, 2)))
-    {
-      fprintf(stderr, "transferOperator::filter: error filtering\
-forward transition matrix.\n");
-      throw std::exception();
-    }
+  /** Filter transition matrix (should change 2nd initDist with finalDist)*/
+  if ((status = filterStochasticMatrix(P, initDist, initDist, tol, 2))) {
+    fprintf(stderr, "transferOperator::filter: error filtering\
+transition matrix.\n");
+    throw std::exception();
+  }
 
-  /** Filter forward transition matrix */
-  if (Q)
-    {
-      if ((status = filterStochasticMatrix(Q, finalDist, initDist, tol, 2)))
-	{
-	  fprintf(stderr, "transferOperator::filter: error filtering\
-backward transition matrix.\n");
-	  throw std::exception();
-	}
-    }
-  
   return 0;
 }
 
 
 /**
- * Print forward transition matrix to file in coordinate format with header
+ * Print transition matrix to file in coordinate format with header
  * (see transferOperator.hpp)
  * \param[in] path       Path to the file in which to print.
  * \param[in] fileFormat String "bin" or "txt" for the output type.
@@ -297,16 +234,16 @@ backward transition matrix.\n");
  * \return               Status.
  */
 int
-transferOperator::printForwardTransition(const char *path,
-					 const char *fileFormat="txt",
-					 const char *dataFormat="%lf")
+transferOperator::printTransition(const char *path,
+				  const char *fileFormat="txt",
+				  const char *dataFormat="%lf")
 {
   FILE *fp;
 
   // Open file
   if (!(fp = fopen(path, "w")))
     {
-      throw std::ios::failure("transferOperator::printForwardTransition, \
+      throw std::ios::failure("transferOperator::printTransition, \
 opening stream to write");
     }
 
@@ -318,61 +255,12 @@ opening stream to write");
   
   if (ferror(fp))
     {
-      throw std::ios::failure("transferOperator::printForwardTransition, \
+      throw std::ios::failure("transferOperator::printTransition, \
 printing to transition matrix");
     }
   
   // Close
   fclose(fp);
-
-  return 0;
-}
-
-/**
- * Print backward transition matrix to file in coordinate format with header
- * (see transferOperator.hpp)
- * \param[in] path       Path to the file in which to print.
- * \param[in] fileFormat String "bin" or "txt" for the output type.
- * \param[in] dataFormat Format in which to print each element (if formatted output).
- * \return               Status.
- */
-int
-transferOperator::printBackwardTransition(const char *path,
-					  const char *fileFormat="txt",
-					  const char *dataFormat="%lf")
-{
-  FILE *fp;
-
-  // Print
-  if (Q)
-    {
-      // Open file
-      if (!(fp = fopen(path, "w")))
-	{
-	  throw std::ios::failure("transferOperator::printBackwardTransition, \
-opening stream to write");
-	}
-
-      // Print 
-      if (strcmp(fileFormat, "bin") == 0)
-	gsl_spmatrix_fwrite(fp, Q);
-      else
-	gsl_spmatrix_fprintf(fp, Q, dataFormat);
-      
-      if (ferror(fp))
-	{
-	  throw std::ios::failure("transferOperator::printBackwardTransition, \
-printing transition matrix");
-	}
-
-      // Close
-      fclose(fp);
-    }
-  else
-    {
-      throw std::ios::failure("transferOperator::printBackwardTransition, \
-backward transition matrix not calculated.");
-    }
 
   return 0;
 }
@@ -404,39 +292,6 @@ opening stream to write");
   else
     gsl_vector_fprintf(fp, initDist, dataFormat);
 
-  // Close
-  fclose(fp);
-
-  return 0;
-}
-
-/**
- * Print final distribution to file.
- * \param[in] path       Path to the file in which to print.
- * \param[in] fileFormat String "bin" or "txt" for the output type.
- * \param[in] dataFormat Format in which to print each element (if formatted output).
- * \return               Status.
- */
-int
-transferOperator::printFinalDist(const char *path,
-				 const char *fileFormat="txt",
-				 const char *dataFormat="%lf")
-{
-  FILE *fp;
-
-  // Open file
-  if (!(fp = fopen(path, "w")))
-    {
-      throw std::ios::failure("transferOperator::printFinalDist, \
-opening stream to write");
-    }
-  
-  // Print
-  if (strcmp(fileFormat, "bin") == 0)
-    gsl_vector_fwrite(fp, finalDist);
-  else
-    gsl_vector_fprintf(fp, finalDist, dataFormat);
-  
   // Close
   fclose(fp);
 
@@ -477,7 +332,7 @@ opening stream to write");
 }
 
 /**
- * Scan forward transition matrix from file in coordinate format with header.
+ * Scan transition matrix from file in coordinate format with header.
  * (see transferOperator.hpp).
  * No preliminary memory allocation needed but the grid size should be set.
  * Previously allocated memory should first be freed to avoid memory leak.
@@ -486,8 +341,8 @@ opening stream to write");
  * \return               0 in success, EXIT_FAILURE otherwise.
  */
 int
-transferOperator::scanForwardTransition(const char *path,
-					const char *fileFormat="txt")
+transferOperator::scanTransition(const char *path,
+				 const char *fileFormat="txt")
 {
   FILE *fp;
   gsl_spmatrix *T;
@@ -495,7 +350,7 @@ transferOperator::scanForwardTransition(const char *path,
   /** Open file */
   if (!(fp = fopen(path, "r")))
     {
-      throw std::ios::failure("transferOperator::scanForwardTransition, \
+      throw std::ios::failure("transferOperator::scanTransition, \
 opening stream to read");
   }
 
@@ -512,7 +367,7 @@ opening stream to read");
       T = gsl_spmatrix_fscanf(fp);
       if (!T)
 	{
-	  throw std::ios::failure("transferOperator::scanForwardTransition, \
+	  throw std::ios::failure("transferOperator::scanTransition, \
 scanning transition matrix");
 	}
 
@@ -526,8 +381,8 @@ scanning transition matrix");
   /** Check if transition matrix has been properly read */
   if (!P)
     {
-      fprintf(stderr, "transferOperator::scanForwardTransition: error\
-compressing forward transition matrix.\n");
+      fprintf(stderr, "transferOperator::scanTransition: error\
+compressing transition matrix.\n");
       throw std::exception();
     }
 
@@ -539,80 +394,6 @@ compressing forward transition matrix.\n");
   
   return 0;
 }
-
-/**
- * Scan backward transition matrix from file in coordinate format with header.
- * (see transferOperator.hpp).
- * No preliminary memory allocation needed but the grid size should be set.
- * Previously allocated memory should first be freed to avoid memory leak.
- * \param[in] path       Path to the file in which to scan.
- * \param[in] fileFormat String "bin" or "txt" for the output type.
- * \return               0 in success, EXIT_FAILURE otherwise.
- */
-int
-transferOperator::scanBackwardTransition(const char *path,
-					 const char *fileFormat="txt")
-{
-  FILE *fp;
-  gsl_spmatrix *T;
-  
-  
-  /** Open file */
-  if (!stationary)
-    {
-      if (!(fp = fopen(path, "r")))
-	{
-	  throw std::ios::failure("transferOperator::scanBackwardTransition, \
-opening stream to read");
-	}
-
-      /** Scan, summing if duplicate */
-      if (strcmp(fileFormat, "bin") == 0)
-	{
-	  /** Allocate before to read in CRS binary format */
-	  Q = gsl_spmatrix_alloc2read(fp, GSL_SPMATRIX_CRS);
-	  gsl_spmatrix_fread(fp, Q);
-	}
-      else
-	{
-	  /** Read in Matrix Market format */
-	  T = gsl_spmatrix_fscanf(fp);
-	  if (!T)
-	    {
-	      throw std::ios::failure("transferOperator::scanForwardTransition, \
-scanning transition matrix");
-	    }
-
-	  /** Compress */
-	  Q = gsl_spmatrix_crs(T);
-
-	  /** Free */
-	  gsl_spmatrix_free(T);
-	}
-
-      /** Check if transition matrix has been properly read */
-      if (!Q)
-	{
-	  fprintf(stderr, "transferOperator::scanBackwardTransition: error\
-compressing backward transition matrix.\n");
-	  throw std::exception();
-	}
-      
-      /** Set number of filled boxes in case not known already */
-      NFilled = Q->size1;
-
-      /** Close */
-      fclose(fp);
-    }
-  else
-    {
-      throw std::ios::failure("transferOperator::scanBackwardTransition:\
-backward transition matrix not scanned because problem is stationary");
-    }
-  
-  return 0;
-}
-
 
 /**
  * Scan initial distribution from file.
@@ -644,48 +425,6 @@ opening stream to read");
   //Close
   fclose(fp);
   
-  return 0;
-}
-
-
-/**
- * Scan final distribution from file.
- * No preliminary memory allocation needed but the grid size should be set.
- * Previously allocated memory should first be freed to avoid memory leak.
- * \param[in] path       Path to the file in which to scan.
- * \param[in] fileFormat String "bin" or "txt" for the output type.
- * \return               0 in success, EXIT_FAILURE otherwise.
- */
-int
-transferOperator::scanFinalDist(const char *path,
-				const char *fileFormat="txt")
-{
-  FILE *fp;
-
-  if (!stationary)
-    {
-      // Open file
-      if (!(fp = fopen(path, "r")))
-	{
-	  throw std::ios::failure("transferOperator::scanFinalDist, \
-opening stream to read");
-	}
-
-      /** Scan after preallocating */
-      if (strcmp(fileFormat, "bin") == 0)
-	gsl_vector_fread(fp, finalDist);
-      else
-	gsl_vector_fscanf(fp, finalDist);
-  
-      //Close
-      fclose(fp);
-    }
-  else
-    {
-      throw std::ios::failure("transferOperator::scanFinalDist, \
-final distribution not scanned because problem is stationary");
-    }
-
   return 0;
 }
 
@@ -753,11 +492,8 @@ transferOperator::addTransition(gsl_spmatrix *T, size_t box0, size_t boxf)
       else
 	gsl_spmatrix_set(T, box0r, boxfr, 1.);   /* initalize to x */
 
-      /** Add initial and final boxes to initial and final distributions,
-	  respectively (not on a reduced grid). */
+      /** Add initial box to initial distribution (not on a reduced grid). */
       gsl_vector_set(initDist, box0r, gsl_vector_get(initDist, box0r) + 1.);
-      if (!stationary)
-	gsl_vector_set(finalDist, boxfr, gsl_vector_get(finalDist, boxfr) + 1.);
 
       nIn = 1;
     }
@@ -784,8 +520,6 @@ transferOperator::getTransitionCountTriplet(const gsl_matrix_uint *gridMem,
   /** Initialize distributions to zero */
   if (initDist)
     gsl_vector_set_zero(initDist);
-  if (finalDist)
-    gsl_vector_set_zero(finalDist);
 
   /** Record transitions */
   for (size_t traj = 0; traj < nTraj; traj++)

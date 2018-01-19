@@ -30,8 +30,8 @@ configAR defaultCfgAR = {"LM", 0, 0., 0, NULL, true};
 transferSpectrum::transferSpectrum(const int nev_,
 				   const transferOperator *transferOp_,
 				   const configAR cfgAR=defaultCfgAR)
-  : N(transferOp_->getNFilled()), nev(nev_), transferOp(transferOp_), config(cfgAR),
-    stationary(transferOp_->isStationary()), sorted(false),
+  : N(transferOp_->getNFilled()), nev(nev_), transferOp(transferOp_),
+    config(cfgAR), sorted(false),
     EigValForward(NULL), EigVecForward(NULL),
     EigValBackward(NULL), EigVecBackward(NULL) {}
 
@@ -60,15 +60,14 @@ transferSpectrum::~transferSpectrum()
  */
 
 /**
- * Get spectrum of forward transition matrix.
+ * Get left eigenvectors of transition matrix.
  */
 void
 transferSpectrum::getSpectrumForward()
 {
   gsl_spmatrix *cpy;
   gsl_spmatrix2AR gsl2AR;
-
-  /** Get transpose of forward transition matrix in CCS 
+  /** Get transpose of transition matrix in CCS
    *  Transposing is trivial since the transition matrix is in CRS format.
    *  However, it is more secure to avoid directly changing the type of
    *  the transition matrix. */
@@ -79,51 +78,12 @@ transferSpectrum::getSpectrumForward()
   cpy->p = transferOp->P->p;
   cpy->nzmax = transferOp->P->nzmax;
   cpy->nz = transferOp->P->nz;
-  gsl2AR = gsl_spmatrix2AR(cpy);
+
+  gsl2AR = gsl_spmatrix2AR(transferOp->P);
 
   //! Solve eigen value problem using user-defined ARPACK++
   getSpectrumAR(&nev, N, &EigProbForward, &gsl2AR, config, &EigValForward,
 		&EigVecForward);
-
-  return;
-}
-
-
-/**
- * Get spectrum of backward transition matrix.
- */
-void
-transferSpectrum::getSpectrumBackward()
-{
-  gsl_spmatrix *cpy;
-  gsl_spmatrix2AR gsl2AR;
-  gsl_vector_complex_view view;
-  gsl_complex element;
-
-  if (!stationary)
-    {
-      /** Get transpose of backward transition matrix in ARPACK CCS format */
-      cpy = gsl_spmatrix_alloc_nzmax(transferOp->Q->size2,
-				     transferOp->Q->size1,
-				     0, GSL_SPMATRIX_CCS);
-      cpy->i = transferOp->Q->i;
-      cpy->data = transferOp->Q->data;
-      cpy->p = transferOp->Q->p;
-      cpy->nzmax = transferOp->Q->nzmax;
-      cpy->nz = transferOp->Q->nz;
-      gsl2AR = gsl_spmatrix2AR(cpy);
-    }
-  else
-    {
-      /** In the stationary case, the adjoint eigenvectors can be calculated
-       *  as left eigenvectors of the forward transition matrix
-       *  divided by the stationary distribution */
-      gsl2AR = gsl_spmatrix2AR(transferOp->P);
-    }
-  
-  /** Get eigenvalues and vectors of backward transition matrix */
-  getSpectrumAR(&nev, N, &EigProbBackward, &gsl2AR, config, &EigValBackward,
-		&EigVecBackward);
 
   // if (stationary) {
   //   /** Divide eigenvectors (real and imaginary parts)
@@ -132,11 +92,32 @@ transferSpectrum::getSpectrumBackward()
   //     if (gsl_vector_get(transferOp->initDist, i) > 0) {
   // 	element
   // 	  = gsl_complex_rect(1. / gsl_vector_get(transferOp->initDist, i), 0.);
-  // 	view = gsl_matrix_complex_column(EigVecBackward, i);
+  // 	view = gsl_matrix_complex_column(EigVecForward, i);
   // 	gsl_vector_complex_scale(&view.vector, element);
   //     }
   //   }
   // }
+
+  return;
+}
+
+
+/**
+ * Get right eigenvectors of transition matrix.
+ */
+void
+transferSpectrum::getSpectrumBackward()
+{
+  gsl_spmatrix2AR gsl2AR;
+
+  /** In the stationary case, the adjoint eigenvectors can be calculated
+   *  as left eigenvectors of the forward transition matrix
+   *  divided by the stationary distribution */
+  gsl2AR = gsl_spmatrix2AR(transferOp->P);
+  
+  /** Get eigenvalues and vectors of backward transition matrix */
+  getSpectrumAR(&nev, N, &EigProbBackward, &gsl2AR, config, &EigValBackward,
+		&EigVecBackward);
 
   return;
 }
@@ -169,8 +150,7 @@ transferSpectrum::getSpectrum()
  * {\left<\psi_i, \psi_i^*\right>_{\rho_t}}\f$,
  * where \f$\psi_i\f$ and \f$\psi_i^*\f$ are the forward
  * and backward (adjoint) eigenvectors,
- * respectively and norm is for \f$L^2\f$ w.r.t the initial
- * or final distributions.
+ * respectively and norm is for \f$L^2\f$ w.r.t the initial distribution.
  * The condition number is equal to the inverse of the cosine of the angle
  * between the two vectors and gives a measure of the nonnormality associated
  * with a particular pair of eigenvectors.
@@ -195,13 +175,13 @@ transferSpectrum::getConditionNumbers()
       gsl_vector_complex_const_view viewBack
 	= gsl_matrix_complex_const_row(EigVecBackward, ev);
       normBackward = gsl_vector_complex_get_norm(&viewBack.vector,
-						 transferOp->finalDist);
+						 transferOp->initDist);
 
       //! Divide by their inner product (in case not made biorthonormal)
       inner
 	= GSL_REAL(gsl_vector_complex_get_inner_product(&viewFor.vector,
 							&viewBack.vector,
-							transferOp->finalDist));
+							transferOp->initDist));
 
       //! Set condition number
       gsl_vector_set(conditionNumbers, ev,
@@ -257,7 +237,7 @@ must have the same size as the grid." << std::endl;
       gsl_vector_complex_const_view viewFor
 	= gsl_matrix_complex_const_row(EigVecForward, ev);
       weight = gsl_complex_mul(weight,
-			       gsl_vector_complex_get_inner_product(&viewFor.vector, gc, transferOp->finalDist));
+			       gsl_vector_complex_get_inner_product(&viewFor.vector, gc, transferOp->initDist));
 
       // Set weight
       gsl_vector_complex_set(weights, ev, weight);
@@ -381,7 +361,7 @@ backward eigen problem solved first before to make biorthonormal set"
    	 = gsl_matrix_complex_row(EigVecBackward, ev);
        inner = gsl_vector_complex_get_inner_product(&viewFor.vector,
    						    &viewBack.vector,
-   						    transferOp->finalDist);
+   						    transferOp->initDist);
        //! Divide backward eigenvector by conjugate of inner product
        inner = gsl_complex_conjugate(inner);
        inner = gsl_complex_inverse(inner);

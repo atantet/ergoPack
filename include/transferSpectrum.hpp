@@ -65,9 +65,7 @@ class transferSpectrum {
   const transferOperator *transferOp; //!< Transfer operator of the eigen problem
   int nev;                            //!< Number of eigenvalues and vectors to search;
   configAR config;                    //!< Initial configuration
-  /** If true, the problem is stationary and it is no use calculating
-   *  the backward transition matrix and final distribution. */
-  const bool stationary;
+
   /** Whether eigenvalues and vectors have been sorted
    *  by descending largest magnitude */
   bool sorted;                        
@@ -134,9 +132,6 @@ public:
   /** \brief Get number of grid boxes. */
   size_t getN() const { return N; }
 
-  /** \brief Get whether stationary. */
-  bool isStationary() const { return stationary; }
-  
   /** \brief Get whether forward and backward eigenvalues and vectors are sorted. */
   bool isSorted() const { return sorted; }
   
