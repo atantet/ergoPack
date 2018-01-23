@@ -79,7 +79,7 @@ transferSpectrum::getSpectrumForward()
   cpy->nzmax = transferOp->P->nzmax;
   cpy->nz = transferOp->P->nz;
 
-  gsl2AR = gsl_spmatrix2AR(transferOp->P);
+  gsl2AR = gsl_spmatrix2AR(cpy);
 
   //! Solve eigen value problem using user-defined ARPACK++
   getSpectrumAR(&nev, N, &EigProbForward, &gsl2AR, config, &EigValForward,
@@ -168,8 +168,7 @@ transferSpectrum::getConditionNumbers()
       //! Get norm of forward eigenvector
       gsl_vector_complex_const_view viewFor
 	= gsl_matrix_complex_const_row(EigVecForward, ev);
-      normForward = gsl_vector_complex_get_norm(&viewFor.vector,
-						transferOp->initDist);
+      normForward = gsl_vector_complex_get_norm(&viewFor.vector);
 
       //! Get norm of backward eigenvector.
       gsl_vector_complex_const_view viewBack
@@ -180,8 +179,7 @@ transferSpectrum::getConditionNumbers()
       //! Divide by their inner product (in case not made biorthonormal)
       inner
 	= GSL_REAL(gsl_vector_complex_get_inner_product(&viewFor.vector,
-							&viewBack.vector,
-							transferOp->initDist));
+							&viewBack.vector));
 
       //! Set condition number
       gsl_vector_set(conditionNumbers, ev,
@@ -237,7 +235,7 @@ must have the same size as the grid." << std::endl;
       gsl_vector_complex_const_view viewFor
 	= gsl_matrix_complex_const_row(EigVecForward, ev);
       weight = gsl_complex_mul(weight,
-			       gsl_vector_complex_get_inner_product(&viewFor.vector, gc, transferOp->initDist));
+			       gsl_vector_complex_get_inner_product(&viewFor.vector, gc));
 
       // Set weight
       gsl_vector_complex_set(weights, ev, weight);
@@ -360,8 +358,7 @@ backward eigen problem solved first before to make biorthonormal set"
        gsl_vector_complex_view viewBack
    	 = gsl_matrix_complex_row(EigVecBackward, ev);
        inner = gsl_vector_complex_get_inner_product(&viewFor.vector,
-   						    &viewBack.vector,
-   						    transferOp->initDist);
+   						    &viewBack.vector);
        //! Divide backward eigenvector by conjugate of inner product
        inner = gsl_complex_conjugate(inner);
        inner = gsl_complex_inverse(inner);
