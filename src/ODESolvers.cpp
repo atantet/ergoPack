@@ -51,6 +51,7 @@ vectorFieldString::evalField(const gsl_vector *state, gsl_vector *field,
  * Evaluate the linear vector field at a given state.
  * \param[in]  state State at which to evaluate the vector field.
  * \param[out] field Vector resulting from the evaluation of the vector field.
+ * \param[in]  t     Time parameter.
  */
 void
 linearField::evalField(const gsl_vector *state, gsl_vector *field,
