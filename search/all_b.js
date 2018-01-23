@@ -8,7 +8,6 @@ var searchData=
   ['maxinitstate',['maxInitState',['../read_config_8hpp.html#aa4298abe74e290b9e4bb92a2a22c3c31',1,'readConfig.hpp']]],
   ['maxit',['maxit',['../structconfig_a_r.html#aff3e5b364dbdca23154a2f6f7e7075c0',1,'configAR']]],
   ['maxiter',['maxIter',['../classsolution_correction.html#abe60b78c0f9a20efecf8ce75f7d2523a',1,'solutionCorrection::maxIter()'],['../read_config_8hpp.html#a5555e068ae00177a72eed03220e785fd',1,'maxIter():&#160;readConfig.hpp']]],
-  ['maxpred',['maxPred',['../read_config_8hpp.html#af0b28ccb33fc3d24bcd7ab343de80a08',1,'readConfig.hpp']]],
   ['memvector2memmatrix',['memVector2memMatrix',['../group__grid.html#ga16e31c83e10ee645b1defa1e39a7bd4e',1,'memVector2memMatrix(const gsl_vector_uint *gridMemVect, size_t tauStep):&#160;ergoGrid.cpp'],['../group__grid.html#ga16e31c83e10ee645b1defa1e39a7bd4e',1,'memVector2memMatrix(const gsl_vector_uint *gridMemVect, size_t tauStep):&#160;ergoGrid.cpp']]],
   ['memvectorlist2memmatrix',['memVectorList2memMatrix',['../group__grid.html#gac17e4618b1553c5bd37a0420310c68cc',1,'memVectorList2memMatrix(const std::vector&lt; gsl_vector_uint *&gt; *memList, size_t tauStep):&#160;ergoGrid.cpp'],['../group__grid.html#gac17e4618b1553c5bd37a0420310c68cc',1,'memVectorList2memMatrix(const std::vector&lt; gsl_vector_uint *&gt; *memList, size_t tauStep):&#160;ergoGrid.cpp']]],
   ['mininitstate',['minInitState',['../read_config_8hpp.html#a608680ad53d6bc10f5b0ef8ecf38b153',1,'readConfig.hpp']]],

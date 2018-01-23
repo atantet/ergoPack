@@ -85,10 +85,10 @@ Inheritance diagram for RegularGrid:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a11b17364b4a15927583883251167846e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_regular_grid.html#a11b17364b4a15927583883251167846e">RegularGrid</a> (const gsl_vector_uint *nx_, const gsl_vector *<a class="el" href="read_config_8hpp.html#a52655ec81979021eb5a11336517a2737">gridLimitsLow</a>, const gsl_vector *<a class="el" href="read_config_8hpp.html#ad10f9d058267a3f688556ae4d311b5d0">gridLimitsUp</a>)</td></tr>
+<tr class="memitem:a11b17364b4a15927583883251167846e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_regular_grid.html#a11b17364b4a15927583883251167846e">RegularGrid</a> (const gsl_vector_uint *nx_, const gsl_vector *<a class="el" href="read_config_8hpp.html#a52655ec81979021eb5a11336517a2737">gridLimitsLow</a>, const gsl_vector *gridLimitsUp)</td></tr>
 <tr class="memdesc:a11b17364b4a15927583883251167846e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a uniform rectangular grid with different dimensions.  <a href="#a11b17364b4a15927583883251167846e">More...</a><br /></td></tr>
 <tr class="separator:a11b17364b4a15927583883251167846e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdf048d3f844f88a42466a031d0aea4a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_regular_grid.html#afdf048d3f844f88a42466a031d0aea4a">RegularGrid</a> (const size_t dim_, const size_t inx, const double <a class="el" href="read_config_8hpp.html#a52655ec81979021eb5a11336517a2737">gridLimitsLow</a>, const double <a class="el" href="read_config_8hpp.html#ad10f9d058267a3f688556ae4d311b5d0">gridLimitsUp</a>)</td></tr>
+<tr class="memitem:afdf048d3f844f88a42466a031d0aea4a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_regular_grid.html#afdf048d3f844f88a42466a031d0aea4a">RegularGrid</a> (const size_t dim_, const size_t inx, const double <a class="el" href="read_config_8hpp.html#a52655ec81979021eb5a11336517a2737">gridLimitsLow</a>, const double gridLimitsUp)</td></tr>
 <tr class="memdesc:afdf048d3f844f88a42466a031d0aea4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a uniform rectangular grid with same dimensions.  <a href="#afdf048d3f844f88a42466a031d0aea4a">More...</a><br /></td></tr>
 <tr class="separator:afdf048d3f844f88a42466a031d0aea4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2eaa535c40fb80427cebb42ca08795cf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_regular_grid.html#a2eaa535c40fb80427cebb42ca08795cf">RegularGrid</a> (const gsl_vector_uint *nx_, const gsl_vector *nSTDLow, const gsl_vector *nSTDHigh, const gsl_matrix *states)</td></tr>
@@ -313,7 +313,7 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 <p class="definition">Definition at line <a class="el" href="ergo_grid_8cpp_source.html#l00110">110</a> of file <a class="el" href="ergo_grid_8cpp_source.html">ergoGrid.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="class_grid.html#aa53a12bc7ac7209b989bb6eb9537b303">Grid::bounds</a>, <a class="el" href="class_grid.html#abb945e93838a6746a715a083f172be04">Grid::dim</a>, <a class="el" href="read_config_8hpp.html#a52655ec81979021eb5a11336517a2737">gridLimitsLow</a>, <a class="el" href="read_config_8hpp.html#ad10f9d058267a3f688556ae4d311b5d0">gridLimitsUp</a>, <a class="el" href="gsl__extension_8hpp.html#aa6f8a271a516b519b11dc25f849a58c4">gsl_matrix_get_max()</a>, <a class="el" href="gsl__extension_8hpp.html#a14330b17d4245e0b040e07ea84d63436">gsl_matrix_get_mean()</a>, <a class="el" href="gsl__extension_8hpp.html#a17b9f31c011657a9d75a72a6d30175c1">gsl_matrix_get_min()</a>, <a class="el" href="gsl__extension_8hpp.html#ad26dd04323e0b60f748bea40e67c0905">gsl_matrix_get_std()</a>, and <a class="el" href="class_curvilinear_grid.html#ab8ecfd1ae74a499c2d1140c360e06e15">CurvilinearGrid::nx</a>.</p>
+<p class="reference">References <a class="el" href="class_grid.html#aa53a12bc7ac7209b989bb6eb9537b303">Grid::bounds</a>, <a class="el" href="class_grid.html#abb945e93838a6746a715a083f172be04">Grid::dim</a>, <a class="el" href="read_config_8hpp.html#a52655ec81979021eb5a11336517a2737">gridLimitsLow</a>, <a class="el" href="gsl__extension_8hpp.html#aa6f8a271a516b519b11dc25f849a58c4">gsl_matrix_get_max()</a>, <a class="el" href="gsl__extension_8hpp.html#a14330b17d4245e0b040e07ea84d63436">gsl_matrix_get_mean()</a>, <a class="el" href="gsl__extension_8hpp.html#a17b9f31c011657a9d75a72a6d30175c1">gsl_matrix_get_min()</a>, <a class="el" href="gsl__extension_8hpp.html#ad26dd04323e0b60f748bea40e67c0905">gsl_matrix_get_std()</a>, and <a class="el" href="class_curvilinear_grid.html#ab8ecfd1ae74a499c2d1140c360e06e15">CurvilinearGrid::nx</a>.</p>
 
 </div>
 </div>
@@ -366,7 +366,7 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 <p class="definition">Definition at line <a class="el" href="ergo_grid_8cpp_source.html#l00020">20</a> of file <a class="el" href="ergo_grid_8cpp_source.html">ergoGrid.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="class_grid.html#abb945e93838a6746a715a083f172be04">Grid::dim</a>, <a class="el" href="read_config_8hpp.html#a52655ec81979021eb5a11336517a2737">gridLimitsLow</a>, and <a class="el" href="read_config_8hpp.html#ad10f9d058267a3f688556ae4d311b5d0">gridLimitsUp</a>.</p>
+<p class="reference">References <a class="el" href="class_grid.html#abb945e93838a6746a715a083f172be04">Grid::dim</a>, and <a class="el" href="read_config_8hpp.html#a52655ec81979021eb5a11336517a2737">gridLimitsLow</a>.</p>
 
 </div>
 </div>

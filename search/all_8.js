@@ -11,6 +11,5 @@ var searchData=
   ['integrateforward',['integrateForward',['../classmodel_s_d_d_e.html#a47bb4419346ea560fc21d9194fe5cd4e',1,'modelSDDE']]],
   ['integraterange',['integrateRange',['../classfundamental_matrix_model.html#a4bf6c194e7ac7846ad49fb67cdec96b3',1,'fundamentalMatrixModel::integrateRange(const size_t nt, const double dt, gsl_matrix **xt, std::vector&lt; gsl_matrix *&gt; *Mts, const size_t ntSpinup=0)'],['../classfundamental_matrix_model.html#a5e3ea603fc58aa28a0bec4c9d75bffbd',1,'fundamentalMatrixModel::integrateRange(const gsl_vector *init, const size_t nt, const double dt, gsl_matrix **xt, std::vector&lt; gsl_matrix *&gt; *Mts, const size_t ntSpinup=0)']]],
   ['intstepcorr',['intStepCorr',['../classperiodic_orbit_track.html#aa88f99f8781d74e952893456e4872e3c',1,'periodicOrbitTrack']]],
-  ['issorted',['isSorted',['../classtransfer_spectrum.html#a7e0798ca0cf0a933ae2cc6166926965e',1,'transferSpectrum']]],
-  ['isstationary',['isStationary',['../classtransfer_operator.html#a3d66af54b7112aaab2be536543e31708',1,'transferOperator::isStationary()'],['../classtransfer_spectrum.html#a52eb1ea9a219ab445420e70794d46a84',1,'transferSpectrum::isStationary()']]]
+  ['issorted',['isSorted',['../classtransfer_spectrum.html#a7e0798ca0cf0a933ae2cc6166926965e',1,'transferSpectrum']]]
 ];

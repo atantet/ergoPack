@@ -92,9 +92,9 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hopf.html#a157b4f069079ff727a7e5bef1a7b50ff">~Hopf</a> ()</td></tr>
 <tr class="memdesc:a157b4f069079ff727a7e5bef1a7b50ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
 <tr class="separator:a157b4f069079ff727a7e5bef1a7b50ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebf87e5745ba68a33c7eb18cdeaf0fa8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hopf.html#aebf87e5745ba68a33c7eb18cdeaf0fa8">evalField</a> (const gsl_vector *state, gsl_vector *field)</td></tr>
-<tr class="memdesc:aebf87e5745ba68a33c7eb18cdeaf0fa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the vector field of the Lorenz 63 model for a given state.  <a href="#aebf87e5745ba68a33c7eb18cdeaf0fa8">More...</a><br /></td></tr>
-<tr class="separator:aebf87e5745ba68a33c7eb18cdeaf0fa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adee0fd4e8fbe192e5cc5171a3e6a0880"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hopf.html#adee0fd4e8fbe192e5cc5171a3e6a0880">evalField</a> (const gsl_vector *state, gsl_vector *field, const double t=0.)</td></tr>
+<tr class="memdesc:adee0fd4e8fbe192e5cc5171a3e6a0880"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the vector field of the Lorenz 63 model for a given state.  <a href="#adee0fd4e8fbe192e5cc5171a3e6a0880">More...</a><br /></td></tr>
+<tr class="separator:adee0fd4e8fbe192e5cc5171a3e6a0880"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classvector_field"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classvector_field')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classvector_field.html">vectorField</a></td></tr>
 <tr class="memitem:aa314e5133ba14574b89496da3cd58d68 inherit pub_methods_classvector_field"><td class="memItemLeft" align="right" valign="top"><a id="aa314e5133ba14574b89496da3cd58d68"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field.html#aa314e5133ba14574b89496da3cd58d68">vectorField</a> ()</td></tr>
@@ -116,10 +116,6 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field.html#aecbb3dbda3e082391aac968a64527718">setParameters</a> (const param *p_)</td></tr>
 <tr class="memdesc:aecbb3dbda3e082391aac968a64527718 inherit pub_methods_classvector_field"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parameters of the model. <br /></td></tr>
 <tr class="separator:aecbb3dbda3e082391aac968a64527718 inherit pub_methods_classvector_field"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8f48a80219c37398311e61ce094fdbc inherit pub_methods_classvector_field"><td class="memItemLeft" align="right" valign="top"><a id="af8f48a80219c37398311e61ce094fdbc"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field.html#af8f48a80219c37398311e61ce094fdbc">evalField</a> (const gsl_vector *state, gsl_vector *field, const double t)</td></tr>
-<tr class="memdesc:af8f48a80219c37398311e61ce094fdbc inherit pub_methods_classvector_field"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default implementation of a nonautonomous vector field. <br /></td></tr>
-<tr class="separator:af8f48a80219c37398311e61ce094fdbc inherit pub_methods_classvector_field"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -132,10 +128,10 @@ param&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Vector field for the normal form of the <a class="el" href="class_hopf.html" title="Vector field for the normal form of the Hopf bifurcation. ">Hopf</a> bifurcation (Guckenheimer and Holmes, 1988, Strogatz 1994): </p><pre class="fragment">       F_1(x) = (\mu - (x^2 + y^2)) x - (gamma - \beta (x^2 +y^2)) y
        F_2(x) = (gamma - \beta (x^2 +y^2)) x + (\mu - (x^2 + y^2)) y</pre> 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_fields_8hpp_source.html#l00163">163</a> of file <a class="el" href="_o_d_e_fields_8hpp_source.html">ODEFields.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_fields_8hpp_source.html#l00169">169</a> of file <a class="el" href="_o_d_e_fields_8hpp_source.html">ODEFields.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aebf87e5745ba68a33c7eb18cdeaf0fa8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebf87e5745ba68a33c7eb18cdeaf0fa8">&#9670;&nbsp;</a></span>evalField()</h2>
+<a id="adee0fd4e8fbe192e5cc5171a3e6a0880"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adee0fd4e8fbe192e5cc5171a3e6a0880">&#9670;&nbsp;</a></span>evalField()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -153,7 +149,13 @@ param&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">gsl_vector *&#160;</td>
-          <td class="paramname"><em>field</em>&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>t</em> = <code>0.</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -172,15 +174,16 @@ param&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>State at which to evaluate the vector field. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">field</td><td>Vector resulting from the evaluation of the vector field. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>Time. </td></tr>
   </table>
   </dd>
 </dl>
 <p><img class="formulaInl" alt="$ F_1(x) = (\mu - (x^2 + y^2)) x - (gamma - \beta (x^2 +y^2)) y $" src="form_40.png"/></p>
 <p><img class="formulaInl" alt="$ F_2(x) = (gamma - \beta (x^2 +y^2)) x + (\mu - (x^2 + y^2)) y $" src="form_41.png"/> </p>
 
-<p>Implements <a class="el" href="classvector_field.html#ac306685c4efd8e7053003d5573182909">vectorField</a>.</p>
+<p>Implements <a class="el" href="classvector_field.html#a1c58764e5c2f99d51e8dac0ac2f94179">vectorField</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_o_d_e_fields_8cpp_source.html#l00150">150</a> of file <a class="el" href="_o_d_e_fields_8cpp_source.html">ODEFields.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_d_e_fields_8cpp_source.html#l00163">163</a> of file <a class="el" href="_o_d_e_fields_8cpp_source.html">ODEFields.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="classvector_field.html#ae704e0498a6f7c6138bd7374b6bc359d">vectorField::p</a>.</p>
 

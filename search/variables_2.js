@@ -1,6 +1,7 @@
 var searchData=
 [
   ['casename',['caseName',['../sim_s_d_d_e_8cpp.html#abcb17cfffce5ecde9b06e71e77d227a3',1,'caseName():&#160;simSDDE.cpp'],['../read_config_8hpp.html#abcb17cfffce5ecde9b06e71e77d227a3',1,'caseName():&#160;simSDDE.cpp']]],
+  ['casenamemodel',['caseNameModel',['../read_config_8hpp.html#a954ed94f71833b247021521b66bb6faf',1,'readConfig.hpp']]],
   ['components',['components',['../read_config_8hpp.html#aecad9ca0f37bee172f18c2d6ec53cb9c',1,'readConfig.hpp']]],
   ['config',['config',['../read_config_8hpp.html#a3be8d930694ec109c799534056975d56',1,'readConfig.hpp']]],
   ['configfilename',['configFileName',['../read_config_8hpp.html#ab8f7d4e57ff12610ba2500706df80754',1,'readConfig.hpp']]],

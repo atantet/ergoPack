@@ -5,7 +5,6 @@ var searchData=
   ['fileformat',['fileFormat',['../sim_s_d_d_e_8cpp.html#ac4160d8950f75108ef59df910970fb48',1,'fileFormat():&#160;simSDDE.cpp'],['../read_config_8hpp.html#ac4160d8950f75108ef59df910970fb48',1,'fileFormat():&#160;simSDDE.cpp']]],
   ['filter',['filter',['../classtransfer_operator.html#a397957b2d6c8c869e48a3ee0d4701488',1,'transferOperator']]],
   ['filterstochasticmatrix',['filterStochasticMatrix',['../group__transfer.html#gae52b88b4e00ae0e45818fc4dd3b50255',1,'filterStochasticMatrix(gsl_spmatrix *M, gsl_vector *rowCut, gsl_vector *colCut, double tol, int norm):&#160;transferOperator.cpp'],['../group__transfer.html#gae52b88b4e00ae0e45818fc4dd3b50255',1,'filterStochasticMatrix(gsl_spmatrix *M, gsl_vector *rowCut, gsl_vector *colCut, double tol, int norm):&#160;transferOperator.cpp']]],
-  ['finaldist',['finalDist',['../classtransfer_operator.html#a9f00f7090bf211ced99e16605df435c7',1,'transferOperator']]],
   ['findsolution',['findSolution',['../classfixed_point_corr.html#afbeac80ae0f24d710b54ccc21db37b42',1,'fixedPointCorr::findSolution()'],['../classperiodic_orbit_corr.html#a59a830f0e7dab44d9ab62f70a2abfa94',1,'periodicOrbitCorr::findSolution()']]],
   ['fixedpointcont',['fixedPointCont',['../classfixed_point_cont.html',1,'fixedPointCont'],['../classfixed_point_cont.html#af9a7d242c802b0e2c98f69eebb1a220d',1,'fixedPointCont::fixedPointCont()']]],
   ['fixedpointcorr',['fixedPointCorr',['../classfixed_point_corr.html',1,'fixedPointCorr'],['../classfixed_point_corr.html#ab605c9e7e46f71242d995b410d3537d7',1,'fixedPointCorr::fixedPointCorr()']]],
