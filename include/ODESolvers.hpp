@@ -50,7 +50,7 @@ public:
   /** \brief Set parameters of the model. */
   virtual void setParameters(const param *p_) { p = *p_; return; }
 
-  /** \brief Default implementation of a nonautonomous vector field. */
+  /** \brief Evaluate the time-dependent vector field. */
   virtual void evalField(const gsl_vector *state, gsl_vector *field,
 			 const double t=0.) = 0;
 

@@ -80,6 +80,7 @@ void
 numericalScheme::stepForward(vectorField *field, gsl_vector *current,
 			     const double dt, double *t)
 {
+  // Get next step
   gsl_vector_view tmp = getStep(field, current, dt, *t);
 
   // Add previous state

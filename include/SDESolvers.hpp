@@ -75,8 +75,9 @@ public:
       gsl_vector_set(noiseState, i, gsl_ran_gaussian(rng, 1.));
   }
 
-  /** \brief Virtual method for evaluating the vector field at a given state. */
-  virtual void evalField(const gsl_vector *state, gsl_vector *field) = 0;
+  /** \brief Evaluate the time-dependent stochastic vector field. */
+  virtual void evalField(const gsl_vector *state, gsl_vector *field,
+			 const double t=0.) = 0;
 };
 
 
@@ -110,7 +111,8 @@ public:
   { gsl_matrix_memcpy(Q, Q_); return; }
 
   /** \brief Evaluate the linear vector field at a given state. */
-  void evalField(const gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field,
+		 const double t=0.);
 };
 
 
@@ -138,7 +140,8 @@ public:
   void setParameters(const gsl_matrix *Q_) { gsl_matrix_memcpy(Q, Q_); return; }
 
   /** \brief Evaluate the linear vector field at a given state. */
-  void evalField(const gsl_vector *state, gsl_vector *field);
+  void evalField(const gsl_vector *state, gsl_vector *field,
+		 const double t=0.);
 };
 
 
@@ -157,12 +160,13 @@ public:
 
   /** \brief Integrate the model one step. */
   void stepForward(vectorField *field, vectorFieldStochastic *stocField,
-		   gsl_vector *current, const double dt);
+		   gsl_vector *current, const double dt, double *t);
 
   /** \brief Virtual method to integrate the stochastic model one step. */
   virtual gsl_vector_view getStep(vectorField *field,
 				  vectorFieldStochastic *stocField,
-				  gsl_vector *current, const double dt) = 0;
+				  gsl_vector *current, const double dt,
+				  const double t) = 0;
 };
 
 
@@ -181,7 +185,8 @@ public:
   /** \brief Virtual method to get one step of integration. */
   gsl_vector_view getStep(vectorField *field,
 			  vectorFieldStochastic *stocField,
-			  gsl_vector *current, const double dt);
+			  gsl_vector *current, const double dt,
+			  const double t);
 };
 
 
@@ -209,7 +214,8 @@ public:
       scheme(scheme_) {}
 
   /** \brief Evaluate the vector field. */
-  void evalFieldStochastic(const gsl_vector *state, gsl_vector *vField);
+  void evalFieldStochastic(const gsl_vector *state, gsl_vector *vField,
+			   const double t);
 
   /** \brief One time-step forward integration of the modelStochastic. */
   void stepForward(const double dt);

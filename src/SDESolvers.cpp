@@ -9,8 +9,15 @@
  * Method definitions
  */
 
+/** 
+ * Evaluate white noise vector field.
+ * \param[in]  state State at which to evaluate the vector field.
+ * \param[out] field Vector resulting from the evaluation of the vector field.
+ * \param[in]  t     Time at which to evaluate vector fields.
+ */
 void
-additiveWiener::evalField(const gsl_vector *state, gsl_vector *field)
+additiveWiener::evalField(const gsl_vector *state, gsl_vector *field,
+			  const double t)
 {
   // Get new noise realization
   stepForwardNoise();
@@ -22,9 +29,15 @@ additiveWiener::evalField(const gsl_vector *state, gsl_vector *field)
 }
 
 
+/** 
+ * Evaluate linear multiplicative noise vector field.
+ * \param[in]  state State at which to evaluate the vector field.
+ * \param[out] field Vector resulting from the evaluation of the vector field.
+ * \param[in]  t     Time at which to evaluate vector fields.
+ */
 void
 multiplicativeLinearWiener::evalField(const gsl_vector *state,
-				      gsl_vector *field)
+				      gsl_vector *field, const double t)
 {
   // Get new noise realization
   stepForwardNoise();
@@ -50,17 +63,22 @@ multiplicativeLinearWiener::evalField(const gsl_vector *state,
  * \param[in]     stocField Stochastic vector field to evaluate.
  * \param[in,out] current   Current state to update by one time step.
  * \param[in]     dt        Time step.
+ * \param[in]     t         Time at which to evaluate the fields.
  */
 void
 numericalSchemeStochastic::stepForward(vectorField *field,
 				       vectorFieldStochastic *stocField,
 				       gsl_vector *current,
-				       const double dt)
+				       const double dt, double *t)
 {
-  gsl_vector_view tmp = getStep(field, stocField, current, dt);
+  // Get next step
+  gsl_vector_view tmp = getStep(field, stocField, current, dt, *t);
 
   // Add previous state
   gsl_vector_add(current, &tmp.vector);
+
+  // Update time
+  *t += dt;
 
   return;
 }
@@ -73,18 +91,19 @@ numericalSchemeStochastic::stepForward(vectorField *field,
  * \param[in]     stocField Stochastic vector field to evaluate.
  * \param[in,out] current   Current state to update by one time step.
  * \param[in]     dt        Time step.
+ * \param[in]     t         Time at which to evaluate the fields.
  * \return                  A view on the step in the workspace.
  */
 gsl_vector_view
 EulerMaruyama::getStep(vectorField *field, vectorFieldStochastic *stocField,
-		       gsl_vector *current, const double dt)
+		       gsl_vector *current, const double dt, const double t)
 {
   gsl_vector_view tmp = gsl_matrix_row(work, 0); 
   gsl_vector_view tmp1 = gsl_matrix_row(work, 1);
 
   // Get vector field
-  field->evalField(current, &tmp.vector);
-  stocField->evalField(current, &tmp1.vector);
+  field->evalField(current, &tmp.vector, t);
+  stocField->evalField(current, &tmp1.vector, t);
   
   // Get drift
   gsl_vector_scale(&tmp.vector, dt);
@@ -99,12 +118,13 @@ EulerMaruyama::getStep(vectorField *field, vectorFieldStochastic *stocField,
 
 /**
  * Integrate one step forward the stochastic model with the numerical scheme.
+ * \param[in] dt Time step.
  */
 void
 modelStochastic::stepForward(const double dt)
 {
   // Apply numerical scheme to step forward
-  scheme->stepForward(field, stocField, current, dt);
+  scheme->stepForward(field, stocField, current, dt, &t);
     
   return;
 }
@@ -112,15 +132,14 @@ modelStochastic::stepForward(const double dt)
 
 /**
  * Evaluate the stochastic vector field.
- * \param[in]  state State at which to evaluate the vector field.
+ * \param[in]  state  State at which to evaluate the vector field.
  * \param[out] vField Vector resulting from the evaluation of the vector field.
+ * \param[in]  t      Time at which to evaluate the fields.
  */
 void modelStochastic::evalFieldStochastic(const gsl_vector *state,
-					  gsl_vector *vField)
+					  gsl_vector *vField, const double t)
 {
-  stocField->evalField(state, vField);
+  stocField->evalField(state, vField, t);
 
   return;
 }
-
-
