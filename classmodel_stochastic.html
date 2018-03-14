@@ -24,7 +24,7 @@
    <div id="projectname">ergoPack
    &#160;<span id="projectnumber">v1.0</span>
    </div>
-   <div id="projectbrief">Transfer operator analysis from time series and more</div>
+   <div id="projectbrief">Statistical analysis of dynamical and stochastic systems from time series and more</div>
   </td>
  </tr>
  </tbody>
@@ -89,9 +89,9 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_stochastic.html#a3e4dcca60c3ed9118289d733996a5874">modelStochastic</a> (<a class="el" href="classvector_field.html">vectorField</a> *field_, <a class="el" href="classvector_field_stochastic.html">vectorFieldStochastic</a> *stocField_, <a class="el" href="classnumerical_scheme_stochastic.html">numericalSchemeStochastic</a> *scheme_)</td></tr>
 <tr class="memdesc:a3e4dcca60c3ed9118289d733996a5874"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor assigning a vector field, a numerical scheme and a stochastic vector field and setting initial state to origin. <br /></td></tr>
 <tr class="separator:a3e4dcca60c3ed9118289d733996a5874"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a482e28a8d53c17e4f66f13c88af138fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_stochastic.html#a482e28a8d53c17e4f66f13c88af138fd">evalFieldStochastic</a> (const gsl_vector *state, gsl_vector *vField)</td></tr>
-<tr class="memdesc:a482e28a8d53c17e4f66f13c88af138fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the vector field.  <a href="#a482e28a8d53c17e4f66f13c88af138fd">More...</a><br /></td></tr>
-<tr class="separator:a482e28a8d53c17e4f66f13c88af138fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae827fb788462860e035316202865601f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_stochastic.html#ae827fb788462860e035316202865601f">evalFieldStochastic</a> (const gsl_vector *state, gsl_vector *vField, const double <a class="el" href="classmodel_base.html#a5818d022e9e08fcc56629547ca87db6a">t</a>)</td></tr>
+<tr class="memdesc:ae827fb788462860e035316202865601f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the vector field.  <a href="#ae827fb788462860e035316202865601f">More...</a><br /></td></tr>
+<tr class="separator:ae827fb788462860e035316202865601f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe62d68b6f7f7a59def00a7544fb90fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmodel_stochastic.html#afe62d68b6f7f7a59def00a7544fb90fd">stepForward</a> (const double <a class="el" href="read_config_8hpp.html#a03e28be41881b703c836edbfe9b51b17">dt</a>)</td></tr>
 <tr class="memdesc:afe62d68b6f7f7a59def00a7544fb90fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">One time-step forward integration of the <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a>.  <a href="#afe62d68b6f7f7a59def00a7544fb90fd">More...</a><br /></td></tr>
 <tr class="separator:afe62d68b6f7f7a59def00a7544fb90fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -178,10 +178,10 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Numerical stochastic model class. A <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a> is defined by a vector field, a stochastic vector field and a numerical scheme. The current state of the <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a> is also recorded. Attention: the constructors do not copy the vector field and the numerical scheme given to them, so that any modification or freeing will affect the <a class="el" href="classmodel_stochastic.html" title="Numerical stochastic model class. ">modelStochastic</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_d_e_solvers_8hpp_source.html#l00198">198</a> of file <a class="el" href="_s_d_e_solvers_8hpp_source.html">SDESolvers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_d_e_solvers_8hpp_source.html#l00203">203</a> of file <a class="el" href="_s_d_e_solvers_8hpp_source.html">SDESolvers.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a482e28a8d53c17e4f66f13c88af138fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a482e28a8d53c17e4f66f13c88af138fd">&#9670;&nbsp;</a></span>evalFieldStochastic()</h2>
+<a id="ae827fb788462860e035316202865601f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae827fb788462860e035316202865601f">&#9670;&nbsp;</a></span>evalFieldStochastic()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,7 +196,13 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">gsl_vector *&#160;</td>
-          <td class="paramname"><em>vField</em>&#160;</td>
+          <td class="paramname"><em>vField</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>t</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -209,11 +215,12 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>State at which to evaluate the vector field. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">vField</td><td>Vector resulting from the evaluation of the vector field. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>Time at which to evaluate the fields. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_d_e_solvers_8cpp_source.html#l00118">118</a> of file <a class="el" href="_s_d_e_solvers_8cpp_source.html">SDESolvers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_d_e_solvers_8cpp_source.html#l00139">139</a> of file <a class="el" href="_s_d_e_solvers_8cpp_source.html">SDESolvers.cpp</a>.</p>
 
 </div>
 </div>
@@ -240,11 +247,16 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Integrate one step forward the stochastic model with the numerical scheme. </p>
+<p>Integrate one step forward the stochastic model with the numerical scheme. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">dt</td><td>Time step. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implements <a class="el" href="classmodel_base.html#a4d7eeda85ae2fe966401d8a7a41cf7d2">modelBase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_s_d_e_solvers_8cpp_source.html#l00104">104</a> of file <a class="el" href="_s_d_e_solvers_8cpp_source.html">SDESolvers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_d_e_solvers_8cpp_source.html#l00124">124</a> of file <a class="el" href="_s_d_e_solvers_8cpp_source.html">SDESolvers.cpp</a>.</p>
 
 </div>
 </div>

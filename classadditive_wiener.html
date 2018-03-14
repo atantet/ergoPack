@@ -24,7 +24,7 @@
    <div id="projectname">ergoPack
    &#160;<span id="projectnumber">v1.0</span>
    </div>
-   <div id="projectbrief">Transfer operator analysis from time series and more</div>
+   <div id="projectbrief">Statistical analysis of dynamical and stochastic systems from time series and more</div>
   </td>
  </tr>
  </tbody>
@@ -103,10 +103,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadditive_wiener.html#a06db8ee505f3ffa5de87bea797e14b3f">setParameters</a> (const gsl_matrix *Q_)</td></tr>
 <tr class="memdesc:a06db8ee505f3ffa5de87bea797e14b3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parameters of the model. <br /></td></tr>
 <tr class="separator:a06db8ee505f3ffa5de87bea797e14b3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a8f4fce42250af5d45d26e333fae125"><td class="memItemLeft" align="right" valign="top"><a id="a5a8f4fce42250af5d45d26e333fae125"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadditive_wiener.html#a5a8f4fce42250af5d45d26e333fae125">evalField</a> (const gsl_vector *state, gsl_vector *field)</td></tr>
-<tr class="memdesc:a5a8f4fce42250af5d45d26e333fae125"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the linear vector field at a given state. <br /></td></tr>
-<tr class="separator:a5a8f4fce42250af5d45d26e333fae125"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84be46541a47baa2ab069746f8ce708d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadditive_wiener.html#a84be46541a47baa2ab069746f8ce708d">evalField</a> (const gsl_vector *state, gsl_vector *field, const double t=0.)</td></tr>
+<tr class="memdesc:a84be46541a47baa2ab069746f8ce708d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the linear vector field at a given state.  <a href="#a84be46541a47baa2ab069746f8ce708d">More...</a><br /></td></tr>
+<tr class="separator:a84be46541a47baa2ab069746f8ce708d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classvector_field_stochastic"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classvector_field_stochastic')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classvector_field_stochastic.html">vectorFieldStochastic</a></td></tr>
 <tr class="memitem:a6e6e2891b70f33bee2393cbeeec0a5c5 inherit pub_methods_classvector_field_stochastic"><td class="memItemLeft" align="right" valign="top"><a id="a6e6e2891b70f33bee2393cbeeec0a5c5"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field_stochastic.html#a6e6e2891b70f33bee2393cbeeec0a5c5">vectorFieldStochastic</a> (const size_t noiseDim_)</td></tr>
@@ -157,10 +156,6 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field.html#aecbb3dbda3e082391aac968a64527718">setParameters</a> (const param *p_)</td></tr>
 <tr class="memdesc:aecbb3dbda3e082391aac968a64527718 inherit pub_methods_classvector_field"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parameters of the model. <br /></td></tr>
 <tr class="separator:aecbb3dbda3e082391aac968a64527718 inherit pub_methods_classvector_field"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c58764e5c2f99d51e8dac0ac2f94179 inherit pub_methods_classvector_field"><td class="memItemLeft" align="right" valign="top"><a id="a1c58764e5c2f99d51e8dac0ac2f94179"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field.html#a1c58764e5c2f99d51e8dac0ac2f94179">evalField</a> (const gsl_vector *state, gsl_vector *field, const double t=0.)=0</td></tr>
-<tr class="memdesc:a1c58764e5c2f99d51e8dac0ac2f94179 inherit pub_methods_classvector_field"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default implementation of a nonautonomous vector field. <br /></td></tr>
-<tr class="separator:a1c58764e5c2f99d51e8dac0ac2f94179 inherit pub_methods_classvector_field"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -186,7 +181,7 @@ param&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Additive Wiener process stochastic vector field. </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_d_e_solvers_8hpp_source.html#l00087">87</a> of file <a class="el" href="_s_d_e_solvers_8hpp_source.html">SDESolvers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_d_e_solvers_8hpp_source.html#l00088">88</a> of file <a class="el" href="_s_d_e_solvers_8hpp_source.html">SDESolvers.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad7acc18bdbb1f35cc98a1d4df66b3a51"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad7acc18bdbb1f35cc98a1d4df66b3a51">&#9670;&nbsp;</a></span>~additiveWiener()</h2>
@@ -212,7 +207,64 @@ param&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </div><div class="memdoc">
 <p>Destructor freeing the matrix. </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_d_e_solvers_8hpp_source.html#l00103">103</a> of file <a class="el" href="_s_d_e_solvers_8hpp_source.html">SDESolvers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_d_e_solvers_8hpp_source.html#l00104">104</a> of file <a class="el" href="_s_d_e_solvers_8hpp_source.html">SDESolvers.hpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a84be46541a47baa2ab069746f8ce708d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84be46541a47baa2ab069746f8ce708d">&#9670;&nbsp;</a></span>evalField()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void additiveWiener::evalField </td>
+          <td>(</td>
+          <td class="paramtype">const gsl_vector *&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gsl_vector *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>t</em> = <code>0.</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Evaluate white noise vector field. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>State at which to evaluate the vector field. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">field</td><td>Vector resulting from the evaluation of the vector field. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>Time at which to evaluate vector fields. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classvector_field_stochastic.html#ab9e1fb9c5f85c1c9290af050feb22f00">vectorFieldStochastic</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_s_d_e_solvers_8cpp_source.html#l00019">19</a> of file <a class="el" href="_s_d_e_solvers_8cpp_source.html">SDESolvers.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="classvector_field_stochastic.html#a00e174bc724d601e2cacada8c79217e2">vectorFieldStochastic::noiseState</a>, and <a class="el" href="classvector_field_stochastic.html#ae9e3a7a7de3a4268feec24280a23d56e">vectorFieldStochastic::stepForwardNoise()</a>.</p>
 
 </div>
 </div>

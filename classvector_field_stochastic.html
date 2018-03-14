@@ -24,7 +24,7 @@
    <div id="projectname">ergoPack
    &#160;<span id="projectnumber">v1.0</span>
    </div>
-   <div id="projectbrief">Transfer operator analysis from time series and more</div>
+   <div id="projectbrief">Statistical analysis of dynamical and stochastic systems from time series and more</div>
   </td>
  </tr>
  </tbody>
@@ -115,10 +115,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field_stochastic.html#ae9e3a7a7de3a4268feec24280a23d56e">stepForwardNoise</a> ()</td></tr>
 <tr class="memdesc:ae9e3a7a7de3a4268feec24280a23d56e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update noise realization. <br /></td></tr>
 <tr class="separator:ae9e3a7a7de3a4268feec24280a23d56e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10bf5f9e18a3f1e17c7ef75c5106b4b6"><td class="memItemLeft" align="right" valign="top"><a id="a10bf5f9e18a3f1e17c7ef75c5106b4b6"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field_stochastic.html#a10bf5f9e18a3f1e17c7ef75c5106b4b6">evalField</a> (const gsl_vector *state, gsl_vector *field)=0</td></tr>
-<tr class="memdesc:a10bf5f9e18a3f1e17c7ef75c5106b4b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual method for evaluating the vector field at a given state. <br /></td></tr>
-<tr class="separator:a10bf5f9e18a3f1e17c7ef75c5106b4b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9e1fb9c5f85c1c9290af050feb22f00"><td class="memItemLeft" align="right" valign="top"><a id="ab9e1fb9c5f85c1c9290af050feb22f00"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field_stochastic.html#ab9e1fb9c5f85c1c9290af050feb22f00">evalField</a> (const gsl_vector *state, gsl_vector *field, const double t=0.)=0</td></tr>
+<tr class="memdesc:ab9e1fb9c5f85c1c9290af050feb22f00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the time-dependent stochastic vector field. <br /></td></tr>
+<tr class="separator:ab9e1fb9c5f85c1c9290af050feb22f00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classvector_field"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classvector_field')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classvector_field.html">vectorField</a></td></tr>
 <tr class="memitem:aa314e5133ba14574b89496da3cd58d68 inherit pub_methods_classvector_field"><td class="memItemLeft" align="right" valign="top"><a id="aa314e5133ba14574b89496da3cd58d68"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field.html#aa314e5133ba14574b89496da3cd58d68">vectorField</a> ()</td></tr>
@@ -140,10 +140,6 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field.html#aecbb3dbda3e082391aac968a64527718">setParameters</a> (const param *p_)</td></tr>
 <tr class="memdesc:aecbb3dbda3e082391aac968a64527718 inherit pub_methods_classvector_field"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parameters of the model. <br /></td></tr>
 <tr class="separator:aecbb3dbda3e082391aac968a64527718 inherit pub_methods_classvector_field"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c58764e5c2f99d51e8dac0ac2f94179 inherit pub_methods_classvector_field"><td class="memItemLeft" align="right" valign="top"><a id="a1c58764e5c2f99d51e8dac0ac2f94179"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classvector_field.html#a1c58764e5c2f99d51e8dac0ac2f94179">evalField</a> (const gsl_vector *state, gsl_vector *field, const double t=0.)=0</td></tr>
-<tr class="memdesc:a1c58764e5c2f99d51e8dac0ac2f94179 inherit pub_methods_classvector_field"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default implementation of a nonautonomous vector field. <br /></td></tr>
-<tr class="separator:a1c58764e5c2f99d51e8dac0ac2f94179 inherit pub_methods_classvector_field"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
