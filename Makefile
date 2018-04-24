@@ -36,4 +36,5 @@ clean:
 install:
 	cp $(INCDIR)/* $(PREFIX)/include/
 	cp $(EXE).a $(PREFIX)/lib/
-	cp $(PYDIR)/*.py $(PYTHONPKG)/
+	mkdir -p $(PYTHONPKG)/ergoPack
+	cp $(PYDIR)/*.py $(PYTHONPKG)/ergoPack/
