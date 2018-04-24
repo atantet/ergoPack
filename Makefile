@@ -36,4 +36,4 @@ clean:
 install:
 	cp $(INCDIR)/* $(PREFIX)/include/
 	cp $(EXE).a $(PREFIX)/lib/
-	cp $(PYDIR)/* $(PYTHONPKG)/
+	cp $(PYDIR)/*.py $(PYTHONPKG)/
