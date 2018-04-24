@@ -1,7 +1,9 @@
 INCDIR=include/
 SRCDIR=src/
+PYDIR=site-packages/
 INC=-I$(HOME)/local/include/
 PREFIX=$(HOME)/local/
+PYTHONPKG=$(HOME)/local/lib/python2.7/site-packages/
 #PREFIX=/usr/local/
 
 CC=g++
@@ -34,3 +36,4 @@ clean:
 install:
 	cp $(INCDIR)/* $(PREFIX)/include/
 	cp $(EXE).a $(PREFIX)/lib/
+	cp $(PYDIR)/* $(PYTHONPKG)/
