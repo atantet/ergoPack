@@ -1,9 +1,9 @@
 INCDIR=include/
 SRCDIR=src/
 PYDIR=site-packages/
-INC=-I$(HOME)/local/include/
-PREFIX=$(HOME)/local/
-PYTHONPKG=$(HOME)/local/lib/python2.7/site-packages/
+INC=-I$(HOME)/.local/include/
+PREFIX=$(HOME)/.local/
+PYTHONPKG=$(HOME)/.local/lib/python3.6/site-packages/
 #PREFIX=/usr/local/
 
 CC=g++
@@ -16,8 +16,8 @@ OBJ_CPP_FILES := $(addprefix $(SRCDIR)/,$(notdir $(CPP_FILES:.cpp=.o)))
 
 # Use OpenMP?
 ifeq ($(WITH_OMP),1)
-  LIBS +=-lgomp
-  CFLAGS += -fopenmp -DWITH_OMP=$(WITH_OMP)
+  LIBS +=-L/opt/local/lib/libgcc/ -lgomp
+  CFLAGS +=-fopenmp -DWITH_OMP=$(WITH_OMP)
 endif
 
 EXE=libergopack
