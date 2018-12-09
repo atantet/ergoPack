@@ -10,7 +10,8 @@
  * Global variables
  */
 //! Default Arpack conf.
-configAR defaultCfgAR = {"LM", 0, 0., 0, NULL, true}; 
+char methodStr[] = "LM";
+configAR defaultCfgAR = {methodStr, 0, 0., 0, NULL, true}; 
 
 /*
  * Constructors and destructors definitions
