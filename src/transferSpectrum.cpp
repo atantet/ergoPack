@@ -9,8 +9,6 @@
 /*
  * Global variables
  */
-//! Default Arpack conf.
-configAR defaultCfgAR = {"LM", 0, 0., 0, NULL, true}; 
 
 /*
  * Constructors and destructors definitions
@@ -29,11 +27,20 @@ configAR defaultCfgAR = {"LM", 0, 0., 0, NULL, true};
  */
 transferSpectrum::transferSpectrum(const int nev_,
 				   const transferOperator *transferOp_,
-				   const configAR cfgAR=defaultCfgAR)
+				   const configAR cfgAR=NULL)
   : N(transferOp_->getNFilled()), nev(nev_), transferOp(transferOp_),
     config(cfgAR), sorted(false),
     EigValForward(NULL), EigVecForward(NULL),
-    EigValBackward(NULL), EigVecBackward(NULL) {}
+    EigValBackward(NULL), EigVecBackward(NULL) {
+    //! Default Arpack conf.
+    char *method;
+    strcpy(method, "LM");
+    if (cfgAR == NULL)
+	config = {method, 0, 0., 0, NULL, true};
+    else
+      config = cfgAR;
+
+}
 
 
 /**
