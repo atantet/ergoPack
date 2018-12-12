@@ -1,9 +1,9 @@
 INCDIR=include/
 SRCDIR=src/
 PYDIR=site-packages/
-INC=-I$(HOME)/local/include/
-PREFIX=$(HOME)/local/
-PYTHONPKG=$(HOME)/local/lib/python2.7/site-packages/
+INC=-I$(HOME)/.local/include/
+PREFIX=$(HOME)/.local/
+PYTHONPKG=$(HOME)/.local/python3/lib/python3.6/site-packages/
 #PREFIX=/usr/local/
 
 CC=g++
