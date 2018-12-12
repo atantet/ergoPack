@@ -84,7 +84,7 @@ public:
 
   /** \brief Constructor allocating for nev_ eigenvalues and vectors. */
   transferSpectrum(const int nev_, const transferOperator *transferOp_,
-		   const configAR cfgAR);
+		   const configAR *cfgAR);
   
   /** \brief Destructor desallocating. */
   ~transferSpectrum();
