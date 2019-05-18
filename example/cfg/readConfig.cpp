@@ -1,3 +1,4 @@
+#include <gsl/gsl_matrix.h>
 #include "../cfg/readConfig.hpp"
 
 // Configuration variables
@@ -7,6 +8,7 @@ char caseNameModel[256];        //!< Name of the case to simulate
 char fileFormat[256];           //!< File format of output ("txt" or "bin")
 int dim;                        //!< Dimension of the phase space
 param p;                        //!< Model adimensional parameters
+gsl_matrix *Q; 
 // Continuation
 double epsDist;                 //!< Tracking distance tolerance
 double epsStepCorrSize;         //!< Tracking correction step size tolerance
@@ -101,20 +103,41 @@ readModel(const Config *cfg, const bool verboseCFG)
 
       // Case name
       strcpy(caseName, (const char *) cfg->lookup("model.caseName"));
-      p["rho"] = cfg->lookup("model.rho");
-      p["sigma"] = cfg->lookup("model.sigma");
-      p["beta"] = cfg->lookup("model.beta");
-      if (cfg->exists("model.eps"))
-	p["eps"] = cfg->lookup("model.eps");
-      if (verboseCFG) {
-	std::cout << std::endl << "---model---" << std::endl;
-	std::cout << "dim = " << dim << std::endl;
-	std::cout << "Case name: " << caseName << std::endl;
+      std::cout << std::endl << "---model---" << std::endl;
+      std::cout << "dim = " << dim << std::endl;
+      std::cout << "Case name: " << caseName << std::endl;
+      if (cfg->exists("model.rho")) {
+	p["rho"] = cfg->lookup("model.rho");
 	std::cout << "rho = " << p["rho"] << std::endl;
+      }
+      if (cfg->exists("model.Q")) {
+	const Setting &QSetting
+	  = cfg->lookup("model.Q");
+	Q = gsl_matrix_alloc(dim, dim);
+	for (size_t d = 0; d < (size_t) (dim * dim); d++)
+	  gsl_matrix_set(Q, d / dim, d%dim, QSetting[d]);
+	std::cout << "Q =" << std::endl;
+	gsl_matrix_fprintf(stdout, Q, "%f");
+      }
+      if (cfg->exists("model.sigma")) {
+	p["sigma"] = cfg->lookup("model.sigma");
 	std::cout << "sigma = " << p["sigma"] << std::endl;
+      }
+      if (cfg->exists("model.beta")) {
+	p["beta"] = cfg->lookup("model.beta");
 	std::cout << "beta = " << p["beta"] << std::endl;
-	if (cfg->exists("model.eps"))
-	  std::cout << "eps = " << p["eps"] << std::endl;
+      }
+      if (cfg->exists("model.mu")) {
+	p["mu"] = cfg->lookup("model.mu");
+	std::cout << "mu = " << p["mu"] << std::endl;
+      }
+      if (cfg->exists("model.gamma")) {
+	p["gamma"] = cfg->lookup("model.gamma");
+	std::cout << "gamma = " << p["gamma"] << std::endl;
+      }
+      if (cfg->exists("model.eps")) {
+	p["eps"] = cfg->lookup("model.eps");
+	std::cout << "eps = " << p["eps"] << std::endl;
       }
     }
   else

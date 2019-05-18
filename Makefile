@@ -1,15 +1,16 @@
 INCDIR=include/
 SRCDIR=src/
 PYDIR=site-packages/
-INC=-I$(HOME)/.local/include/
+INC=-I$(HOME)/.local/include/ -I/opt/local/include/
+LIBS=-L$(HOME)/.local/lib/ -L/opt/local/lib/
 PREFIX=$(HOME)/.local/
 PYTHONPKG=$(HOME)/.local/miniconda3/lib/python3.7/site-packages
 #PREFIX=/usr/local/
 
-CC=g++
+CC=g++ -g
 WARN=-Wall -Wno-reorder -Wformat=0
 CFLAGS=$(WARN)  -O3
-WITH_OMP=1
+WITH_OMP=0
 
 CPP_FILES := $(wildcard $(SRCDIR)/*.cpp)
 OBJ_CPP_FILES := $(addprefix $(SRCDIR)/,$(notdir $(CPP_FILES:.cpp=.o)))

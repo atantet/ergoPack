@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cmath>
 #include <gsl/gsl_vector.h>
+#include <gsl/gsl_matrix.h>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_sf_log.h>
 #include <libconfig.h++>
@@ -22,6 +23,7 @@ extern char resDir[256];               //!< Root directory in which results are 
 extern char caseName[256];             //!< Name of the case to simulate 
 extern char caseNameModel[256];        //!< Name of the case to simulate 
 extern param p;                        //!< Model adimensional parameters
+extern gsl_matrix *Q; 
 extern char fileFormat[256];          //!< File format of output ("txt" or "bin")
 extern char delayName[256];            //!< Name associated with the number and values of the delays
 extern int dim;                        //!< Dimension of the phase space
