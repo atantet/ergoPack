@@ -245,7 +245,7 @@ public:
     // Set initial param step to 1. to avoid singular matrix in correction
     gsl_vector_set(stepPred, dim - 1, 1.);
     targetPred = gsl_vector_calloc(dim);
-    gsl_vector_set(targetPred, dim - 1, 1.);  // (0,...,0, 1, 0)
+    gsl_vector_set(targetPred, dim - 1, 1.);  // (0,...,0, 1)
   }
 
   /** \brief Default destructor. */

@@ -3,12 +3,12 @@ SRCDIR=src/
 PYDIR=site-packages/
 INC=-I$(HOME)/.local/include/
 PREFIX=$(HOME)/.local/
-PYTHONPKG=$(HOME)/.local/lib/python3.6/site-packages/
+PYTHONPKG=$(HOME)/.local/miniconda3/lib/python3.7/site-packages
 #PREFIX=/usr/local/
 
 CC=g++
 WARN=-Wall -Wno-reorder -Wformat=0
-CFLAGS=$(WARN) -pedantic-errors -O3
+CFLAGS=$(WARN)  -O3
 WITH_OMP=1
 
 CPP_FILES := $(wildcard $(SRCDIR)/*.cpp)
@@ -17,7 +17,7 @@ OBJ_CPP_FILES := $(addprefix $(SRCDIR)/,$(notdir $(CPP_FILES:.cpp=.o)))
 # Use OpenMP?
 ifeq ($(WITH_OMP),1)
   LIBS +=-L/opt/local/lib/libgcc/ -lgomp
-  CFLAGS +=-fopenmp -DWITH_OMP=$(WITH_OMP)
+  CFLAGS +=-fopenmp -DWITH_OMP=$(WITH_OMP) -std=gnu++2a
 endif
 
 EXE=libergopack
