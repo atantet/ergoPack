@@ -10,7 +10,7 @@ PYTHONPKG=$(HOME)/.local/miniconda3/lib/python3.7/site-packages
 CC=g++ -g
 WARN=-Wall -Wno-reorder -Wformat=0
 CFLAGS=$(WARN)  -O3
-WITH_OMP=0
+WITH_OMP=1
 
 CPP_FILES := $(wildcard $(SRCDIR)/*.cpp)
 OBJ_CPP_FILES := $(addprefix $(SRCDIR)/,$(notdir $(CPP_FILES:.cpp=.o)))

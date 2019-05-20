@@ -48,3 +48,6 @@ html/
 
 # Ignore results folder
 results/
+figs/
+old/
+sim_arg/

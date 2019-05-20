@@ -8,7 +8,6 @@ char caseNameModel[256];        //!< Name of the case to simulate
 char fileFormat[256];           //!< File format of output ("txt" or "bin")
 int dim;                        //!< Dimension of the phase space
 param p;                        //!< Model adimensional parameters
-gsl_matrix *Q; 
 // Continuation
 double epsDist;                 //!< Tracking distance tolerance
 double epsStepCorrSize;         //!< Tracking correction step size tolerance
@@ -110,34 +109,37 @@ readModel(const Config *cfg, const bool verboseCFG)
 	p["rho"] = cfg->lookup("model.rho");
 	std::cout << "rho = " << p["rho"] << std::endl;
       }
-      if (cfg->exists("model.Q")) {
-	const Setting &QSetting
-	  = cfg->lookup("model.Q");
-	Q = gsl_matrix_alloc(dim, dim);
-	for (size_t d = 0; d < (size_t) (dim * dim); d++)
-	  gsl_matrix_set(Q, d / dim, d%dim, QSetting[d]);
-	std::cout << "Q =" << std::endl;
-	gsl_matrix_fprintf(stdout, Q, "%f");
-      }
       if (cfg->exists("model.sigma")) {
 	p["sigma"] = cfg->lookup("model.sigma");
 	std::cout << "sigma = " << p["sigma"] << std::endl;
-      }
-      if (cfg->exists("model.beta")) {
-	p["beta"] = cfg->lookup("model.beta");
-	std::cout << "beta = " << p["beta"] << std::endl;
       }
       if (cfg->exists("model.mu")) {
 	p["mu"] = cfg->lookup("model.mu");
 	std::cout << "mu = " << p["mu"] << std::endl;
       }
+      if (cfg->exists("model.alpha")) {
+	p["alpha"] = cfg->lookup("model.alpha");
+	std::cout << "alpha = " << p["alpha"] << std::endl;
+      }
       if (cfg->exists("model.gamma")) {
 	p["gamma"] = cfg->lookup("model.gamma");
 	std::cout << "gamma = " << p["gamma"] << std::endl;
       }
+      if (cfg->exists("model.delta")) {
+	p["delta"] = cfg->lookup("model.delta");
+	std::cout << "delta = " << p["delta"] << std::endl;
+      }
+      if (cfg->exists("model.beta")) {
+	p["beta"] = cfg->lookup("model.beta");
+	std::cout << "beta = " << p["beta"] << std::endl;
+      }
       if (cfg->exists("model.eps")) {
 	p["eps"] = cfg->lookup("model.eps");
 	std::cout << "eps = " << p["eps"] << std::endl;
+      }
+      if (cfg->exists("model.sep")) {
+	p["sep"] = cfg->lookup("model.sep");
+	std::cout << "sep = " << p["sep"] << std::endl;
       }
     }
   else
@@ -289,8 +291,7 @@ readSprinkle(const Config *cfg, const bool verboseCFG)
       }
 
       // Min value of state
-      const Setting &minInitStateSetting =
-	cfg->lookup("sprinkle.minInitState");
+      const Setting &minInitStateSetting = cfg->lookup("sprinkle.minInitState");
       minInitState = gsl_vector_alloc(dim);
       if (verboseCFG)
 	std::cout << "minInitState = {";
@@ -303,8 +304,7 @@ readSprinkle(const Config *cfg, const bool verboseCFG)
 	std::cout << "}" << std::endl;
 
       // Max value of state
-      const Setting &maxInitStateSetting =
-	cfg->lookup("sprinkle.maxInitState");
+      const Setting &maxInitStateSetting = cfg->lookup("sprinkle.maxInitState");
       maxInitState = gsl_vector_alloc(dim);
       if (verboseCFG)
 	std::cout << "maxInitState = {";
@@ -317,18 +317,18 @@ readSprinkle(const Config *cfg, const bool verboseCFG)
 	std::cout << "}" << std::endl;
 
       // Seeds
-      const Setting &seedRngSetting = cfg->lookup("sprinkle.seedRng");
-      nSeeds = seedRngSetting.getLength();
-      seedRng = gsl_vector_uint_alloc(nSeeds);
-      if (verboseCFG)
+      nSeeds = 0;
+      if (cfg->exists("sprinkle.seedRng")) {
+	const Setting &seedRngSetting = cfg->lookup("sprinkle.seedRng");
+	nSeeds = seedRngSetting.getLength();
+	seedRng = gsl_vector_uint_alloc(nSeeds);
 	std::cout << "seedRng = {";
-      for (size_t seed = 0; seed < nSeeds; seed++) {
-	gsl_vector_uint_set(seedRng, seed, seedRngSetting[seed]);
-	if (verboseCFG)
+	for (size_t seed = 0; seed < nSeeds; seed++) {
+	  gsl_vector_uint_set(seedRng, seed, seedRngSetting[seed]);
 	  std::cout << gsl_vector_uint_get(seedRng, seed) << ", ";
-      }
-      if (verboseCFG)
+	}
 	std::cout << "}" << std::endl;
+      }
 
       // Define box postfix
       sprintf(boxPostfix, "");
@@ -349,12 +349,13 @@ readSprinkle(const Config *cfg, const bool verboseCFG)
 	}
     }
   else
-    if (verboseCFG)
-      std::cout << "\nSprinkle configuration section does not exist!"
-		<< std::endl;
+    std::cout << "Sprinkle configuration section does not exist."
+	      << std::endl;
     
    return;
 }
+
+
 
 
 /**
@@ -456,7 +457,7 @@ readGrid(const Config *cfg, const bool verboseCFG)
 	std::cout << "Grid limits type: " << gridLimitsType << std::endl;
 
       // Grid limits
-      if (cfg->exists("grid.gridLimits")) {
+      if (cfg->exists("grid.gridLimitsLow")) {
 	const Setting &gridLimitsLowSetting
 	  = cfg->lookup("grid.gridLimitsLow");
 	const Setting &gridLimitsHighSetting
@@ -476,8 +477,8 @@ readGrid(const Config *cfg, const bool verboseCFG)
 	}
       }
       else {
-	gridLimitsLow = gsl_vector_alloc(dimObs);
-	gridLimitsHigh = gsl_vector_alloc(dimObs);
+	gridLimitsLow = gsl_vector_alloc(dim);
+	gridLimitsHigh = gsl_vector_alloc(dim);
 	gsl_vector_memcpy(gridLimitsLow, minInitState);
 	gsl_vector_memcpy(gridLimitsHigh, maxInitState);
 	  if (verboseCFG)

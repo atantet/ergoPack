@@ -16,6 +16,7 @@
 #include <gsl_extension.hpp>
 #include <omp.h>
 #include "../cfg/readConfig.hpp"
+#include "../cfg/Chekroun2019.hpp"
 
 using namespace libconfig;
 
@@ -94,12 +95,18 @@ int main(int argc, char * argv[])
       return(EXIT_FAILURE);
     }
   sprintf(srcPostfix, "_%s", caseName);
-  sprintf(dstPostfix, "%s_mu%04d_alpha%04d_gamma%04d_delta%04d_beta%04d_eps%04d_L%d_spinup%d_dt%d_samp%d", srcPostfix,
+  sprintf(dstPostfix, "%s_mu%04d_alpha%04d_gamma%04d_delta%04d_beta%04d_eps%04d_sep%04d_L%d_spinup%d_dt%d_samp%d", srcPostfix,
 	  (int) (p["mu"] * 10000 + 0.1), (int) (p["alpha"] * 10000 + 0.1),
 	  (int) (p["gamma"] * 10000 + 0.1), (int) (p["delta"] * 10000 + 0.1),
 	  (int) (p["beta"] * 10000 + 0.1), (int) (p["eps"] * 10000 + 0.1),
+	  (int) (p["sep"] * 10000 + 0.1),
 	  (int) L, (int) spinup, (int) (round(-gsl_sf_log(dt)/gsl_sf_log(10)) + 0.1),
 	  (int) printStepNum);
+
+  gsl_matrix *Q = gsl_matrix_calloc(dim, dim);
+  gsl_matrix_set(Q, 0, 0, 1.);
+  gsl_matrix_set(Q, 1, 1, 1.);
+  gsl_matrix_set(Q, 2, 2, 1. / sqrt(p["sep"]));
 
 #pragma omp parallel
   {
@@ -124,7 +131,7 @@ int main(int argc, char * argv[])
     gsl_rng_set(r, seed);
 
     // Define field
-    vectorField *field = new Hopf(&p);
+    vectorField *field = new Chekroun2019(&p);
 
     // Define stochastic vector field
     vectorFieldStochastic *stocField = new additiveWiener(Q, r);
@@ -210,6 +217,7 @@ int main(int argc, char * argv[])
     delete mod;
     gsl_rng_free(r);
   }
+  gsl_matrix_free(Q);
   freeConfig();
   
   return 0;
