@@ -46,13 +46,13 @@ param['caseI'] = {
 param['caseII'] = {
     'beta': 0., 'delta': 0., 'mu': 0.001, 'alpha': 1., 'gamma': 10.,
     'eps': 0.2, 'sep': [0.01, 0.0001]}
-param['caseIII'] = {
+param['caseIV'] = {
     'beta': 0., 'delta': 0., 'mu': 0.001, 'alpha': 1., 'gamma': 10.,
     'eps': 0.3, 'sep': [10., 0.0001]}
 
 # case = 'caseI'
 case = 'caseII'
-# case = 'caseIII'
+# case = 'caseIV'
 
 p = param[case]
 rateMax = 20.

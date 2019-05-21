@@ -61,19 +61,19 @@ def main():
     param['caseII'] = {
         'beta': 0., 'delta': 0., 'mu': 0.001, 'alpha': 1., 'gamma': 10.,
         'eps': 0.2, 'sep': [0.01, 0.0001]}
-    param['caseIII'] = {
+    param['caseIV'] = {
         'beta': 0., 'delta': 0., 'mu': 0.001, 'alpha': 1., 'gamma': 10.,
         'eps': 0.3, 'sep': [10., 0.0001]}
 
-    case = 'caseI'
-    ylim_corr = [-2., 2.]
-    nev = 200
+    # case = 'caseI'
+    # ylim_corr = [-2., 2.]
+    # nev = 200
     # case = 'caseII'
     # ylim_corr = [-0.5, 0.5]
     # nev = 200
-    # case = 'caseIII'
-    # ylim_corr = [-0.6, 0.6]
-    # nev = 400
+    case = 'caseIV'
+    ylim_corr = [-0.6, 0.6]
+    nev = 400
 
     p = param[case]
     tau = 1. / (p['gamma'] * 10)
