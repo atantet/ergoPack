@@ -43,19 +43,21 @@ param = {}
 param['caseI'] = {
     'beta': 0., 'delta': 0., 'mu': 0.001, 'alpha': 0.056, 'gamma': 100.,
     'eps': 0.55, 'sep': [0.01, 0.0001]}
+param['caseII'] = {
+    'beta': 0., 'delta': 0., 'mu': 0.001, 'alpha': 1., 'gamma': 10.,
+    'eps': 0.2, 'sep': [0.01, 0.0001]}
 param['caseIII'] = {
     'beta': 0., 'delta': 0., 'mu': 0.001, 'alpha': 1., 'gamma': 10.,
     'eps': 0.3, 'sep': [10., 0.0001]}
 
 # case = 'caseI'
-# angFreqMax = 1000.
-# rateMax = 20.
-case = 'caseIII'
-angFreqMax = 100.
-rateMax = 20.
+case = 'caseII'
+# case = 'caseIII'
 
+p = param[case]
+rateMax = 20.
 xmineigVal = -rateMax
-ymineigVal = -angFreqMax
+ymineigVal = -p['gamma'] * 10
 xlimEig = [xmineigVal, -xmineigVal/100]
 ylimEig = [ymineigVal, -ymineigVal]
 yticksPos = np.arange(0, ylimEig[1], 5.)
@@ -63,7 +65,6 @@ yticksNeg = np.arange(0, ylimEig[0], -5.)[::-1]
 yticks = np.concatenate((yticksNeg, yticksPos))
 xticks = None
 
-p = param[case]
 eigValGen = {}
 postfix0 = ('_{}_mu{:04d}_alpha{:04d}_gamma{:04d}_delta{:04d}_beta{:04d}'
             '_eps{:04d}'.format(
@@ -75,14 +76,14 @@ postfix2 = '_L{:d}_spinup{:d}_dt{:d}_samp{:d}'.format(
     int(L + 0.1), int(spinup + 0.1),
     int(-np.round(np.log10(cfg.simulation.dt)) + 0.1), printStepNum)
 
+tau = cfg.stat.tauPlot
+postfixBoth = "{}{}_nTraj{:d}{:s}_tau{:04d}".format(
+    postfix0, postfix2, cfg.sprinkle.nTraj,
+    gridPostfix, int(tau * 10000 + 0.1))
 for isep, sep in enumerate(p['sep']):
     print('{} for sep = {:.1e}'.format(case, sep))
-    tau = cfg.stat.tauPlot
     postfixTau = "{}_sep{:04d}{}_nTraj{:d}{}_tau{:04d}".format(
         postfix0, int(sep * 10000 + 0.1), postfix2, cfg.sprinkle.nTraj,
-        gridPostfix, int(tau * 10000 + 0.1))
-    postfixBoth = "{}{}_nTraj{:d}{:s}_tau{:04d}".format(
-        postfix0, postfix2, cfg.sprinkle.nTraj,
         gridPostfix, int(tau * 10000 + 0.1))
 
     # Define file names

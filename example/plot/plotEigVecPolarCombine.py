@@ -100,7 +100,7 @@ for tau in tauRng:
     eigVecBackwardFile = '%s/eigvec/eigVecBackward_nev%d%s.%s' \
         % (specDir, nev, postfixTau, fileFormat)
     maskFile = '%s/transfer/mask/mask%s.%s' \
-               % (cfg.general.resDir, postfixTau, fileFormat)
+        % (cfg.general.resDir, postfixTau, fileFormat)
 
     # Read mask
     if maskFile is not None:
