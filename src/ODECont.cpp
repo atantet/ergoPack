@@ -291,7 +291,7 @@ solutionCont::predict(gsl_matrix *S)
   getSystemPred();
 
   // Set up LU decomposition
-  // Note that this modifies the matrix A
+  // Note that this modifies the matrix S
   p = gsl_permutation_alloc(S->size1);
   gsl_linalg_LU_decomp(S, p, &s);
 

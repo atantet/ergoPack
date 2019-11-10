@@ -2,6 +2,7 @@ INCDIR=-I$(HOME)/.local/include/ -I/opt/local/include
 LIBDIR=-L$(HOME)/.local/lib/ -L/opt/local/lib
 LIBS=-lgsl -lgslcblas -lconfig++ -lergopack -lgomp
 CONFIG=../cfg/readConfig
+FIELD=../cfg/Chekroun2019
 
 CC=g++ -g -ggdb
 WARN=-w
@@ -13,10 +14,7 @@ LDFLAGSGDB=$(LDFLAGSSTD) -gdb
 LDFLAGS=$(LDFLAGSSTD)
 #LDFLAGS=$(LDFLAGSGDB)
 
-#EXE=simOU
-EXE=simHopf
-# EXE=simSDDE
-#EXE=simLorenz63
+EXE=simChekroun2019
 
 all:$(EXE).out
 
@@ -26,7 +24,10 @@ $(EXE).o:$(EXE).cpp
 $(CONFIG).o:$(CONFIG).cpp
 	$(CC) $(OMPFLAGS) -c $(CFLAGS) $(INCDIR) -o $@ $<
 
-$(EXE).out:$(EXE).o $(CONFIG).o
+$(FIELD).o:$(FIELD).cpp
+	$(CC) $(OMPFLAGS) -c $(CFLAGS) $(INCDIR) -o $@ $<
+
+$(EXE).out:$(EXE).o $(CONFIG).o $(FIELD).o
 	$(CC) $(OMPFLAGS) $(LDFLAGS) -o $@ $^ $(LIBDIR) $(LIBS)
 
 clean:
@@ -34,5 +35,5 @@ clean:
 	rm -rf $(EXE).out.dSYM
 
 cleanall:
-	rm -f $(EXE).o $(CONFIG).o $(EXE).out
+	rm -f $(EXE).o $(CONFIG).o $(FIELD).o $(EXE).out
 	rm -rf $(EXE).out.dSYM

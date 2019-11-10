@@ -168,10 +168,10 @@ Hopf::evalField(const gsl_vector *state, gsl_vector *field,
   y = gsl_vector_get(state, 1);
   r2 = gsl_pow_2(x) + gsl_pow_2(y);
 
-  //! \f$ F_1(x) = (\mu - (x^2 + y^2)) x - (gamma - \beta (x^2 +y^2)) y \f$
+  //! \f$ F_1(x) = (\mu - \alpha (x^2 + y^2)) x - (gamma - \beta (x^2 +y^2)) y \f$
   gsl_vector_set(field, 0, (p["mu"] - p["alpha"] * r2) * x \
 		 - (p["gamma"] + p["delta"] * p["mu"] - p["beta"] * r2) * y);
-  //! \f$ F_2(x) = (gamma - \beta (x^2 +y^2)) x + (\mu - (x^2 + y^2)) y \f$
+  //! \f$ F_2(x) = (gamma - \beta (x^2 +y^2)) x + (\mu - \alpha (x^2 + y^2)) y \f$
   gsl_vector_set(field, 1,
 		 (p["gamma"] + p["delta"] * p["mu"] - p["beta"] * r2) * x \
 		 + (p["mu"] - p["alpha"] * r2) * y);

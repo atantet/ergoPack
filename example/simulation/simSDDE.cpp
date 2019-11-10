@@ -12,6 +12,7 @@
 #include <ODESolvers.hpp>
 #include <SDESolvers.hpp>
 #include <SDDESolvers.hpp>
+#include <ODEFields.hpp>
 
 using namespace libconfig;
 
@@ -46,7 +47,7 @@ double L;                 //!< Total length of integration
 double dt;                //!< Time step of integration
 double printStep;         //!< Time step of output
 size_t printStepNum;      //!< Time step of output in number of time steps of integration
-char dstFileName[256];    //!< Destination file name
+char postfix[256], dstFileName[256];
 
 
 /** \brief Simulation of an Stochastic Delay Differential Equation.
@@ -273,6 +274,15 @@ readConfig(const char *cfgFileName)
     printStepNum = (size_t) (printStep / dt);
     
     // Define destination file name
+	mu = 1.;
+#	beta = 0.;
+	beta = 0.5;
+	gamma = 1.;
+	eps = 0.5;
+  sprintf(postfix, "_%s_mu%04d_beta%04d_gamma%04d_eps%04d_L%d_spinup%d_dt%d_samp%d",
+	  caseName, (int) (p["rho"] * 100 + 0.1), (int) L, (int) spinup,
+	  (int) (round(-gsl_sf_log(dt)/gsl_sf_log(10)) + 0.1),
+	  (int) printStepNum);
     sprintf(dstFileName, "%s/simulation/sim%s.%s", resDir, postfix, fileFormat);
 
   }

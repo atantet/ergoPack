@@ -3,7 +3,7 @@ SRCDIR=src/
 INC=-I$(HOME)/.local/include/
 PREFIX=$(HOME)/.local/
 
-CC=g++
+CC=g++ -g
 WARN=-Wall -Wno-reorder -Wformat=0
 CFLAGS=$(WARN) -O3
 WITH_OMP=1
