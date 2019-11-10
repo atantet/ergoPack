@@ -1,14 +1,11 @@
 INCDIR=include/
 SRCDIR=src/
-PYDIR=site-packages/
 INC=-I$(HOME)/.local/include/
 PREFIX=$(HOME)/.local/
-PYTHONPKG=$(HOME)/.local/python3/lib/python3.6/site-packages/
-#PREFIX=/usr/local/
 
 CC=g++
 WARN=-Wall -Wno-reorder -Wformat=0
-CFLAGS=$(WARN) -pedantic-errors -O3
+CFLAGS=$(WARN) -O3
 WITH_OMP=1
 
 CPP_FILES := $(wildcard $(SRCDIR)/*.cpp)
@@ -16,7 +13,7 @@ OBJ_CPP_FILES := $(addprefix $(SRCDIR)/,$(notdir $(CPP_FILES:.cpp=.o)))
 
 # Use OpenMP?
 ifeq ($(WITH_OMP),1)
-  LIBS +=-L/opt/local/lib/libgcc/ -lgomp
+  LIBS +=-lgomp
   CFLAGS +=-fopenmp -DWITH_OMP=$(WITH_OMP)
 endif
 
@@ -36,5 +33,3 @@ clean:
 install:
 	cp $(INCDIR)/* $(PREFIX)/include/
 	cp $(EXE).a $(PREFIX)/lib/
-	mkdir -p $(PYTHONPKG)/ergoPack
-	cp $(PYDIR)/*.py $(PYTHONPKG)/ergoPack/

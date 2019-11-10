@@ -30,19 +30,18 @@ configAR defaultCfgAR = {methodStr, 0, 0., 0, NULL, true};
  */
 transferSpectrum::transferSpectrum(const int nev_,
 				   const transferOperator *transferOp_,
-				   const configAR cfgAR=NULL)
+				   const configAR *cfgAR=NULL)
   : N(transferOp_->getNFilled()), nev(nev_), transferOp(transferOp_),
-    config(cfgAR), sorted(false),
+    sorted(false),
     EigValForward(NULL), EigVecForward(NULL),
     EigValBackward(NULL), EigVecBackward(NULL) {
     //! Default Arpack conf.
-    char *method;
+    char method[3];
     strcpy(method, "LM");
     if (cfgAR == NULL)
-	config = {method, 0, 0., 0, NULL, true};
+    	config = {method, 0, 0., 0, NULL, true};
     else
-      config = cfgAR;
-
+      config = *cfgAR;
 }
 
 
